@@ -8,6 +8,8 @@ While testing the game, pressing F12 at any time will immediately quit the game.
 
 [![Gitter](https://badges.gitter.im/essial/harvest-rogue.svg)](https://gitter.im/essial/harvest-rogue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+[![Build Status](https://travis-ci.org/essial/harvest-rogue.svg?branch=master)](https://travis-ci.org/essial/harvest-rogue)
+
 ## Tasks
 The following tasks are currently being worked on:
 
