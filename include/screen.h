@@ -26,7 +26,7 @@
 #define CLR_BLUE        4
 #define CLR_MAGENTA     5
 #define CLR_CYAN        6
-#define CLR_WHITE       7
+#define CLR_SILVER      7
 #define CLR_GRAY        8
 #define CLR_BRRED       9
 #define CLR_BRGREEN     10
@@ -34,7 +34,7 @@
 #define CLR_BRBLUE      12
 #define CLR_BRMAGENTA   13
 #define CLR_BRCYAN      14
-#define CLR_BRWHITE     15
+#define CLR_WHITE       15
 #define CLR_INVERSE(X) (X+16)
 
 class Screen {
