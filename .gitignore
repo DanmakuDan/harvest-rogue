@@ -26,3 +26,9 @@
 *.exe
 *.out
 *.app
+
+# Output Folders
+output/
+.anjuta/
+.kdev4/
+.idea/
