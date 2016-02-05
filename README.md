@@ -7,7 +7,6 @@ Welcome to the project page for Harvest-Rogue, a Harvest Moon-inspired roguelike
 While testing the game, pressing F12 at any time will immediately quit the game. This will remain in place during development.
 
 [![Gitter](https://badges.gitter.im/essial/harvest-rogue.svg)](https://gitter.im/essial/harvest-rogue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
 [![Build Status](https://travis-ci.org/essial/harvest-rogue.svg?branch=master)](https://travis-ci.org/essial/harvest-rogue)
 
 ## Tasks
