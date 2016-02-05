@@ -18,13 +18,19 @@ The following tasks are currently being worked on:
 
 
 ## Compiling
+
 ### Linux
+
 * Install <code>build-essential</code>, <code>cmake</code>, and <code>libncurses-dev</code>, and <code>autotools</code> packages for your host environment.
 * Clone the source to your home folder with <code>git clone git@github.com:essial/harvest-rogue.git</code>
 * Create and navigate to an empty output folder like <code>[projectroot]/output/</code>.
 * Generate the autotools build scripts by running <code>$ cmake .. -DCMAKE_INSTALL_PREFIX=/usr/bin</code>
 * Now you may run **make** to build the project. You can run it locally with <code>$ ./harvest-rogue</code>, or install it with <code># make install</code>
+
 ### Windows
+
 There is currently no build steps for windows. If you'd like to add some, feel free to do a pull request!
+
 ### Mac OSX
+
 There is currently no build steps for mac. If you'd like to add some, feel free to do a pull request!
