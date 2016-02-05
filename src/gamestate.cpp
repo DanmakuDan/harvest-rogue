@@ -18,6 +18,16 @@ GameState::GameState() {
    this->active = true;
    this->CurrentScene = nullptr;
    this->NextScene = nullptr;
+
+   // Temporary debug stuff
+   this->AddLogMessage("Test log line 1");
+   this->AddLogMessage("Test log line 2");
+   this->AddLogMessage("Test log line 3");
+   this->AddLogMessage("Test log line 4");
+   this->AddLogMessage("Test log line 5");
+   this->AddLogMessage("Test log line 6");
+   this->AddLogMessage("Test log line 7");
+
 }
 
 GameState::~GameState() {
@@ -107,4 +117,12 @@ int GameState::GetCurrentMinute() {
 
 int GameState::GetCurrentSecond() {
    return this->CurrentSecond;
+}
+
+void GameState::AddLogMessage(std::string Message) {
+   this->Log.push_back(Message);
+}
+
+std::vector<std::string> GameState::GetLogMessages() {
+   return this->Log;
 }

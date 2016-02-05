@@ -65,6 +65,8 @@ public:
    void WriteButton(int x, int y, int width, std::string text, bool active);
 
    void ClearLine(int y, int color = CLR_WHITE);
+
+   void WriteCharacter(int x, int y, const char *character, int color = CLR_WHITE);
 };
 
 

@@ -32,8 +32,11 @@ private:
    Game();
 
    void RenderUI();
-
    void RenderTopBar();
+
+   void RenderMap();
+
+   void RenderLog();
 };
 
 

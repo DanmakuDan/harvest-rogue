@@ -14,7 +14,6 @@
 
 #include <input.h>
 #include <gamestate.h>
-#include <sstream>
 #include <iomanip>
 #include "game.h"
 #include "screen.h"
@@ -36,6 +35,8 @@ Game::Game() {
 
 void Game::RenderUI() {
    this->RenderTopBar();
+   this->RenderMap();
+   this->RenderLog();
 }
 
 void Game::RenderTopBar() {
@@ -61,4 +62,29 @@ void Game::RenderTopBar() {
    Screen::Get().ClearLine(0, CLR_INVERSE(CLR_WHITE));
    Screen::Get().WriteText(0, 0, topStatusBar.str(), CLR_INVERSE(CLR_WHITE));
 
+}
+
+void Game::RenderMap() {
+   auto startX = 1;
+   auto startY = 1;
+   auto drawWidth = Screen::Get().GetWidth() - 30;
+   auto drawHeight = Screen::Get().GetHeight() - 8;
+   for (auto y = startY; y < drawHeight; y++) {
+      for (auto x = startX; x < drawWidth; x++) {
+         Screen::Get().WriteCharacter(x, y, ".", CLR_GREEN);
+      }
+   }
+}
+
+void Game::RenderLog() {
+   auto logMessageOutputTop = Screen::Get().GetHeight() - 7;
+   auto logMessages = GameState::Get().GetLogMessages();
+   auto logMessageCount = logMessages.size();
+   auto startIndex = logMessageCount - 6;
+   if (startIndex < 0) {
+      startIndex = 0;
+   }
+   for (auto i = 0; (i < 6) && (startIndex + i < logMessageCount); i++) {
+      Screen::Get().WriteText(1, logMessageOutputTop + i, logMessages.at(startIndex + i), CLR_CYAN);
+   }
 }

@@ -20,6 +20,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <vector>
 
 enum eGameStateSeason {
    SeasonSpring,
@@ -72,10 +73,15 @@ public:
 
    int GetCurrentSecond();
 
+   void AddLogMessage(std::string Message);
+
+   std::vector<std::string> GetLogMessages();
+
 private:
    bool active;
    std::shared_ptr<IScene> CurrentScene;
    std::shared_ptr<IScene> NextScene;
+   std::vector<std::string> Log;
 
    eGameStateSeason CurrentSeason;
    int CurrentDay, CurrentYear, CurrentHour, CurrentMinute, CurrentSecond;
