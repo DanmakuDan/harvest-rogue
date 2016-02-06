@@ -28,10 +28,16 @@ The following tasks are currently being worked on:
 * Generate the autotools build scripts by running <code>$ cmake .. -DCMAKE_INSTALL_PREFIX=/usr/bin</code>
 * Now you may run **make** to build the project. You can run it locally with <code>$ ./harvest-rogue</code>, or install it with <code># make install</code>
 
+### Mac OSX
+
+The build process is essentially the same as for Linux, especially if you use [Brew](http://brew.sh/):
+
+```
+~/projects/harvest-rogue$ brew install gcc make cmake ncurses
+~/projects/harvest-rogue$ cmake .
+~/projects/harvest-rogue$ make
+```
+
 ### Windows
 
 There is currently no build steps for windows. If you'd like to add some, feel free to do a pull request!
-
-### Mac OSX
-
-There is currently no build steps for mac. If you'd like to add some, feel free to do a pull request!
