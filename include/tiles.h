@@ -30,9 +30,21 @@ enum eSurfaceAttributeType {
 enum eTileType {
    TileNothing,
    TilePlayer,
+   
+   TileTilled,
+
    TileGrass,
    TileGrassTuft,
+   TileWeed,
+
+   TileStone,
+   TileBranch,
+   TileBoulder,
+   TileStump,
+   TileTree,
+
    TileWater,
+
    TILES_MAX
 };
 
@@ -46,11 +58,22 @@ typedef struct tile_s {
 
 
 static std::vector<Tile> Tiles = {
-      {TileNothing, "Nothing", (NoSurfaceAttributes), CLR_RED, 'X'},
-      {TilePlayer, "You", (NoSurfaceAttributes), CLR_WHITE, '@'},
-      {TileGrass, "Grass", (Walkable), CLR_GREEN, '.'},
-      {TileGrassTuft, "Grass Tuft", (Walkable), CLR_BRGREEN, ','},
-      {TileWater, "Water", (Swimmable), CLR_BRBLUE, '='}
+      {TileNothing,    "Nothing",      NoSurfaceAttributes,  CLR_RED,      'X'},
+      {TilePlayer,     "You",          NoSurfaceAttributes,  CLR_WHITE,    '@'},
+
+      {TileTilled,     "Tilled Land",  Walkable,             CLR_YELLOW,   '='},
+
+      {TileGrass,      "Grass",        Walkable,             CLR_GREEN,    '.'},
+      {TileGrassTuft,  "Grass Tuft",   Walkable,             CLR_BRGREEN,  ','},
+      {TileWeed,       "Weeds",        Walkable,             CLR_GREEN,    '"'},
+
+      {TileStone,      "Stone",        Walkable,             CLR_GRAY,     'o'},
+      {TileBranch,     "Branch",       Walkable,             CLR_YELLOW,   '-'},
+      {TileBoulder,    "Boulder",      NoSurfaceAttributes,  CLR_WHITE,    'O'},
+      {TileStump,      "Stump",        NoSurfaceAttributes,  CLR_YELLOW,   '#'},
+      {TileTree,       "Tree",         NoSurfaceAttributes,  CLR_YELLOW,   'T'},
+
+      {TileWater,      "Water",        (Swimmable),          CLR_BRBLUE,   '~'},
 };
 
 static Tile FindTilebyTileType(eTileType tileType) {
