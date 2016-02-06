@@ -211,32 +211,56 @@ void GameState::WalkPlayer(eDirection direction) {
       case DirectionUp:
          if (this->PlayerY == 0)
             return;
-         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX, this->PlayerY - 1), Walkable))
+         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX, this->PlayerY - 1), Walkable)) {
+            std::stringstream str;
+            str << "You are blocked by a ";
+            str << currentLandmark->GetTile(this->PlayerX, this->PlayerY - 1).Name;
+            str << "..";
+            this->AddLogMessage(str.str());
             return;
+         }
          this->PlayerY--;
          break;
 
       case DirectionDown:
          if (this->PlayerY == (currentLandmark->GetHeight() - 1))
             return;
-         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX, this->PlayerY + 1), Walkable))
+         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX, this->PlayerY + 1), Walkable)) {
+            std::stringstream str;
+            str << "You are blocked by a ";
+            str << currentLandmark->GetTile(this->PlayerX, this->PlayerY + 1).Name;
+            str << "..";
+            this->AddLogMessage(str.str());
             return;
+         }
          this->PlayerY++;
          break;
 
       case DirectionLeft:
          if (this->PlayerX == 0)
             return;
-         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX - 1, this->PlayerY), Walkable))
+         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX - 1, this->PlayerY), Walkable)) {
+            std::stringstream str;
+            str << "You are blocked by a ";
+            str << currentLandmark->GetTile(this->PlayerX - 1, this->PlayerY).Name;
+            str << "..";
+            this->AddLogMessage(str.str());
             return;
+         }
          this->PlayerX--;
          break;
 
       case DirectionRight:
          if (this->PlayerX == (currentLandmark->GetWidth() - 1))
             return;
-         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX + 1, this->PlayerY), Walkable))
+         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX + 1, this->PlayerY), Walkable)) {
+            std::stringstream str;
+            str << "You are blocked by a ";
+            str << currentLandmark->GetTile(this->PlayerX + 1, this->PlayerY).Name;
+            str << "..";
+            this->AddLogMessage(str.str());
             return;
+         }
          this->PlayerX++;
          break;
    }
