@@ -86,18 +86,15 @@ void GameState::InitializeNewGame() {
 void GameState::StepSimulation() {
    CurrentSecond += 20;
 
-   while (CurrentSecond > 59) {
-      CurrentSecond -= 60;
-      CurrentMinute++;
-   }
-   while (CurrentMinute > 59) {
-      CurrentMinute -= 60;
-      CurrentHour++;
-   }
-   while (CurrentHour > 23) {
-      CurrentHour -= 24;
-      CurrentDay++;
-   }
+   CurrentMinute += CurrentSecond / 60;
+   CurrentSecond %= 60;
+
+   CurrentHour += CurrentMinute / 60;
+   CurrentMinute %= 60;
+
+   CurrentDay += CurrentHour / 24;
+   CurrentHour %= 24;
+
    while (CurrentDay > 30) {
       CurrentDay -= 30;
       CurrentSeason = (eGameStateSeason) ((int) CurrentSeason + 1);
@@ -162,7 +159,7 @@ std::shared_ptr<Landmark> GameState::GetCurrentLandmark() {
 
 std::shared_ptr<Landmark> GameState::GeneratePlayerFarm() {
    // This needs to be moved into its own module at some point...
-   std::uniform_int_distribution<int> grassTuftDistrobution(0, 4);
+   std::uniform_int_distribution<int> grassTuftDistrobution(0, 10000);
 
    auto farmName = TextGenerator::GenerateFarmName();
    auto result = Landmark::Construct(farmName, MAP_SIZE_WIDTH, MAP_SIZE_HEIGHT);
@@ -173,8 +170,23 @@ std::shared_ptr<Landmark> GameState::GeneratePlayerFarm() {
             result->SetTile(x, y, TileWater);
             continue;
          }
-         if (grassTuftDistrobution(randomGenerator) == 0) {
+
+         int n = grassTuftDistrobution(randomGenerator);
+         int permille_chance;
+         if (n <= (permille_chance = 2500)) {
             result->SetTile(x, y, TileGrassTuft);
+         } else if (n <= (permille_chance += 100)) {
+            result->SetTile(x, y, TileWeed);
+         } else if (n <= (permille_chance += 100)) {
+            result->SetTile(x, y, TileBranch);
+         } else if (n <= (permille_chance += 10)) {
+            result->SetTile(x, y, TileStone);
+         } else if (n <= (permille_chance += 10)) {
+            result->SetTile(x, y, TileBoulder);
+         } else if (n <= (permille_chance += 5)) {
+            result->SetTile(x, y, TileStump);
+         } else if (n <= (permille_chance += 5)) {
+            result->SetTile(x, y, TileTree);
          } else {
             result->SetTile(x, y, TileGrass);
          }
