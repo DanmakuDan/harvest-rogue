@@ -25,5 +25,5 @@ file(GLOB SOURCE_FILES
         "./src/*.cpp"
         "./include/*.h"
         )
-add_executable(harvest_rogue ${SOURCE_FILES} src/input.cpp include/input.h include/scene.h src/mainmenu.cpp include/mainmenu.h src/gamestate.cpp include/gamestate.h src/game.cpp include/game.h src/landmark.cpp include/landmark.h src/textgenerator.cpp include/textgenerator.h include/adjectives.h include/animalnouns.h include/tiles.h)
+add_executable(harvest_rogue ${SOURCE_FILES} src/input.cpp include/input.h include/scene.h src/mainmenu.cpp include/mainmenu.h src/gamestate.cpp include/gamestate.h src/game.cpp include/game.h src/landmark.cpp include/landmark.h src/textgenerator.cpp include/textgenerator.h include/adjectives.h include/animalnouns.h include/tiles.h src/landmarkgenerator.cpp include/landmarkgenerator.h)
 target_link_libraries(harvest_rogue ${CURSES_LIBRARIES})

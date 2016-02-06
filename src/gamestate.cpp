@@ -12,12 +12,9 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#include <random>
 #include "gamestate.h"
 #include "textgenerator.h"
-
-static std::random_device randomDevice;
-static std::default_random_engine randomGenerator(randomDevice());
+#include "landmarkgenerator.h"
 
 GameState::GameState() {
    this->active = true;
@@ -79,7 +76,7 @@ void GameState::InitializeNewGame() {
    CurrentSecond = 0;
 
    this->Landmarks.clear();
-   this->Landmarks.push_back(GeneratePlayerFarm());
+   this->Landmarks.push_back(LandmarkGenerator::GeneratePlayerFarm());
    this->CurrentLandmarkIndex = this->Landmarks.size() - 1;
 }
 
@@ -139,6 +136,27 @@ void GameState::AddLogMessage(std::string Message) {
    }
 }
 
+void GameState::AddLogMessageFmt(const std::string format, ...) {
+   int size = 4096;
+   std::string str;
+   va_list ap;
+   while (1) {     // Maximum two passes on a POSIX system...
+      str.resize(size);
+      va_start(ap, format);
+      int n = vsnprintf((char *) str.data(), size, format.c_str(), ap);
+      va_end(ap);
+      if (n > -1 && n < size) {  // Everything worked
+         str.resize(n);
+         this->AddLogMessage(str);
+         return;
+      }
+      if (n > -1)  // Needed size returned
+         size = n + 1;   // For null char
+      else
+         size *= 2;      // Guess at a larger size (OS specific)
+   }
+}
+
 std::vector<std::string> GameState::GetLogMessages() {
    return this->Log;
 }
@@ -157,46 +175,6 @@ std::shared_ptr<Landmark> GameState::GetCurrentLandmark() {
 
 }
 
-std::shared_ptr<Landmark> GameState::GeneratePlayerFarm() {
-   // This needs to be moved into its own module at some point...
-   std::uniform_int_distribution<int> grassTuftDistrobution(0, 10000);
-
-   auto farmName = TextGenerator::GenerateFarmName();
-   auto result = Landmark::Construct(farmName, MAP_SIZE_WIDTH, MAP_SIZE_HEIGHT);
-
-   for (auto y = 0; y < MAP_SIZE_WIDTH; y++) {
-      for (auto x = 0; x < MAP_SIZE_HEIGHT; x++) {
-         if ((x < 2) || (x >= (MAP_SIZE_WIDTH - 2)) || (y < 2) || (y >= (MAP_SIZE_HEIGHT - 2))) {
-            result->SetTile(x, y, TileWater);
-            continue;
-         }
-
-         int n = grassTuftDistrobution(randomGenerator);
-         int permille_chance;
-         if (n <= (permille_chance = 2500)) {
-            result->SetTile(x, y, TileGrassTuft);
-         } else if (n <= (permille_chance += 100)) {
-            result->SetTile(x, y, TileWeed);
-         } else if (n <= (permille_chance += 100)) {
-            result->SetTile(x, y, TileBranch);
-         } else if (n <= (permille_chance += 10)) {
-            result->SetTile(x, y, TileStone);
-         } else if (n <= (permille_chance += 10)) {
-            result->SetTile(x, y, TileBoulder);
-         } else if (n <= (permille_chance += 5)) {
-            result->SetTile(x, y, TileStump);
-         } else if (n <= (permille_chance += 5)) {
-            result->SetTile(x, y, TileTree);
-         } else {
-            result->SetTile(x, y, TileGrass);
-         }
-
-      }
-   }
-
-   return result;
-}
-
 int GameState::GetPlayerX() {
    return this->PlayerX;
 }
@@ -212,11 +190,8 @@ void GameState::WalkPlayer(eDirection direction) {
          if (this->PlayerY == 0)
             return;
          if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX, this->PlayerY - 1), Walkable)) {
-            std::stringstream str;
-            str << "You are blocked by a ";
-            str << currentLandmark->GetTile(this->PlayerX, this->PlayerY - 1).Name;
-            str << "..";
-            this->AddLogMessage(str.str());
+            this->AddLogMessageFmt("You are blocked by '%s'..",
+                                   currentLandmark->GetTile(this->PlayerX, this->PlayerY - 1).Name.c_str());
             return;
          }
          this->PlayerY--;
@@ -226,11 +201,8 @@ void GameState::WalkPlayer(eDirection direction) {
          if (this->PlayerY == (currentLandmark->GetHeight() - 1))
             return;
          if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX, this->PlayerY + 1), Walkable)) {
-            std::stringstream str;
-            str << "You are blocked by a ";
-            str << currentLandmark->GetTile(this->PlayerX, this->PlayerY + 1).Name;
-            str << "..";
-            this->AddLogMessage(str.str());
+            this->AddLogMessageFmt("You are blocked by '%s'..",
+                                   currentLandmark->GetTile(this->PlayerX, this->PlayerY + 1).Name.c_str());
             return;
          }
          this->PlayerY++;
@@ -240,11 +212,8 @@ void GameState::WalkPlayer(eDirection direction) {
          if (this->PlayerX == 0)
             return;
          if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX - 1, this->PlayerY), Walkable)) {
-            std::stringstream str;
-            str << "You are blocked by a ";
-            str << currentLandmark->GetTile(this->PlayerX - 1, this->PlayerY).Name;
-            str << "..";
-            this->AddLogMessage(str.str());
+            this->AddLogMessageFmt("You are blocked by '%s'..",
+                                   currentLandmark->GetTile(this->PlayerX - 1, this->PlayerY).Name.c_str());
             return;
          }
          this->PlayerX--;
@@ -254,11 +223,8 @@ void GameState::WalkPlayer(eDirection direction) {
          if (this->PlayerX == (currentLandmark->GetWidth() - 1))
             return;
          if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX + 1, this->PlayerY), Walkable)) {
-            std::stringstream str;
-            str << "You are blocked by a ";
-            str << currentLandmark->GetTile(this->PlayerX + 1, this->PlayerY).Name;
-            str << "..";
-            this->AddLogMessage(str.str());
+            this->AddLogMessageFmt("You are blocked by '%s'..",
+                                   currentLandmark->GetTile(this->PlayerX + 1, this->PlayerY).Name.c_str());
             return;
          }
          this->PlayerX++;
@@ -266,3 +232,4 @@ void GameState::WalkPlayer(eDirection direction) {
    }
 
 }
+

@@ -22,6 +22,8 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <stdarg.h>
+#include <string.h>
 
 #define MAP_SIZE_WIDTH 150
 #define MAP_SIZE_HEIGHT 150
@@ -86,6 +88,8 @@ public:
 
    void AddLogMessage(std::string Message);
 
+   void AddLogMessageFmt(const std::string format, ...);
+
    int GetPlayerX();
 
    int GetPlayerY();
@@ -105,8 +109,6 @@ private:
    int PlayerX, PlayerY;
    eGameStateSeason CurrentSeason;
    int CurrentDay, CurrentYear, CurrentHour, CurrentMinute, CurrentSecond;
-
-   std::shared_ptr<Landmark> GeneratePlayerFarm();
 };
 
 
