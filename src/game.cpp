@@ -115,12 +115,12 @@ void Game::RenderMap() {
 
          if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY)) {
             auto playerTile = FindTilebyTileType(TilePlayer);
-            Screen::Get().WriteCharacter(x, y, playerTile.CharacterCode, playerTile.ColorCode);
+            Screen::Get().WriteTile(x, y, playerTile);
             continue;
          }
 
          auto tile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);
-         Screen::Get().WriteCharacter(x, y, tile.CharacterCode, tile.ColorCode);
+         Screen::Get().WriteTile(x, y, tile);
       }
    }
 }

@@ -12,10 +12,13 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#include "screen.h"
-#include <ncurses.h>
 #include <sstream>
 #include <iostream>
+
+#include <ncurses.h>
+
+#include "screen.h"
+#include "tiles.h"
 
 Screen::Screen() {
    initscr();
@@ -108,3 +111,8 @@ void Screen::WriteCharacter(int x, int y, const char character, int color) {
    waddch(stdscr, character);
    wattroff(stdscr, COLOR_PAIR(1 + color));
 }
+
+void Screen::WriteTile(int x, int y, Tile t) {
+   Screen::WriteCharacter(x, y, t.CharacterCode, t.ColorCode);
+}
+
