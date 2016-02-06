@@ -76,51 +76,41 @@ void Game::RenderTopBar() {
 }
 
 void Game::RenderMap() {
+   // Screen rendering offsets
    auto startX = 1;
    auto startY = 1;
+
    auto playerX = GameState::Get().GetPlayerX();
    auto playerY = GameState::Get().GetPlayerY();
+
    auto drawWidth = Screen::Get().GetWidth() - GAME_UI_MAP_PADDING_RIGHT;
    auto drawHeight = Screen::Get().GetHeight() - GAME_UI_MAP_PADDING_BOTTOM;
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
    auto totalMapWidth = currentLandmark->GetWidth();
    auto totalMapHeight = currentLandmark->GetHeight();
+
+   // Map rendering offsets, centered on player
    auto mapOffsetX = playerX - (drawWidth / 2);
    auto mapOffsetY = playerY - (drawHeight / 2);
 
-   if ((mapOffsetX + drawWidth) > totalMapWidth) {
+   // Don't go beyond map boundaries
+   if (mapOffsetX + drawWidth > totalMapWidth)
       mapOffsetX = totalMapWidth - (drawWidth - 1);
-   }
-   if (mapOffsetX < 0) {
-      mapOffsetX = 0;
-   }
-
-   if ((mapOffsetY + drawHeight) > totalMapHeight) {
+   if (mapOffsetY + drawHeight > totalMapHeight)
       mapOffsetY = totalMapHeight - (drawHeight - 1);
-   }
-   if (mapOffsetY < 0) {
-      mapOffsetY = 0;
-   }
 
-   for (auto y = startY; y < drawHeight; y++) {
-      auto mapY = y - startY;
-      if (mapY >= totalMapHeight) {
-         continue;
-      }
-      for (auto x = startX; x < drawWidth; x++) {
-         auto mapX = x - startX;
-         if (mapX >= totalMapWidth) {
-            continue;
-         }
+   mapOffsetX = mapOffsetX < 0 ? 0 : mapOffsetX;
+   mapOffsetY = mapOffsetY < 0 ? 0 : mapOffsetY;
 
-         if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY)) {
-            auto playerTile = FindTilebyTileType(TilePlayer);
-            Screen::Get().WriteTile(x, y, playerTile);
-            continue;
-         }
+   // Draw loop
+   for (auto mapY = 0; mapY < drawHeight - startY && mapY <= totalMapHeight - startY; mapY++) {
+      for (auto mapX = 0; mapX < drawWidth - startX && mapX <= totalMapWidth - startX; mapX++) {
 
          auto tile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);
-         Screen::Get().WriteTile(x, y, tile);
+         if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY))
+            tile = FindTilebyTileType(TilePlayer);
+
+         Screen::Get().WriteTile(mapX + startX, mapY + startY, tile);
       }
    }
 }
