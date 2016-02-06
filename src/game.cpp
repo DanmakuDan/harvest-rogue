@@ -119,11 +119,9 @@ void Game::RenderLog() {
    auto logMessageOutputTop = Screen::Get().GetHeight() - (GAME_UI_MAP_PADDING_BOTTOM - 1);
    auto logMessages = GameState::Get().GetLogMessages();
    auto logMessageCount = logMessages.size();
-   auto startIndex = logMessageCount - 6;
-   if (startIndex < 0) {
-      startIndex = 0;
-   }
-   for (auto i = 0; (i < 6) && (startIndex + i < logMessageCount); i++) {
+   auto startIndex = (logMessageCount < 6) ? 0 : logMessageCount - 6;
+
+   for (auto i = 0; (i < 6) && ((startIndex + i) < logMessageCount); i++) {
       Screen::Get().ClearLine(logMessageOutputTop + i, CLR_CYAN);
       Screen::Get().WriteText(1, logMessageOutputTop + i, logMessages.at(startIndex + i), CLR_CYAN);
    }

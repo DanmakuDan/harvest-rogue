@@ -12,13 +12,16 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_ADJECTIVES_H
-#define HARVEST_ROGUE_ADJECTIVES_H
+#ifndef HARVEST_ROGUE_DIALOG_H
+#define HARVEST_ROGUE_DIALOG_H
 
-#include <string>
+#include <vector>
 
-#define ADJECTIVES_MAX 1466
-extern std::string Adjectives[ADJECTIVES_MAX];
+class IDialog {
+public:
+   virtual ~IDialog() { }
+   virtual void OnKeyPress(int key) = 0;
+   virtual void Render() = 0;
+};
 
-
-#endif //HARVEST_ROGUE_ADJECTIVES_H
+#endif //HARVEST_ROGUE_DIALOG_H

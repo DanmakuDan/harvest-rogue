@@ -18,7 +18,6 @@
 #include <ncurses.h>
 
 #include "screen.h"
-#include "tiles.h"
 
 Screen::Screen() {
    initscr();
@@ -112,7 +111,7 @@ void Screen::WriteCharacter(int x, int y, const char character, int color) {
    wattroff(stdscr, COLOR_PAIR(1 + color));
 }
 
-void Screen::WriteTile(int x, int y, Tile t) {
-   Screen::WriteCharacter(x, y, t.CharacterCode, t.ColorCode);
+void Screen::WriteTile(int x, int y, Tile tile) {
+   Screen::WriteCharacter(x, y, tile.CharacterCode, tile.ColorCode);
 }
 

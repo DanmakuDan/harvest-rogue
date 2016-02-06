@@ -17,11 +17,13 @@
 
 #include "scene.h"
 #include "landmark.h"
+#include "dialog.h"
 #include <memory>
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <list>
 #include <stdarg.h>
 #include <string.h>
 
@@ -99,12 +101,19 @@ public:
    std::vector<std::string> GetLogMessages();
 
    std::shared_ptr<Landmark> GetCurrentLandmark();
+
+   std::shared_ptr<IDialog> GetCurrentDialog();
+
+   void PushDialog(std::shared_ptr<IDialog> dialog);
+
+   void PopDialog();
 private:
    bool active;
    std::shared_ptr<IScene> CurrentScene;
    std::shared_ptr<IScene> NextScene;
    std::vector<std::string> Log;
    std::vector<std::shared_ptr<Landmark>> Landmarks;
+   std::list<std::shared_ptr<IDialog>> DialogStack;
    int CurrentLandmarkIndex;
    int PlayerX, PlayerY;
    eGameStateSeason CurrentSeason;

@@ -17,26 +17,8 @@
 
 #include <memory>
 #include <string>
-
-#define CLR_DEFAULT    -1
-#define CLR_BLACK       0
-#define CLR_RED         1
-#define CLR_GREEN       2
-#define CLR_YELLOW      3
-#define CLR_BLUE        4
-#define CLR_MAGENTA     5
-#define CLR_CYAN        6
-#define CLR_SILVER      7
-#define CLR_GRAY        8
-#define CLR_BRRED       9
-#define CLR_BRGREEN     10
-#define CLR_BRYELLOW    11
-#define CLR_BRBLUE      12
-#define CLR_BRMAGENTA   13
-#define CLR_BRCYAN      14
-#define CLR_WHITE       15
-#define CLR_INVERSE(X) (X+16)
-
+#include "tiles.h"
+#include "colors.h"
 class Screen {
 private:
    Screen();
@@ -69,7 +51,8 @@ public:
    void WriteCharacter(int x, int y, const char character, int color = CLR_WHITE);
 
    typedef struct tile_s Tile;
-   void WriteTile(int x, int y, Tile t);
+
+   void WriteTile(int x, int y, Tile tile);
 };
 
 

@@ -12,13 +12,27 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_ADJECTIVES_H
-#define HARVEST_ROGUE_ADJECTIVES_H
+#ifndef HARVEST_ROGUE_COLORS_H
+#define HARVEST_ROGUE_COLORS_H
 
-#include <string>
+#define CLR_DEFAULT    -1
+#define CLR_BLACK       0
+#define CLR_RED         1
+#define CLR_GREEN       2
+#define CLR_YELLOW      3
+#define CLR_BLUE        4
+#define CLR_MAGENTA     5
+#define CLR_CYAN        6
+#define CLR_SILVER      7
+#define CLR_GRAY        8
+#define CLR_BRRED       9
+#define CLR_BRGREEN     10
+#define CLR_BRYELLOW    11
+#define CLR_BRBLUE      12
+#define CLR_BRMAGENTA   13
+#define CLR_BRCYAN      14
+#define CLR_WHITE       15
+#define CLR_INVERSE(X) (X+16)
 
-#define ADJECTIVES_MAX 1466
-extern std::string Adjectives[ADJECTIVES_MAX];
 
-
-#endif //HARVEST_ROGUE_ADJECTIVES_H
+#endif //HARVEST_ROGUE_COLORS_H

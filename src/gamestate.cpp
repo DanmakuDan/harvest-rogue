@@ -25,13 +25,10 @@ GameState::GameState() {
    this->PlayerY = 5;
 
    // Temporary debug stuff
-   this->AddLogMessage("Test log line 1");
-   this->AddLogMessage("Test log line 2");
-   this->AddLogMessage("Test log line 3");
-   this->AddLogMessage("Test log line 4");
-   this->AddLogMessage("Test log line 5");
-   this->AddLogMessage("Test log line 6");
-   this->AddLogMessage("Test log line 7");
+   this->AddLogMessage("Welcome to Harvest-Rogue!");
+   this->AddLogMessage("This is a pre-alpha release. Got feedback? Open an issue on github!");
+   this->AddLogMessage("https://github.com/essial/harvest-rogue");
+
 
 }
 
@@ -233,3 +230,20 @@ void GameState::WalkPlayer(eDirection direction) {
 
 }
 
+std::shared_ptr<IDialog> GameState::GetCurrentDialog() {
+   if (this->DialogStack.empty()) {
+      return nullptr;
+   }
+   return this->DialogStack.back();
+}
+
+void GameState::PushDialog(std::shared_ptr<IDialog> dialog) {
+   this->DialogStack.push_back(std::shared_ptr<IDialog>(dialog));
+}
+
+void GameState::PopDialog() {
+   if (this->DialogStack.empty()) {
+      return;
+   }
+   this->DialogStack.pop_back();
+}

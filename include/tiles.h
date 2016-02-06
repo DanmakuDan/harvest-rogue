@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include "screen.h"
+#include "colors.h"
 
 enum eSurfaceAttributeType {
    NoSurfaceAttributes = 0x00,
