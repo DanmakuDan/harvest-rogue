@@ -37,6 +37,7 @@ void Game::RenderUI() {
    this->RenderTopBar();
    this->RenderMap();
    this->RenderLog();
+   this->RenderStatusBar();
 }
 
 void Game::RenderTopBar() {
@@ -67,8 +68,8 @@ void Game::RenderTopBar() {
 void Game::RenderMap() {
    auto startX = 1;
    auto startY = 1;
-   auto drawWidth = Screen::Get().GetWidth() - 30;
-   auto drawHeight = Screen::Get().GetHeight() - 8;
+   auto drawWidth = Screen::Get().GetWidth() - GAME_UI_MAP_PADDING_RIGHT;
+   auto drawHeight = Screen::Get().GetHeight() - GAME_UI_MAP_PADDING_BOTTOM;
    for (auto y = startY; y < drawHeight; y++) {
       for (auto x = startX; x < drawWidth; x++) {
          Screen::Get().WriteCharacter(x, y, ".", CLR_GREEN);
@@ -77,7 +78,7 @@ void Game::RenderMap() {
 }
 
 void Game::RenderLog() {
-   auto logMessageOutputTop = Screen::Get().GetHeight() - 7;
+   auto logMessageOutputTop = Screen::Get().GetHeight() - (GAME_UI_MAP_PADDING_BOTTOM - 1);
    auto logMessages = GameState::Get().GetLogMessages();
    auto logMessageCount = logMessages.size();
    auto startIndex = logMessageCount - 6;
@@ -87,4 +88,18 @@ void Game::RenderLog() {
    for (auto i = 0; (i < 6) && (startIndex + i < logMessageCount); i++) {
       Screen::Get().WriteText(1, logMessageOutputTop + i, logMessages.at(startIndex + i), CLR_CYAN);
    }
+}
+
+void Game::RenderStatusBar() {
+   auto statusBarLine = Screen::Get().GetHeight() - 1;
+   std::stringstream statusBarText;
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   if (currentLandmark == nullptr) {
+      statusBarText << "<Unknown Landmark>";
+   } else {
+      statusBarText << currentLandmark->GetName();
+   }
+
+   Screen::Get().ClearLine(statusBarLine, CLR_INVERSE(CLR_WHITE));
+   Screen::Get().WriteText(1, statusBarLine, statusBarText.str(), CLR_INVERSE(CLR_BLUE));
 }

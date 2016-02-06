@@ -13,11 +13,13 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "gamestate.h"
+#include "textgenerator.h"
 
 GameState::GameState() {
    this->active = true;
    this->CurrentScene = nullptr;
    this->NextScene = nullptr;
+   this->CurrentLandmarkIndex = -1;
 
    // Temporary debug stuff
    this->AddLogMessage("Test log line 1");
@@ -69,6 +71,9 @@ void GameState::InitializeNewGame() {
    CurrentHour = 6;
    CurrentMinute = 0;
    CurrentSecond = 0;
+
+   this->Landmarks.push_back(GeneratePlayerFarm());
+   this->CurrentLandmarkIndex = this->Landmarks.size() - 1;
 }
 
 void GameState::StepSimulation() {
@@ -89,6 +94,9 @@ void GameState::StepSimulation() {
                   CurrentSeason = (eGameStateSeason) 0;
                   CurrentYear++;
                }
+               std::stringstream seasonNotice;
+               seasonNotice << "It is now " << eGameStateSeasonDescs[CurrentSeason] << "!";
+               this->AddLogMessage(seasonNotice.str());
             }
          }
       }
@@ -121,8 +129,31 @@ int GameState::GetCurrentSecond() {
 
 void GameState::AddLogMessage(std::string Message) {
    this->Log.push_back(Message);
+   while (this->Log.size() > 50) {
+      this->Log.erase(this->Log.begin());
+   }
 }
 
 std::vector<std::string> GameState::GetLogMessages() {
    return this->Log;
+}
+
+std::shared_ptr<Landmark> GameState::GetCurrentLandmark() {
+   if (this->CurrentLandmarkIndex < 0) {
+      return nullptr;
+   }
+
+   if (this->CurrentLandmarkIndex > this->Landmarks.size()) {
+      return nullptr;
+   }
+
+   return std::shared_ptr<Landmark>(this->Landmarks.at(this->CurrentLandmarkIndex));
+
+
+}
+
+std::shared_ptr<Landmark> GameState::GeneratePlayerFarm() {
+   auto result = Landmark::Construct(TextGenerator::GenerateFarmName());
+
+   return result;
 }

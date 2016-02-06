@@ -16,6 +16,7 @@
 #define HARVEST_ROGUE_GAMESTATE_H
 
 #include "scene.h"
+#include "landmark.h"
 #include <memory>
 #include <string>
 #include <sstream>
@@ -77,14 +78,18 @@ public:
 
    std::vector<std::string> GetLogMessages();
 
+   std::shared_ptr<Landmark> GetCurrentLandmark();
 private:
    bool active;
    std::shared_ptr<IScene> CurrentScene;
    std::shared_ptr<IScene> NextScene;
    std::vector<std::string> Log;
-
+   std::vector<std::shared_ptr<Landmark>> Landmarks;
+   int CurrentLandmarkIndex;
    eGameStateSeason CurrentSeason;
    int CurrentDay, CurrentYear, CurrentHour, CurrentMinute, CurrentSecond;
+
+   std::shared_ptr<Landmark> GeneratePlayerFarm();
 };
 
 

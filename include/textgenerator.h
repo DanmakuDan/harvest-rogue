@@ -12,38 +12,16 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_GAME_H
-#define HARVEST_ROGUE_GAME_H
+#ifndef HARVEST_ROGUE_TEXTGENERATOR_H
+#define HARVEST_ROGUE_TEXTGENERATOR_H
 
-#include "scene.h"
-#include <memory>
+#include <string>
+#include <chrono>
 
-#define GAME_UI_MAP_PADDING_RIGHT  30
-#define GAME_UI_MAP_PADDING_BOTTOM 9
-
-class Game : public IScene {
+class TextGenerator {
 public:
-   virtual void InitializeScreen();
-
-   virtual void OnKeyPress(int key);
-
-   static std::shared_ptr<Game> Construct() {
-      return std::shared_ptr<Game>(new Game());
-   }
-
-private:
-   Game();
-
-   void RenderUI();
-
-   void RenderTopBar();
-
-   void RenderMap();
-
-   void RenderLog();
-
-   void RenderStatusBar();
+   static std::string GenerateFarmName();
 };
 
 
-#endif //HARVEST_ROGUE_GAME_H
+#endif //HARVEST_ROGUE_TEXTGENERATOR_H

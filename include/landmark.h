@@ -12,38 +12,25 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_GAME_H
-#define HARVEST_ROGUE_GAME_H
+#ifndef HARVEST_ROGUE_LANDMARK_H
+#define HARVEST_ROGUE_LANDMARK_H
 
-#include "scene.h"
+#include <string>
 #include <memory>
 
-#define GAME_UI_MAP_PADDING_RIGHT  30
-#define GAME_UI_MAP_PADDING_BOTTOM 9
-
-class Game : public IScene {
+class Landmark {
 public:
-   virtual void InitializeScreen();
-
-   virtual void OnKeyPress(int key);
-
-   static std::shared_ptr<Game> Construct() {
-      return std::shared_ptr<Game>(new Game());
+   static std::shared_ptr<Landmark> Construct(std::string name) {
+      return std::shared_ptr<Landmark>(new Landmark(name));
    }
 
+   std::string GetName();
+
 private:
-   Game();
+   Landmark(std::string name);
 
-   void RenderUI();
-
-   void RenderTopBar();
-
-   void RenderMap();
-
-   void RenderLog();
-
-   void RenderStatusBar();
+   std::string Name;
 };
 
 
-#endif //HARVEST_ROGUE_GAME_H
+#endif //HARVEST_ROGUE_LANDMARK_H
