@@ -16,7 +16,6 @@
 #include <gamestate.h>
 #include <iomanip>
 #include "game.h"
-#include "screen.h"
 
 void Game::InitializeScreen() {
    Screen::Get().Clear();
@@ -25,6 +24,21 @@ void Game::InitializeScreen() {
 }
 
 void Game::OnKeyPress(int key) {
+   switch (key) {
+      case IK_UP_ARROW:
+         GameState::Get().WalkPlayer(DirectionUp);
+         break;
+      case IK_DOWN_ARROW:
+         GameState::Get().WalkPlayer(DirectionDown);
+         break;
+      case IK_LEFT_ARROW:
+         GameState::Get().WalkPlayer(DirectionLeft);
+         break;
+      case IK_RIGHT_ARROW:
+         GameState::Get().WalkPlayer(DirectionRight);
+         break;
+   }
+
    GameState::Get().StepSimulation();
    this->RenderUI();
 }
@@ -68,11 +82,49 @@ void Game::RenderTopBar() {
 void Game::RenderMap() {
    auto startX = 1;
    auto startY = 1;
+   auto playerX = GameState::Get().GetPlayerX();
+   auto playerY = GameState::Get().GetPlayerY();
    auto drawWidth = Screen::Get().GetWidth() - GAME_UI_MAP_PADDING_RIGHT;
    auto drawHeight = Screen::Get().GetHeight() - GAME_UI_MAP_PADDING_BOTTOM;
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   auto totalMapWidth = currentLandmark->GetWidth();
+   auto totalMapHeight = currentLandmark->GetHeight();
+   auto mapOffsetX = playerX - (drawWidth / 2);
+   auto mapOffsetY = playerY - (drawHeight / 2);
+
+   if ((mapOffsetX + drawWidth) > totalMapWidth) {
+      mapOffsetX = totalMapWidth - (drawWidth - 1);
+   }
+   if (mapOffsetX < 0) {
+      mapOffsetX = 0;
+   }
+
+   if ((mapOffsetY + drawHeight) > totalMapHeight) {
+      mapOffsetY = totalMapHeight - (drawHeight - 1);
+   }
+   if (mapOffsetY < 0) {
+      mapOffsetY = 0;
+   }
+
    for (auto y = startY; y < drawHeight; y++) {
+      auto mapY = y - startY;
+      if (mapY >= totalMapHeight) {
+         continue;
+      }
       for (auto x = startX; x < drawWidth; x++) {
-         Screen::Get().WriteCharacter(x, y, ".", CLR_GREEN);
+         auto mapX = x - startX;
+         if (mapX >= totalMapWidth) {
+            continue;
+         }
+
+         if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY)) {
+            auto playerTile = FindTilebyTileType(TilePlayer);
+            Screen::Get().WriteCharacter(x, y, playerTile.CharacterCode, playerTile.ColorCode);
+            continue;
+         }
+
+         auto tile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);
+         Screen::Get().WriteCharacter(x, y, tile.CharacterCode, tile.ColorCode);
       }
    }
 }

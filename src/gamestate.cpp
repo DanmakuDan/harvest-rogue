@@ -12,14 +12,20 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
+#include <random>
 #include "gamestate.h"
 #include "textgenerator.h"
+
+static std::random_device randomDevice;
+static std::default_random_engine randomGenerator(randomDevice());
 
 GameState::GameState() {
    this->active = true;
    this->CurrentScene = nullptr;
    this->NextScene = nullptr;
    this->CurrentLandmarkIndex = -1;
+   this->PlayerX = 5;
+   this->PlayerY = 5;
 
    // Temporary debug stuff
    this->AddLogMessage("Test log line 1");
@@ -72,6 +78,7 @@ void GameState::InitializeNewGame() {
    CurrentMinute = 0;
    CurrentSecond = 0;
 
+   this->Landmarks.clear();
    this->Landmarks.push_back(GeneratePlayerFarm());
    this->CurrentLandmarkIndex = this->Landmarks.size() - 1;
 }
@@ -153,7 +160,72 @@ std::shared_ptr<Landmark> GameState::GetCurrentLandmark() {
 }
 
 std::shared_ptr<Landmark> GameState::GeneratePlayerFarm() {
-   auto result = Landmark::Construct(TextGenerator::GenerateFarmName());
+   // This needs to be moved into its own module at some point...
+   std::uniform_int_distribution<int> grassTuftDistrobution(0, 4);
+
+   auto farmName = TextGenerator::GenerateFarmName();
+   auto result = Landmark::Construct(farmName, MAP_SIZE_WIDTH, MAP_SIZE_HEIGHT);
+
+   for (auto y = 0; y < MAP_SIZE_WIDTH; y++) {
+      for (auto x = 0; x < MAP_SIZE_HEIGHT; x++) {
+         if ((x < 2) || (x >= (MAP_SIZE_WIDTH - 2)) || (y < 2) || (y >= (MAP_SIZE_HEIGHT - 2))) {
+            result->SetTile(x, y, TileWater);
+            continue;
+         }
+         if (grassTuftDistrobution(randomGenerator) == 0) {
+            result->SetTile(x, y, TileGrassTuft);
+         } else {
+            result->SetTile(x, y, TileGrass);
+         }
+
+      }
+   }
 
    return result;
+}
+
+int GameState::GetPlayerX() {
+   return this->PlayerX;
+}
+
+int GameState::GetPlayerY() {
+   return this->PlayerY;
+}
+
+void GameState::WalkPlayer(eDirection direction) {
+   auto currentLandmark = this->GetCurrentLandmark();
+   switch (direction) {
+      case DirectionUp:
+         if (this->PlayerY == 0)
+            return;
+         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX, this->PlayerY - 1), Walkable))
+            return;
+         this->PlayerY--;
+         break;
+
+      case DirectionDown:
+         if (this->PlayerY == (currentLandmark->GetHeight() - 1))
+            return;
+         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX, this->PlayerY + 1), Walkable))
+            return;
+         this->PlayerY++;
+         break;
+
+      case DirectionLeft:
+         if (this->PlayerX == 0)
+            return;
+         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX - 1, this->PlayerY), Walkable))
+            return;
+         this->PlayerX--;
+         break;
+
+      case DirectionRight:
+         if (this->PlayerX == (currentLandmark->GetWidth() - 1))
+            return;
+         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX + 1, this->PlayerY), Walkable))
+            return;
+         this->PlayerX++;
+         break;
+   }
+
 }

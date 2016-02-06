@@ -14,10 +14,39 @@
 
 #include "landmark.h"
 
-Landmark::Landmark(std::string name) {
+Landmark::Landmark(std::string name, int width, int height) {
    this->Name = name;
+   this->Width = width;
+   this->Height = height;
+   for (auto i = 0; i < width * height; i++) {
+      this->Tiles.push_back(FindTilebyTileType(TileNothing));
+   }
 }
 
 std::string Landmark::GetName() {
    return this->Name;
+}
+
+unsigned int Landmark::GetWidth() {
+   return this->Width;
+}
+
+unsigned int Landmark::GetHeight() {
+   return this->Height;
+}
+
+void Landmark::SetTile(int x, int y, eTileType tile) {
+   auto index = x + (y * this->GetWidth());
+   if ((index < 0) || (index >= this->Tiles.size())) {
+      return;
+   }
+   this->Tiles.at(index) = FindTilebyTileType(tile);
+}
+
+Tile Landmark::GetTile(int x, int y) {
+   auto index = x + (y * this->GetWidth());
+   if ((index < 0) || (index >= this->Tiles.size())) {
+      throw;
+   }
+   return this->Tiles.at(index);
 }

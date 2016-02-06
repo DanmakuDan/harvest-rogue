@@ -22,9 +22,8 @@ Input::Input() {
 Input::~Input() {
 
 }
-
 int Input::WaitForAndGetKeyPress() {
-   timeout(this->InputTimeout);
+   //timeout(this->InputTimeout);
    return wgetch(stdscr);
 }
 

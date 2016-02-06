@@ -102,8 +102,9 @@ void Screen::ClearLine(int y, int color) {
    wattroff(stdscr, COLOR_PAIR(1));
 }
 
-void Screen::WriteCharacter(int x, int y, const char *character, int color) {
+void Screen::WriteCharacter(int x, int y, const char character, int color) {
    wattron(stdscr, COLOR_PAIR(1 + color));
-   mvwprintw(stdscr, y, x, character);
+   wmove(stdscr, y, x);
+   waddch(stdscr, character);
    wattroff(stdscr, COLOR_PAIR(1 + color));
 }

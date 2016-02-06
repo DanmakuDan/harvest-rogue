@@ -66,7 +66,7 @@ public:
 
    void ClearLine(int y, int color = CLR_WHITE);
 
-   void WriteCharacter(int x, int y, const char *character, int color = CLR_WHITE);
+   void WriteCharacter(int x, int y, const char character, int color = CLR_WHITE);
 };
 
 

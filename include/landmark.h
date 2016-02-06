@@ -17,19 +17,30 @@
 
 #include <string>
 #include <memory>
+#include <vector>
+#include "tiles.h"
 
 class Landmark {
 public:
-   static std::shared_ptr<Landmark> Construct(std::string name) {
-      return std::shared_ptr<Landmark>(new Landmark(name));
+   static std::shared_ptr<Landmark> Construct(std::string name, int width, int height) {
+      return std::shared_ptr<Landmark>(new Landmark(name, width, height));
    }
 
    std::string GetName();
 
-private:
-   Landmark(std::string name);
+   unsigned int GetWidth();
 
+   unsigned int GetHeight();
+
+   void SetTile(int x, int y, eTileType tile);
+
+   Tile GetTile(int x, int y);
+private:
+   Landmark(std::string name, int width, int height);
+
+   std::vector<Tile> Tiles;
    std::string Name;
+   unsigned int Width, Height;
 };
 
 
