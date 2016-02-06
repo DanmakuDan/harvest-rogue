@@ -55,28 +55,24 @@ void Game::RenderUI() {
 }
 
 void Game::RenderTopBar() {
-   std::stringstream topStatusBar;
-   topStatusBar << " Harvest-Rogue  ";
-   topStatusBar << " Year " << std::setw(2) << GameState::Get().GetCurrentYear() << ", ";
-   topStatusBar << " " << std::setw(6) << eGameStateSeasonDescs[GameState::Get().GetCurrentSeason()];
-   topStatusBar << " (Day " << std::setw(2) << GameState::Get().GetCurrentDay() << ")";
-
    auto hour = GameState::Get().GetCurrentHour();
-   std::string ampm = "am";
-   if (hour == 0) {
-      hour = 12;
-   } else if (hour == 12) {
-      hour = 12;
-      ampm = "pm";
-   } else if (hour > 11) {
-      ampm = "pm";
-      hour -= 12;
-   }
-   topStatusBar << "  " << std::setw(2) << hour;
-   topStatusBar << ":" << std::setfill('0') << std::setw(2) << GameState::Get().GetCurrentMinute() << ampm;
-   Screen::Get().ClearLine(0, CLR_INVERSE(CLR_WHITE));
-   Screen::Get().WriteText(0, 0, topStatusBar.str(), CLR_INVERSE(CLR_WHITE));
+   auto minute = GameState::Get().GetCurrentMinute();
 
+   char *topStatusBar;
+   asprintf(&topStatusBar,
+            " Harvest-Rogue  Year %2d,  %6s (Day %02d) %2d:%02d%2s",
+            GameState::Get().GetCurrentYear(),
+            eGameStateSeasonDescs[GameState::Get().GetCurrentSeason()].c_str(),
+            GameState::Get().GetCurrentDay(),
+            hour % 12,
+            minute,
+            hour > 11 ? "pm" : "am"
+            );
+
+   Screen::Get().ClearLine(0, CLR_INVERSE(CLR_WHITE));
+   Screen::Get().WriteText(0, 0, topStatusBar, CLR_INVERSE(CLR_WHITE));
+
+   free(topStatusBar);
 }
 
 void Game::RenderMap() {
