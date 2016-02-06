@@ -85,28 +85,29 @@ void GameState::InitializeNewGame() {
 
 void GameState::StepSimulation() {
    CurrentSecond += 20;
-   if (CurrentSecond > 59) {
-      CurrentSecond = 0;
+
+   while (CurrentSecond > 59) {
+      CurrentSecond -= 60;
       CurrentMinute++;
-      if (CurrentMinute > 59) {
-         CurrentMinute = 0;
-         CurrentHour++;
-         if (CurrentHour > 23) {
-            CurrentHour = 0;
-            CurrentDay++;
-            if (CurrentDay > 30) {
-               CurrentDay = 1;
-               CurrentSeason = (eGameStateSeason) ((int) CurrentSeason + 1);
-               if ((int) CurrentSeason > 3) {
-                  CurrentSeason = (eGameStateSeason) 0;
-                  CurrentYear++;
-               }
-               std::stringstream seasonNotice;
-               seasonNotice << "It is now " << eGameStateSeasonDescs[CurrentSeason] << "!";
-               this->AddLogMessage(seasonNotice.str());
-            }
-         }
+   }
+   while (CurrentMinute > 59) {
+      CurrentMinute -= 60;
+      CurrentHour++;
+   }
+   while (CurrentHour > 23) {
+      CurrentHour -= 24;
+      CurrentDay++;
+   }
+   while (CurrentDay > 30) {
+      CurrentDay -= 30;
+      CurrentSeason = (eGameStateSeason) ((int) CurrentSeason + 1);
+      if ((int) CurrentSeason > 3) {
+         CurrentSeason = (eGameStateSeason) 0;
+         CurrentYear++;
       }
+      std::stringstream seasonNotice;
+      seasonNotice << "It is now " << eGameStateSeasonDescs[CurrentSeason] << "!";
+      this->AddLogMessage(seasonNotice.str());
    }
 }
 
