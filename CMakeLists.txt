@@ -28,5 +28,5 @@ file(GLOB SOURCE_FILES
         "./src/frontends/ncurses/*.cpp"
         "./include/*.h"
         )
-add_executable(harvest_rogue ${SOURCE_FILES} src/frontends/ncurses/input.cpp include/input.h include/scene.h src/scenes/mainmenu.cpp include/mainmenu.h src/gamestate.cpp include/gamestate.h src/scenes/game.cpp include/game.h src/landmark.cpp include/landmark.h src/textgenerator.cpp include/textgenerator.h include/adjectives.h include/animalnouns.h include/tiles.h src/landmarkgenerator.cpp include/landmarkgenerator.h include/dialog.h src/dialogs/gamemenudialog.cpp include/gamemenudialog.h include/colors.h src/adjectives.cpp src/animalnouns.cpp)
+add_executable(harvest_rogue ${SOURCE_FILES} src/frontends/ncurses/input.cpp include/input.h include/scene.h src/scenes/mainmenu.cpp include/mainmenu.h src/gamestate.cpp include/gamestate.h src/scenes/game.cpp include/game.h src/landmark.cpp include/landmark.h src/textgenerator.cpp include/textgenerator.h include/adjectives.h include/animalnouns.h include/tiles.h src/landmarkgenerator.cpp include/landmarkgenerator.h include/dialog.h src/dialogs/gamemenudialog.cpp include/gamemenudialog.h include/colors.h src/adjectives.cpp src/animalnouns.cpp include/prop.h src/props/hoe.cpp include/hoe.h include/tool.h include/player.h src/player.cpp include/direction.h)
 target_link_libraries(harvest_rogue ${CURSES_LIBRARIES})

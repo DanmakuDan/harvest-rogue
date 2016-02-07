@@ -27,21 +27,14 @@
 #include <stdarg.h>
 #include <string.h>
 
-#define MAP_SIZE_WIDTH 150
-#define MAP_SIZE_HEIGHT 150
+#define MAP_SIZE_WIDTH 200
+#define MAP_SIZE_HEIGHT 200
 
 enum eGameStateSeason {
    SeasonSpring,
    SeasonSummer,
    SeasonFall,
    SeasonWinter
-};
-
-enum eDirection {
-   DirectionUp,
-   DirectionDown,
-   DirectionLeft,
-   DirectionRight
 };
 
 const std::string eGameStateSeasonDescs[] = {"Spring", "Summer", "Fall", "Winter"};
@@ -92,12 +85,6 @@ public:
 
    void AddLogMessageFmt(const std::string format, ...);
 
-   int GetPlayerX();
-
-   int GetPlayerY();
-
-   void WalkPlayer(eDirection direction);
-
    std::vector<std::string> GetLogMessages();
 
    std::shared_ptr<Landmark> GetCurrentLandmark();
@@ -116,7 +103,6 @@ private:
    std::vector<std::shared_ptr<Landmark>> Landmarks;
    std::list<std::shared_ptr<IDialog>> DialogStack;
    int CurrentLandmarkIndex;
-   int PlayerX, PlayerY;
    eGameStateSeason CurrentSeason;
    int CurrentDay, CurrentYear, CurrentHour, CurrentMinute, CurrentSecond;
 };

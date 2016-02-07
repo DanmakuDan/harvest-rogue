@@ -12,9 +12,9 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#include <input.h>
-#include <gamestate.h>
-#include <iomanip>
+#include "input.h"
+#include "gamestate.h"
+#include "player.h"
 #include "game.h"
 #include "gamemenudialog.h"
 
@@ -40,16 +40,16 @@ void Game::OnKeyPress(int key) {
       GameState::Get().PushDialog(GameMenuDialog::Construct());
          break;
       case IK_UP_ARROW:
-         GameState::Get().WalkPlayer(DirectionUp);
+         Player::Get().WalkPlayer(DirectionUp);
          break;
       case IK_DOWN_ARROW:
-         GameState::Get().WalkPlayer(DirectionDown);
+         Player::Get().WalkPlayer(DirectionDown);
          break;
       case IK_LEFT_ARROW:
-         GameState::Get().WalkPlayer(DirectionLeft);
+         Player::Get().WalkPlayer(DirectionLeft);
          break;
       case IK_RIGHT_ARROW:
-         GameState::Get().WalkPlayer(DirectionRight);
+         Player::Get().WalkPlayer(DirectionRight);
          break;
    }
 
@@ -104,8 +104,8 @@ void Game::RenderMap() {
    auto startX = 1;
    auto startY = 1;
 
-   auto playerX = GameState::Get().GetPlayerX();
-   auto playerY = GameState::Get().GetPlayerY();
+   auto playerX = Player::Get().GetPositionX();
+   auto playerY = Player::Get().GetPositionY();
 
    auto drawWidth = Screen::Get().GetWidth() - GAME_UI_MAP_PADDING_RIGHT;
    auto drawHeight = Screen::Get().GetHeight() - GAME_UI_MAP_PADDING_BOTTOM;
@@ -130,11 +130,20 @@ void Game::RenderMap() {
    for (auto mapY = 0; mapY < drawHeight - startY && mapY <= totalMapHeight - startY; mapY++) {
       for (auto mapX = 0; mapX < drawWidth - startX && mapX <= totalMapWidth - startX; mapX++) {
 
-         auto tile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);
-         if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY))
-            tile = FindTilebyTileType(TilePlayer);
+         auto mapProp = currentLandmark->GetProp(mapX + mapOffsetX, mapY + mapOffsetY);
 
-         Screen::Get().WriteTile(mapX + startX, mapY + startY, tile);
+         if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY)) {
+            // Draw the player
+            Screen::Get().WriteTile(mapX + startX, mapY + startY, FindTilebyTileType(TilePlayer));;
+            continue;
+         } else if (mapProp == nullptr) {
+            // Draw the ground
+            auto groundTile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);
+            Screen::Get().WriteTile(mapX + startX, mapY + startY, groundTile );
+            continue;
+         }
+
+         Screen::Get().WriteCharacter(mapX + startX, mapY + startY, mapProp->GetCharacterCode(), mapProp->GetColorCode());
       }
    }
 }
@@ -168,8 +177,17 @@ void Game::RenderStatusBar() {
 void Game::RenderSideBar() {
    auto sideBarLeft = (Screen::Get().GetWidth() - (GAME_UI_MAP_PADDING_RIGHT)) + 1;
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
-   auto currentTile = currentLandmark->GetTile(GameState::Get().GetPlayerX(), GameState::Get().GetPlayerY());
 
    Screen::Get().WriteText(sideBarLeft, 5, "Standing on", CLR_GRAY);
-   Screen::Get().WriteText(sideBarLeft + 12, 5, currentTile.Name, currentTile.ColorCode);
+   auto currentProp = currentLandmark->GetProp(Player::Get().GetPositionX(), Player::Get().GetPositionY());
+   if (currentProp == nullptr) {
+      auto currentTile = currentLandmark->GetTile(Player::Get().GetPositionX(), Player::Get().GetPositionY());
+      Screen::Get().WriteText(sideBarLeft + 12, 5, currentTile.Name, currentTile.ColorCode);
+   } else {
+      Screen::Get().WriteText(sideBarLeft + 12, 5, currentProp->GetName(), currentProp->GetColorCode());
+   }
+
+
+
+
 }

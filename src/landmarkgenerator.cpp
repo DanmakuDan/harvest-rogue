@@ -15,6 +15,7 @@
 #include "landmarkgenerator.h"
 #include "gamestate.h"
 #include "textgenerator.h"
+#include "hoe.h"
 #include <random>
 
 
@@ -83,6 +84,9 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    // Set the player starting position variables
    playerX = cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2);
    playerY = cottageY + (LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT / 2);
+
+   // Add a hoe to the ground...
+   result->AddProp(playerX - 3, playerY - 1, Hoe::Construct());
 
    return result;
 }

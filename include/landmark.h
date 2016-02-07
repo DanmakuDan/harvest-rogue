@@ -19,6 +19,13 @@
 #include <memory>
 #include <vector>
 #include "tiles.h"
+#include "prop.h"
+
+typedef struct landmark_prop_s {
+   int x;
+   int y;
+   std::shared_ptr<IProp> Prop;
+} LandmarkProp;
 
 class Landmark {
 public:
@@ -27,20 +34,19 @@ public:
    }
 
    std::string GetName();
-
    unsigned int GetWidth();
-
    unsigned int GetHeight();
-
    void SetTile(int x, int y, eTileType tile);
-
    Tile GetTile(int x, int y);
+   void AddProp(int x, int y, std::shared_ptr<IProp> prop);
+   std::shared_ptr<IProp> GetProp(int x, int y);
 private:
    Landmark(std::string name, int width, int height);
 
    std::vector<Tile> Tiles;
    std::string Name;
    unsigned int Width, Height;
+   std::vector<LandmarkProp> Props;
 };
 
 

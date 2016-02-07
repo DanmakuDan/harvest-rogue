@@ -12,6 +12,7 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
+#include "player.h"
 #include "gamestate.h"
 #include "textgenerator.h"
 #include "landmarkgenerator.h"
@@ -21,8 +22,7 @@ GameState::GameState() {
    this->CurrentScene = nullptr;
    this->NextScene = nullptr;
    this->CurrentLandmarkIndex = -1;
-   this->PlayerX = 5;
-   this->PlayerY = 5;
+   Player::Get().WarpPlayer(5, 5);
 
    // Temporary debug stuff
    this->AddLogMessage("Welcome to Harvest-Rogue!");
@@ -75,7 +75,9 @@ void GameState::InitializeNewGame() {
    this->DialogStack.clear();
    this->Landmarks.clear();
 
-   this->Landmarks.push_back(LandmarkGenerator::GeneratePlayerFarm(this->PlayerX, this->PlayerY));
+   int playerX, playerY;
+   this->Landmarks.push_back(LandmarkGenerator::GeneratePlayerFarm(playerX, playerY));
+   Player::Get().WarpPlayer(playerX, playerY);
 
    this->CurrentLandmarkIndex = this->Landmarks.size() - 1;
 }
@@ -172,64 +174,6 @@ std::shared_ptr<Landmark> GameState::GetCurrentLandmark() {
 
    return std::shared_ptr<Landmark>(this->Landmarks.at(this->CurrentLandmarkIndex));
 
-
-}
-
-int GameState::GetPlayerX() {
-   return this->PlayerX;
-}
-
-int GameState::GetPlayerY() {
-   return this->PlayerY;
-}
-
-void GameState::WalkPlayer(eDirection direction) {
-   auto currentLandmark = this->GetCurrentLandmark();
-   switch (direction) {
-      case DirectionUp:
-         if (this->PlayerY == 0)
-            return;
-         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX, this->PlayerY - 1), Walkable)) {
-            this->AddLogMessageFmt("You are blocked by '%s'..",
-                                   currentLandmark->GetTile(this->PlayerX, this->PlayerY - 1).Name.c_str());
-            return;
-         }
-         this->PlayerY--;
-         break;
-
-      case DirectionDown:
-         if (this->PlayerY == (currentLandmark->GetHeight() - 1))
-            return;
-         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX, this->PlayerY + 1), Walkable)) {
-            this->AddLogMessageFmt("You are blocked by '%s'..",
-                                   currentLandmark->GetTile(this->PlayerX, this->PlayerY + 1).Name.c_str());
-            return;
-         }
-         this->PlayerY++;
-         break;
-
-      case DirectionLeft:
-         if (this->PlayerX == 0)
-            return;
-         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX - 1, this->PlayerY), Walkable)) {
-            this->AddLogMessageFmt("You are blocked by '%s'..",
-                                   currentLandmark->GetTile(this->PlayerX - 1, this->PlayerY).Name.c_str());
-            return;
-         }
-         this->PlayerX--;
-         break;
-
-      case DirectionRight:
-         if (this->PlayerX == (currentLandmark->GetWidth() - 1))
-            return;
-         if (!TileHasSurfaceAttribute(currentLandmark->GetTile(this->PlayerX + 1, this->PlayerY), Walkable)) {
-            this->AddLogMessageFmt("You are blocked by '%s'..",
-                                   currentLandmark->GetTile(this->PlayerX + 1, this->PlayerY).Name.c_str());
-            return;
-         }
-         this->PlayerX++;
-         break;
-   }
 
 }
 

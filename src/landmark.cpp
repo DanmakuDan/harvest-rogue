@@ -50,3 +50,23 @@ Tile Landmark::GetTile(int x, int y) {
    }
    return this->Tiles.at(index);
 }
+
+void Landmark::AddProp(int x, int y, std::shared_ptr<IProp> prop) {
+   if (this->GetProp(x, y) != nullptr) {
+      throw;
+   }
+
+   this->Props.push_back({ x, y, std::shared_ptr<IProp>(prop) });
+}
+
+std::shared_ptr<IProp> Landmark::GetProp(int x, int y) {
+   for (auto prop : this->Props) {
+      if (prop.x != x || prop.y != y) {
+         continue;
+      }
+
+      return std::shared_ptr<IProp>(prop.Prop);
+   }
+
+   return nullptr;
+}
