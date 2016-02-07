@@ -68,6 +68,7 @@ void Game::RenderUI() {
    this->RenderMap();
    this->RenderLog();
    this->RenderStatusBar();
+   this->RenderSideBar();
 
    auto currentDialog = GameState::Get().GetCurrentDialog();
    if (currentDialog != nullptr) {
@@ -162,4 +163,13 @@ void Game::RenderStatusBar() {
 
    Screen::Get().ClearLine(statusBarLine, CLR_INVERSE(CLR_WHITE));
    Screen::Get().WriteText(1, statusBarLine, statusBarText.str(), CLR_INVERSE(CLR_BLUE));
+}
+
+void Game::RenderSideBar() {
+   auto sideBarLeft = (Screen::Get().GetWidth() - (GAME_UI_MAP_PADDING_RIGHT)) + 1;
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   auto currentTile = currentLandmark->GetTile(GameState::Get().GetPlayerX(), GameState::Get().GetPlayerY());
+
+   Screen::Get().WriteText(sideBarLeft, 5, "Standing on", CLR_GRAY);
+   Screen::Get().WriteText(sideBarLeft + 12, 5, currentTile.Name, currentTile.ColorCode);
 }

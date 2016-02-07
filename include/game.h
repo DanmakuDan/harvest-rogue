@@ -43,6 +43,8 @@ private:
    void RenderLog();
 
    void RenderStatusBar();
+
+   void RenderSideBar();
 };
 
 
