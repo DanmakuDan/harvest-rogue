@@ -1,13 +1,13 @@
 # Harvest-Rogue
 
+[![Gitter](https://badges.gitter.im/essial/harvest-rogue.svg)](https://gitter.im/essial/harvest-rogue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Build Status](https://travis-ci.org/essial/harvest-rogue.svg?branch=master)](https://travis-ci.org/essial/harvest-rogue)
+
 ![Title](http://i.imgur.com/IfmnANS.png) 
 
 Welcome to the project page for Harvest-Rogue, a Harvest Moon-inspired roguelike! This project is very early in development, so check back often for updates!
 
 While testing the game, pressing F12 at any time will immediately quit the game. This will remain in place during development.
-
-[![Gitter](https://badges.gitter.im/essial/harvest-rogue.svg)](https://gitter.im/essial/harvest-rogue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Build Status](https://travis-ci.org/essial/harvest-rogue.svg?branch=master)](https://travis-ci.org/essial/harvest-rogue)
 
 ## Tasks
 The following tasks are currently being worked on:
