@@ -21,7 +21,11 @@
 #define IK_UP_ARROW    0403
 #define IK_RIGHT_ARROW 0405
 #define IK_DOWN_ARROW  0402
-#define IK_RETURN_KEY  10
+#ifdef WIN32
+	#define IK_RETURN_KEY  13
+#else
+	#define IK_RETURN_KEY  10
+#endif
 #define IK_ESCAPE      27
 
 class Input {

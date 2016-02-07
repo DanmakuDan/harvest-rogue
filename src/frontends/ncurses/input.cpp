@@ -13,12 +13,14 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "input.h"
-#include <ncurses.h>
+#include <curses.h>
 
 Input::Input() {
    this->InputTimeout = -1;
    notimeout(stdscr, TRUE);
+#ifndef PDCURSES
    set_escdelay(0); // Needed so ESC key doesn't take a full second to do something.
+#endif
 }
 
 Input::~Input() {

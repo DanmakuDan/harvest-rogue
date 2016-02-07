@@ -34,5 +34,8 @@
 #define CLR_WHITE       15
 #define CLR_INVERSE(X) (X+16)
 
+#define CLR_IS_INVERSE(X) ((X & 16) > 0)
+#define CLR_PURE(X) (X & 0xF)
+
 
 #endif //HARVEST_ROGUE_COLORS_H

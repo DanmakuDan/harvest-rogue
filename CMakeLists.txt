@@ -17,16 +17,35 @@ project(harvest_rogue)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-find_package(Curses REQUIRED)
+file(GLOB SOURCE_FILES "${harvest_rogue_SOURCE_DIR}/src/*.cpp")
+file(GLOB SOURCE_SCENE_FILES "${harvest_rogue_SOURCE_DIR}/src/scenes/*.cpp")
+   source_group(scenes FILES ${SOURCE_SCENE_FILES})
+file(GLOB SOURCE_DIALOG_FILES "${harvest_rogue_SOURCE_DIR}/src/dialogs/*.cpp")
+   source_group(dialogs FILES ${SOURCE_DIALOG_FILES})
+file(GLOB SOURCE_PROP_FILES "${harvest_rogue_SOURCE_DIR}/src/props/*.cpp")
+   source_group(props FILES ${SOURCE_PROP_FILES})
+file(GLOB SOURCE_NCURSES_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/ncurses/*.cpp")
+   source_group(ncurses FILES ${SOURCE_NCURSES_FILES})
+file(GLOB HEADER_FILES "${harvest_rogue_SOURCE_DIR}/include/*.h")
+   source_group(include FILES ${HEADER_FILES})
+include_directories(${harvest_rogue_SOURCE_DIR}/include)
+IF(WIN32)
+   # We must manually include PDCurses to emulate NCurses
+   include_directories("${harvest_rogue_SOURCE_DIR}/windows/pdcurses")
+   include_directories("${harvest_rogue_SOURCE_DIR}/windows/pdcurses/win32")
 
-include_directories(${CURSES_INCLUDE_DIR} "./include")
-
-file(GLOB SOURCE_FILES
-        "./src/*.cpp"
-        "./src/scenes/*.cpp"
-        "./src/dialogs/*.cpp"
-        "./src/frontends/ncurses/*.cpp"
-        "./include/*.h"
-        )
-add_executable(harvest_rogue ${SOURCE_FILES} src/frontends/ncurses/input.cpp include/input.h include/scene.h src/scenes/mainmenu.cpp include/mainmenu.h src/gamestate.cpp include/gamestate.h src/scenes/game.cpp include/game.h src/landmark.cpp include/landmark.h src/textgenerator.cpp include/textgenerator.h include/adjectives.h include/animalnouns.h include/tiles.h src/landmarkgenerator.cpp include/landmarkgenerator.h include/dialog.h src/dialogs/gamemenudialog.cpp include/gamemenudialog.h include/colors.h src/adjectives.cpp src/animalnouns.cpp include/prop.h src/props/hoe.cpp include/hoe.h include/tool.h include/player.h src/player.cpp include/direction.h)
+   file(GLOB SOURCE_WIN32_PDCURSES_FILES
+      "${harvest_rogue_SOURCE_DIR}/windows/pdcurses/pdcurses/*.c"
+	  "${harvest_rogue_SOURCE_DIR}/windows/pdcurses/win32/*.c"
+   )
+   source_group(pdcurses FILES ${SOURCE_WIN32_PDCURSES_FILES})
+ELSE()
+   find_package(Curses REQUIRED)
+ENDIF()
+		
+add_executable(harvest_rogue ${SOURCE_FILES} ${SOURCE_SCENE_FILES} ${SOURCE_DIALOG_FILES} ${SOURCE_PROP_FILES} ${SOURCE_NCURSES_FILES} ${HEADER_FILES} ${SOURCE_WIN32_PDCURSES_FILES})
 target_link_libraries(harvest_rogue ${CURSES_LIBRARIES})
+
+IF(WIN32)
+set_target_properties(harvest_rogue PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
+ENDIF()

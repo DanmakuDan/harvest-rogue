@@ -12,10 +12,16 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#include <curses.h>
 #include "input.h"
 #include "gamestate.h"
 #include "mainmenu.h"
+
+#ifdef WIN32
+#define RESIZE_KEY 0x222
+#else
+#define RESIZE_KEY 0x200
+#endif
+#define KILL_KEY (0x108+12) // F12
 
 int main() {
 
@@ -29,10 +35,10 @@ int main() {
 
       auto ch = Input::Get().WaitForAndGetKeyPress();
       switch (ch) {
-         case KEY_RESIZE:
+         case RESIZE_KEY:
             GameState::Get().GetCurrentScene()->InitializeScreen();
             continue;
-         case KEY_F(12):
+         case KILL_KEY:
             GameState::Get().Terminate();
             continue;
          default:
@@ -41,3 +47,14 @@ int main() {
    }
    return 0;
 }
+
+#ifdef WIN32
+#include <Windows.h>
+int WINAPI WinMain(HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPSTR lpCmdLine,
+	int nCmdShow)
+{
+	main();
+}
+#endif

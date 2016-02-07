@@ -14,13 +14,16 @@
 
 #include <sstream>
 #include <iostream>
-
-#include <ncurses.h>
+#include <curses.h>
 
 #include "screen.h"
 
 Screen::Screen() {
    initscr();
+#ifdef WIN32
+   PDC_set_title("Harvest Rogue");
+   resize_term(40, 120);
+#endif
    noecho();
    cbreak();
    keypad(stdscr, TRUE);
@@ -71,24 +74,22 @@ void Screen::WriteCenterText(int y, std::string text, int color) {
 }
 
 void Screen::WriteButton(int x, int y, int width, std::string text, bool active) {
+	wattron(stdscr, COLOR_PAIR(1 + CLR_PURE(CLR_WHITE)));
    if (active) {
-      wattron(stdscr, COLOR_PAIR(1 + CLR_INVERSE(CLR_WHITE)));
-      wattron(stdscr, A_BOLD);
+      wattron(stdscr, A_BOLD | A_REVERSE);
    } else {
-      wattron(stdscr, COLOR_PAIR(1 + CLR_WHITE));
    }
    for (auto i = 0; i < width; i++) {
       mvwprintw(stdscr, y, x + i, " ");
    }
    auto captionLeft = x + (width / 2) - (text.length() / 2);
+   this->WriteText(captionLeft, y, text, CLR_WHITE);
    if (active) {
-      this->WriteText(captionLeft, y, text, CLR_INVERSE(CLR_WHITE));
-      wattroff(stdscr, COLOR_PAIR(1 + CLR_INVERSE(CLR_WHITE)));
-      wattroff(stdscr, A_BOLD);
+	  wattroff(stdscr, A_BOLD | A_REVERSE);
    } else {
-      this->WriteText(captionLeft, y, text, CLR_WHITE);
       wattroff(stdscr, COLOR_PAIR(1 + CLR_WHITE));
    }
+   wattroff(stdscr, COLOR_PAIR(1 + CLR_PURE(CLR_WHITE)));
 }
 
 void Screen::ClearLine(int y, int color) {

@@ -17,6 +17,7 @@
 #include "player.h"
 #include "game.h"
 #include "gamemenudialog.h"
+#include "windowsshim.h"
 
 void Game::InitializeScreen() {
    Input::Get().SetInputTimeout(50);
