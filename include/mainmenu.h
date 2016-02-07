@@ -24,6 +24,8 @@ public:
 
    virtual void OnKeyPress(int key);
 
+   virtual void Render();
+
    static std::shared_ptr<MainMenu> Construct() {
       return std::shared_ptr<MainMenu>(new MainMenu());
    }

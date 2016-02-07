@@ -23,24 +23,7 @@ MainMenu::MainMenu() {
 }
 
 void MainMenu::InitializeScreen() {
-   auto top = (Screen::Get().GetHeight() / 2) - 10;
-   std::string logo(
-         "                                                    .:.        \n"
-               "                                                .:. \\|/  .:.\n"
-               "                   _                            \\|/  |   \\|/\n"
-               "                 _/_\\_   ___                 <#> |  \\|<#> |\n"
-               "                  (\")   /.-.\\                   \\|<#>|/  \\| /\n"
-               "        _        //U\\\\  |(\")|                    |  \\| /<#>/\n"
-               "       ( )   _   \\|_|/  /)v(\\                  \\ |/  |/  \\|\n"
-               "      (_` )_('>   | |   \\/~\\/                   \\|   |    |/\n"
-               "      (__,~_)8    |||   //_\\\\                    |/ \\| / \\| /\n"
-               "         _YY_    _[|]_ /_____\\                  \\|   |/   |/\n"
-               "  \"\"\"\"\"\"\"\"'\"\"'\"\"'\"\"\"\"\"'\"\"\"\"'\"\"'\"\"\"'\"\"\"\"\"''\"'\"\"\"^^^^^^^^^^^^^^^^\n"
-               "                         Harvest-Rogue                         "
-   );
-
-   Screen::Get().WriteCenterText(top, logo);
-   this->DrawMenu();
+   this->Render();
 }
 
 void MainMenu::OnKeyPress(int key) {
@@ -76,11 +59,37 @@ void MainMenu::OnKeyPress(int key) {
    }
 }
 
+
+void MainMenu::Render() {
+   Screen::Get().BeginScreenUpdate();
+
+   auto top = (Screen::Get().GetHeight() / 2) - 10;
+   std::string logo(
+         "                                                    .:.        \n"
+               "                                                .:. \\|/  .:.\n"
+               "                   _                            \\|/  |   \\|/\n"
+               "                 _/_\\_   ___                 <#> |  \\|<#> |\n"
+               "                  (\")   /.-.\\                   \\|<#>|/  \\| /\n"
+               "        _        //U\\\\  |(\")|                    |  \\| /<#>/\n"
+               "       ( )   _   \\|_|/  /)v(\\                  \\ |/  |/  \\|\n"
+               "      (_` )_('>   | |   \\/~\\/                   \\|   |    |/\n"
+               "      (__,~_)8    |||   //_\\\\                    |/ \\| / \\| /\n"
+               "         _YY_    _[|]_ /_____\\                  \\|   |/   |/\n"
+               "  \"\"\"\"\"\"\"\"'\"\"'\"\"'\"\"\"\"\"'\"\"\"\"'\"\"'\"\"\"'\"\"\"\"\"''\"'\"\"\"^^^^^^^^^^^^^^^^\n"
+               "                         Harvest-Rogue                         "
+   );
+
+   Screen::Get().WriteCenterText(top, logo);
+   this->DrawMenu();
+
+   Screen::Get().EndScreenUpdate();
+}
+
 void MainMenu::DrawMenu() {
    auto top = (Screen::Get().GetHeight() / 2) + 4;
    auto buttonLeft = (Screen::Get().GetWidth() / 2) - 15;
    Screen::Get().WriteButton(buttonLeft, top++, 30, "New Game", 0 == this->SelectedButton);
    Screen::Get().WriteButton(buttonLeft, top++, 30, "Continue", 1 == this->SelectedButton);
    Screen::Get().WriteButton(buttonLeft, top++, 30, "Quit", 2 == this->SelectedButton);
-
 }
+
