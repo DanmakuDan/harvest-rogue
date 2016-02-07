@@ -21,9 +21,7 @@ The following tasks are currently being worked on:
 
 * General Features
     - Statistics Window Area
-    - Basic map filed
-    - Basic movement controls
-
+    - Inventory Management
 
 ## Compiling
 
@@ -46,5 +44,17 @@ The build process is essentially the same as for Linux, especially if you use [B
 ```
 
 ### Windows
-
-There is currently no build steps for windows. If you'd like to add some, feel free to do a pull request!
+* Install Visual Studio or [Visual Studio Express](https://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx) if you haven't already.
+* Install the [CMake for Window](https://cmake.org/download/) msi package if you haven't already.
+* Create a folder in your <code>harvest-rogue</code> root folder called <code>output</code>
+* Run cmake-gui
+* For the "Where is the source code" field, select the base <code>harvest-rogue</code> folder.
+* For the "Where to build the binaries" field, select the base <code>harvest-rogue/output</code> folder you just created.
+* Click the <code>Configure</code> button. Wait until it says "Configurating Done".
+* Click the <code>Generate</code> button.
+* Close cmake-gui and navigate to your <code>harvest-rogue/output</code> folder, and open the <code>harvest_rogue.sln</code> file.
+* Right-click the <code>harvest_rogue</code> project and click <code>Set as StartUp Project</code>
+* Rebuild and run!
+#### Notes
+* If you change the CMake file, you can re-build the <code>ZERO_CHECK</code> project, and it will re-generate the project files with the new changes.
+* Do **not** add new files directly into the solution. If you want to add new files, add them directly to the folder in windows explorer, and re-run <code>ZERO_CHECK</code>. Visual studio will misplace the source files if you do not do this!
