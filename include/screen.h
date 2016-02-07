@@ -39,8 +39,6 @@ public:
 
    int GetHeight();
 
-   void Clear();
-
    void WriteText(int x, int y, std::string text, int color = CLR_WHITE);
 
    void WriteCenterText(int y, std::string text, int color = CLR_WHITE);

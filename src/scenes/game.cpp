@@ -19,7 +19,6 @@
 #include "gamemenudialog.h"
 
 void Game::InitializeScreen() {
-   Screen::Get().Clear();
    Input::Get().SetInputTimeout(50);
    this->RenderUI();
 }

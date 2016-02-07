@@ -52,10 +52,6 @@ int Screen::GetHeight() {
    return getmaxy(stdscr);
 }
 
-void Screen::Clear() {
-   wclear(stdscr);
-}
-
 void Screen::WriteText(int x, int y, std::string text, int color) {
 
    std::istringstream iss(text);
@@ -116,11 +112,11 @@ void Screen::WriteTile(int x, int y, Tile tile) {
 }
 
 void Screen::BeginScreenUpdate() {
-   // NCurses doesn't have blitting, so nothing to do here...
+   erase();
 }
 
 void Screen::EndScreenUpdate() {
-   // NCurses doesn't have blitting, so nothing to do here...
+
 }
 
 void Screen::WriteWindow(int x, int y, int width, int height, std::string text) {

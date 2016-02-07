@@ -23,7 +23,6 @@ MainMenu::MainMenu() {
 }
 
 void MainMenu::InitializeScreen() {
-   Screen::Get().Clear();
    auto top = (Screen::Get().GetHeight() / 2) - 10;
    std::string logo(
          "                                                    .:.        \n"
