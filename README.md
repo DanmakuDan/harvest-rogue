@@ -55,6 +55,8 @@ The build process is essentially the same as for Linux, especially if you use [B
 * Close cmake-gui and navigate to your <code>harvest-rogue/output</code> folder, and open the <code>harvest_rogue.sln</code> file.
 * Right-click the <code>harvest_rogue</code> project and click <code>Set as StartUp Project</code>
 * Rebuild and run!
-#### Notes
+
+Notes:
+
 * If you change the CMake file, you can re-build the <code>ZERO_CHECK</code> project, and it will re-generate the project files with the new changes.
 * Do **not** add new files directly into the solution. If you want to add new files, add them directly to the folder in windows explorer, and re-run <code>ZERO_CHECK</code>. Visual studio will misplace the source files if you do not do this!
