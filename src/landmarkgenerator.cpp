@@ -21,13 +21,13 @@
 static std::random_device randomDevice;
 static std::default_random_engine randomGenerator(randomDevice());
 
-std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm() {
-   // This needs to be moved into its own module at some point...
+std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, int &playerY) {
    std::uniform_int_distribution<int> grassTuftDistrobution(0, 10000);
 
    auto farmName = TextGenerator::GenerateFarmName();
    auto result = Landmark::Construct(farmName, MAP_SIZE_WIDTH, MAP_SIZE_HEIGHT);
 
+   // Generate some random stuff on the ground
    for (auto y = 0; y < MAP_SIZE_WIDTH; y++) {
       for (auto x = 0; x < MAP_SIZE_HEIGHT; x++) {
          if ((x < 2) || (x >= (MAP_SIZE_WIDTH - 2)) || (y < 2) || (y >= (MAP_SIZE_HEIGHT - 2))) {
@@ -43,8 +43,8 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm() {
             result->SetTile(x, y, TileWeed);
          } else if (n <= (permille_chance += 100)) {
             result->SetTile(x, y, TileBranch);
-         } else if (n <= (permille_chance += 10)) {
-            result->SetTile(x, y, TileStone);
+            //} else if (n <= (permille_chance += 10)) {
+            //   result->SetTile(x, y, TileStone);
          } else if (n <= (permille_chance += 10)) {
             result->SetTile(x, y, TileBoulder);
          } else if (n <= (permille_chance += 5)) {
@@ -57,6 +57,32 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm() {
 
       }
    }
+
+   // Generate cottage
+   std::uniform_int_distribution<int> farmPositionDistrobution(10, MAP_SIZE_HEIGHT - 20);
+   auto cottageX = farmPositionDistrobution(randomGenerator);
+   auto cottageY = farmPositionDistrobution(randomGenerator);
+
+   // Generate the walls and floors
+   for (auto y = 0; y < LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT; y++) {
+      for (auto x = 0; x < LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH; x++) {
+         if ((x == 0) || (x == LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH - 1) || (y == 0) ||
+             (y == LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT - 1)) {
+            result->SetTile(cottageX + x, cottageY + y, TileBrickWall);
+         } else {
+            result->SetTile(cottageX + x, cottageY + y, TileStone);
+         }
+
+      }
+   }
+
+   // Place a door
+   result->SetTile(cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2),
+                   cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT - 1, TileDoor);
+
+   // Set the player starting position variables
+   playerX = cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2);
+   playerY = cottageY + (LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT / 2);
 
    return result;
 }

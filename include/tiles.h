@@ -21,10 +21,10 @@
 #include "colors.h"
 
 enum eSurfaceAttributeType {
-   NoSurfaceAttributes = 0x00,
-   Walkable = 0x01,
-   Swimmable = 0x02,
-   VisualObstruction = 0x04
+   NoSurfaceAttributes  = 0x00,
+   Walkable             = 0x01,
+   Swimmable            = 0x02,
+   VisualObstruction    = 0x04
 };
 
 
@@ -45,6 +45,9 @@ enum eTileType {
    TileTree,
 
    TileWater,
+
+   TileBrickWall,
+   TileDoor,
 
    TILES_MAX
 };
@@ -74,7 +77,13 @@ static std::vector<Tile> Tiles = {
       {TileStump,      "Stump",        NoSurfaceAttributes,  CLR_YELLOW,   '#'},
       {TileTree,       "Tree",         NoSurfaceAttributes,  CLR_YELLOW,   'T'},
 
-      {TileWater,      "Water",        (Swimmable),          CLR_BRBLUE,   '~'},
+      {TileWater,      "Water",        Swimmable,            CLR_BRBLUE,   '~'},
+
+      {TileBrickWall,  "Brick Wall",   VisualObstruction,    CLR_BRRED,    '|'},
+
+      {TileDoor,       "Wooden Door",  (eSurfaceAttributeType)
+                                       (VisualObstruction
+                                       | Walkable),          CLR_YELLOW,   '-'}
 };
 
 static Tile FindTilebyTileType(eTileType tileType) {

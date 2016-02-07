@@ -15,13 +15,15 @@
 #ifndef HARVEST_ROGUE_LANDMARKGENERATOR_H
 #define HARVEST_ROGUE_LANDMARKGENERATOR_H
 
-
 #include <memory>
 #include "landmark.h"
 
+#define LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH 11
+#define LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT 5
+
 class LandmarkGenerator {
 public:
-   static std::shared_ptr<Landmark> GeneratePlayerFarm();
+   static std::shared_ptr<Landmark> GeneratePlayerFarm(int &playerX, int &playerY);
 };
 
 

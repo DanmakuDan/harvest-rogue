@@ -74,7 +74,9 @@ void GameState::InitializeNewGame() {
 
    this->DialogStack.clear();
    this->Landmarks.clear();
-   this->Landmarks.push_back(LandmarkGenerator::GeneratePlayerFarm());
+
+   this->Landmarks.push_back(LandmarkGenerator::GeneratePlayerFarm(this->PlayerX, this->PlayerY));
+
    this->CurrentLandmarkIndex = this->Landmarks.size() - 1;
 }
 
