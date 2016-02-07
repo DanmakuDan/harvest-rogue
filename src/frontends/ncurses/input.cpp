@@ -17,6 +17,8 @@
 
 Input::Input() {
    this->InputTimeout = -1;
+   notimeout(stdscr, TRUE);
+   set_escdelay(0); // Needed so ESC key doesn't take a full second to do something.
 }
 
 Input::~Input() {
@@ -24,7 +26,9 @@ Input::~Input() {
 }
 int Input::WaitForAndGetKeyPress() {
    //timeout(this->InputTimeout);
-   return wgetch(stdscr);
+   auto result = wgetch(stdscr);
+
+   return result;
 }
 
 void Input::SetInputTimeout(int timeout) {

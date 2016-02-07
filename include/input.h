@@ -22,6 +22,7 @@
 #define IK_RIGHT_ARROW 0405
 #define IK_DOWN_ARROW  0402
 #define IK_RETURN_KEY  10
+#define IK_ESCAPE      27
 
 class Input {
 private:

@@ -16,6 +16,7 @@
 #include <gamestate.h>
 #include <iomanip>
 #include "game.h"
+#include "gamemenudialog.h"
 
 void Game::InitializeScreen() {
    Screen::Get().Clear();
@@ -24,7 +25,21 @@ void Game::InitializeScreen() {
 }
 
 void Game::OnKeyPress(int key) {
+
+   auto currentDialog = GameState::Get().GetCurrentDialog();
+   if (currentDialog != nullptr) {
+      currentDialog->OnKeyPress(key);
+
+      this->RenderUI();
+      // Don't step simulation when in dialogs
+      return;
+   }
+
+
    switch (key) {
+      case IK_RETURN_KEY:
+      GameState::Get().PushDialog(GameMenuDialog::Construct());
+         break;
       case IK_UP_ARROW:
          GameState::Get().WalkPlayer(DirectionUp);
          break;
@@ -48,10 +63,19 @@ Game::Game() {
 }
 
 void Game::RenderUI() {
+   Screen::Get().BeginScreenUpdate();
+
    this->RenderTopBar();
    this->RenderMap();
    this->RenderLog();
    this->RenderStatusBar();
+
+   auto currentDialog = GameState::Get().GetCurrentDialog();
+   if (currentDialog != nullptr) {
+      currentDialog->Render();
+   }
+
+   Screen::Get().EndScreenUpdate();
 }
 
 void Game::RenderTopBar() {

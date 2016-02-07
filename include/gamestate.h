@@ -107,6 +107,7 @@ public:
    void PushDialog(std::shared_ptr<IDialog> dialog);
 
    void PopDialog();
+
 private:
    bool active;
    std::shared_ptr<IScene> CurrentScene;

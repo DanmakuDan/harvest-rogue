@@ -19,6 +19,7 @@
 #include <string>
 #include "tiles.h"
 #include "colors.h"
+
 class Screen {
 private:
    Screen();
@@ -53,6 +54,12 @@ public:
    typedef struct tile_s Tile;
 
    void WriteTile(int x, int y, Tile tile);
+
+   void BeginScreenUpdate();
+
+   void EndScreenUpdate();
+
+   void WriteWindow(int x, int y, int width, int height, std::string text = "");
 };
 
 

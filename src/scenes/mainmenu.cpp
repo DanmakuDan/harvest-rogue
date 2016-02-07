@@ -14,7 +14,6 @@
 
 #include <gamestate.h>
 #include "mainmenu.h"
-#include "screen.h"
 #include "input.h"
 #include "game.h"
 

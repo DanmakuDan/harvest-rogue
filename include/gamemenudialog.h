@@ -16,11 +16,32 @@
 #define HARVEST_ROGUE_GAMEMENUDIALOG_H
 
 #include "dialog.h"
+#include <memory>
+
+#define GAMEMENU_DIALOG_WIDTH  30
+#define GAMEMENU_DIALOG_HEIGHT 7
+
+enum eGameMenuDialogOptions {
+   OptStatus = 0,
+   OptInventory,
+   OptActions,
+   OptSaveGame,
+   OptQuit,
+   OPT_MAX
+};
+
 
 class GameMenuDialog : public IDialog {
 public:
+   static std::shared_ptr<GameMenuDialog> Construct() {
+      return std::shared_ptr<GameMenuDialog>(new GameMenuDialog());
+   }
    virtual void OnKeyPress(int key);
    virtual void Render();
+private:
+   GameMenuDialog();
+   eGameMenuDialogOptions SelectedOption;
+   void ExecuteSelectedAction();
 };
 
 

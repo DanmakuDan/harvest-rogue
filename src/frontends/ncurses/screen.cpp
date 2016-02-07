@@ -53,7 +53,7 @@ int Screen::GetHeight() {
 }
 
 void Screen::Clear() {
-   clear();
+   wclear(stdscr);
 }
 
 void Screen::WriteText(int x, int y, std::string text, int color) {
@@ -115,3 +115,33 @@ void Screen::WriteTile(int x, int y, Tile tile) {
    Screen::WriteCharacter(x, y, tile.CharacterCode, tile.ColorCode);
 }
 
+void Screen::BeginScreenUpdate() {
+   // NCurses doesn't have blitting, so nothing to do here...
+}
+
+void Screen::EndScreenUpdate() {
+   // NCurses doesn't have blitting, so nothing to do here...
+}
+
+void Screen::WriteWindow(int x, int y, int width, int height, std::string text) {
+   wattron(stdscr, COLOR_PAIR(1 + CLR_BRYELLOW));
+   for(auto posY = y; posY < y + height; posY++) {
+      for(auto posX = x; posX < x + width; posX++) {
+         wmove(stdscr, posY, posX);
+         if (posX == x || posX == x+width-1 || posY == y || posY == y+height-1) {
+            waddch(stdscr, '=');
+         } else {
+            waddch(stdscr, ' ');
+         }
+
+      }
+   }
+   wattroff(stdscr, COLOR_PAIR(1 + CLR_YELLOW));
+   wattron(stdscr, COLOR_PAIR(1 + CLR_WHITE));
+   auto captionLeft = (x + (width / 2)) - (text.size() / 2);
+   wattron(stdscr, A_BOLD);
+   wmove(stdscr, y, captionLeft);
+   wprintw(stdscr, text.c_str());
+   wattroff(stdscr, A_BOLD);
+   wattroff(stdscr, COLOR_PAIR(1 + CLR_WHITE));
+}
