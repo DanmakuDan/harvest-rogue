@@ -43,7 +43,7 @@ The build process is essentially the same as for Linux, especially if you use [B
 ~/projects/harvest-rogue$ make
 ```
 
-### Windows
+### Windows (Visual Studio)
 * Install Visual Studio or [Visual Studio Express](https://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx) if you haven't already.
 * Install the [CMake for Windows](https://cmake.org/download/) msi package if you haven't already.
 * Create a folder in your <code>harvest-rogue</code> root folder called <code>output</code>
