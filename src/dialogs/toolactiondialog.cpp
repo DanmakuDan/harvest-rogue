@@ -77,6 +77,10 @@ void ToolActionDialog::Render() {
 void ToolActionDialog::ExecuteSelectedAction() {
    switch(this->SelectedOption) {
       case ToolActionDialogOption::EquipTool:
+         if (Player::Get().GetCurrentTool()) {
+            Player::Get().UnequipCurrentTool();
+         }
+
          Player::Get().EquipFromInventory(this->Tool);
          GameState::Get().ClearAllDialogs();
          break;
