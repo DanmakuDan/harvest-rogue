@@ -21,11 +21,13 @@
 #define ACTION_DIALOG_WIDTH  20
 #define ACTION_DIALOG_HEIGHT 5
 
-enum eActionDialogOptions {
-   OptPickUp = 0,
-   OptUnequip,
-   eActionDialogOptionsMax
-};
+namespace ActionDialogOption {
+   enum ActionDialogOption {
+      PickUp = 0,
+      Unequip,
+      _MAX
+   };
+}
 
 class ActionDialog : public IDialog {
 public:
@@ -36,7 +38,7 @@ public:
    virtual void Render();
 private:
    ActionDialog();
-   eActionDialogOptions SelectedOption;
+   ActionDialogOption::ActionDialogOption SelectedOption;
    void ExecuteSelectedAction();
 };
 

@@ -21,14 +21,16 @@
 #define GAMEMENU_DIALOG_WIDTH  30
 #define GAMEMENU_DIALOG_HEIGHT 7
 
-enum eGameMenuDialogOptions {
-   OptStatus = 0,
-   OptInventory,
-   OptActions,
-   OptSaveGame,
-   OptQuit,
-   eGameMenuDialogOptionsMax
-};
+namespace GameMenuDialogOption {
+   enum GameMenuDialogOption {
+      Status = 0,
+      Inventory,
+      Actions,
+      SaveGame,
+      Quit,
+      _MAX
+   };
+}
 
 
 class GameMenuDialog : public IDialog {
@@ -40,7 +42,7 @@ public:
    virtual void Render();
 private:
    GameMenuDialog();
-   eGameMenuDialogOptions SelectedOption;
+   GameMenuDialogOption::GameMenuDialogOption SelectedOption;
    void ExecuteSelectedAction();
 };
 

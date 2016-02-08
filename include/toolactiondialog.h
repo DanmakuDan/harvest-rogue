@@ -21,11 +21,13 @@
 
 #define TOOLACTIN_DIALOG_WIDTH  35
 
-enum eToolActionDialogOptions {
-   OptEquipTool = 0,
-   OptDropTool,
-   eToolActionDialogOptionsMax
-};
+namespace ToolActionDialogOption {
+   enum ToolActionDialogOption {
+      EquipTool = 0,
+      DropTool,
+      _MAX
+   };
+}
 
 class ToolActionDialog : public IDialog {
 public:
@@ -37,7 +39,7 @@ public:
 private:
    ToolActionDialog(std::shared_ptr<ITool> tool);
    std::shared_ptr<ITool> Tool;
-   eToolActionDialogOptions SelectedOption;
+   ToolActionDialogOption::ToolActionDialogOption SelectedOption;
 
    void ExecuteSelectedAction();
 };

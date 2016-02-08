@@ -21,7 +21,7 @@
 
 ToolActionDialog::ToolActionDialog(std::shared_ptr<ITool> tool) {
    this->Tool = std::shared_ptr<ITool>(tool);
-   this->SelectedOption = eToolActionDialogOptions::OptEquipTool;
+   this->SelectedOption = ToolActionDialogOption::EquipTool;
 }
 
 void ToolActionDialog::OnKeyPress(int key) {
@@ -29,19 +29,19 @@ void ToolActionDialog::OnKeyPress(int key) {
    auto action = Input::Get().GetActionForKeyPress(key);
 
    if (Action::Requested(action, Action::MenuDown)) {
-      if (this->SelectedOption >= eToolActionDialogOptions::eToolActionDialogOptionsMax - 1) {
-         this->SelectedOption = (eToolActionDialogOptions) 0;
+      if (this->SelectedOption >= ToolActionDialogOption::_MAX - 1) {
+         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption) 0;
       } else {
-         this->SelectedOption = (eToolActionDialogOptions) ((int) this->SelectedOption + 1);
+         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption) ((int) this->SelectedOption + 1);
       }
    }
 
    if (Action::Requested(action, Action::MenuUp)) {
-      if (this->SelectedOption <= (eToolActionDialogOptions) 0) {
-         this->SelectedOption = (eToolActionDialogOptions)
-               ((int) eToolActionDialogOptions::eToolActionDialogOptionsMax - 1);
+      if (this->SelectedOption <= (ToolActionDialogOption::ToolActionDialogOption) 0) {
+         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption)
+               ((int) ToolActionDialogOption::_MAX - 1);
       } else {
-         this->SelectedOption = (eToolActionDialogOptions) ((int) this->SelectedOption - 1);
+         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption) ((int) this->SelectedOption - 1);
       }
    }
 
@@ -56,7 +56,7 @@ void ToolActionDialog::OnKeyPress(int key) {
 }
 
 void ToolActionDialog::Render() {
-   auto dialogHeight = eToolActionDialogOptions::eToolActionDialogOptionsMax + 2;
+   auto dialogHeight = ToolActionDialogOption::_MAX + 2;
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (TOOLACTIN_DIALOG_WIDTH / 2);
    auto dialogTop = (Screen::Get().GetHeight() / 2) - (dialogHeight / 2);
    auto prop = dynamic_cast<IProp*>(this->Tool.get());
@@ -66,19 +66,21 @@ void ToolActionDialog::Render() {
    auto btnLeft = dialogLeft + 1;
    auto btnWidth = TOOLACTIN_DIALOG_WIDTH - 2;
    auto btnTop = dialogTop;
+
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Equip",
-                             this->SelectedOption == eToolActionDialogOptions::OptEquipTool);
+                             this->SelectedOption == ToolActionDialogOption::EquipTool);
+
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Drop on ground",
-                             this->SelectedOption == eToolActionDialogOptions::OptDropTool);
+                             this->SelectedOption == ToolActionDialogOption::DropTool);
 }
 
 void ToolActionDialog::ExecuteSelectedAction() {
    switch(this->SelectedOption) {
-      case eToolActionDialogOptions::OptEquipTool:
+      case ToolActionDialogOption::EquipTool:
          Player::Get().EquipFromInventory(this->Tool);
          GameState::Get().ClearAllDialogs();
          break;
-      case eToolActionDialogOptions::OptDropTool:
+      case ToolActionDialogOption::DropTool:
          Player::Get().DropInventoryItemOnGround(std::dynamic_pointer_cast<IProp>(this->Tool));
          GameState::Get().ClearAllDialogs();
          break;

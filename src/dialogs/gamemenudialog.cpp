@@ -21,7 +21,7 @@
 #include "inventorydialog.h"
 
 GameMenuDialog::GameMenuDialog() {
-   this->SelectedOption = eGameMenuDialogOptions::OptStatus;
+   this->SelectedOption = GameMenuDialogOption::Status;
 }
 
 void GameMenuDialog::OnKeyPress(int key) {
@@ -29,18 +29,18 @@ void GameMenuDialog::OnKeyPress(int key) {
    auto action = Input::Get().GetActionForKeyPress(key);
 
    if (Action::Requested(action, Action::MenuDown)) {
-      if (this->SelectedOption >= eGameMenuDialogOptions::eGameMenuDialogOptionsMax - 1) {
-         this->SelectedOption = (eGameMenuDialogOptions) 0;
+      if (this->SelectedOption >= GameMenuDialogOption::_MAX - 1) {
+         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) 0;
       } else {
-         this->SelectedOption = (eGameMenuDialogOptions) ((int) this->SelectedOption + 1);
+         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) ((int) this->SelectedOption + 1);
       }
    }
 
    if (Action::Requested(action, Action::MenuUp)) {
-      if (this->SelectedOption <= (eGameMenuDialogOptions) 0) {
-         this->SelectedOption = (eGameMenuDialogOptions) ((int) eGameMenuDialogOptions::eGameMenuDialogOptionsMax - 1);
+      if (this->SelectedOption <= (GameMenuDialogOption::GameMenuDialogOption) 0) {
+         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) ((int) GameMenuDialogOption::_MAX - 1);
       } else {
-         this->SelectedOption = (eGameMenuDialogOptions) ((int) this->SelectedOption - 1);
+         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) ((int) this->SelectedOption - 1);
       }
    }
 
@@ -62,27 +62,35 @@ void GameMenuDialog::Render() {
    auto btnLeft = dialogLeft + 1;
    auto btnWidth = GAMEMENU_DIALOG_WIDTH - 2;
    auto btnTop = dialogTop;
+
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Status",
-                             this->SelectedOption == eGameMenuDialogOptions::OptStatus);
+                             this->SelectedOption == GameMenuDialogOption::Status);
+
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Inventory",
-                             this->SelectedOption == eGameMenuDialogOptions::OptInventory);
+                             this->SelectedOption == GameMenuDialogOption::Inventory);
+
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Actions",
-                             this->SelectedOption == eGameMenuDialogOptions::OptActions);
+                             this->SelectedOption == GameMenuDialogOption::Actions);
+
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Save Game",
-                             this->SelectedOption == eGameMenuDialogOptions::OptSaveGame);
+                             this->SelectedOption == GameMenuDialogOption::SaveGame);
+
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Quit to Main Menu",
-                             this->SelectedOption == eGameMenuDialogOptions::OptQuit);
+                             this->SelectedOption == GameMenuDialogOption::Quit);
 }
 
 void GameMenuDialog::ExecuteSelectedAction() {
    switch (this->SelectedOption) {
-      case eGameMenuDialogOptions::OptActions:
+
+      case GameMenuDialogOption::Actions:
          GameState::Get().PushDialog(ActionDialog::Construct());
          break;
-      case eGameMenuDialogOptions::OptInventory:
+
+      case GameMenuDialogOption::Inventory:
          GameState::Get().PushDialog(InventoryDialog::Construct());
          break;
-      case eGameMenuDialogOptions::OptQuit:
+
+      case GameMenuDialogOption::Quit:
          GameState::Get().SetCurrentScene(MainMenu::Construct());
          break;
    }

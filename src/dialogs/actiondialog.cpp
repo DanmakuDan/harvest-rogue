@@ -18,7 +18,7 @@
 #include "actiondialog.h"
 
 ActionDialog::ActionDialog() {
-   this->SelectedOption = eActionDialogOptions::OptPickUp;
+   this->SelectedOption = ActionDialogOption::PickUp;
 }
 
 void ActionDialog::OnKeyPress(int key) {
@@ -26,18 +26,18 @@ void ActionDialog::OnKeyPress(int key) {
    auto action = Input::Get().GetActionForKeyPress(key);
 
    if (Action::Requested(action, Action::MenuDown)) {
-      if (this->SelectedOption >= eActionDialogOptions::eActionDialogOptionsMax - 1) {
-         this->SelectedOption = (eActionDialogOptions) 0;
+      if (this->SelectedOption >= ActionDialogOption::_MAX - 1) {
+         this->SelectedOption = (ActionDialogOption::ActionDialogOption) 0;
       } else {
-         this->SelectedOption = (eActionDialogOptions) ((int) this->SelectedOption + 1);
+         this->SelectedOption = (ActionDialogOption::ActionDialogOption) ((int) this->SelectedOption + 1);
       }
    }
 
    if (Action::Requested(action, Action::MenuUp)) {
-      if (this->SelectedOption <= (eActionDialogOptions) 0) {
-         this->SelectedOption = (eActionDialogOptions) ((int) eActionDialogOptions::eActionDialogOptionsMax - 1);
+      if (this->SelectedOption <= (ActionDialogOption::ActionDialogOption) 0) {
+         this->SelectedOption = (ActionDialogOption::ActionDialogOption) ((int) ActionDialogOption::_MAX - 1);
       } else {
-         this->SelectedOption = (eActionDialogOptions) ((int) this->SelectedOption - 1);
+         this->SelectedOption = (ActionDialogOption::ActionDialogOption) ((int) this->SelectedOption - 1);
       }
    }
 
@@ -59,19 +59,21 @@ void ActionDialog::Render() {
    auto btnWidth = ACTION_DIALOG_WIDTH - 2;
    auto btnTop = dialogTop;
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Pick up",
-                             this->SelectedOption == eActionDialogOptions::OptPickUp);
+                             this->SelectedOption == ActionDialogOption::PickUp);
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Unequip Tool",
-                             this->SelectedOption == eActionDialogOptions::OptUnequip);
+                             this->SelectedOption == ActionDialogOption::Unequip);
 
 }
 
 void ActionDialog::ExecuteSelectedAction() {
    switch (this->SelectedOption) {
-      case eActionDialogOptions::OptPickUp:
+
+      case ActionDialogOption::PickUp:
          Player::Get().PickUpItemFromGround();
          GameState::Get().ClearAllDialogs();
          break;
-      case eActionDialogOptions::OptUnequip:
+
+      case ActionDialogOption::Unequip:
          Player::Get().UnequipCurrentTool();
          GameState::Get().ClearAllDialogs();
          break;
