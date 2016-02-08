@@ -20,6 +20,7 @@ Keybinding::Keybinding() {
    this->keybindings['A'] = Action::OpenActionList;
    this->keybindings['i'] = Action::OpenInventory;
    this->keybindings['I'] = Action::OpenInventory;
+   this->keybindings[','] = Action::PickUpItemFromGround;
 
    this->keybindings[IK_UP_ARROW] = Action::MoveUp | Action::MenuUp;
    this->keybindings[IK_DOWN_ARROW] = Action::MoveDown | Action::MenuDown ;
