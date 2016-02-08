@@ -68,9 +68,11 @@ void Hoe::Use() {
    switch(currentTile.TileType) {
       case eTileType::TileGrassTuft:
          landmark->SetTile(playerX, playerY, eTileType::TileGrass);
+         Player::Get().AdjustEnergy(-1);
          break;
       case eTileType::TileGrass:
          landmark->SetTile(playerX, playerY, eTileType::TileTilled);
+         Player::Get().AdjustEnergy(-2);
          break;
    }
 

@@ -191,25 +191,37 @@ void Game::RenderSideBar() {
    auto sideBarLeft = (Screen::Get().GetWidth() - (GAME_UI_MAP_PADDING_RIGHT)) + 1;
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
 
-   Screen::Get().WriteText(sideBarLeft, 5, "Standing on", CLR_GRAY);
+   Screen::Get().WriteText(sideBarLeft, 3, "Feeling ", CLR_SILVER);
+   auto playerEnergy = Player::Get().GetEnergy();
+   if (playerEnergy <= ENERGY_EXAUSTED) {
+      Screen::Get().WriteText(sideBarLeft + 8, 3, "EXAUSTED", CLR_BRRED);
+   } else if (playerEnergy <= ENERGY_TIRED) {
+      Screen::Get().WriteText(sideBarLeft + 8, 3, "tired", CLR_BRYELLOW);
+   }else if (playerEnergy <= ENERGY_GOOD) {
+      Screen::Get().WriteText(sideBarLeft + 8, 3, "good", CLR_WHITE);
+   } else  {
+      Screen::Get().WriteText(sideBarLeft + 8, 3, "well rested", CLR_BRGREEN);
+   }
+
+   Screen::Get().WriteText(sideBarLeft, 4, "Standing on", CLR_SILVER);
    auto currentProp = currentLandmark->GetProp(Player::Get().GetPositionX(), Player::Get().GetPositionY());
    if (currentProp == nullptr) {
       auto currentTile = currentLandmark->GetTile(Player::Get().GetPositionX(), Player::Get().GetPositionY());
-      Screen::Get().WriteText(sideBarLeft + 12, 5, currentTile.Name, currentTile.ColorCode);
+      Screen::Get().WriteText(sideBarLeft + 12, 4, currentTile.Name, currentTile.ColorCode);
    } else {
-      Screen::Get().WriteText(sideBarLeft + 12, 5, currentProp->GetName(), currentProp->GetColorCode());
+      Screen::Get().WriteText(sideBarLeft + 12, 4, currentProp->GetName(), currentProp->GetColorCode());
    }
 
    auto currentTool = Player::Get().GetCurrentTool();
-   Screen::Get().WriteText(sideBarLeft, 6, "Holding", CLR_GRAY);
+   Screen::Get().WriteText(sideBarLeft, 5, "Holding", CLR_SILVER);
    if (currentTool == nullptr) {
-      Screen::Get().WriteText(sideBarLeft + 12, 6, "Nothing", CLR_GRAY);
+      Screen::Get().WriteText(sideBarLeft + 8, 5, "Nothing", CLR_GRAY);
    } else {
       auto prop = dynamic_cast<IProp*>(currentTool.get());
       if (prop == nullptr) {
-         Screen::Get().WriteText(sideBarLeft + 12, 6, "NOT A PROP!", CLR_RED);
+         Screen::Get().WriteText(sideBarLeft + 12, 5, "NOT A PROP!", CLR_RED);
       } else {
-         Screen::Get().WriteText(sideBarLeft + 12, 6, prop->GetName(), prop->GetColorCode());
+         Screen::Get().WriteText(sideBarLeft + 12, 5, prop->GetName(), prop->GetColorCode());
       }
    }
 

@@ -21,6 +21,12 @@
 #include <memory>
 #include <vector>
 
+#define ENERGY_MAX         100
+#define ENERGY_WELL_RESTED  80
+#define ENERGY_GOOD         50
+#define ENERGY_TIRED        30
+#define ENERGY_EXAUSTED     15
+
 class Player {
 private:
    Player();
@@ -46,12 +52,16 @@ public:
    void DropInventoryItemOnGround(std::shared_ptr<IProp> prop);
    void UseTool();
    void UnequipCurrentTool();
+   int GetEnergy();
+   void SetEnergy(int energy);
+   void AdjustEnergy(int energyAdjustment);
 private:
    int PositionX;
    int PositionY;
    std::shared_ptr<ITool> CurrentTool;
    std::vector<std::shared_ptr<IProp>> Inventory;
    bool IsPassable(int x, int y);
+   int Energy;
 };
 
 #endif //HARVEST_ROGUE_PLAYER_H

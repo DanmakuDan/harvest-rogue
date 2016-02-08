@@ -17,7 +17,7 @@
 #include "gamestate.h"
 
 Player::Player() {
-
+   this->Energy = ENERGY_MAX;
 }
 
 Player::~Player() {
@@ -164,4 +164,20 @@ bool Player::IsPassable(int x, int y) {
       return true;
    }
    return prop->GetIsPassable();
+}
+
+int Player::GetEnergy() {
+   return this->Energy;
+}
+
+void Player::SetEnergy(int energy) {
+   if (energy < 0) {
+      this->Energy = 0;
+      return;
+   }
+   this->Energy = energy;
+}
+
+void Player::AdjustEnergy(int energyAdjustment) {
+   this->SetEnergy(this->GetEnergy() + energyAdjustment);
 }
