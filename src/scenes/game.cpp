@@ -17,7 +17,7 @@
 #include "player.h"
 #include "game.h"
 #include "gamemenudialog.h"
-#include "windowsshim.h"
+#include "actiondialog.h"
 
 void Game::InitializeScreen() {
    Input::Get().SetInputTimeout(50);
@@ -51,6 +51,10 @@ void Game::OnKeyPress(int key) {
          break;
       case IK_RIGHT_ARROW:
          Player::Get().WalkPlayer(DirectionRight);
+         break;
+      case 'a':
+      case 'A':
+         GameState::Get().PushDialog(ActionDialog::Construct());
          break;
    }
 
