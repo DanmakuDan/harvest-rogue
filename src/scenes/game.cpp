@@ -192,6 +192,19 @@ void Game::RenderSideBar() {
       Screen::Get().WriteText(sideBarLeft + 12, 5, currentProp->GetName(), currentProp->GetColorCode());
    }
 
+   auto currentTool = Player::Get().GetCurrentTool();
+   Screen::Get().WriteText(sideBarLeft, 6, "Holding", CLR_GRAY);
+   if (currentTool == nullptr) {
+      Screen::Get().WriteText(sideBarLeft + 12, 6, "Nothing", CLR_GRAY);
+   } else {
+      auto prop = dynamic_cast<IProp*>(currentTool.get());
+      if (prop == nullptr) {
+         Screen::Get().WriteText(sideBarLeft + 12, 6, "NOT A PROP!", CLR_RED);
+      } else {
+         Screen::Get().WriteText(sideBarLeft + 12, 6, prop->GetName(), prop->GetColorCode());
+      }
+   }
+
 
 
 

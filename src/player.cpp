@@ -91,7 +91,7 @@ void Player::WalkPlayer(eDirection direction) {
 }
 
 std::shared_ptr<ITool> Player::GetCurrentTool() {
-   return std::shared_ptr<ITool>(this->GetCurrentTool());
+   return std::shared_ptr<ITool>(this->CurrentTool);
 }
 
 std::vector<std::shared_ptr<IProp>> Player::GetInventory() {
