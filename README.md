@@ -1,5 +1,8 @@
 # Harvest-Rogue
 
+**We are actively looking for contributers of all types!**
+The graphical front-end will begin development next week, but until then, we need help with the website, game code, testing, and porting efforts. Open an issue, or click on the chat badge below to start contributing!
+
 [![Gitter](https://badges.gitter.im/essial/harvest-rogue.svg)](https://gitter.im/essial/harvest-rogue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Build Status](https://travis-ci.org/essial/harvest-rogue.svg?branch=master)](https://travis-ci.org/essial/harvest-rogue)
 
