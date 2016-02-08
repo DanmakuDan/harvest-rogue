@@ -36,7 +36,7 @@ public:
    std::string GetName();
    unsigned int GetWidth();
    unsigned int GetHeight();
-   void SetTile(int x, int y, eTileType tile);
+   void SetTile(int x, int y, TileType::TileType tile);
    Tile GetTile(int x, int y);
    void AddProp(int x, int y, std::shared_ptr<IProp> prop);
    std::shared_ptr<IProp> GetProp(int x, int y);

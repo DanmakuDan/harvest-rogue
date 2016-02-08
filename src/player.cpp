@@ -156,7 +156,7 @@ void Player::UnequipCurrentTool() {
 bool Player::IsPassable(int x, int y) {
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
    auto tile = currentLandmark->GetTile(x, y);
-   if (!TileHasSurfaceAttribute(tile, eSurfaceAttributeType::Walkable)) {
+   if (!TileHasSurfaceAttribute(tile, SurfaceAttribute::Walkable)) {
       return false;
    }
    auto prop = currentLandmark->GetProp(x, y);

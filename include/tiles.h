@@ -20,73 +20,75 @@
 #include "screen.h"
 #include "colors.h"
 
-enum eSurfaceAttributeType {
-   NoSurfaceAttributes  = 0x00,
-   Walkable             = 0x01,
-   Swimmable            = 0x02,
-   VisualObstruction    = 0x04
-};
+namespace SurfaceAttribute {
+   typedef unsigned long SurfaceAttribute;
+   const SurfaceAttribute None               = 0x0001;
+   const SurfaceAttribute Walkable           = 0x0002;
+   const SurfaceAttribute Swimmable          = 0x0004;
+   const SurfaceAttribute VisualObstruction  = 0x0008;
+}
 
 
-enum eTileType {
-   TileNothing,
-   TilePlayer,
-   
-   TileTilled,
+namespace TileType {
+   enum TileType {
+      Nothing,
+      Player,
 
-   TileGrass,
-   TileGrassTuft,
-   TileWeed,
+      Tilled,
 
-   TileStone,
-   TileBranch,
-   TileBoulder,
-   TileStump,
-   TileTree,
+      Grass,
+      GrassTuft,
+      Weed,
 
-   TileWater,
+      Stone,
+      Branch,
+      Boulder,
+      Stump,
+      Tree,
 
-   TileBrickWall,
-   TileDoor,
+      Water,
 
-   TILES_MAX
-};
+      BrickWall,
+      Door,
+
+      _MAX
+   };
+}
 
 typedef struct tile_s {
-   eTileType TileType;
+   TileType::TileType TileType;
    std::string Name;
-   eSurfaceAttributeType SurfaceAttributes;
+   SurfaceAttribute::SurfaceAttribute SurfaceAttributes;
    int ColorCode;
    char CharacterCode;
 } Tile;
 
 
 static std::vector<Tile> Tiles = {
-      {TileNothing,    "Nothing",      NoSurfaceAttributes,  CLR_RED,      'X'},
-      {TilePlayer,     "You",          NoSurfaceAttributes,  CLR_WHITE,    '@'},
+      {TileType::Nothing,    "Nothing",      SurfaceAttribute::None,                   CLR_RED,      'X'},
+      {TileType::Player,     "You",          SurfaceAttribute::None,                   CLR_WHITE,    '@'},
 
-      {TileTilled,     "Tilled Land",  Walkable,             CLR_YELLOW,   '='},
+      {TileType::Tilled,     "Tilled Land",  SurfaceAttribute::Walkable,               CLR_YELLOW,   '='},
 
-      {TileGrass,      "Grass",        Walkable,             CLR_GREEN,    '.'},
-      {TileGrassTuft,  "Grass Tuft",   Walkable,             CLR_BRGREEN,  ','},
-      {TileWeed,       "Weeds",        Walkable,             CLR_GREEN,    '"'},
+      {TileType::Grass,      "Grass",        SurfaceAttribute::Walkable,               CLR_GREEN,    '.'},
+      {TileType::GrassTuft,  "Grass Tuft",   SurfaceAttribute::Walkable,               CLR_BRGREEN,  ','},
+      {TileType::Weed,       "Weeds",        SurfaceAttribute::Walkable,               CLR_GREEN,    '"'},
 
-      {TileStone,      "Stone",        Walkable,             CLR_GRAY,     'o'},
-      {TileBranch,     "Branch",       Walkable,             CLR_YELLOW,   '-'},
-      {TileBoulder,    "Boulder",      NoSurfaceAttributes,  CLR_WHITE,    'O'},
-      {TileStump,      "Stump",        NoSurfaceAttributes,  CLR_YELLOW,   '#'},
-      {TileTree,       "Tree",         NoSurfaceAttributes,  CLR_YELLOW,   'T'},
+      {TileType::Stone,      "Stone",        SurfaceAttribute::Walkable,               CLR_GRAY,     'o'},
+      {TileType::Branch,     "Branch",       SurfaceAttribute::Walkable,               CLR_YELLOW,   '-'},
+      {TileType::Boulder,    "Boulder",      SurfaceAttribute::None,                   CLR_WHITE,    'O'},
+      {TileType::Stump,      "Stump",        SurfaceAttribute::None,                   CLR_YELLOW,   '#'},
+      {TileType::Tree,       "Tree",         SurfaceAttribute::None,                   CLR_YELLOW,   'T'},
 
-      {TileWater,      "Water",        Swimmable,            CLR_BRBLUE,   '~'},
+      {TileType::Water,      "Water",        SurfaceAttribute::Swimmable,              CLR_BRBLUE,   '~'},
 
-      {TileBrickWall,  "Brick Wall",   VisualObstruction,    CLR_BRRED,    '|'},
+      {TileType::BrickWall,  "Brick Wall",   SurfaceAttribute::VisualObstruction,      CLR_BRRED,    '|'},
 
-      {TileDoor,       "Wooden Door",  (eSurfaceAttributeType)
-                                       (VisualObstruction
-                                       | Walkable),          CLR_YELLOW,   '-'}
+      {TileType::Door,       "Wooden Door",  SurfaceAttribute::VisualObstruction |
+                                             SurfaceAttribute::Walkable,               CLR_YELLOW,   '-'}
 };
 
-static Tile FindTilebyTileType(eTileType tileType) {
+static Tile FindTilebyTileType(TileType::TileType tileType) {
    for (auto tile : Tiles) {
       if (tile.TileType == tileType) {
          return tile;
@@ -95,7 +97,7 @@ static Tile FindTilebyTileType(eTileType tileType) {
    return Tiles.front();
 }
 
-static bool TileHasSurfaceAttribute(Tile tile, eSurfaceAttributeType surfaceAttributeType) {
+static bool TileHasSurfaceAttribute(Tile tile, SurfaceAttribute::SurfaceAttribute surfaceAttributeType) {
    return ((tile.SurfaceAttributes & surfaceAttributeType) > 0);
 }
 

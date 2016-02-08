@@ -32,28 +32,28 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    for (auto y = 0; y < MAP_SIZE_WIDTH; y++) {
       for (auto x = 0; x < MAP_SIZE_HEIGHT; x++) {
          if ((x < 2) || (x >= (MAP_SIZE_WIDTH - 2)) || (y < 2) || (y >= (MAP_SIZE_HEIGHT - 2))) {
-            result->SetTile(x, y, TileWater);
+            result->SetTile(x, y, TileType::Water);
             continue;
          }
 
          int n = grassTuftDistrobution(randomGenerator);
          int permille_chance;
          if (n <= (permille_chance = 2500)) {
-            result->SetTile(x, y, TileGrassTuft);
+            result->SetTile(x, y, TileType::GrassTuft);
          } else if (n <= (permille_chance += 100)) {
-            result->SetTile(x, y, TileWeed);
+            result->SetTile(x, y, TileType::Weed);
          } else if (n <= (permille_chance += 100)) {
-            result->SetTile(x, y, TileBranch);
+            result->SetTile(x, y, TileType::Branch);
             //} else if (n <= (permille_chance += 10)) {
             //   result->SetTile(x, y, TileStone);
          } else if (n <= (permille_chance += 10)) {
-            result->SetTile(x, y, TileBoulder);
+            result->SetTile(x, y, TileType::Boulder);
          } else if (n <= (permille_chance += 5)) {
-            result->SetTile(x, y, TileStump);
+            result->SetTile(x, y, TileType::Stump);
          } else if (n <= (permille_chance += 5)) {
-            result->SetTile(x, y, TileTree);
+            result->SetTile(x, y, TileType::Tree);
          } else {
-            result->SetTile(x, y, TileGrass);
+            result->SetTile(x, y, TileType::Grass);
          }
 
       }
@@ -69,9 +69,9 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
       for (auto x = 0; x < LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH; x++) {
          if ((x == 0) || (x == LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH - 1) || (y == 0) ||
              (y == LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT - 1)) {
-            result->SetTile(cottageX + x, cottageY + y, TileBrickWall);
+            result->SetTile(cottageX + x, cottageY + y, TileType::BrickWall);
          } else {
-            result->SetTile(cottageX + x, cottageY + y, TileStone);
+            result->SetTile(cottageX + x, cottageY + y, TileType::Stone);
          }
 
       }
@@ -79,7 +79,7 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
 
    // Place a door
    result->SetTile(cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2),
-                   cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT - 1, TileDoor);
+                   cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT - 1, TileType::Door);
 
    // Set the player starting position variables
    playerX = cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2);

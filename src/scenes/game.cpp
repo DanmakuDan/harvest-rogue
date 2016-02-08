@@ -151,7 +151,7 @@ void Game::RenderMap() {
 
          if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY)) {
             // Draw the player
-            Screen::Get().WriteTile(mapX + startX, mapY + startY, FindTilebyTileType(TilePlayer));;
+            Screen::Get().WriteTile(mapX + startX, mapY + startY, FindTilebyTileType(TileType::Player));;
             continue;
          } else if (mapProp == nullptr) {
             // Draw the ground

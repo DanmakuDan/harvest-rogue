@@ -48,8 +48,8 @@ bool Hoe::IsUsable() {
    auto currentTile = landmark->GetTile(playerX, playerY);
 
    switch(currentTile.TileType) {
-      case eTileType::TileGrass:
-      case eTileType::TileGrassTuft:
+      case TileType::Grass:
+      case TileType::GrassTuft:
          return true;
       default:
          return false;
@@ -66,12 +66,12 @@ void Hoe::Use() {
    auto playerY = Player::Get().GetPositionY();
    auto currentTile = landmark->GetTile(playerX, playerY);
    switch(currentTile.TileType) {
-      case eTileType::TileGrassTuft:
-         landmark->SetTile(playerX, playerY, eTileType::TileGrass);
+      case TileType::GrassTuft:
+         landmark->SetTile(playerX, playerY, TileType::Grass);
          Player::Get().AdjustEnergy(-1);
          break;
-      case eTileType::TileGrass:
-         landmark->SetTile(playerX, playerY, eTileType::TileTilled);
+      case TileType::Grass:
+         landmark->SetTile(playerX, playerY, TileType::Tilled);
          Player::Get().AdjustEnergy(-2);
          break;
    }
