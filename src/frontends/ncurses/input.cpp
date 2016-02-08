@@ -48,6 +48,6 @@ void Input::DisableInputTimeout() {
    this->SetInputTimeout(-1);
 }
 
-Action Input::GetActionForKeyPress(int key) {
+Action::Action Input::GetActionForKeyPress(int key) {
    return this->keybinding.GetAction(key);
 }

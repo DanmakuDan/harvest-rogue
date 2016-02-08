@@ -25,28 +25,33 @@ GameMenuDialog::GameMenuDialog() {
 }
 
 void GameMenuDialog::OnKeyPress(int key) {
-   switch (key) {
-      case IK_DOWN_ARROW:
-         if (this->SelectedOption >= eGameMenuDialogOptions::eGameMenuDialogOptionsMax - 1) {
-            this->SelectedOption = (eGameMenuDialogOptions) 0;
-         } else {
-            this->SelectedOption = (eGameMenuDialogOptions) ((int) this->SelectedOption + 1);
-         }
-         break;
-      case IK_UP_ARROW:
-         if (this->SelectedOption <= (eGameMenuDialogOptions) 0) {
-            this->SelectedOption = (eGameMenuDialogOptions) ((int) eGameMenuDialogOptions::eGameMenuDialogOptionsMax - 1);
-         } else {
-            this->SelectedOption = (eGameMenuDialogOptions) ((int) this->SelectedOption - 1);
-         }
-         break;
-      case IK_RETURN_KEY:
-         ExecuteSelectedAction();
-         break;
-      case IK_ESCAPE:
-         GameState::Get().PopDialog();
-         break;
+
+   auto action = Input::Get().GetActionForKeyPress(key);
+
+   if (Action::Requested(action, Action::MenuDown)) {
+      if (this->SelectedOption >= eGameMenuDialogOptions::eGameMenuDialogOptionsMax - 1) {
+         this->SelectedOption = (eGameMenuDialogOptions) 0;
+      } else {
+         this->SelectedOption = (eGameMenuDialogOptions) ((int) this->SelectedOption + 1);
+      }
    }
+
+   if (Action::Requested(action, Action::MenuUp)) {
+      if (this->SelectedOption <= (eGameMenuDialogOptions) 0) {
+         this->SelectedOption = (eGameMenuDialogOptions) ((int) eGameMenuDialogOptions::eGameMenuDialogOptionsMax - 1);
+      } else {
+         this->SelectedOption = (eGameMenuDialogOptions) ((int) this->SelectedOption - 1);
+      }
+   }
+
+   if (Action::Requested(action, Action::MenuAccept)) {
+      ExecuteSelectedAction();
+   }
+
+   if (Action::Requested(action, Action::MenuCancel)) {
+      GameState::Get().PopDialog();
+   }
+
 }
 
 void GameMenuDialog::Render() {

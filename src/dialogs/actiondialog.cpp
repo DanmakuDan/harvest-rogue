@@ -22,27 +22,31 @@ ActionDialog::ActionDialog() {
 }
 
 void ActionDialog::OnKeyPress(int key) {
-   switch (key) {
-      case IK_DOWN_ARROW:
-         if (this->SelectedOption >= eActionDialogOptions::eActionDialogOptionsMax - 1) {
-            this->SelectedOption = (eActionDialogOptions) 0;
-         } else {
-            this->SelectedOption = (eActionDialogOptions) ((int) this->SelectedOption + 1);
-         }
-         break;
-      case IK_UP_ARROW:
-         if (this->SelectedOption <= (eActionDialogOptions) 0) {
-            this->SelectedOption = (eActionDialogOptions) ((int) eActionDialogOptions::eActionDialogOptionsMax - 1);
-         } else {
-            this->SelectedOption = (eActionDialogOptions) ((int) this->SelectedOption - 1);
-         }
-         break;
-      case IK_RETURN_KEY:
-         ExecuteSelectedAction();
-         break;
-      case IK_ESCAPE:
-         GameState::Get().PopDialog();
-         break;
+
+   auto action = Input::Get().GetActionForKeyPress(key);
+
+   if (Action::Requested(action, Action::MenuDown)) {
+      if (this->SelectedOption >= eActionDialogOptions::eActionDialogOptionsMax - 1) {
+         this->SelectedOption = (eActionDialogOptions) 0;
+      } else {
+         this->SelectedOption = (eActionDialogOptions) ((int) this->SelectedOption + 1);
+      }
+   }
+
+   if (Action::Requested(action, Action::MenuUp)) {
+      if (this->SelectedOption <= (eActionDialogOptions) 0) {
+         this->SelectedOption = (eActionDialogOptions) ((int) eActionDialogOptions::eActionDialogOptionsMax - 1);
+      } else {
+         this->SelectedOption = (eActionDialogOptions) ((int) this->SelectedOption - 1);
+      }
+   }
+
+   if (Action::Requested(action, Action::MenuAccept)) {
+      ExecuteSelectedAction();
+   }
+
+   if (Action::Requested(action, Action::MenuCancel)) {
+      GameState::Get().PopDialog();
    }
 }
 
@@ -62,7 +66,7 @@ void ActionDialog::Render() {
 }
 
 void ActionDialog::ExecuteSelectedAction() {
-   switch(this->SelectedOption) {
+   switch (this->SelectedOption) {
       case eActionDialogOptions::OptPickUp:
          Player::Get().PickUpItemFromGround();
          GameState::Get().ClearAllDialogs();

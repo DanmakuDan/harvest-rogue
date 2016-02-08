@@ -41,7 +41,7 @@ public:
 
    void DisableInputTimeout();
 
-   Action GetActionForKeyPress(int key);
+   Action::Action GetActionForKeyPress(int key);
 
 private:
    int InputTimeout;

@@ -16,33 +16,34 @@
 
 Keybinding::Keybinding() {
    // Default keybindings
-   this->keybindings['a'] = ACTION_OPEN_ACTION_LIST;
-   this->keybindings['A'] = ACTION_OPEN_ACTION_LIST;
-   this->keybindings['i'] = ACTION_OPEN_INVENTORY;
-   this->keybindings['I'] = ACTION_OPEN_INVENTORY;
+   this->keybindings['a'] = Action::OpenActionList;
+   this->keybindings['A'] = Action::OpenActionList;
+   this->keybindings['i'] = Action::OpenInventory;
+   this->keybindings['I'] = Action::OpenInventory;
 
-   this->keybindings[IK_UP_ARROW] = ACTION_MOVE_UP;
-   this->keybindings[IK_DOWN_ARROW] = ACTION_MOVE_DOWN;
-   this->keybindings[IK_LEFT_ARROW] = ACTION_MOVE_LEFT;
-   this->keybindings[IK_RIGHT_ARROW] = ACTION_MOVE_RIGHT;
-   this->keybindings[IK_RETURN_KEY] = ACTION_GAME_MENU;
-   this->keybindings[IK_SPACEBAR] = ACTION_USE_TOOL;
+   this->keybindings[IK_UP_ARROW] = Action::MoveUp | Action::MenuUp;
+   this->keybindings[IK_DOWN_ARROW] = Action::MoveDown | Action::MenuDown ;
+   this->keybindings[IK_LEFT_ARROW] = Action::MoveLeft | Action::MenuLeft ;
+   this->keybindings[IK_RIGHT_ARROW] = Action::MoveRight | Action::MenuRight ;
+   this->keybindings[IK_RETURN_KEY] = Action::GameMenu | Action::MenuAccept ;
+   this->keybindings[IK_SPACEBAR] = Action::UseTool;
+   this->keybindings[IK_ESCAPE] = Action::MenuCancel;
 
    // Vi-style movement this->keys
-   this->keybindings['j'] = ACTION_MOVE_DOWN;
-   this->keybindings['k'] = ACTION_MOVE_UP;
-   this->keybindings['l'] = ACTION_MOVE_RIGHT;
-   this->keybindings['h'] = ACTION_MOVE_LEFT;
+   this->keybindings['j'] = Action::MoveDown;
+   this->keybindings['k'] = Action::MoveUp;
+   this->keybindings['l'] = Action::MoveRight;
+   this->keybindings['h'] = Action::MoveLeft;
 }
 
 Keybinding::~Keybinding() {
 }
 
-Action Keybinding::GetAction(int key) {
+Action::Action Keybinding::GetAction(int key) {
    auto it = this->keybindings.find(key);
 
    if (it == this->keybindings.end()) {
-      return ACTION_UNASSIGNED;
+      return Action::Unassigned ;
    } else {
       return it->second;
    }

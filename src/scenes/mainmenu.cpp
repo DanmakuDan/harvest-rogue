@@ -27,36 +27,34 @@ void MainMenu::InitializeScreen() {
 }
 
 void MainMenu::OnKeyPress(int key) {
-   switch (key) {
-      case IK_DOWN_ARROW:
-      case IK_RIGHT_ARROW:
-         if (2 < ++this->SelectedButton) {
-            this->SelectedButton = 0;
-         }
-         this->DrawMenu();
-         break;
-      case IK_UP_ARROW:
-      case IK_LEFT_ARROW:
-         if (0 > --this->SelectedButton) {
-            this->SelectedButton = 2;
-         }
-         this->DrawMenu();
-         break;
-      case IK_RETURN_KEY:
-         switch (this->SelectedButton) {
-            case 0: // New Game
-               GameState::Get().InitializeNewGame();
-               GameState::Get().SetCurrentScene(Game::Construct());
-               break;
-            case 2: // Quit
-               GameState::Get().Terminate();
-               return;
-            default:
-               return;
-         }
-      default:
-         return;
+
+   auto action = Input::Get().GetActionForKeyPress(key);
+
+   if (Action::Requested(action, Action::MenuDown)) {
+      if (2 < ++this->SelectedButton) {
+         this->SelectedButton = 0;
+      }
    }
+
+   if (Action::Requested(action, Action::MenuUp)) {
+      if (0 > --this->SelectedButton) {
+         this->SelectedButton = 2;
+      }
+   }
+
+   if (Action::Requested(action, Action::MenuAccept)) {
+      switch (this->SelectedButton) {
+         case 0: // New Game
+            GameState::Get().InitializeNewGame();
+            GameState::Get().SetCurrentScene(Game::Construct());
+            break;
+         case 2: // Quit
+            GameState::Get().Terminate();
+            return;
+      }
+   }
+
+   this->Render();
 }
 
 

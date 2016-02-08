@@ -23,33 +23,45 @@
 #define IK_DOWN_ARROW  0402
 #define IK_SPACEBAR    ' '
 #ifdef WIN32
-	#define IK_RETURN_KEY  13
+#define IK_RETURN_KEY  13
 #else
-	#define IK_RETURN_KEY  10
+#define IK_RETURN_KEY  10
 #endif
 #define IK_ESCAPE      27
 
-#define ACTION_UNASSIGNED -1
-#define ACTION_MOVE_UP 0
-#define ACTION_MOVE_DOWN 1
-#define ACTION_MOVE_LEFT 2
-#define ACTION_MOVE_RIGHT 3
-#define ACTION_OPEN_INVENTORY 4
-#define ACTION_OPEN_ACTION_LIST 5
-#define ACTION_GAME_MENU 6
-#define ACTION_USE_TOOL 7
+namespace Action {
+   typedef unsigned long Action;
 
-typedef int Action;
+   const Action Unassigned     = 0x0000000;
+   const Action MoveUp         = 0x0000001;
+   const Action MoveDown       = 0x0000002;
+   const Action MoveLeft       = 0x0000004;
+   const Action MoveRight      = 0x0000008;
+   const Action OpenInventory  = 0x0000010;
+   const Action OpenActionList = 0x0000020;
+   const Action GameMenu       = 0x0000040;
+   const Action UseTool        = 0x0000080;
+   const Action MenuUp         = 0x0000100;
+   const Action MenuDown       = 0x0000200;
+   const Action MenuLeft       = 0x0000400;
+   const Action MenuRight      = 0x0000800;
+   const Action MenuAccept     = 0x0001000;
+   const Action MenuCancel     = 0x0002000;
+
+   static bool Requested(Action source, Action test) { return (source & test) > 0; }
+};
+
 
 class Keybinding {
-	public:
-		Keybinding();
-		~Keybinding();
+public:
+   Keybinding();
 
-      Action GetAction(int key);
+   ~Keybinding();
 
-   private:
-      std::map<int, Action> keybindings;
+   Action::Action GetAction(int key);
+
+private:
+   std::map<int, Action::Action> keybindings;
 };
 
 #endif // HARVEST_ROGUE_KEYBINDING_H

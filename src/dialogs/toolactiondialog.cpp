@@ -25,28 +25,34 @@ ToolActionDialog::ToolActionDialog(std::shared_ptr<ITool> tool) {
 }
 
 void ToolActionDialog::OnKeyPress(int key) {
-   switch (key) {
-      case IK_DOWN_ARROW:
-         if (this->SelectedOption >= eToolActionDialogOptions::eToolActionDialogOptionsMax - 1) {
-            this->SelectedOption = (eToolActionDialogOptions) 0;
-         } else {
-            this->SelectedOption = (eToolActionDialogOptions) ((int) this->SelectedOption + 1);
-         }
-         break;
-      case IK_UP_ARROW:
-         if (this->SelectedOption <= (eToolActionDialogOptions) 0) {
-            this->SelectedOption = (eToolActionDialogOptions) ((int) eToolActionDialogOptions::eToolActionDialogOptionsMax - 1);
-         } else {
-            this->SelectedOption = (eToolActionDialogOptions) ((int) this->SelectedOption - 1);
-         }
-         break;
-      case IK_RETURN_KEY:
-         ExecuteSelectedAction();
-         break;
-      case IK_ESCAPE:
-         GameState::Get().PopDialog();
-         break;
+
+   auto action = Input::Get().GetActionForKeyPress(key);
+
+   if (Action::Requested(action, Action::MenuDown)) {
+      if (this->SelectedOption >= eToolActionDialogOptions::eToolActionDialogOptionsMax - 1) {
+         this->SelectedOption = (eToolActionDialogOptions) 0;
+      } else {
+         this->SelectedOption = (eToolActionDialogOptions) ((int) this->SelectedOption + 1);
+      }
    }
+
+   if (Action::Requested(action, Action::MenuUp)) {
+      if (this->SelectedOption <= (eToolActionDialogOptions) 0) {
+         this->SelectedOption = (eToolActionDialogOptions)
+               ((int) eToolActionDialogOptions::eToolActionDialogOptionsMax - 1);
+      } else {
+         this->SelectedOption = (eToolActionDialogOptions) ((int) this->SelectedOption - 1);
+      }
+   }
+
+   if (Action::Requested(action, Action::MenuAccept)) {
+      ExecuteSelectedAction();
+   }
+
+   if (Action::Requested(action, Action::MenuCancel)) {
+      GameState::Get().PopDialog();
+   }
+
 }
 
 void ToolActionDialog::Render() {

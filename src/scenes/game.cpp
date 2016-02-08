@@ -38,35 +38,36 @@ void Game::OnKeyPress(int key) {
 
    auto action = Input::Get().GetActionForKeyPress(key);
 
-   switch (action) {
-      case ACTION_GAME_MENU:
-         GameState::Get().PushDialog(GameMenuDialog::Construct());
-         break;
-      case ACTION_MOVE_UP:
-         Player::Get().WalkPlayer(DirectionUp);
-         break;
-      case ACTION_MOVE_DOWN:
-         Player::Get().WalkPlayer(DirectionDown);
-         break;
-      case ACTION_MOVE_LEFT:
-         Player::Get().WalkPlayer(DirectionLeft);
-         break;
-      case ACTION_MOVE_RIGHT:
-         Player::Get().WalkPlayer(DirectionRight);
-         break;
-      case ACTION_USE_TOOL:
-         Player::Get().UseTool();
-         break;
-      case ACTION_OPEN_ACTION_LIST:
-         GameState::Get().PushDialog(ActionDialog::Construct());
-         break;
-      case ACTION_OPEN_INVENTORY:
-         GameState::Get().PushDialog(InventoryDialog::Construct());
-         break;
-      default:
-         std::stringstream invalidInputMessage;
-         invalidInputMessage << "Invalid input: '" << (char)key << "'";
-         GameState::Get().AddLogMessage(invalidInputMessage.str());
+   if (Action::Requested(action, Action::GameMenu)) {
+      GameState::Get().PushDialog(GameMenuDialog::Construct());
+   }
+
+   if (Action::Requested(action, Action::MoveUp)) {
+      Player::Get().WalkPlayer(DirectionUp);
+   }
+
+   if (Action::Requested(action, Action::MoveDown)) {
+      Player::Get().WalkPlayer(DirectionDown);
+   }
+
+   if (Action::Requested(action, Action::MoveLeft)) {
+      Player::Get().WalkPlayer(DirectionLeft);
+   }
+
+   if (Action::Requested(action, Action::MoveRight)) {
+      Player::Get().WalkPlayer(DirectionRight);
+   }
+
+   if (Action::Requested(action, Action::UseTool)) {
+      Player::Get().UseTool();
+   }
+
+   if (Action::Requested(action, Action::OpenActionList)) {
+      GameState::Get().PushDialog(ActionDialog::Construct());
+   }
+
+   if (Action::Requested(action, Action::OpenInventory)) {
+      GameState::Get().PushDialog(InventoryDialog::Construct());
    }
 
    GameState::Get().StepSimulation();
