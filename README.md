@@ -14,10 +14,13 @@ Welcome to the project page for Harvest-Rogue, a Harvest Moon-inspired roguelike
 While testing the game, pressing F12 at any time will immediately quit the game. This will remain in place during development.
 
 ## Basic Controlls
-* Press the <kbd>Enter</kbd> key to open the in-game dialog, and press buttons
-* Press arrow keys to navigate dialogs, or move on the map
+* Press <kbd>Enter</kbd> to open the main menu
+* Press arrow keys to navigate dialogs and move on the map
 * Press <kbd>F12</kbd> to immediately terminate the game at any time (temporary)
-* Press the <kbd>ESC</kbd> key to close dialogs without performing an action 
+* Press <kbd>ESC</kbd> to close dialogs without performing an action
+* Press <kbd>a</kbd> to open the actions menu directly
+* Press <kbd>i</kbd> to open the inventory menu directly
+* Press <kbd>SPACEBAR</kbd> to use the currently equipped tool
 
 ## Tasks
 The following tasks are currently being worked on:
