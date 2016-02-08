@@ -17,6 +17,7 @@
 
 #include "prop.h"
 #include "tool.h"
+#include "tiles.h"
 
 class Hoe : public IProp, public ITool {
 public:
@@ -27,9 +28,7 @@ public:
    // IProp
    virtual std::string GetName();
    virtual std::string GetDescription();
-   virtual int GetColorCode();
-   virtual char GetCharacterCode();
-   virtual bool GetIsPassable();
+   virtual TileType::TileType GetTileType();
 
    // ITool
    virtual bool IsUsable();

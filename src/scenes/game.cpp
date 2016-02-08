@@ -12,6 +12,7 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
+#include <tiles.h>
 #include "input.h"
 #include "gamestate.h"
 #include "player.h"
@@ -19,6 +20,7 @@
 #include "gamemenudialog.h"
 #include "actiondialog.h"
 #include "inventorydialog.h"
+#include "screen.h"
 
 void Game::InitializeScreen() {
    Input::Get().SetInputTimeout(50);
@@ -151,7 +153,7 @@ void Game::RenderMap() {
 
          if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY)) {
             // Draw the player
-            Screen::Get().WriteTile(mapX + startX, mapY + startY, FindTilebyTileType(TileType::Player));;
+            Screen::Get().WriteTile(mapX + startX, mapY + startY, Tile::FromTileType(TileType::Player));;
             continue;
          } else if (mapProp == nullptr) {
             // Draw the ground
@@ -160,7 +162,7 @@ void Game::RenderMap() {
             continue;
          }
 
-         Screen::Get().WriteCharacter(mapX + startX, mapY + startY, mapProp->GetCharacterCode(), mapProp->GetColorCode());
+         Screen::Get().WriteTile(mapX + startX, mapY + startY, Tile::FromTileType(mapProp->GetTileType()));
       }
    }
 }
@@ -213,7 +215,8 @@ void Game::RenderSideBar() {
       auto currentTile = currentLandmark->GetTile(Player::Get().GetPositionX(), Player::Get().GetPositionY());
       Screen::Get().WriteText(sideBarLeft + 12, 4, currentTile.Name, currentTile.ColorCode);
    } else {
-      Screen::Get().WriteText(sideBarLeft + 12, 4, currentProp->GetName(), currentProp->GetColorCode());
+      Screen::Get().WriteText(sideBarLeft + 12, 4, currentProp->GetName(),
+                              Tile::FromTileType(currentProp->GetTileType()).CharacterCode);
    }
 
    auto currentTool = Player::Get().GetCurrentTool();
@@ -225,7 +228,8 @@ void Game::RenderSideBar() {
       if (prop == nullptr) {
          Screen::Get().WriteText(sideBarLeft + 12, 5, "NOT A PROP!", CLR_RED);
       } else {
-         Screen::Get().WriteText(sideBarLeft + 12, 5, prop->GetName(), prop->GetColorCode());
+         Screen::Get().WriteText(sideBarLeft + 12, 5, prop->GetName(),
+                                 Tile::FromTileType(prop->GetTileType()).ColorCode);
       }
    }
 

@@ -49,9 +49,7 @@ public:
 
    void WriteCharacter(int x, int y, const char character, int color = CLR_WHITE);
 
-   typedef struct tile_s Tile;
-
-   void WriteTile(int x, int y, Tile tile);
+   void WriteTile(int x, int y, Tile::Tile tile);
 
    void BeginScreenUpdate();
 

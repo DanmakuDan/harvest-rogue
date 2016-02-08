@@ -37,14 +37,14 @@ public:
    unsigned int GetWidth();
    unsigned int GetHeight();
    void SetTile(int x, int y, TileType::TileType tile);
-   Tile GetTile(int x, int y);
+   Tile::Tile GetTile(int x, int y);
    void AddProp(int x, int y, std::shared_ptr<IProp> prop);
    std::shared_ptr<IProp> GetProp(int x, int y);
    void RemoveProp(int x, int y);
 private:
    Landmark(std::string name, int width, int height);
 
-   std::vector<Tile> Tiles;
+   std::vector<Tile::Tile> Tiles;
    std::string Name;
    unsigned int Width, Height;
    std::vector<LandmarkProp> Props;

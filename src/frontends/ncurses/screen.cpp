@@ -108,7 +108,7 @@ void Screen::WriteCharacter(int x, int y, const char character, int color) {
    wattroff(stdscr, COLOR_PAIR(1 + color));
 }
 
-void Screen::WriteTile(int x, int y, Tile tile) {
+void Screen::WriteTile(int x, int y, Tile::Tile tile) {
    Screen::WriteCharacter(x, y, tile.CharacterCode, tile.ColorCode);
 }
 

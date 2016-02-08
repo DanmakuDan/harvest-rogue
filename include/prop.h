@@ -17,17 +17,14 @@
 
 #include <string>
 #include <memory>
-
-#define PROP(x) dynamic_cast<shared_ptr<IProp>>
+#include "tiles.h"
 
 class IProp {
 public:
    virtual ~IProp() { }
    virtual std::string GetName() = 0;
    virtual std::string GetDescription() = 0;
-   virtual int GetColorCode() = 0;
-   virtual char GetCharacterCode() = 0;
-   virtual bool GetIsPassable() = 0;
+   virtual TileType::TileType GetTileType() = 0;
 };
 
 #endif //HARVEST_ROGUE_PROP_H

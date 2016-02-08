@@ -156,14 +156,15 @@ void Player::UnequipCurrentTool() {
 bool Player::IsPassable(int x, int y) {
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
    auto tile = currentLandmark->GetTile(x, y);
-   if (!TileHasSurfaceAttribute(tile, SurfaceAttribute::Walkable)) {
+   if (!Tile::HasSurfaceAttribute(tile, SurfaceAttribute::Walkable)) {
       return false;
    }
    auto prop = currentLandmark->GetProp(x, y);
    if (prop == nullptr) {
       return true;
    }
-   return prop->GetIsPassable();
+
+   return Tile::HasSurfaceAttribute(Tile::FromTileType(prop->GetTileType()), SurfaceAttribute::Walkable);
 }
 
 int Player::GetEnergy() {

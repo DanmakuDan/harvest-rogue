@@ -16,6 +16,7 @@
 #include "mainmenu.h"
 #include "input.h"
 #include "game.h"
+#include "screen.h"
 
 MainMenu::MainMenu() {
    this->SelectedButton = 0;

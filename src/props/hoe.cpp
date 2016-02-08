@@ -14,7 +14,6 @@
 
 #include "player.h"
 #include "hoe.h"
-#include "colors.h"
 #include "gamestate.h"
 
 Hoe::Hoe() {
@@ -27,14 +26,6 @@ std::string Hoe::GetName() {
 
 std::string Hoe::GetDescription() {
    return "A tool for tilling the ground.";
-}
-
-int Hoe::GetColorCode() {
-   return CLR_YELLOW;
-}
-
-char Hoe::GetCharacterCode() {
-   return '\\';
 }
 
 bool Hoe::IsUsable() {
@@ -78,6 +69,7 @@ void Hoe::Use() {
 
 }
 
-bool Hoe::GetIsPassable() {
-   return true;
+
+TileType::TileType Hoe::GetTileType() {
+   return TileType::Hoe;
 }

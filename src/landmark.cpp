@@ -19,7 +19,7 @@ Landmark::Landmark(std::string name, int width, int height) {
    this->Width = width;
    this->Height = height;
    for (auto i = 0; i < width * height; i++) {
-      this->Tiles.push_back(FindTilebyTileType(TileType::Nothing));
+      this->Tiles.push_back(Tile::FromTileType(TileType::Nothing));
    }
 }
 
@@ -40,10 +40,10 @@ void Landmark::SetTile(int x, int y, TileType::TileType tile) {
    if ((index < 0) || (index >= this->Tiles.size())) {
       return;
    }
-   this->Tiles.at(index) = FindTilebyTileType(tile);
+   this->Tiles.at(index) = Tile::FromTileType(tile);
 }
 
-Tile Landmark::GetTile(int x, int y) {
+Tile::Tile Landmark::GetTile(int x, int y) {
    auto index = x + (y * this->GetWidth());
    if ((index < 0) || (index >= this->Tiles.size())) {
       throw;

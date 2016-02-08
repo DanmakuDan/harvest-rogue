@@ -16,6 +16,7 @@
 #include "input.h"
 #include "player.h"
 #include "actiondialog.h"
+#include "screen.h"
 
 ActionDialog::ActionDialog() {
    this->SelectedOption = ActionDialogOption::PickUp;
