@@ -29,16 +29,41 @@ void InventoryDialog::OnKeyPress(int key) {
 
    auto action = Input::Get().GetActionForKeyPress(key);
 
-   if (Action::Requested(action, Action::MenuDown)) {
+   auto playerTotalInventoryCount = Player::Get().GetInventory().size();
 
-   }
+   if (playerTotalInventoryCount > 0) {
+      if (Action::Requested(action, Action::MenuDown)) {
+         this->SelectedInventoryItem++;
+         auto playerTotalInventoryCount = Player::Get().GetInventory().size();
+         if (this->SelectedInventoryItem >= playerTotalInventoryCount) {
+            this->SelectedInventoryItem = 0;
+            this->InventoryOffset = 0;
+         }
+      }
 
-   if (Action::Requested(action, Action::MenuUp)) {
+      if (Action::Requested(action, Action::MenuUp)) {
+         this->SelectedInventoryItem--;
 
-   }
+         if (this->SelectedInventoryItem < 0) {
+            this->SelectedInventoryItem = playerTotalInventoryCount - 1;
 
-   if (Action::Requested(action, Action::MenuAccept)) {
-      ExecuteSelectedAction();
+         }
+      }
+
+      // Ensure the inventory scrolls properly
+      if (this->SelectedInventoryItem > 2) {
+         this->InventoryOffset = this->SelectedInventoryItem - (INVENTORY_MAX_ITEMS_SHOWN / 2);
+         if (this->InventoryOffset >= (playerTotalInventoryCount - INVENTORY_MAX_ITEMS_SHOWN)) {
+            this->InventoryOffset = (playerTotalInventoryCount - INVENTORY_MAX_ITEMS_SHOWN);
+         }
+         if (this->InventoryOffset < 0) {
+            this->InventoryOffset = 0;
+         }
+      }
+
+      if (Action::Requested(action, Action::MenuAccept)) {
+         ExecuteSelectedAction();
+      }
    }
 
    if (Action::Requested(action, Action::MenuCancel)) {
@@ -59,14 +84,15 @@ void InventoryDialog::Render() {
       return;
    }
 
-   auto dialogHeight = inventoryCount + 2;
-   if (dialogHeight > 25) {
-      dialogHeight = 25;
+   auto dialogHeight = inventoryCount + 4;
+   if (dialogHeight > INVENTORY_MAX_ITEMS_SHOWN + 4) {
+      dialogHeight = INVENTORY_MAX_ITEMS_SHOWN + 4;
    }
 
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (INVENTORY_DIALOG_WIDTH / 2);
    auto dialogTop = (Screen::Get().GetHeight() / 2) - (dialogHeight / 2);
-   Screen::Get().WriteWindow(dialogLeft, dialogTop, INVENTORY_DIALOG_WIDTH, dialogHeight, "Inventory");
+   Screen::Get().WriteWindow(dialogLeft, dialogTop, INVENTORY_DIALOG_WIDTH, dialogHeight, "");
+   Screen::Get().WriteWindow(dialogLeft, dialogTop, INVENTORY_DIALOG_WIDTH, dialogHeight - 2, "Inventory");
    auto btnLeft = dialogLeft + 1;
    auto btnWidth = INVENTORY_DIALOG_WIDTH - 2;
    auto btnTop = dialogTop;
@@ -79,9 +105,17 @@ void InventoryDialog::Render() {
          break;
       }
 
+      if (i >= INVENTORY_MAX_ITEMS_SHOWN) {
+         break;
+      }
       auto prop = playerInventory.at((unsigned long)inventoryIndex);
       Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, prop->GetName(), inventoryIndex == this->SelectedInventoryItem);
+      if (inventoryIndex == this->SelectedInventoryItem) {
+         Screen::Get().WriteText(btnLeft + 1, dialogTop + dialogHeight - 2, prop->GetDescription(), CLR_MAGENTA);
+      }
    }
+
+
 
 }
 

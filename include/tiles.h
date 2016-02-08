@@ -52,6 +52,8 @@ namespace TileType {
 
       Hoe,
 
+      SeedBag,
+
       _MAX
    };
 
@@ -68,28 +70,29 @@ namespace Tile {
 
 
    static std::vector<Tile> Tiles = {
-         {TileType::Nothing,   "Nothing",     SurfaceAttribute::None,              CLR_RED,     'X'},
-         {TileType::Player,    "You",         SurfaceAttribute::None,              CLR_WHITE,   '@'},
+         {TileType::Nothing,     "Nothing",        SurfaceAttribute::None,              CLR_RED,     'X'},
+         {TileType::Player,      "You",            SurfaceAttribute::None,              CLR_WHITE,   '@'},
 
-         {TileType::Tilled,    "Tilled Land", SurfaceAttribute::Walkable,          CLR_YELLOW,  '='},
+         {TileType::Tilled,      "Tilled Land",    SurfaceAttribute::Walkable,          CLR_YELLOW,  '='},
 
-         {TileType::Grass,     "Grass",       SurfaceAttribute::Walkable,          CLR_GREEN,   '.'},
-         {TileType::GrassTuft, "Grass Tuft",  SurfaceAttribute::Walkable,          CLR_BRGREEN, ','},
-         {TileType::Weed,      "Weeds",       SurfaceAttribute::Walkable,          CLR_GREEN,   '"'},
+         {TileType::Grass,       "Grass",          SurfaceAttribute::Walkable,          CLR_GREEN,   '.'},
+         {TileType::GrassTuft,   "Grass Tuft",     SurfaceAttribute::Walkable,          CLR_BRGREEN, ','},
+         {TileType::Weed,        "Weeds",          SurfaceAttribute::Walkable,          CLR_GREEN,   '"'},
 
-         {TileType::Stone,     "Stone",       SurfaceAttribute::Walkable,          CLR_GRAY,    'o'},
-         {TileType::Branch,    "Branch",      SurfaceAttribute::Walkable,          CLR_YELLOW,  '-'},
-         {TileType::Boulder,   "Boulder",     SurfaceAttribute::None,              CLR_WHITE,   'O'},
-         {TileType::Stump,     "Stump",       SurfaceAttribute::None,              CLR_YELLOW,  '#'},
-         {TileType::Tree,      "Tree",        SurfaceAttribute::None,              CLR_YELLOW,  'T'},
+         {TileType::Stone,       "Stone",          SurfaceAttribute::Walkable,          CLR_GRAY,    'o'},
+         {TileType::Branch,      "Branch",         SurfaceAttribute::Walkable,          CLR_YELLOW,  '-'},
+         {TileType::Boulder,     "Boulder",        SurfaceAttribute::None,              CLR_WHITE,   'O'},
+         {TileType::Stump,       "Stump",          SurfaceAttribute::None,              CLR_YELLOW,  '#'},
+         {TileType::Tree,        "Tree",           SurfaceAttribute::None,              CLR_YELLOW,  'T'},
 
-         {TileType::Water,     "Water",       SurfaceAttribute::Swimmable,         CLR_BRBLUE,  '~'},
+         {TileType::Water,       "Water",          SurfaceAttribute::Swimmable,         CLR_BRBLUE,  '~'},
 
-         {TileType::BrickWall, "Brick Wall",  SurfaceAttribute::VisualObstruction, CLR_BRRED,   '|'},
+         {TileType::BrickWall,   "Brick Wall",     SurfaceAttribute::VisualObstruction, CLR_BRRED,   '|'},
 
-         {TileType::Door,      "Wooden Door", SurfaceAttribute::VisualObstruction |
-                                              SurfaceAttribute::Walkable,          CLR_YELLOW,  '-'},
-         {TileType::Hoe,       "Hoe",         SurfaceAttribute::Walkable,          CLR_YELLOW,  '\\'}
+         {TileType::Door,        "Wooden Door",    SurfaceAttribute::VisualObstruction |
+                                                   SurfaceAttribute::Walkable,          CLR_YELLOW,  '-'},
+         {TileType::Hoe,         "Hoe",            SurfaceAttribute::Walkable,          CLR_YELLOW,  '\\'},
+         {TileType::SeedBag,     "Seed bag",       SurfaceAttribute::Walkable,          CLR_WHITE,   'b'}
 
    };
 

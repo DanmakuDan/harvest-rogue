@@ -16,6 +16,7 @@
 #include "gamestate.h"
 #include "textgenerator.h"
 #include "hoe.h"
+#include "seedbag.h"
 #include <random>
 
 
@@ -87,6 +88,13 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
 
    // Add a hoe to the ground...
    result->AddProp(playerX - 3, playerY - 1, Hoe::Construct());
+
+   // And some potato seeds
+   result->AddProp(playerX - 2, playerY + 1, SeedBag::Construct(SeedType::Potato, 15));
+   result->AddProp(playerX - 1, playerY + 1, SeedBag::Construct(SeedType::Potato, 10));
+   result->AddProp(playerX    , playerY + 1, SeedBag::Construct(SeedType::Potato,  5));
+   result->AddProp(playerX + 1, playerY + 1, SeedBag::Construct(SeedType::Wheat,  15));
+   result->AddProp(playerX + 2, playerY + 1, SeedBag::Construct(SeedType::Corn,   15));
 
    return result;
 }

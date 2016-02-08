@@ -12,28 +12,23 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_INVENTORYDIALOG_H
-#define HARVEST_ROGUE_INVENTORYDIALOG_H
+#ifndef HARVEST_ROGUE_SEEDS_H
+#define HARVEST_ROGUE_SEEDS_H
 
-#include <memory>
-#include "dialog.h"
+namespace SeedType {
+   enum SeedType {
+      Corn = 0,
+      Potato,
+      Wheat
+   };
 
-#define INVENTORY_DIALOG_WIDTH      40
-#define INVENTORY_MAX_ITEMS_SHOWN   5
-class InventoryDialog : public IDialog {
-public:
-   static std::shared_ptr<InventoryDialog> Construct() {
-      return std::shared_ptr<InventoryDialog>(new InventoryDialog());
+   static std::string GetName(SeedType seedType) {
+      switch (seedType) {
+         case Corn:   return "Corn";
+         case Potato: return "Potato";
+         case Wheat:  return "Wheat";
+      }
    }
-   virtual void OnKeyPress(int key);
-   virtual void Render();
-private:
-   InventoryDialog();
-   int InventoryOffset;
-   int SelectedInventoryItem;
+}
 
-   void ExecuteSelectedAction();
-};
-
-
-#endif //HARVEST_ROGUE_INVENTORYDIALOG_H
+#endif //HARVEST_ROGUE_SEEDS_H

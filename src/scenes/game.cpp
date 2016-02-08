@@ -216,7 +216,7 @@ void Game::RenderSideBar() {
       Screen::Get().WriteText(sideBarLeft + 12, 4, currentTile.Name, currentTile.ColorCode);
    } else {
       Screen::Get().WriteText(sideBarLeft + 12, 4, currentProp->GetName(),
-                              Tile::FromTileType(currentProp->GetTileType()).CharacterCode);
+                              Tile::FromTileType(currentProp->GetTileType()).ColorCode);
    }
 
    auto currentTool = Player::Get().GetCurrentTool();
@@ -226,9 +226,9 @@ void Game::RenderSideBar() {
    } else {
       auto prop = dynamic_cast<IProp*>(currentTool.get());
       if (prop == nullptr) {
-         Screen::Get().WriteText(sideBarLeft + 12, 5, "NOT A PROP!", CLR_RED);
+         Screen::Get().WriteText(sideBarLeft + 8, 5, "NOT A PROP!", CLR_RED);
       } else {
-         Screen::Get().WriteText(sideBarLeft + 12, 5, prop->GetName(),
+         Screen::Get().WriteText(sideBarLeft + 8, 5, prop->GetName(),
                                  Tile::FromTileType(prop->GetTileType()).ColorCode);
       }
    }
