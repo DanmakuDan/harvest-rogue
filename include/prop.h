@@ -27,6 +27,7 @@ public:
    virtual std::string GetDescription() = 0;
    virtual int GetColorCode() = 0;
    virtual char GetCharacterCode() = 0;
+   virtual bool GetIsPassable() = 0;
 };
 
 #endif //HARVEST_ROGUE_PROP_H

@@ -51,6 +51,7 @@ private:
    int PositionY;
    std::shared_ptr<ITool> CurrentTool;
    std::vector<std::shared_ptr<IProp>> Inventory;
+   bool IsPassable(int x, int y);
 };
 
 #endif //HARVEST_ROGUE_PLAYER_H

@@ -76,3 +76,6 @@ void Hoe::Use() {
 
 }
 
+bool Hoe::GetIsPassable() {
+   return true;
+}

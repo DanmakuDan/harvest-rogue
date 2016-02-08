@@ -29,6 +29,7 @@ public:
    virtual std::string GetDescription();
    virtual int GetColorCode();
    virtual char GetCharacterCode();
+   virtual bool GetIsPassable();
 
    // ITool
    virtual bool IsUsable();
