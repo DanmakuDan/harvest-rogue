@@ -32,21 +32,22 @@
 namespace Action {
    typedef unsigned long Action;
 
-   const Action Unassigned     = 0x0000000;
-   const Action MoveUp         = 0x0000001;
-   const Action MoveDown       = 0x0000002;
-   const Action MoveLeft       = 0x0000004;
-   const Action MoveRight      = 0x0000008;
-   const Action OpenInventory  = 0x0000010;
-   const Action OpenActionList = 0x0000020;
-   const Action GameMenu       = 0x0000040;
-   const Action UseTool        = 0x0000080;
-   const Action MenuUp         = 0x0000100;
-   const Action MenuDown       = 0x0000200;
-   const Action MenuLeft       = 0x0000400;
-   const Action MenuRight      = 0x0000800;
-   const Action MenuAccept     = 0x0001000;
-   const Action MenuCancel     = 0x0002000;
+   const Action Unassigned           = 0x0000000;
+   const Action MoveUp               = 0x0000001;
+   const Action MoveDown             = 0x0000002;
+   const Action MoveLeft             = 0x0000004;
+   const Action MoveRight            = 0x0000008;
+   const Action OpenInventory        = 0x0000010;
+   const Action OpenActionList       = 0x0000020;
+   const Action GameMenu             = 0x0000040;
+   const Action UseTool              = 0x0000080;
+   const Action MenuUp               = 0x0000100;
+   const Action MenuDown             = 0x0000200;
+   const Action MenuLeft             = 0x0000400;
+   const Action MenuRight            = 0x0000800;
+   const Action MenuAccept           = 0x0001000;
+   const Action MenuCancel           = 0x0002000;
+   const Action PickUpItemFromGround = 0x0004000;
 
    static bool Requested(Action source, Action test) { return (source & test) > 0; }
 };

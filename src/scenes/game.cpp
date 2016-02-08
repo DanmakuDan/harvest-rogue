@@ -44,6 +44,10 @@ void Game::OnKeyPress(int key) {
       GameState::Get().PushDialog(GameMenuDialog::Construct());
    }
 
+   if (Action::Requested(action, Action::PickUpItemFromGround)) {
+      Player::Get().PickUpItemFromGround();
+   }
+
    if (Action::Requested(action, Action::MoveUp)) {
       Player::Get().WalkPlayer(DirectionUp);
    }
