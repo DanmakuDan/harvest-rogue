@@ -12,11 +12,13 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
+#include <memory>
 #include "inventorydialog.h"
 #include "screen.h"
 #include "input.h"
 #include "gamestate.h"
 #include "player.h"
+#include "toolactiondialog.h"
 
 InventoryDialog::InventoryDialog() {
    this->InventoryOffset = 0;
@@ -40,7 +42,7 @@ void InventoryDialog::OnKeyPress(int key) {
          //}
          break;
       case IK_RETURN_KEY:
-         //ExecuteSelectedAction();
+         ExecuteSelectedAction();
          break;
       case IK_ESCAPE:
          GameState::Get().PopDialog();
@@ -52,6 +54,7 @@ void InventoryDialog::Render() {
    auto inventoryCount = (int)Player::Get().GetInventory().size();
 
    if (inventoryCount == 0) {
+      this->SelectedInventoryItem = -1;
       auto dialogLeft = (Screen::Get().GetWidth() / 2) - (INVENTORY_DIALOG_WIDTH / 2);
       auto dialogTop = (Screen::Get().GetHeight() / 2) - 2;
       Screen::Get().WriteWindow(dialogLeft, dialogTop, INVENTORY_DIALOG_WIDTH, 3, "Inventory");
@@ -79,9 +82,23 @@ void InventoryDialog::Render() {
          break;
       }
 
-      auto prop = playerInventory.at(inventoryIndex);
+      auto prop = playerInventory.at((unsigned long)inventoryIndex);
       Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, prop->GetName(), inventoryIndex == this->SelectedInventoryItem);
    }
 
 }
 
+void InventoryDialog::ExecuteSelectedAction() {
+   if (this->SelectedInventoryItem == -1) {
+      return;
+   }
+   auto inventoryItem = Player::Get().GetInventory().at((unsigned long)this->InventoryOffset);
+   auto toolItem = std::dynamic_pointer_cast<ITool>(inventoryItem);
+   if (toolItem != nullptr) {
+      // Tool item
+      GameState::Get().PushDialog(ToolActionDialog::Construct(toolItem));
+      return;
+   }
+
+   // Standard prop item
+}

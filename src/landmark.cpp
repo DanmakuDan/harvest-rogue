@@ -81,5 +81,6 @@ void Landmark::RemoveProp(int x, int y) {
       }
 
       this->Props.erase(this->Props.begin() + i);
+      break;
    }
 }

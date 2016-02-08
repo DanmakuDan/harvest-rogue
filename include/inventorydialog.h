@@ -32,6 +32,7 @@ private:
    int InventoryOffset;
    int SelectedInventoryItem;
 
+   void ExecuteSelectedAction();
 };
 
 

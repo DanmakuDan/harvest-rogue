@@ -48,7 +48,7 @@ bool Hoe::IsUsable() {
    auto currentTile = landmark->GetTile(playerX, playerY);
 
    switch(currentTile.TileType) {
-      case eTileType::TileTilled:
+      case eTileType::TileGrass:
       case eTileType::TileGrassTuft:
          return true;
       default:
@@ -69,7 +69,7 @@ void Hoe::Use() {
       case eTileType::TileGrassTuft:
          landmark->SetTile(playerX, playerY, eTileType::TileGrass);
          break;
-      case eTileType::TileTilled:
+      case eTileType::TileGrass:
          landmark->SetTile(playerX, playerY, eTileType::TileTilled);
          break;
    }

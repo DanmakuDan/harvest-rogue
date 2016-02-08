@@ -12,6 +12,7 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
+#include <memory>
 #include "player.h"
 #include "gamestate.h"
 
@@ -114,4 +115,50 @@ void Player::PickUpItemFromGround() {
    this->SpawnIntoInventory(prop);
    bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
    GameState::Get().AddLogMessageFmt("You pick up %s %s.", startsWithVowel ? "an" : "a", prop->GetName().c_str());
+}
+
+void Player::EquipFromInventory(std::shared_ptr<ITool> tool) {
+   this->RemoveFromInventory(std::dynamic_pointer_cast<IProp>(tool));
+   this->CurrentTool = std::shared_ptr<ITool>(tool);
+}
+
+void Player::DropInventoryItemOnGround(std::shared_ptr<IProp> prop) {
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   this->RemoveFromInventory(prop);
+   currentLandmark->AddProp(this->GetPositionX(), this->GetPositionY(), prop);
+}
+
+void Player::RemoveFromInventory(std::shared_ptr<IProp> prop) {
+   auto i = 0;
+   for (auto invProp : this->Inventory) {
+      if (invProp != prop) {
+         i++;
+         continue;
+      }
+
+      this->Inventory.erase(this->Inventory.begin() + i);
+      break;
+   }
+}
+
+void Player::UseTool() {
+   if(this->CurrentTool == nullptr) {
+      GameState::Get().AddLogMessage("You do not currently have a tool equipped!");
+      return;
+   }
+   if (!this->CurrentTool->IsUsable()) {
+      auto prop = std::dynamic_pointer_cast<IProp>(this->CurrentTool);
+
+      GameState::Get().AddLogMessageFmt("The %s is not usable at this time.", prop->GetName().c_str());
+   }
+   this->CurrentTool->Use();
+}
+
+void Player::UnequipCurrentTool() {
+   if (this->CurrentTool == nullptr) {
+      GameState::Get().AddLogMessage("You do not currently have a tool equipped!");
+      return;
+   }
+   this->SpawnIntoInventory(std::dynamic_pointer_cast<IProp>(this->CurrentTool));
+   this->CurrentTool = nullptr;
 }

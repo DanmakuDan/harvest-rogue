@@ -39,7 +39,7 @@ void Game::OnKeyPress(int key) {
 
    switch (key) {
       case IK_RETURN_KEY:
-      GameState::Get().PushDialog(GameMenuDialog::Construct());
+         GameState::Get().PushDialog(GameMenuDialog::Construct());
          break;
       case IK_UP_ARROW:
          Player::Get().WalkPlayer(DirectionUp);
@@ -52,6 +52,9 @@ void Game::OnKeyPress(int key) {
          break;
       case IK_RIGHT_ARROW:
          Player::Get().WalkPlayer(DirectionRight);
+         break;
+      case IK_SPACEBAR:
+         Player::Get().UseTool();
          break;
       case 'a':
       case 'A':

@@ -56,6 +56,8 @@ void ActionDialog::Render() {
    auto btnTop = dialogTop;
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Pick up",
                              this->SelectedOption == eActionDialogOptions::OptPickUp);
+   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Unequip Tool",
+                             this->SelectedOption == eActionDialogOptions::OptUnequip);
 
 }
 
@@ -63,6 +65,10 @@ void ActionDialog::ExecuteSelectedAction() {
    switch(this->SelectedOption) {
       case eActionDialogOptions::OptPickUp:
          Player::Get().PickUpItemFromGround();
+         GameState::Get().ClearAllDialogs();
+         break;
+      case eActionDialogOptions::OptUnequip:
+         Player::Get().UnequipCurrentTool();
          GameState::Get().ClearAllDialogs();
          break;
    }

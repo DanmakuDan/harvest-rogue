@@ -12,33 +12,35 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_ACTIONDIALOG_H
-#define HARVEST_ROGUE_ACTIONDIALOG_H
+#ifndef HARVEST_ROGUE_TOOLACTIONDIALOG_H
+#define HARVEST_ROGUE_TOOLACTIONDIALOG_H
 
 #include <memory>
 #include "dialog.h"
+#include "tool.h"
 
-#define ACTION_DIALOG_WIDTH  20
-#define ACTION_DIALOG_HEIGHT 5
+#define TOOLACTIN_DIALOG_WIDTH  35
 
-enum eActionDialogOptions {
-   OptPickUp = 0,
-   OptUnequip,
-   eActionDialogOptionsMax
+enum eToolActionDialogOptions {
+   OptEquipTool = 0,
+   OptDropTool,
+   eToolActionDialogOptionsMax
 };
 
-class ActionDialog : public IDialog {
+class ToolActionDialog : public IDialog {
 public:
-   static std::shared_ptr<ActionDialog> Construct() {
-      return std::shared_ptr<ActionDialog>(new ActionDialog());
+   static std::shared_ptr<ToolActionDialog> Construct(std::shared_ptr<ITool> tool) {
+      return std::shared_ptr<ToolActionDialog>(new ToolActionDialog(tool));
    }
    virtual void OnKeyPress(int key);
    virtual void Render();
 private:
-   ActionDialog();
-   eActionDialogOptions SelectedOption;
+   ToolActionDialog(std::shared_ptr<ITool> tool);
+   std::shared_ptr<ITool> Tool;
+   eToolActionDialogOptions SelectedOption;
+
    void ExecuteSelectedAction();
 };
 
 
-#endif //HARVEST_ROGUE_ACTIONDIALOG_H
+#endif //HARVEST_ROGUE_TOOLACTIONDIALOG_H
