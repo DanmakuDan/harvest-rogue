@@ -112,4 +112,6 @@ void Player::PickUpItemFromGround() {
 
    currentLandmark->RemoveProp(this->GetPositionX(), this->GetPositionY());
    this->SpawnIntoInventory(prop);
+   bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
+   GameState::Get().AddLogMessageFmt("You pick up %s %s.", startsWithVowel ? "an" : "a", prop->GetName().c_str());
 }

@@ -18,7 +18,7 @@
 #include "gamestate.h"
 #include "mainmenu.h"
 #include "actiondialog.h"
-
+#include "inventorydialog.h"
 
 GameMenuDialog::GameMenuDialog() {
    this->SelectedOption = eGameMenuDialogOptions::OptStatus;
@@ -73,6 +73,9 @@ void GameMenuDialog::ExecuteSelectedAction() {
    switch (this->SelectedOption) {
       case eGameMenuDialogOptions::OptActions:
          GameState::Get().PushDialog(ActionDialog::Construct());
+         break;
+      case eGameMenuDialogOptions::OptInventory:
+         GameState::Get().PushDialog(InventoryDialog::Construct());
          break;
       case eGameMenuDialogOptions::OptQuit:
          GameState::Get().SetCurrentScene(MainMenu::Construct());

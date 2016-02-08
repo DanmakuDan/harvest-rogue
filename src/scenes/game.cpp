@@ -18,6 +18,7 @@
 #include "game.h"
 #include "gamemenudialog.h"
 #include "actiondialog.h"
+#include "inventorydialog.h"
 
 void Game::InitializeScreen() {
    Input::Get().SetInputTimeout(50);
@@ -55,6 +56,10 @@ void Game::OnKeyPress(int key) {
       case 'a':
       case 'A':
          GameState::Get().PushDialog(ActionDialog::Construct());
+         break;
+      case 'i':
+      case 'I':
+         GameState::Get().PushDialog(InventoryDialog::Construct());
          break;
    }
 
