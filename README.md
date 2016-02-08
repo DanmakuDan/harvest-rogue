@@ -7,7 +7,7 @@ The graphical front-end will begin development next week, but until then, we nee
 [![Build Status](https://travis-ci.org/essial/harvest-rogue.svg?branch=master)](https://travis-ci.org/essial/harvest-rogue)
 
 ![Title](http://i.imgur.com/IfmnANS.png) 
-![Gameplay](http://i.imgur.com/U9s5tgs.png)
+![Gameplay](http://i.imgur.com/OPFYIPP.png)
 
 Welcome to the project page for Harvest-Rogue, a Harvest Moon-inspired roguelike! This project is very early in development, so check back often for updates!
 
