@@ -93,6 +93,8 @@ public:
 
    void PushDialog(std::shared_ptr<IDialog> dialog);
 
+   void ClearAllDialogs();
+
    void PopDialog();
 
 private:

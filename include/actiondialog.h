@@ -12,37 +12,32 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_GAMEMENUDIALOG_H
-#define HARVEST_ROGUE_GAMEMENUDIALOG_H
+#ifndef HARVEST_ROGUE_ACTIONDIALOG_H
+#define HARVEST_ROGUE_ACTIONDIALOG_H
 
-#include "dialog.h"
 #include <memory>
+#include "dialog.h"
 
-#define GAMEMENU_DIALOG_WIDTH  30
-#define GAMEMENU_DIALOG_HEIGHT 7
+#define ACTION_DIALOG_WIDTH  20
+#define ACTION_DIALOG_HEIGHT 5
 
-enum eGameMenuDialogOptions {
-   OptStatus = 0,
-   OptInventory,
-   OptActions,
-   OptSaveGame,
-   OptQuit,
-   eGameMenuDialogOptionsMax
+enum eActionDialogOptions {
+   OptPickUp = 0,
+   eActionDialogOptionsMax
 };
 
-
-class GameMenuDialog : public IDialog {
+class ActionDialog : public IDialog {
 public:
-   static std::shared_ptr<GameMenuDialog> Construct() {
-      return std::shared_ptr<GameMenuDialog>(new GameMenuDialog());
+   static std::shared_ptr<ActionDialog> Construct() {
+      return std::shared_ptr<ActionDialog>(new ActionDialog());
    }
    virtual void OnKeyPress(int key);
    virtual void Render();
 private:
-   GameMenuDialog();
-   eGameMenuDialogOptions SelectedOption;
+   ActionDialog();
+   eActionDialogOptions SelectedOption;
    void ExecuteSelectedAction();
 };
 
 
-#endif //HARVEST_ROGUE_GAMEMENUDIALOG_H
+#endif //HARVEST_ROGUE_ACTIONDIALOG_H

@@ -194,3 +194,7 @@ void GameState::PopDialog() {
    }
    this->DialogStack.pop_back();
 }
+
+void GameState::ClearAllDialogs() {
+   this->DialogStack.clear();
+}

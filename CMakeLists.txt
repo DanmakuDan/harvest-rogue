@@ -11,7 +11,6 @@
 # You should have received a copy of the GNU General Public License
 # along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.
 
-
 cmake_minimum_required(VERSION 2.8.7)
 project(harvest_rogue)
 

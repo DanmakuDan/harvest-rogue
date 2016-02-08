@@ -101,3 +101,15 @@ std::vector<std::shared_ptr<IProp>> Player::GetInventory() {
 void Player::SpawnIntoInventory(std::shared_ptr<IProp> prop) {
    this->Inventory.push_back(std::shared_ptr<IProp>(prop));
 }
+
+void Player::PickUpItemFromGround() {
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   auto prop = currentLandmark->GetProp(this->GetPositionX(), this->GetPositionY());
+   if (prop == nullptr) {
+      GameState::Get().AddLogMessage("There is nothing on the ground to pick up.");
+      return;
+   }
+
+   currentLandmark->RemoveProp(this->GetPositionX(), this->GetPositionY());
+   this->SpawnIntoInventory(prop);
+}

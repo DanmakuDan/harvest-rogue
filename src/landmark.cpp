@@ -70,3 +70,16 @@ std::shared_ptr<IProp> Landmark::GetProp(int x, int y) {
 
    return nullptr;
 }
+
+void Landmark::RemoveProp(int x, int y) {
+
+   auto i = 0;
+   for (auto prop : this->Props) {
+      if (prop.x != x || prop.y != y) {
+         i++;
+         continue;
+      }
+
+      this->Props.erase(this->Props.begin() + i);
+   }
+}

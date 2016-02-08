@@ -40,6 +40,7 @@ public:
    std::shared_ptr<ITool> GetCurrentTool();
    std::vector<std::shared_ptr<IProp>> GetInventory();
    void SpawnIntoInventory(std::shared_ptr<IProp> prop);
+   void PickUpItemFromGround();
 private:
    int PositionX;
    int PositionY;

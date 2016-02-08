@@ -17,6 +17,7 @@
 #include "screen.h"
 #include "gamestate.h"
 #include "mainmenu.h"
+#include "actiondialog.h"
 
 
 GameMenuDialog::GameMenuDialog() {
@@ -26,7 +27,7 @@ GameMenuDialog::GameMenuDialog() {
 void GameMenuDialog::OnKeyPress(int key) {
    switch (key) {
       case IK_DOWN_ARROW:
-         if (this->SelectedOption >= eGameMenuDialogOptions::OPT_MAX - 1) {
+         if (this->SelectedOption >= eGameMenuDialogOptions::eGameMenuDialogOptionsMax - 1) {
             this->SelectedOption = (eGameMenuDialogOptions) 0;
          } else {
             this->SelectedOption = (eGameMenuDialogOptions) ((int) this->SelectedOption + 1);
@@ -34,7 +35,7 @@ void GameMenuDialog::OnKeyPress(int key) {
          break;
       case IK_UP_ARROW:
          if (this->SelectedOption <= (eGameMenuDialogOptions) 0) {
-            this->SelectedOption = (eGameMenuDialogOptions) ((int) eGameMenuDialogOptions::OPT_MAX - 1);
+            this->SelectedOption = (eGameMenuDialogOptions) ((int) eGameMenuDialogOptions::eGameMenuDialogOptionsMax - 1);
          } else {
             this->SelectedOption = (eGameMenuDialogOptions) ((int) this->SelectedOption - 1);
          }
@@ -70,6 +71,9 @@ void GameMenuDialog::Render() {
 
 void GameMenuDialog::ExecuteSelectedAction() {
    switch (this->SelectedOption) {
+      case eGameMenuDialogOptions::OptActions:
+         GameState::Get().PushDialog(ActionDialog::Construct());
+         break;
       case eGameMenuDialogOptions::OptQuit:
          GameState::Get().SetCurrentScene(MainMenu::Construct());
          break;
