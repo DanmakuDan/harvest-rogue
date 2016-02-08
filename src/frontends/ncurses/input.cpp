@@ -16,6 +16,9 @@
 #include <curses.h>
 
 Input::Input() {
+   // TODO: How will a user's custom keybinding be loaded? External to this class or here?
+   this->keybinding = Keybinding();
+
    this->InputTimeout = -1;
    notimeout(stdscr, TRUE);
 #ifndef PDCURSES
@@ -43,4 +46,8 @@ int Input::GetInputTimeout() {
 
 void Input::DisableInputTimeout() {
    this->SetInputTimeout(-1);
+}
+
+Action Input::GetActionForKeyPress(int key) {
+   return this->keybinding.GetAction(key);
 }

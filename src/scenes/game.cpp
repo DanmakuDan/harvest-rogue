@@ -36,34 +36,37 @@ void Game::OnKeyPress(int key) {
       return;
    }
 
+   auto action = Input::Get().GetActionForKeyPress(key);
 
-   switch (key) {
-      case IK_RETURN_KEY:
+   switch (action) {
+      case ACTION_GAME_MENU:
          GameState::Get().PushDialog(GameMenuDialog::Construct());
          break;
-      case IK_UP_ARROW:
+      case ACTION_MOVE_UP:
          Player::Get().WalkPlayer(DirectionUp);
          break;
-      case IK_DOWN_ARROW:
+      case ACTION_MOVE_DOWN:
          Player::Get().WalkPlayer(DirectionDown);
          break;
-      case IK_LEFT_ARROW:
+      case ACTION_MOVE_LEFT:
          Player::Get().WalkPlayer(DirectionLeft);
          break;
-      case IK_RIGHT_ARROW:
+      case ACTION_MOVE_RIGHT:
          Player::Get().WalkPlayer(DirectionRight);
          break;
-      case IK_SPACEBAR:
+      case ACTION_USE_TOOL:
          Player::Get().UseTool();
          break;
-      case 'a':
-      case 'A':
+      case ACTION_OPEN_ACTION_LIST:
          GameState::Get().PushDialog(ActionDialog::Construct());
          break;
-      case 'i':
-      case 'I':
+      case ACTION_OPEN_INVENTORY:
          GameState::Get().PushDialog(InventoryDialog::Construct());
          break;
+      default:
+         std::stringstream invalidInputMessage;
+         invalidInputMessage << "Invalid input: '" << (char)key << "'";
+         GameState::Get().AddLogMessage(invalidInputMessage.str());
    }
 
    GameState::Get().StepSimulation();
