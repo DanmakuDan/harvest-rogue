@@ -172,7 +172,7 @@ std::shared_ptr<Landmark> GameState::GetCurrentLandmark() {
       return nullptr;
    }
 
-   return std::shared_ptr<Landmark>(this->Landmarks.at(this->CurrentLandmarkIndex));
+   return std::shared_ptr<Landmark>(this->Landmarks[this->CurrentLandmarkIndex]);
 
 
 }

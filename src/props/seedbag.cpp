@@ -75,3 +75,7 @@ void SeedBag::Use() {
    }
    this->NumberOfSeeds--;
 }
+
+bool SeedBag::Takeable() {
+   return true;
+}

@@ -50,8 +50,11 @@ namespace TileType {
       BrickWall,
       Door,
 
+      // Tools
       Hoe,
+      Axe,
 
+      // Items
       SeedBag,
 
       _MAX
@@ -92,7 +95,9 @@ namespace Tile {
          {TileType::Door,        "Wooden Door",    SurfaceAttribute::VisualObstruction |
                                                    SurfaceAttribute::Walkable,          CLR_YELLOW,  '-'},
          {TileType::Hoe,         "Hoe",            SurfaceAttribute::Walkable,          CLR_YELLOW,  '\\'},
+         {TileType::Axe,         "Axe",            SurfaceAttribute::Walkable,          CLR_WHITE,   'P'},
          {TileType::SeedBag,     "Seed bag",       SurfaceAttribute::Walkable,          CLR_WHITE,   'b'}
+
 
    };
 

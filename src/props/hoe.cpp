@@ -25,7 +25,7 @@ std::string Hoe::GetName() {
 }
 
 std::string Hoe::GetDescription() {
-   return "A tool for tilling the ground.";
+   return "A tool for tilling the ground";
 }
 
 bool Hoe::IsUsable() {
@@ -72,4 +72,8 @@ void Hoe::Use() {
 
 TileType::TileType Hoe::GetTileType() {
    return TileType::Hoe;
+}
+
+bool Hoe::Takeable() {
+   return true;
 }

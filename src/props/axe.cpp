@@ -12,20 +12,32 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_PROP_H
-#define HARVEST_ROGUE_PROP_H
+#include "axe.h"
 
-#include <string>
-#include <memory>
-#include "tiles.h"
+Axe::Axe() {
 
-class IProp {
-public:
-   virtual ~IProp() { }
-   virtual std::string GetName() = 0;
-   virtual std::string GetDescription() = 0;
-   virtual TileType::TileType GetTileType() = 0;
-   virtual bool Takeable() = 0;
-};
+}
 
-#endif //HARVEST_ROGUE_PROP_H
+std::string Axe::GetName() {
+   return "Hand Axe";
+}
+
+std::string Axe::GetDescription() {
+   return "A tool for chopping wood";
+}
+
+TileType::TileType Axe::GetTileType() {
+   return TileType::Axe;
+}
+
+bool Axe::Takeable() {
+   return true;
+}
+
+bool Axe::IsUsable() {
+   return true;
+}
+
+void Axe::Use() {
+
+}

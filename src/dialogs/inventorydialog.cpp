@@ -111,7 +111,7 @@ void InventoryDialog::Render() {
       if (i >= INVENTORY_MAX_ITEMS_SHOWN) {
          break;
       }
-      auto prop = playerInventory.at((unsigned long)inventoryIndex);
+      auto prop = playerInventory[inventoryIndex];
       Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, prop->GetName(), inventoryIndex == this->SelectedInventoryItem);
 
       if (inventoryIndex == this->SelectedInventoryItem) {
@@ -127,7 +127,7 @@ void InventoryDialog::ExecuteSelectedAction() {
    if (this->SelectedInventoryItem == -1) {
       return;
    }
-   auto inventoryItem = Player::Get().GetInventory().at((unsigned long)this->InventoryOffset);
+   auto inventoryItem = std::shared_ptr<IProp>(Player::Get().GetInventory()[this->SelectedInventoryItem]);
    auto toolItem = std::dynamic_pointer_cast<ITool>(inventoryItem);
    if (toolItem != nullptr) {
       // Tool item

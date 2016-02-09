@@ -179,7 +179,7 @@ void Game::RenderLog() {
 
    for (auto i = 0; (i < 6) && ((startIndex + i) < logMessageCount); i++) {
       Screen::Get().ClearLine(logMessageOutputTop + i, CLR_CYAN);
-      Screen::Get().WriteText(1, logMessageOutputTop + i, logMessages.at(startIndex + i), CLR_CYAN);
+      Screen::Get().WriteText(1, logMessageOutputTop + i, logMessages[startIndex + i], CLR_CYAN);
    }
 }
 

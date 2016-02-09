@@ -29,6 +29,7 @@ public:
    virtual std::string GetName();
    virtual std::string GetDescription();
    virtual TileType::TileType GetTileType();
+   virtual bool Takeable();
 
    // ITool
    virtual bool IsUsable();

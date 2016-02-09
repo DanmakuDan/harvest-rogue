@@ -40,7 +40,7 @@ void Landmark::SetTile(int x, int y, TileType::TileType tile) {
    if ((index < 0) || (index >= this->Tiles.size())) {
       return;
    }
-   this->Tiles.at(index) = Tile::FromTileType(tile);
+   this->Tiles[index] = Tile::FromTileType(tile);
 }
 
 Tile::Tile Landmark::GetTile(int x, int y) {
@@ -48,7 +48,7 @@ Tile::Tile Landmark::GetTile(int x, int y) {
    if ((index < 0) || (index >= this->Tiles.size())) {
       throw;
    }
-   return this->Tiles.at(index);
+   return this->Tiles[index];
 }
 
 void Landmark::AddProp(int x, int y, std::shared_ptr<IProp> prop) {

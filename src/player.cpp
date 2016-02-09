@@ -24,10 +24,6 @@ Player::~Player() {
 
 }
 
-void Player::Reset() {
-   this->WarpPlayer(0, 0);
-}
-
 int Player::GetPositionX() {
    return this->PositionX;
 }
@@ -96,8 +92,14 @@ void Player::SpawnIntoInventory(std::shared_ptr<IProp> prop) {
 void Player::PickUpItemFromGround() {
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
    auto prop = currentLandmark->GetProp(this->GetPositionX(), this->GetPositionY());
+
    if (prop == nullptr) {
       GameState::Get().AddLogMessage("There is nothing on the ground to pick up.");
+      return;
+   }
+
+   if (!prop->Takeable()) {
+      GameState::Get().AddLogMessageFmt("You cannot pick the %s up.", prop->GetName());
       return;
    }
 
@@ -108,6 +110,10 @@ void Player::PickUpItemFromGround() {
 }
 
 void Player::EquipFromInventory(std::shared_ptr<ITool> tool) {
+   if (this->GetCurrentTool() != nullptr) {
+      Player::Get().UnequipCurrentTool();
+   }
+
    this->RemoveFromInventory(std::dynamic_pointer_cast<IProp>(tool));
    this->CurrentTool = std::shared_ptr<ITool>(tool);
 }

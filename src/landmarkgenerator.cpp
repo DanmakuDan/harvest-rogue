@@ -18,6 +18,7 @@
 #include "hoe.h"
 #include "seedbag.h"
 #include <random>
+#include "axe.h"
 
 
 static std::random_device randomDevice;
@@ -86,8 +87,9 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    playerX = cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2);
    playerY = cottageY + (LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT / 2);
 
-   // Add a hoe to the ground...
+   // Add tools to the ground...
    result->AddProp(playerX - 3, playerY - 1, Hoe::Construct());
+   result->AddProp(playerX - 2, playerY - 1, Axe::Construct());
 
    // And some potato seeds
    result->AddProp(playerX - 2, playerY + 1, SeedBag::Construct(SeedType::Potato, 15));
