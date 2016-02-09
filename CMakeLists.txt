@@ -42,7 +42,15 @@ ELSE()
    find_package(Curses REQUIRED)
 ENDIF()
 		
-add_executable(harvest_rogue ${SOURCE_FILES} ${SOURCE_SCENE_FILES} ${SOURCE_DIALOG_FILES} ${SOURCE_PROP_FILES} ${SOURCE_NCURSES_FILES} ${HEADER_FILES} ${SOURCE_WIN32_PDCURSES_FILES})
+add_executable(harvest_rogue
+     ${SOURCE_FILES}
+     ${SOURCE_SCENE_FILES}
+     ${SOURCE_DIALOG_FILES}
+     ${SOURCE_PROP_FILES}
+     ${SOURCE_NCURSES_FILES}
+     ${HEADER_FILES}
+     ${SOURCE_WIN32_PDCURSES_FILES}
+)
 target_link_libraries(harvest_rogue ${CURSES_LIBRARIES})
 
 IF(WIN32)

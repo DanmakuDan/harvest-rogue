@@ -15,11 +15,13 @@
 #ifndef HARVEST_ROGUE_DIRECTION_H
 #define HARVEST_ROGUE_DIRECTION_H
 
-enum eDirection {
-   DirectionUp,
-   DirectionDown,
-   DirectionLeft,
-   DirectionRight
-};
+namespace Direction {
+   enum Direction {
+      Up,
+      Down,
+      Left,
+      Right
+   };
+}
 
 #endif //HARVEST_ROGUE_DIRECTION_H

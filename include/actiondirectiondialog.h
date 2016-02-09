@@ -12,29 +12,28 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_INVENTORYDIALOG_H
-#define HARVEST_ROGUE_INVENTORYDIALOG_H
 
-#include <memory>
+#ifndef HARVEST_ROGUE_ACTIONDIRECTIONDIALOG_H
+#define HARVEST_ROGUE_ACTIONDIRECTIONDIALOG_H
+
 #include "dialog.h"
+#include "directionaltool.h"
+#include <memory>
 
-#define INVENTORY_DIALOG_WIDTH      40
-#define INVENTORY_MAX_ITEMS_SHOWN   5
+#define ACTION_DIALOG_WIDTH      30
+#define ACTION_DIALOG_HEIGHT      3
 
-class InventoryDialog : public IDialog {
+class ActionDirectionDialog : public IDialog {
 public:
-   static std::shared_ptr<InventoryDialog> Construct() {
-      return std::shared_ptr<InventoryDialog>(new InventoryDialog());
+   static std::shared_ptr<ActionDirectionDialog> Construct(std::shared_ptr<IDirectionalTool> targetTool) {
+      return std::shared_ptr<ActionDirectionDialog>(new ActionDirectionDialog(targetTool));
    }
    virtual void OnKeyPress(int key);
    virtual void Render();
 private:
-   InventoryDialog();
-   int InventoryOffset;
-   int SelectedInventoryItem;
-
-   void ExecuteSelectedAction();
+   ActionDirectionDialog(std::shared_ptr<IDirectionalTool> targetTool);
+   std::shared_ptr<IDirectionalTool> TargetTool;
 };
 
 
-#endif //HARVEST_ROGUE_INVENTORYDIALOG_H
+#endif //HARVEST_ROGUE_ACTIONDIRECTIONDIALOG_H

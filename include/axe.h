@@ -17,8 +17,10 @@
 #include "prop.h"
 #include "tool.h"
 #include "tiles.h"
+#include "directionaltool.h"
 
-class Axe : public IProp, public ITool {
+class Axe : public IProp, public ITool, public IDirectionalTool,
+      public std::enable_shared_from_this<Axe> {
 public:
    static std::shared_ptr<Axe> Construct() {
       return std::shared_ptr<Axe>(new Axe());
@@ -33,6 +35,9 @@ public:
    // ITool
    virtual bool IsUsable();
    virtual void Use();
+
+   // IDirectionalTool
+   virtual void Use(Direction::Direction direction);
 
 private:
    Axe();

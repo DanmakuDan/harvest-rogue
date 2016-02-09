@@ -12,38 +12,14 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#include "axe.h"
-#include "gamestate.h"
-#include "actiondirectiondialog.h"
+#ifndef HARVEST_ROGUE_DIRECTIONALACTION_H
+#define HARVEST_ROGUE_DIRECTIONALACTION_H
 
-Axe::Axe() {
+#include "direction.h"
 
-}
+class IDirectionalTool {
+public:
+   virtual void Use(Direction::Direction direction) = 0;
+};
 
-std::string Axe::GetName() {
-   return "Hand Axe";
-}
-
-std::string Axe::GetDescription() {
-   return "A tool for chopping wood";
-}
-
-TileType::TileType Axe::GetTileType() {
-   return TileType::Axe;
-}
-
-bool Axe::Takeable() {
-   return true;
-}
-
-bool Axe::IsUsable() {
-   return true;
-}
-
-void Axe::Use() {
-   GameState::Get().PushDialog(ActionDirectionDialog::Construct(this->shared_from_this()));
-}
-
-void Axe::Use(Direction::Direction direction) {
-   GameState::Get().AddLogMessage("Chopping stuff!");
-}
+#endif //HARVEST_ROGUE_DIRECTIONALACTION_H

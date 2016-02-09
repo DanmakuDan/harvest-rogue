@@ -42,7 +42,7 @@ public:
    int GetPositionX();
    int GetPositionY();
    void WarpPlayer(int x, int y);
-   void WalkPlayer(eDirection direction);
+   void WalkPlayer(Direction::Direction direction);
    std::shared_ptr<ITool> GetCurrentTool();
    std::vector<std::shared_ptr<IProp>> GetInventory();
    void SpawnIntoInventory(std::shared_ptr<IProp> prop);

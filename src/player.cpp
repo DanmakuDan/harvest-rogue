@@ -37,32 +37,32 @@ void Player::WarpPlayer(int x, int y) {
    this->PositionY = y;
 }
 
-void Player::WalkPlayer(eDirection direction) {
+void Player::WalkPlayer(Direction::Direction direction) {
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
    auto newX = 0, newY = 0;
    switch (direction) {
-      case DirectionUp:
+      case Direction::Up:
          if (this->PositionX == 0)
             return;
          newX = this->GetPositionX();
          newY = this->GetPositionY() - 1;
          break;
 
-      case DirectionDown:
+      case Direction::Down:
          if (this->PositionY == (currentLandmark->GetHeight() - 1))
             return;
          newX = this->GetPositionX();
          newY = this->GetPositionY() + 1;
          break;
 
-      case DirectionLeft:
+      case Direction::Left:
          if (this->PositionX == 0)
             return;
          newX = this->GetPositionX() - 1;
          newY = this->GetPositionY();
          break;
 
-      case DirectionRight:
+      case Direction::Right:
          if (this->PositionX == (currentLandmark->GetWidth() - 1))
             return;
          newX = this->GetPositionX() + 1;
@@ -144,9 +144,8 @@ void Player::UseTool() {
    }
    if (!this->CurrentTool->IsUsable()) {
       return;
-      //auto prop = std::dynamic_pointer_cast<IProp>(this->CurrentTool);
-      //GameState::Get().AddLogMessageFmt("The %s is not usable at this time.", prop->GetName().c_str());
    }
+
    this->CurrentTool->Use();
 }
 

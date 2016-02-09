@@ -49,19 +49,19 @@ void Game::OnKeyPress(int key) {
    }
 
    if (Action::Requested(action, Action::MoveUp)) {
-      Player::Get().WalkPlayer(DirectionUp);
+      Player::Get().WalkPlayer(Direction::Up);
    }
 
    if (Action::Requested(action, Action::MoveDown)) {
-      Player::Get().WalkPlayer(DirectionDown);
+      Player::Get().WalkPlayer(Direction::Down);
    }
 
    if (Action::Requested(action, Action::MoveLeft)) {
-      Player::Get().WalkPlayer(DirectionLeft);
+      Player::Get().WalkPlayer(Direction::Left);
    }
 
    if (Action::Requested(action, Action::MoveRight)) {
-      Player::Get().WalkPlayer(DirectionRight);
+      Player::Get().WalkPlayer(Direction::Right);
    }
 
    if (Action::Requested(action, Action::UseTool)) {
@@ -228,7 +228,7 @@ void Game::RenderSideBar() {
    if (currentTool == nullptr) {
       Screen::Get().WriteText(sideBarLeft + 8, 5, "Nothing", CLR_GRAY);
    } else {
-      auto prop = dynamic_cast<IProp*>(currentTool.get());
+      auto prop = std::dynamic_pointer_cast<IProp>(currentTool);
       if (prop == nullptr) {
          Screen::Get().WriteText(sideBarLeft + 8, 5, "NOT A PROP!", CLR_RED);
       } else {
