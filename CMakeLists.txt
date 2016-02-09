@@ -30,7 +30,13 @@ file(GLOB SOURCE_PROP_FILES "${harvest_rogue_SOURCE_DIR}/src/props/*.cpp")
 file(GLOB SOURCE_NCURSES_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/ncurses/*.cpp")
    source_group(ncurses FILES ${SOURCE_NCURSES_FILES})
 
-file(GLOB HEADER_FILES "${harvest_rogue_SOURCE_DIR}/include/*.h")
+file(GLOB HEADER_FILES
+   "${harvest_rogue_SOURCE_DIR}/include/*.h"
+   "${harvest_rogue_SOURCE_DIR}/include/common/*.h"
+   "${harvest_rogue_SOURCE_DIR}/include/dialogs/*.h"
+   "${harvest_rogue_SOURCE_DIR}/include/interfaces/*.h"
+   "${harvest_rogue_SOURCE_DIR}/include/props/*.h"
+)
    source_group(include FILES ${HEADER_FILES})
 
 include_directories(
@@ -61,7 +67,8 @@ add_executable(harvest_rogue
    ${SOURCE_DIALOG_FILES}
    ${SOURCE_PROP_FILES}
    ${SOURCE_NCURSES_FILES}
-   ${HEADER_FILES} ${SOURCE_WIN32_PDCURSES_FILES}
+   ${HEADER_FILES}
+   ${SOURCE_WIN32_PDCURSES_FILES}
 )
 target_link_libraries(harvest_rogue ${CURSES_LIBRARIES})
 
