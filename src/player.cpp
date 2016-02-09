@@ -137,9 +137,9 @@ void Player::UseTool() {
       return;
    }
    if (!this->CurrentTool->IsUsable()) {
-      auto prop = std::dynamic_pointer_cast<IProp>(this->CurrentTool);
-
-      GameState::Get().AddLogMessageFmt("The %s is not usable at this time.", prop->GetName().c_str());
+      return;
+      //auto prop = std::dynamic_pointer_cast<IProp>(this->CurrentTool);
+      //GameState::Get().AddLogMessageFmt("The %s is not usable at this time.", prop->GetName().c_str());
    }
    this->CurrentTool->Use();
 }
