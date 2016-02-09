@@ -6,6 +6,8 @@ The graphical front-end will begin development next week, but until then, we nee
 [![Gitter](https://badges.gitter.im/essial/harvest-rogue.svg)](https://gitter.im/essial/harvest-rogue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Build Status](https://travis-ci.org/essial/harvest-rogue.svg?branch=master)](https://travis-ci.org/essial/harvest-rogue)
 
+[HarvestRogue subreddit](https://www.reddit.com/r/harvestrogue/)
+
 ![Title](http://i.imgur.com/IfmnANS.png) 
 ![Gameplay](http://i.imgur.com/OPFYIPP.png)
 
