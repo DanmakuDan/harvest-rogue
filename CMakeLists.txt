@@ -33,6 +33,9 @@ file(GLOB SOURCE_NCURSES_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/ncurse
 file(GLOB SOURCE_CORE_FILES "${harvest_rogue_SOURCE_DIR}/src/core/*.cpp")
 source_group(core FILES ${SOURCE_CORE_FILES})
 
+file(GLOB SOURCE_COMMON_FILES "${harvest_rogue_SOURCE_DIR}/src/common/*.cpp")
+source_group(common FILES ${SOURCE_COMMON_FILES})
+
 file(GLOB HEADER_FILES
    "${harvest_rogue_SOURCE_DIR}/include/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/common/*.h"
@@ -75,6 +78,7 @@ add_executable(harvest_rogue
    ${SOURCE_PROP_FILES}
    ${SOURCE_NCURSES_FILES}
    ${SOURCE_CORE_FILES}
+   ${SOURCE_COMMON_FILES}
    ${HEADER_FILES}
    ${SOURCE_WIN32_PDCURSES_FILES}
 )
