@@ -30,12 +30,17 @@ file(GLOB SOURCE_PROP_FILES "${harvest_rogue_SOURCE_DIR}/src/props/*.cpp")
 file(GLOB SOURCE_NCURSES_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/ncurses/*.cpp")
    source_group(ncurses FILES ${SOURCE_NCURSES_FILES})
 
+file(GLOB SOURCE_CORE_FILES "${harvest_rogue_SOURCE_DIR}/src/core/*.cpp")
+source_group(core FILES ${SOURCE_CORE_FILES})
+
 file(GLOB HEADER_FILES
    "${harvest_rogue_SOURCE_DIR}/include/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/common/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/dialogs/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/interfaces/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/props/*.h"
+   "${harvest_rogue_SOURCE_DIR}/include/scenes/*.h"
+   "${harvest_rogue_SOURCE_DIR}/include/core/*.h"
 )
    source_group(include FILES ${HEADER_FILES})
 
@@ -45,6 +50,8 @@ include_directories(
    ${harvest_rogue_SOURCE_DIR}/include/dialogs
    ${harvest_rogue_SOURCE_DIR}/include/interfaces
    ${harvest_rogue_SOURCE_DIR}/include/props
+   ${harvest_rogue_SOURCE_DIR}/include/scenes
+   ${harvest_rogue_SOURCE_DIR}/include/core
 )
 
 IF(WIN32)
@@ -67,6 +74,7 @@ add_executable(harvest_rogue
    ${SOURCE_DIALOG_FILES}
    ${SOURCE_PROP_FILES}
    ${SOURCE_NCURSES_FILES}
+   ${SOURCE_CORE_FILES}
    ${HEADER_FILES}
    ${SOURCE_WIN32_PDCURSES_FILES}
 )
