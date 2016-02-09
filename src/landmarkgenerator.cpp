@@ -78,6 +78,10 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
             result->SetTile(cottageX + x, cottageY + y, TileType::Stone);
          }
 
+         auto prop = result->GetProp(cottageX + x, cottageY + y);
+         if (prop != nullptr) {
+            result->RemoveProp(cottageX + x, cottageY + y);
+         }
       }
    }
 
