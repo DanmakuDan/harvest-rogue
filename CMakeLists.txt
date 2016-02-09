@@ -17,17 +17,30 @@ project(harvest_rogue)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 file(GLOB SOURCE_FILES "${harvest_rogue_SOURCE_DIR}/src/*.cpp")
+
 file(GLOB SOURCE_SCENE_FILES "${harvest_rogue_SOURCE_DIR}/src/scenes/*.cpp")
    source_group(scenes FILES ${SOURCE_SCENE_FILES})
+
 file(GLOB SOURCE_DIALOG_FILES "${harvest_rogue_SOURCE_DIR}/src/dialogs/*.cpp")
    source_group(dialogs FILES ${SOURCE_DIALOG_FILES})
+
 file(GLOB SOURCE_PROP_FILES "${harvest_rogue_SOURCE_DIR}/src/props/*.cpp")
    source_group(props FILES ${SOURCE_PROP_FILES})
+
 file(GLOB SOURCE_NCURSES_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/ncurses/*.cpp")
    source_group(ncurses FILES ${SOURCE_NCURSES_FILES})
+
 file(GLOB HEADER_FILES "${harvest_rogue_SOURCE_DIR}/include/*.h")
    source_group(include FILES ${HEADER_FILES})
-include_directories(${harvest_rogue_SOURCE_DIR}/include)
+
+include_directories(
+   ${harvest_rogue_SOURCE_DIR}/include
+   ${harvest_rogue_SOURCE_DIR}/include/common
+   ${harvest_rogue_SOURCE_DIR}/include/dialogs
+   ${harvest_rogue_SOURCE_DIR}/include/interfaces
+   ${harvest_rogue_SOURCE_DIR}/include/props
+)
+
 IF(WIN32)
    # We must manually include PDCurses to emulate NCurses
    include_directories("${harvest_rogue_SOURCE_DIR}/windows/pdcurses")
@@ -43,13 +56,12 @@ ELSE()
 ENDIF()
 		
 add_executable(harvest_rogue
-     ${SOURCE_FILES}
-     ${SOURCE_SCENE_FILES}
-     ${SOURCE_DIALOG_FILES}
-     ${SOURCE_PROP_FILES}
-     ${SOURCE_NCURSES_FILES}
-     ${HEADER_FILES}
-     ${SOURCE_WIN32_PDCURSES_FILES}
+   ${SOURCE_FILES}
+   ${SOURCE_SCENE_FILES}
+   ${SOURCE_DIALOG_FILES}
+   ${SOURCE_PROP_FILES}
+   ${SOURCE_NCURSES_FILES}
+   ${HEADER_FILES} ${SOURCE_WIN32_PDCURSES_FILES}
 )
 target_link_libraries(harvest_rogue ${CURSES_LIBRARIES})
 

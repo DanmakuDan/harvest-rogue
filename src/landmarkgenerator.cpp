@@ -19,6 +19,7 @@
 #include "seedbag.h"
 #include <random>
 #include "axe.h"
+#include "tree.h"
 
 
 static std::random_device randomDevice;
@@ -52,8 +53,9 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
             result->SetTile(x, y, TileType::Boulder);
          } else if (n <= (permille_chance += 5)) {
             result->SetTile(x, y, TileType::Stump);
-         } else if (n <= (permille_chance += 5)) {
-            result->SetTile(x, y, TileType::Tree);
+         } else if (n <= (permille_chance += 35)) {
+            result->SetTile(x, y, TileType::Grass);
+            result->AddProp(x, y, Tree::Construct());
          } else {
             result->SetTile(x, y, TileType::Grass);
          }

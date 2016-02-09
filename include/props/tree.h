@@ -11,19 +11,18 @@
 
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
-#ifndef HARVEST_ROGUE_AXE_H
-#define HARVEST_ROGUE_AXE_H
+
+#ifndef HARVEST_ROGUE_TREE_H
+#define HARVEST_ROGUE_TREE_H
 
 #include "prop.h"
-#include "tool.h"
-#include "tiles.h"
-#include "directionaltool.h"
+#include "axe.h"
 
-class Axe : public IProp, public ITool, public IDirectionalTool,
-      public std::enable_shared_from_this<Axe> {
+class Tree : public IProp,
+  public std::enable_shared_from_this<Tree> {
 public:
-   static std::shared_ptr<Axe> Construct() {
-      return std::shared_ptr<Axe>(new Axe());
+   static std::shared_ptr<Tree> Construct() {
+      return std::shared_ptr<Tree>(new Tree());
    }
 
    // IProp
@@ -32,16 +31,10 @@ public:
    virtual TileType::TileType GetTileType();
    virtual bool Takeable();
 
-   // ITool
-   virtual bool IsUsable();
-   virtual void Use();
-
-   // IDirectionalTool
-   virtual void Use(Direction::Direction direction);
-
 private:
-   Axe();
+   Tree();
+   int Durability;
 };
 
 
-#endif //HARVEST_ROGUE_AXE_H
+#endif //HARVEST_ROGUE_TREE_H

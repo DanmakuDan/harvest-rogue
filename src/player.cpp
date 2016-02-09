@@ -13,6 +13,7 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include <memory>
+#include <tiles.h>
 #include "player.h"
 #include "gamestate.h"
 
@@ -71,6 +72,20 @@ void Player::WalkPlayer(Direction::Direction direction) {
    }
 
    if (!this->IsPassable(newX, newY)) {
+
+      auto prop = currentLandmark->GetProp(newX, newY);
+      if (prop != nullptr &&
+            !Tile::HasSurfaceAttribute(Tile::FromTileType(prop->GetTileType()), SurfaceAttribute::Walkable)) {
+
+         bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
+         GameState::Get().AddLogMessageFmt("You are blocked by %s %s.", (startsWithVowel ? "an" : "a"),
+                                           prop->GetName().c_str());
+         return;
+      }
+
+      auto tile = currentLandmark->GetTile(newX, newY);
+      bool startsWithVowel = tile.Name.find_first_of("aAeEiIoOuU") == 0;
+      GameState::Get().AddLogMessageFmt("You are blocked by %s %s.", (startsWithVowel ? "an" : "a"), tile.Name.c_str());
       return;
    }
 
