@@ -15,6 +15,8 @@
 #include "axe.h"
 #include "gamestate.h"
 #include "actiondirectiondialog.h"
+#include "player.h"
+#include "choppable.h"
 
 Axe::Axe() {
 
@@ -45,5 +47,41 @@ void Axe::Use() {
 }
 
 void Axe::Use(Direction::Direction direction) {
-   GameState::Get().AddLogMessage("Chopping stuff!");
+   auto landmark = GameState::Get().GetCurrentLandmark();
+
+   int targetX, targetY;
+   switch(direction) {
+      case Direction::Up:
+         targetX = Player::Get().GetPositionX();
+         targetY = Player::Get().GetPositionY() - 1;
+         break;
+      case Direction::Down:
+         targetX = Player::Get().GetPositionX();
+         targetY = Player::Get().GetPositionY() + 1;
+         break;
+      case Direction::Left:
+         targetX = Player::Get().GetPositionX() - 1;
+         targetY = Player::Get().GetPositionY();
+         break;
+      case Direction::Right:
+         targetX = Player::Get().GetPositionX() + 1;
+         targetY = Player::Get().GetPositionY();
+         break;
+   }
+
+   auto prop = landmark->GetProp(targetX, targetY);
+   if (prop == nullptr) {
+      GameState::Get().AddLogMessage("There is nothing to chop.");
+      return;
+   }
+
+   auto choppable = std::dynamic_pointer_cast<IChoppable>(prop);
+   if (choppable == nullptr) {
+      GameState::Get().AddLogMessageFmt("You cannot chop the %s.", prop->GetName().c_str());
+      return;
+   }
+
+   GameState::Get().AddLogMessageFmt("You chop at the %s.", prop->GetName().c_str());
+
+   choppable->Chop(10);
 }

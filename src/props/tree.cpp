@@ -13,6 +13,7 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "tree.h"
+#include "gamestate.h"
 
 Tree::Tree() {
    this->Durability = 30;
@@ -34,3 +35,20 @@ bool Tree::Takeable() {
    return false;
 }
 
+void Tree::Chop(int strength) {
+   this->Durability -= strength;
+   if (this->Durability > 0) {
+      return;
+   }
+
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   int x, y;
+   if (!currentLandmark->LocateProp(this->shared_from_this(), x, y)) {
+      throw;
+   }
+
+   currentLandmark->RemoveProp(x, y);
+
+   GameState::Get().AddLogMessageFmt("The %s has been felled!", this->GetName().c_str());
+
+}

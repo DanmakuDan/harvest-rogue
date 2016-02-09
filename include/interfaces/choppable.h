@@ -12,33 +12,12 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_TREE_H
-#define HARVEST_ROGUE_TREE_H
+#ifndef HARVEST_ROGUE_CHOPPABLE_H
+#define HARVEST_ROGUE_CHOPPABLE_H
 
-#include "prop.h"
-#include "axe.h"
-#include "choppable.h"
-
-class Tree : public IProp, public IChoppable,
-  public std::enable_shared_from_this<Tree> {
+class IChoppable {
 public:
-   static std::shared_ptr<Tree> Construct() {
-      return std::shared_ptr<Tree>(new Tree());
-   }
-
-   // IProp
-   virtual std::string GetName();
-   virtual std::string GetDescription();
-   virtual TileType::TileType GetTileType();
-   virtual bool Takeable();
-
-   // IChoppable
-   virtual void Chop(int strength);
-
-private:
-   Tree();
-   int Durability;
+   virtual void Chop(int strength) = 0;
 };
 
-
-#endif //HARVEST_ROGUE_TREE_H
+#endif //HARVEST_ROGUE_CHOPPABLE_H

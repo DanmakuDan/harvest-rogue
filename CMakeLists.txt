@@ -81,7 +81,7 @@ add_executable(harvest_rogue
    ${SOURCE_COMMON_FILES}
    ${HEADER_FILES}
    ${SOURCE_WIN32_PDCURSES_FILES}
-)
+        include/interfaces/choppable.h)
 target_link_libraries(harvest_rogue ${CURSES_LIBRARIES})
 
 IF(WIN32)

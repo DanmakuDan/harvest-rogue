@@ -102,6 +102,9 @@ std::vector<std::shared_ptr<IProp>> Player::GetInventory() {
 
 void Player::SpawnIntoInventory(std::shared_ptr<IProp> prop) {
    this->Inventory.push_back(std::shared_ptr<IProp>(prop));
+   bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
+   GameState::Get().AddLogMessageFmt("%s %s has been placed in your inventory.", (startsWithVowel ? "An" : "A"),
+                                     prop->GetName().c_str());
 }
 
 void Player::PickUpItemFromGround() {
@@ -118,10 +121,11 @@ void Player::PickUpItemFromGround() {
       return;
    }
 
-   currentLandmark->RemoveProp(this->GetPositionX(), this->GetPositionY());
-   this->SpawnIntoInventory(prop);
    bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
    GameState::Get().AddLogMessageFmt("You pick up %s %s.", startsWithVowel ? "an" : "a", prop->GetName().c_str());
+
+   currentLandmark->RemoveProp(this->GetPositionX(), this->GetPositionY());
+   this->SpawnIntoInventory(prop);
 }
 
 void Player::EquipFromInventory(std::shared_ptr<ITool> tool) {
@@ -129,8 +133,12 @@ void Player::EquipFromInventory(std::shared_ptr<ITool> tool) {
       Player::Get().UnequipCurrentTool();
    }
 
-   this->RemoveFromInventory(std::dynamic_pointer_cast<IProp>(tool));
+   auto prop = std::dynamic_pointer_cast<IProp>(tool);
+   this->RemoveFromInventory(prop);
    this->CurrentTool = std::shared_ptr<ITool>(tool);
+
+   bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
+   GameState::Get().AddLogMessageFmt("You equip %s %s.", startsWithVowel ? "an" : "a", prop->GetName().c_str());
 }
 
 void Player::DropInventoryItemOnGround(std::shared_ptr<IProp> prop) {
@@ -148,6 +156,9 @@ void Player::RemoveFromInventory(std::shared_ptr<IProp> prop) {
       }
 
       this->Inventory.erase(this->Inventory.begin() + i);
+      bool startsWithVowel = invProp->GetName().find_first_of("aAeEiIoOuU") == 0;
+      GameState::Get().AddLogMessageFmt("%s %s has been removed from your inventory.", (startsWithVowel ? "An" : "A"),
+                                        invProp->GetName().c_str());
       break;
    }
 }

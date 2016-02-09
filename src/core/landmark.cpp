@@ -84,3 +84,24 @@ void Landmark::RemoveProp(int x, int y) {
       break;
    }
 }
+
+bool Landmark::LocateProp(std::shared_ptr<IProp> prop, int &x, int &y) {
+   x = 0;
+   y = 0;
+
+   if (prop == nullptr) {
+      return false;
+   }
+
+   for(auto mapProp : this->Props) {
+      if (mapProp.Prop != prop) {
+         continue;
+      }
+
+      x = mapProp.x;
+      y = mapProp.y;
+      return true;
+   }
+
+   return false;
+}
