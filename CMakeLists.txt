@@ -15,10 +15,10 @@ cmake_minimum_required(VERSION 2.8.7)
 project(harvest_rogue)
 
 
-OPTION(BUILD_CURSES "Build the [N/PD]Curses frontend." OFF)
 OPTION(BUILD_SDL2   "Build the SDL2 frontend." OFF)
 
-IF(BUILD_CURSES)
+IF(BUILD_SDL2)
+ELSE(BUILD_SDL2)
    ADD_DEFINITIONS(-DUSECURSES)
    file(GLOB SOURCE_NCURSES_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/ncurses/*.cpp")
    source_group(ncurses FILES ${SOURCE_NCURSES_FILES})
@@ -35,11 +35,7 @@ IF(BUILD_CURSES)
    ELSE()
       find_package(Curses REQUIRED)
    ENDIF()
-ELSEIF(BUILD_SDL2)
-
-ELSE(BUILD_CURSES)
-    message( FATAL_ERROR "You must specify a front end by adding either -DBUILD_CURSES=ON or -DBUILD_SDL2=ON, to your cmake command. CMake will exit." )
-ENDIF(BUILD_CURSES)
+ENDIF(BUILD_SDL2)
 
 
 
