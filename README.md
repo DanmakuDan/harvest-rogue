@@ -62,7 +62,8 @@ The build process is essentially the same as for Linux, especially if you use [B
 * Run cmake-gui
 * For the "Where is the source code" field, select the base <code>harvest-rogue</code> folder.
 * For the "Where to build the binaries" field, select the base <code>harvest-rogue/output</code> folder you just created.
-* Click the <code>Configure</code> button. Wait until it finishes.
+* Click the <code>Configure</code> button.
+  * Make sure you select a *Win 64* option in the toolchain dropdown.
   * If building the graphical client, check the box beside "BUILD_SDL2" when the list comes up.
 * Click the <code>Generate</code> button. Wait until it finishes.
 * Close cmake-gui and navigate to your <code>harvest-rogue/output</code> folder, and open the <code>harvest_rogue.sln</code> file.

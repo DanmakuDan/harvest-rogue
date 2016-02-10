@@ -46,14 +46,14 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
             result->SetTile(x, y, TileType::GrassTuft);
          } else if (n <= (permille_chance += 100)) {
             result->SetTile(x, y, TileType::Weed);
-         } else if (n <= (permille_chance += 100)) {
-            result->SetTile(x, y, TileType::Branch);
-            //} else if (n <= (permille_chance += 10)) {
-            //   result->SetTile(x, y, TileStone);
-         } else if (n <= (permille_chance += 10)) {
-            result->SetTile(x, y, TileType::Boulder);
-         } else if (n <= (permille_chance += 5)) {
-            result->SetTile(x, y, TileType::Stump);
+         //} else if (n <= (permille_chance += 100)) {
+         //   result->SetTile(x, y, TileType::Branch);
+         //} else if (n <= (permille_chance += 10)) {
+         //   result->SetTile(x, y, TileStone);
+         //} else if (n <= (permille_chance += 10)) {
+         //   result->SetTile(x, y, TileType::Boulder);
+         //} else if (n <= (permille_chance += 5)) {
+         //   result->SetTile(x, y, TileType::Stump);
          } else if (n <= (permille_chance += 35)) {
             result->SetTile(x, y, TileType::Grass);
             result->AddProp(x, y, Tree::Construct());

@@ -22,6 +22,10 @@
 #include "inventorydialog.h"
 #include "screen.h"
 
+#ifdef WIN32
+#include "windowsshim.h"
+#endif
+
 void Game::InitializeScreen() {
    Input::Get().SetInputTimeout(50);
    this->RenderUI();
@@ -157,20 +161,20 @@ void Game::RenderMap() {
    for (auto mapY = 0; mapY < drawHeight - startY && mapY <= totalMapHeight - startY; mapY++) {
       for (auto mapX = 0; mapX < drawWidth - startX && mapX <= totalMapWidth - startX; mapX++) {
 
+
+         auto groundTile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);
+         Screen::Get().WriteTile(mapX + startX, mapY + startY, groundTile);
+
+
          auto mapProp = currentLandmark->GetProp(mapX + mapOffsetX, mapY + mapOffsetY);
+         if (mapProp != nullptr) {
+            Screen::Get().WriteTile(mapX + startX, mapY + startY, Tile::FromTileType(mapProp->GetTileType()));
+         }
 
          if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY)) {
             // Draw the player
             Screen::Get().WriteTile(mapX + startX, mapY + startY, Tile::FromTileType(TileType::Player));;
-            continue;
-         } else if (mapProp == nullptr) {
-            // Draw the ground
-            auto groundTile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);
-            Screen::Get().WriteTile(mapX + startX, mapY + startY, groundTile );
-            continue;
-         }
-
-         Screen::Get().WriteTile(mapX + startX, mapY + startY, Tile::FromTileType(mapProp->GetTileType()));
+         } 
       }
    }
 }

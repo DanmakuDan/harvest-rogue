@@ -18,6 +18,8 @@ Landmark::Landmark(std::string name, int width, int height) {
    this->Name = name;
    this->Width = width;
    this->Height = height;
+   this->Props = new LandmarkProp[width * height];
+   memset(this->Props, 0, sizeof(LandmarkProp) * (width * height));
    for (auto i = 0; i < width * height; i++) {
       this->Tiles.push_back(Tile::FromTileType(TileType::Nothing));
    }
@@ -56,33 +58,17 @@ void Landmark::AddProp(int x, int y, std::shared_ptr<IProp> prop) {
       throw;
    }
 
-   this->Props.push_back({ x, y, std::shared_ptr<IProp>(prop) });
+   this->Props[x + (y * Width)] = { x, y, std::shared_ptr<IProp>(prop) };
 }
 
 std::shared_ptr<IProp> Landmark::GetProp(int x, int y) {
-   for (auto prop : this->Props) {
-      if (prop.x != x || prop.y != y) {
-         continue;
-      }
-
-      return std::shared_ptr<IProp>(prop.Prop);
-   }
+   return this->Props[x + (y * Width)].Prop;
 
    return nullptr;
 }
 
 void Landmark::RemoveProp(int x, int y) {
-
-   auto i = 0;
-   for (auto prop : this->Props) {
-      if (prop.x != x || prop.y != y) {
-         i++;
-         continue;
-      }
-
-      this->Props.erase(this->Props.begin() + i);
-      break;
-   }
+   this->Props[x + (y * Width)] = {};
 }
 
 bool Landmark::LocateProp(std::shared_ptr<IProp> prop, int &x, int &y) {
@@ -93,7 +79,8 @@ bool Landmark::LocateProp(std::shared_ptr<IProp> prop, int &x, int &y) {
       return false;
    }
 
-   for(auto mapProp : this->Props) {
+   for (int i = 0; i < (Width * Height); i++) {
+      auto mapProp = this->Props[i];
       if (mapProp.Prop != prop) {
          continue;
       }
@@ -106,6 +93,6 @@ bool Landmark::LocateProp(std::shared_ptr<IProp> prop, int &x, int &y) {
    return false;
 }
 
-std::vector<LandmarkProp> Landmark::GetAllLandmarkProps() {
+LandmarkProp* Landmark::GetAllLandmarkProps() {
    return this->Props;
 }

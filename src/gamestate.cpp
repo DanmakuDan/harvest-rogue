@@ -241,8 +241,9 @@ void GameState::ProcessHourlyTick() {
    };
 
    for (auto landmark : GameState::Landmarks) {
-      for (auto landmarkProp : landmark->GetAllLandmarkProps()) {
-         auto prop = std::dynamic_pointer_cast<IHourlyTickEvent>(landmarkProp.Prop);
+      auto landmarkProps = landmark->GetAllLandmarkProps();
+      for (int i = 0; i < (landmark->GetWidth() * landmark->GetHeight()); i++) {
+         auto prop = std::dynamic_pointer_cast<IHourlyTickEvent>(landmarkProps[i].Prop);
          if (prop == nullptr) {
             continue;
          }

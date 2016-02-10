@@ -14,14 +14,40 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(harvest_rogue)
 
+macro(configure_files srcDir destDir)
+    message(STATUS "Configuring directory ${destDir}")
+    make_directory(${destDir})
+
+    file(GLOB templateFiles RELATIVE ${srcDir} ${srcDir}/*)
+    foreach(templateFile ${templateFiles})
+        set(srcTemplatePath ${srcDir}/${templateFile})
+        if(NOT IS_DIRECTORY ${srcTemplatePath})
+            message(STATUS "Configuring file ${templateFile}")
+            file(COPY ${srcTemplatePath} DESTINATION ${destDir}/)
+        endif(NOT IS_DIRECTORY ${srcTemplatePath})
+    endforeach(templateFile)
+endmacro(configure_files)
 
 OPTION(BUILD_SDL2   "Build the SDL2 frontend." OFF)
 
 IF(BUILD_SDL2)
+   ADD_DEFINITIONS(-DGRAPHICS_MODE)
+   file(GLOB SOURCE_FRONTEND_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/sdl2/*.cpp")
+   source_group(sdl2 FILES ${SOURCE_FRONTEND_FILES})
+   
+   configure_files(${harvest_rogue_SOURCE_DIR}/media ${CMAKE_BINARY_DIR}/media)
+   
+   IF(WIN32)
+      include_directories("${harvest_rogue_SOURCE_DIR}/windows/sdl2")
+      set(SDL2_LIBRARIES SDL2 SDL2_image SDL2_mixer timidity)
+      link_directories("${harvest_rogue_SOURCE_DIR}/windows/sdl2/x64")
+	  configure_files(${harvest_rogue_SOURCE_DIR}/windows/sdl2/x64/runtime ${CMAKE_BINARY_DIR})
+   ELSE(WIN32)
+   ENDIF(WIN32)
 ELSE(BUILD_SDL2)
-   ADD_DEFINITIONS(-DUSECURSES)
-   file(GLOB SOURCE_NCURSES_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/ncurses/*.cpp")
-   source_group(ncurses FILES ${SOURCE_NCURSES_FILES})
+   ADD_DEFINITIONS(-DTEXT_MODE)
+   file(GLOB SOURCE_FRONTEND_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/ncurses/*.cpp")
+   source_group(ncurses FILES ${SOURCE_FRONTEND_FILES})
 
    IF(WIN32)
       # We must manually include PDCurses to emulate NCurses
@@ -53,10 +79,10 @@ file(GLOB SOURCE_PROP_FILES "${harvest_rogue_SOURCE_DIR}/src/props/*.cpp")
    source_group(props FILES ${SOURCE_PROP_FILES})
 
 file(GLOB SOURCE_CORE_FILES "${harvest_rogue_SOURCE_DIR}/src/core/*.cpp")
-source_group(core FILES ${SOURCE_CORE_FILES})
+   source_group(core FILES ${SOURCE_CORE_FILES})
 
 file(GLOB SOURCE_COMMON_FILES "${harvest_rogue_SOURCE_DIR}/src/common/*.cpp")
-source_group(common FILES ${SOURCE_COMMON_FILES})
+   source_group(common FILES ${SOURCE_COMMON_FILES})
 
 file(GLOB HEADER_FILES
    "${harvest_rogue_SOURCE_DIR}/include/*.h"
@@ -84,15 +110,15 @@ add_executable(harvest_rogue
    ${SOURCE_SCENE_FILES}
    ${SOURCE_DIALOG_FILES}
    ${SOURCE_PROP_FILES}
-   ${SOURCE_NCURSES_FILES}
+   ${SOURCE_FRONTEND_FILES}
    ${SOURCE_CORE_FILES}
    ${SOURCE_COMMON_FILES}
    ${HEADER_FILES}
    ${SOURCE_WIN32_PDCURSES_FILES}
 )
 
-target_link_libraries(harvest_rogue ${CURSES_LIBRARIES})
+target_link_libraries(harvest_rogue ${CURSES_LIBRARIES} ${SDL2_LIBRARIES})
 
 IF(WIN32)
-set_target_properties(harvest_rogue PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
+   set_target_properties(harvest_rogue PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
 ENDIF()
