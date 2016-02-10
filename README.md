@@ -35,10 +35,14 @@ The following tasks are currently being worked on:
 
 ### Linux
 
-* Install <code>build-essential</code>, <code>cmake</code>, and <code>libncurses-dev</code>, and <code>autotools</code> packages for your host environment.
+* Install <code>build-essential</code>, <code>cmake</code>, and <code>autotools</code> packages for your host environment.
+  * For text builds, you also need <code>libncurses-dev</code>
+  * For graphical builds, you also need <code>libsdl2-dev</code>, <code>libsdl2-image-dev</code>, and <code>libsdl2-mixer-dev</code>
 * Clone the source to your home folder with <code>git clone git@github.com:essial/harvest-rogue.git</code>
 * Create and navigate to an empty output folder like <code>[projectroot]/output/</code>.
 * Generate the autotools build scripts by running <code>$ cmake .. -DCMAKE_INSTALL_PREFIX=/usr/bin</code>
+  * For text builds, also add -DBUILD_CURSES=ON
+  * For graphical builds, also include -DBUILD_SDL2=ON
 * Now you may run **make** to build the project. You can run it locally with <code>$ ./harvest-rogue</code>, or install it with <code># make install</code>
 
 ### Mac OSX

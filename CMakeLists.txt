@@ -14,6 +14,35 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(harvest_rogue)
 
+
+OPTION(BUILD_CURSES "Build the [N/PD]Curses frontend." OFF)
+OPTION(BUILD_SDL2   "Build the SDL2 frontend." OFF)
+
+IF(BUILD_CURSES)
+   ADD_DEFINITIONS(-DUSECURSES)
+   file(GLOB SOURCE_NCURSES_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/ncurses/*.cpp")
+   source_group(ncurses FILES ${SOURCE_NCURSES_FILES})
+
+   IF(WIN32)
+      # We must manually include PDCurses to emulate NCurses
+      include_directories("${harvest_rogue_SOURCE_DIR}/windows/pdcurses")
+      include_directories("${harvest_rogue_SOURCE_DIR}/windows/pdcurses/win32")
+      file(GLOB SOURCE_WIN32_PDCURSES_FILES
+         "${harvest_rogue_SOURCE_DIR}/windows/pdcurses/pdcurses/*.c"
+         "${harvest_rogue_SOURCE_DIR}/windows/pdcurses/win32/*.c"
+      )
+      source_group(pdcurses FILES ${SOURCE_WIN32_PDCURSES_FILES})
+   ELSE()
+      find_package(Curses REQUIRED)
+   ENDIF()
+ELSEIF(BUILD_SDL2)
+
+ELSE(BUILD_CURSES)
+    message( FATAL_ERROR "You must specify a front end by adding either -DBUILD_CURSES=ON or -DBUILD_SDL2=ON, to your cmake command. CMake will exit." )
+ENDIF(BUILD_CURSES)
+
+
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 file(GLOB SOURCE_FILES "${harvest_rogue_SOURCE_DIR}/src/*.cpp")
@@ -26,9 +55,6 @@ file(GLOB SOURCE_DIALOG_FILES "${harvest_rogue_SOURCE_DIR}/src/dialogs/*.cpp")
 
 file(GLOB SOURCE_PROP_FILES "${harvest_rogue_SOURCE_DIR}/src/props/*.cpp")
    source_group(props FILES ${SOURCE_PROP_FILES})
-
-file(GLOB SOURCE_NCURSES_FILES "${harvest_rogue_SOURCE_DIR}/src/frontends/ncurses/*.cpp")
-   source_group(ncurses FILES ${SOURCE_NCURSES_FILES})
 
 file(GLOB SOURCE_CORE_FILES "${harvest_rogue_SOURCE_DIR}/src/core/*.cpp")
 source_group(core FILES ${SOURCE_CORE_FILES})
@@ -57,20 +83,6 @@ include_directories(
    ${harvest_rogue_SOURCE_DIR}/include/core
 )
 
-IF(WIN32)
-   # We must manually include PDCurses to emulate NCurses
-   include_directories("${harvest_rogue_SOURCE_DIR}/windows/pdcurses")
-   include_directories("${harvest_rogue_SOURCE_DIR}/windows/pdcurses/win32")
-
-   file(GLOB SOURCE_WIN32_PDCURSES_FILES
-      "${harvest_rogue_SOURCE_DIR}/windows/pdcurses/pdcurses/*.c"
-	  "${harvest_rogue_SOURCE_DIR}/windows/pdcurses/win32/*.c"
-   )
-   source_group(pdcurses FILES ${SOURCE_WIN32_PDCURSES_FILES})
-ELSE()
-   find_package(Curses REQUIRED)
-ENDIF()
-		
 add_executable(harvest_rogue
    ${SOURCE_FILES}
    ${SOURCE_SCENE_FILES}

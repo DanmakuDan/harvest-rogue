@@ -35,10 +35,10 @@ Screen::Screen() {
    clear();
 
    for (short i = 0; i < 16; i++) {
-      init_pair(i + 1, i, CLR_BLACK);
+      init_pair(i + (short)1, i, CLR_BLACK);
    }
    for (short i = 16; i < 32; i++) {
-      init_pair(i + 1, i - 15, CLR_WHITE);
+      init_pair(i + (short)1, i - (short)15, CLR_WHITE);
    }
 
 }
