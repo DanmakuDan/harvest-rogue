@@ -81,6 +81,9 @@ namespace TileType {
       WheatWilted,
       Wheat,
 
+      // Interactables
+      Bed,
+
       _MAX
    };
 
@@ -97,54 +100,54 @@ namespace Tile {
 
 
    static std::vector<Tile> Tiles = {
-         {TileType::Nothing,     "Nothing",        SurfaceAttribute::None,              CLR_RED,     'X'},
-         {TileType::Player,      "You",            SurfaceAttribute::None,              CLR_WHITE,   '@'},
+         {TileType::Nothing,               "Nothing",             SurfaceAttribute::None,              CLR_RED,     'X'},
+         {TileType::Player,                "You",                 SurfaceAttribute::None,              CLR_WHITE,   '@'},
 
-         {TileType::Tilled,      "Tilled Land",    SurfaceAttribute::Walkable,          CLR_YELLOW,  '='},
+         {TileType::Tilled,                "Tilled Land",         SurfaceAttribute::Walkable,          CLR_YELLOW,  '='},
 
-         {TileType::Grass,       "Grass",          SurfaceAttribute::Walkable,          CLR_GREEN,   '.'},
-         {TileType::GrassTuft,   "Grass Tuft",     SurfaceAttribute::Walkable,          CLR_BRGREEN, ','},
-         {TileType::Weed,        "Weeds",          SurfaceAttribute::Walkable,          CLR_GREEN,   '"'},
+         {TileType::Grass,                 "Grass",               SurfaceAttribute::Walkable,          CLR_GREEN,   '.'},
+         {TileType::GrassTuft,             "Grass Tuft",          SurfaceAttribute::Walkable,          CLR_BRGREEN, ','},
+         {TileType::Weed,                  "Weeds",               SurfaceAttribute::Walkable,          CLR_GREEN,   '"'},
 
-         {TileType::Stone,       "Stone",          SurfaceAttribute::Walkable,          CLR_GRAY,    'o'},
-         {TileType::Branch,      "Branch",         SurfaceAttribute::Walkable,          CLR_YELLOW,  '-'},
-         {TileType::Boulder,     "Boulder",        SurfaceAttribute::None,              CLR_WHITE,   'O'},
-         {TileType::Stump,       "Stump",          SurfaceAttribute::None,              CLR_YELLOW,  '#'},
-         {TileType::Tree,        "Tree",           SurfaceAttribute::None,              CLR_YELLOW,  'T'},
+         {TileType::Stone,                 "Stone",               SurfaceAttribute::Walkable,          CLR_GRAY,    'o'},
+         {TileType::Branch,                "Branch",              SurfaceAttribute::Walkable,          CLR_YELLOW,  '-'},
+         {TileType::Boulder,               "Boulder",             SurfaceAttribute::None,              CLR_WHITE,   'O'},
+         {TileType::Stump,                 "Stump",               SurfaceAttribute::None,              CLR_YELLOW,  '#'},
+         {TileType::Tree,                  "Tree",                SurfaceAttribute::None,              CLR_YELLOW,  'T'},
 
-         {TileType::Water,       "Water",          SurfaceAttribute::Swimmable,         CLR_BRBLUE,  '~'},
+         {TileType::Water,                 "Water",               SurfaceAttribute::Swimmable,         CLR_BRBLUE,  '~'},
 
-         {TileType::BrickWall,   "Brick Wall",     SurfaceAttribute::VisualObstruction, CLR_BRRED,   '|'},
+         {TileType::BrickWall,             "Brick Wall",          SurfaceAttribute::VisualObstruction, CLR_BRRED,   '|'},
 
-         {TileType::Door,        "Wooden Door",    SurfaceAttribute::VisualObstruction |
-                                                   SurfaceAttribute::Walkable,          CLR_YELLOW,  '-'},
-         {TileType::Hoe,         "Hoe",            SurfaceAttribute::Walkable,          CLR_YELLOW,  '\\'},
-         {TileType::Axe,         "Axe",            SurfaceAttribute::Walkable,          CLR_WHITE,   'P'},
-         {TileType::SeedBag,     "Seed bag",       SurfaceAttribute::Walkable,          CLR_WHITE,   'b'},
+         {TileType::Door,                  "Wooden Door",         SurfaceAttribute::VisualObstruction |
+                                                                  SurfaceAttribute::Walkable,          CLR_YELLOW,  '-'},
+         {TileType::Hoe,                   "Hoe",                 SurfaceAttribute::Walkable,          CLR_YELLOW,  '\\'},
+         {TileType::Axe,                   "Axe",                 SurfaceAttribute::Walkable,          CLR_WHITE,   'P'},
+         {TileType::SeedBag,               "Seed bag",            SurfaceAttribute::Walkable,          CLR_WHITE,   'b'},
 
          // UI
-         {TileType::WindowTopLeft,"",              SurfaceAttribute::None,              CLR_YELLOW,  '='},
-         {TileType::WindowTop,"",                  SurfaceAttribute::None,              CLR_YELLOW,  '='},
-         {TileType::WindowTopRight,"",             SurfaceAttribute::None,              CLR_YELLOW,  '='},
-         {TileType::WindowLeft,"",                 SurfaceAttribute::None,              CLR_YELLOW,  '='},
-         {TileType::WindowCenter,"",               SurfaceAttribute::None,              CLR_WHITE,   ' '},
-         {TileType::WindowRight,"",                SurfaceAttribute::None,              CLR_YELLOW,  '='},
-         {TileType::WindowBottomLeft,"",           SurfaceAttribute::None,              CLR_YELLOW,  '='},
-         {TileType::WindowBottom,"",               SurfaceAttribute::None,              CLR_YELLOW,  '='},
-         {TileType::WindowBottomRight,"",          SurfaceAttribute::None,              CLR_YELLOW,  '='},
+         {TileType::WindowTopLeft,         "",                    SurfaceAttribute::None,              CLR_YELLOW,  '='},
+         {TileType::WindowTop,             "",                    SurfaceAttribute::None,              CLR_YELLOW,  '='},
+         {TileType::WindowTopRight,        "",                    SurfaceAttribute::None,              CLR_YELLOW,  '='},
+         {TileType::WindowLeft,            "",                    SurfaceAttribute::None,              CLR_YELLOW,  '='},
+         {TileType::WindowCenter,          "",                    SurfaceAttribute::None,              CLR_WHITE,   ' '},
+         {TileType::WindowRight,           "",                    SurfaceAttribute::None,              CLR_YELLOW,  '='},
+         {TileType::WindowBottomLeft,      "",                    SurfaceAttribute::None,              CLR_YELLOW,  '='},
+         {TileType::WindowBottom,          "",                    SurfaceAttribute::None,              CLR_YELLOW,  '='},
+         {TileType::WindowBottomRight,     "",                    SurfaceAttribute::None,              CLR_YELLOW,  '='},
 
          // Crops
-         {TileType::PotatoSeedling,"",             SurfaceAttribute::Walkable,          CLR_YELLOW,  'x'},
-         {TileType::PotatoGrowing,"",              SurfaceAttribute::Walkable,          CLR_GREEN,   'o'},
-         {TileType::PotatoFullyGrown,"",           SurfaceAttribute::Walkable,          CLR_GREEN,   'Y'},
-         {TileType::PotatoWilted,"",               SurfaceAttribute::Walkable,          CLR_YELLOW,  '~'},
-         {TileType::Potato,"",                     SurfaceAttribute::Walkable,          CLR_YELLOW,  'O'},
+         {TileType::PotatoSeedling,        "Potato Seedling",     SurfaceAttribute::Walkable,          CLR_YELLOW,  'x'},
+         {TileType::PotatoGrowing,         "Growing Potato",      SurfaceAttribute::Walkable,          CLR_GREEN,   'o'},
+         {TileType::PotatoFullyGrown,      "Fully grown Potato",  SurfaceAttribute::Walkable,          CLR_GREEN,   'Y'},
+         {TileType::PotatoWilted,          "Rotten Potato",       SurfaceAttribute::Walkable,          CLR_YELLOW,  '~'},
+         {TileType::Potato,                "Potato",              SurfaceAttribute::Walkable,          CLR_YELLOW,  'O'},
 
-         {TileType::WheatSeedling,"",              SurfaceAttribute::Walkable,          CLR_GREEN,   'x'},
-         {TileType::WheatGrowing,"",               SurfaceAttribute::Walkable,          CLR_GREEN,   'X'},
-         {TileType::WheatFullyGrown,"",            SurfaceAttribute::Walkable,          CLR_BRYELLOW,'|'},
-         {TileType::WheatWilted,"",                SurfaceAttribute::Walkable,          CLR_YELLOW,  'f'},
-         {TileType::Wheat,"",                      SurfaceAttribute::Walkable,          CLR_BRYELLOW,'Y'}
+         {TileType::WheatSeedling,         "Wheat Seedling",      SurfaceAttribute::Walkable,          CLR_GREEN,   'x'},
+         {TileType::WheatGrowing,          "Growing Wheat",       SurfaceAttribute::Walkable,          CLR_GREEN,   'X'},
+         {TileType::WheatFullyGrown,       "Fully grown Wheat",   SurfaceAttribute::Walkable,          CLR_BRYELLOW,'|'},
+         {TileType::WheatWilted,           "Ruined Wheat",        SurfaceAttribute::Walkable,          CLR_YELLOW,  'f'},
+         {TileType::Wheat,                 "Wheat",               SurfaceAttribute::Walkable,          CLR_BRYELLOW,'Y'}
 
 
 
