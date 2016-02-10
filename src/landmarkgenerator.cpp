@@ -98,11 +98,8 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    result->AddProp(playerX - 2, playerY - 1, Axe::Construct());
 
    // And some potato seeds
-   result->AddProp(playerX - 2, playerY + 1, SeedBag::Construct(SeedType::Potato, 15));
-   result->AddProp(playerX - 1, playerY + 1, SeedBag::Construct(SeedType::Potato, 10));
-   result->AddProp(playerX    , playerY + 1, SeedBag::Construct(SeedType::Potato,  5));
-   result->AddProp(playerX + 1, playerY + 1, SeedBag::Construct(SeedType::Wheat,  15));
-   result->AddProp(playerX + 2, playerY + 1, SeedBag::Construct(SeedType::Corn,   15));
+   result->AddProp(playerX - 2, playerY + 1, SeedBag::Construct(CropType::Potato, 15));
+   result->AddProp(playerX - 1, playerY + 1, SeedBag::Construct(CropType::Wheat,  15));
 
    return result;
 }

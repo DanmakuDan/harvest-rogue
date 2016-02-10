@@ -12,18 +12,16 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_SEEDBAG_H
-#define HARVEST_ROGUE_SEEDBAG_H
+#ifndef HARVEST_ROGUE_CROP_H
+#define HARVEST_ROGUE_CROP_H
 
 #include "prop.h"
-#include "tool.h"
-#include "tiles.h"
 #include "crops.h"
 
-class SeedBag : public IProp, public ITool {
+class PlantedCrop : public IProp {
 public:
-   static std::shared_ptr<SeedBag> Construct(CropType::CropType cropType, int numberOfSeeds) {
-      return std::shared_ptr<SeedBag>(new SeedBag(cropType, numberOfSeeds));
+   static std::shared_ptr<PlantedCrop> Construct(Crop::Crop crop, CropGrowthType::CropGrowthType cropGrowthType) {
+      return std::shared_ptr<PlantedCrop>(new PlantedCrop(crop, cropGrowthType));
    }
 
    // IProp
@@ -32,15 +30,12 @@ public:
    virtual TileType::TileType GetTileType();
    virtual bool Takeable();
 
-   // ITool
-   virtual bool IsUsable();
-   virtual void Use();
 
 private:
-   SeedBag(CropType::CropType cropType, int numberOfSeeds);
-   CropType::CropType CropType;
-   int NumberOfSeeds;
+   PlantedCrop(Crop::Crop crop, CropGrowthType::CropGrowthType cropGrowthType);
+   Crop::Crop Crop;
+   CropGrowthType::CropGrowthType CropGrowthType;
 };
 
 
-#endif //HARVEST_ROGUE_SEEDBAG_H
+#endif //HARVEST_ROGUE_CROP_H

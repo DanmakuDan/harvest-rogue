@@ -12,19 +12,21 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#include <tiles.h>
+#include <common/crops.h>
 #include "seedbag.h"
 #include "gamestate.h"
 #include "player.h"
+#include "plantedcrop.h"
 
-SeedBag::SeedBag(SeedType::SeedType seedType, int numberOfSeeds) {
-   this->SeedType = seedType;
+SeedBag::SeedBag(CropType::CropType cropType, int numberOfSeeds) {
+   this->CropType = cropType;
    this->NumberOfSeeds = numberOfSeeds;
 }
 
 std::string SeedBag::GetName() {
    std::stringstream result;
-   result << SeedType::GetName(this->SeedType);
+
+   result << Crop::FromCropType(this->CropType).Name;
    result << " seed bag";
    return result.str();
 }
@@ -33,7 +35,7 @@ std::string SeedBag::GetDescription() {
    std::stringstream result;
    result << this->NumberOfSeeds;
    result << " ";
-   result << SeedType::GetName(this->SeedType);
+   result << Crop::FromCropType(this->CropType).Name;
    result << " seed";
    if (this->NumberOfSeeds != 1) {
       result << "s";
@@ -70,10 +72,32 @@ TileType::TileType SeedBag::GetTileType() {
 }
 
 void SeedBag::Use() {
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   auto positionX = Player::Get().GetPositionX();
+   auto positionY = Player::Get().GetPositionY();
+
+   auto tile = currentLandmark->GetTile(positionX, positionY);
+   if (tile.TileType != TileType::Tilled) {
+      GameState::Get().AddLogMessage("The ground here is not tilled!");
+      return;
+   }
+
+   auto prop = currentLandmark->GetProp(positionX, positionY);
+   if (prop != nullptr) {
+      GameState::Get().AddLogMessage("There is already something here.");
+      return;
+   }
    if (this->NumberOfSeeds <= 0) {
+      GameState::Get().AddLogMessage("There are no more seeds in this bag.");
       return;
    }
    this->NumberOfSeeds--;
+
+   auto crop = PlantedCrop::Construct(Crop::FromCropType(this->CropType), CropGrowthType::Seedling);
+   currentLandmark->AddProp(positionX, positionY, crop);
+   auto cropName = Crop::FromCropType(this->CropType).Name;
+   bool startsWithVowel = cropName.find_first_of("aAeEiIoOuU") == 0;
+   GameState::Get().AddLogMessageFmt("You plant %s %s.", startsWithVowel ? "an" : "a", cropName.c_str());
 }
 
 bool SeedBag::Takeable() {

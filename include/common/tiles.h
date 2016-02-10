@@ -77,7 +77,7 @@ namespace TileType {
 
       WheatSeedling,
       WheatGrowing,
-      wheatFullyGrown,
+      WheatFullyGrown,
       WheatWilted,
       Wheat,
 
@@ -134,15 +134,15 @@ namespace Tile {
          {TileType::WindowBottomRight,"",          SurfaceAttribute::None,              CLR_YELLOW,  '='},
 
          // Crops
-         {TileType::PotatoSeedling,"",             SurfaceAttribute::Walkable,          CLR_YELLOW,  '_'},
+         {TileType::PotatoSeedling,"",             SurfaceAttribute::Walkable,          CLR_YELLOW,  'x'},
          {TileType::PotatoGrowing,"",              SurfaceAttribute::Walkable,          CLR_GREEN,   'o'},
          {TileType::PotatoFullyGrown,"",           SurfaceAttribute::Walkable,          CLR_GREEN,   'Y'},
          {TileType::PotatoWilted,"",               SurfaceAttribute::Walkable,          CLR_YELLOW,  '~'},
          {TileType::Potato,"",                     SurfaceAttribute::Walkable,          CLR_YELLOW,  'O'},
 
-         {TileType::WheatSeedling,"",              SurfaceAttribute::Walkable,          CLR_GREEN,   '_'},
-         {TileType::WheatGrowing,"",               SurfaceAttribute::Walkable,          CLR_GREEN,   ','},
-         {TileType::wheatFullyGrown,"",            SurfaceAttribute::Walkable,          CLR_BRYELLOW,'|'},
+         {TileType::WheatSeedling,"",              SurfaceAttribute::Walkable,          CLR_GREEN,   'x'},
+         {TileType::WheatGrowing,"",               SurfaceAttribute::Walkable,          CLR_GREEN,   'X'},
+         {TileType::WheatFullyGrown,"",            SurfaceAttribute::Walkable,          CLR_BRYELLOW,'|'},
          {TileType::WheatWilted,"",                SurfaceAttribute::Walkable,          CLR_YELLOW,  'f'},
          {TileType::Wheat,"",                      SurfaceAttribute::Walkable,          CLR_BRYELLOW,'Y'}
 
