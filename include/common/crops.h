@@ -53,7 +53,7 @@ namespace Crop {
       CropType::CropType CropType;
       std::map<CropGrowthType::CropGrowthType, TileType::TileType> TileTypes;
       std::string Name;
-      int DaysToGrow;
+      int HoursToGrow;
       int YieldPerHarvest;
    } Crop;
 
@@ -64,13 +64,13 @@ namespace Crop {
                              {CropGrowthType::Growing,         TileType::PotatoGrowing    },
                              {CropGrowthType::FullyGrown,      TileType::PotatoFullyGrown },
                              {CropGrowthType::Wilted,          TileType::PotatoWilted     }
-                            }, "Potato", 3,  10},
+                            }, "Potato", 24*3,  10},
 
          {CropType::Wheat, {{CropGrowthType::Seedling,         TileType::WheatSeedling    },
                             {CropGrowthType::Growing,          TileType::WheatGrowing     },
                             {CropGrowthType::FullyGrown,       TileType::WheatFullyGrown  },
                             {CropGrowthType::Wilted,           TileType::WheatWilted      }
-                           }, "Wheat", 10,  3}
+                           }, "Wheat", (24*5) + 8,  3}
    };
 
    static Crop FromCropType(CropType::CropType cropType) {

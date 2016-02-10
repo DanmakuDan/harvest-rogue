@@ -16,9 +16,12 @@
 #include <tiles.h>
 #include "player.h"
 #include "gamestate.h"
+#include "interactiondirectiondialog.h"
+#include "interactable.h"
 
 Player::Player() {
    this->Energy = ENERGY_MAX;
+   this->IsSleeping = false;
 }
 
 Player::~Player() {
@@ -212,4 +215,56 @@ void Player::SetEnergy(int energy) {
 
 void Player::AdjustEnergy(int energyAdjustment) {
    this->SetEnergy(this->GetEnergy() + energyAdjustment);
+}
+
+void Player::InteractWith() {
+   GameState::Get().PushDialog(InteractionDirectionDialog::Construct());
+}
+
+void Player::InteractWith(Direction::Direction direction) {
+   auto newX = this->PositionX;
+   auto newY = this->PositionY;
+
+   switch(direction) {
+      case Direction::Up:
+         newY--;
+         break;
+      case Direction::Down:
+         newY++;
+         break;
+      case Direction::Left:
+         newX--;
+         break;
+      case Direction::Right:
+         newY++;
+         break;
+   }
+
+   if (newX < 0 || newY < 0) {
+      return;
+   }
+
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   auto prop = currentLandmark->GetProp(newX, newY);
+
+   if (prop == nullptr) {
+      GameState::Get().AddLogMessage("There is nothing to interact with in that direction.");
+      return;
+   }
+
+   auto interactable = std::dynamic_pointer_cast<IInteractable>(prop);
+   if (interactable == nullptr) {
+      GameState::Get().AddLogMessageFmt("The %s cannot be interacted with.", prop->GetName().c_str());
+      return;
+   }
+
+   interactable->Interact();
+}
+
+void Player::SetIsSleeping(bool sleeping) {
+   this->IsSleeping = sleeping;
+}
+
+bool Player::GetIsSleeping() {
+   return this->IsSleeping;
 }

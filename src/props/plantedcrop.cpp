@@ -15,10 +15,16 @@
 #include <common/crops.h>
 #include <sstream>
 #include "plantedcrop.h"
+#include "gamestate.h"
 
-PlantedCrop::PlantedCrop(Crop::Crop crop, CropGrowthType::CropGrowthType cropGrowthType) {
+PlantedCrop::PlantedCrop(Crop::Crop crop, CropGrowthType::CropGrowthType cropGrowthType, int hoursLeftToGrow) {
    this->Crop = crop;
    this->CropGrowthType = cropGrowthType;
+   if (hoursLeftToGrow == -1) {
+      this->HoursLeftToGrow = crop.HoursToGrow;
+   } else {
+      this->HoursLeftToGrow = hoursLeftToGrow;
+   }
 }
 
 std::string PlantedCrop::GetName() {
@@ -45,4 +51,31 @@ TileType::TileType PlantedCrop::GetTileType() {
 
 bool PlantedCrop::Takeable() {
    return false;
+}
+
+void PlantedCrop::OnHourlyTick() {
+   if (this->CropGrowthType == CropGrowthType::Wilted) {
+      return;
+   }
+
+   this->HoursLeftToGrow--;
+
+   if (this->HoursLeftToGrow <= -18) {
+      this->CropGrowthType = CropGrowthType::Wilted;
+      return;
+   }
+
+   if ((this->HoursLeftToGrow > 0) && (this->CropGrowthType == CropGrowthType::Seedling)) {
+      this->CropGrowthType = CropGrowthType::Growing;
+      return;
+   }
+
+   if ((this->HoursLeftToGrow <= 0) && (this->CropGrowthType == CropGrowthType::Growing)) {
+      this->CropGrowthType = CropGrowthType::FullyGrown;
+   }
+
+
+
+
+
 }

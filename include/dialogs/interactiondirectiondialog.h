@@ -12,36 +12,25 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_ACTIONDIALOG_H
-#define HARVEST_ROGUE_ACTIONDIALOG_H
+#ifndef HARVEST_ROGUE_INTERACTIONDIRECTIONDIALOG_H
+#define HARVEST_ROGUE_INTERACTIONDIRECTIONDIALOG_H
 
 #include <memory>
 #include "dialog.h"
 
-#define ACTION_DIALOG_WIDTH  25
-#define ACTION_DIALOG_HEIGHT 5
+#define INTERACTION_DIRECTION_DIALOG_WIDTH      40
+#define INTERACTION_DIRECTION_DIALOG_HEIGHT      3
 
-namespace ActionDialogOption {
-   enum ActionDialogOption {
-      PickUp = 0,
-      Unequip,
-      InteractWith,
-      _MAX
-   };
-}
-
-class ActionDialog : public IDialog {
+class InteractionDirectionDialog : public IDialog {
 public:
-   static std::shared_ptr<ActionDialog> Construct() {
-      return std::shared_ptr<ActionDialog>(new ActionDialog());
+   static std::shared_ptr<InteractionDirectionDialog> Construct() {
+      return std::shared_ptr<InteractionDirectionDialog>(new InteractionDirectionDialog());
    }
    virtual void OnKeyPress(int key);
    virtual void Render();
 private:
-   ActionDialog();
-   ActionDialogOption::ActionDialogOption SelectedOption;
-   void ExecuteSelectedAction();
+   InteractionDirectionDialog();
 };
 
 
-#endif //HARVEST_ROGUE_ACTIONDIALOG_H
+#endif //HARVEST_ROGUE_INTERACTIONDIRECTIONDIALOG_H

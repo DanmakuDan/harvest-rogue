@@ -55,12 +55,17 @@ public:
    int GetEnergy();
    void SetEnergy(int energy);
    void AdjustEnergy(int energyAdjustment);
+   void InteractWith();
+   void InteractWith(Direction::Direction direction);
+   void SetIsSleeping(bool sleeping);
+   bool GetIsSleeping();
 private:
    int PositionX;
    int PositionY;
    std::shared_ptr<ITool> CurrentTool;
    std::vector<std::shared_ptr<IProp>> Inventory;
    bool IsPassable(int x, int y);
+   bool IsSleeping;
    int Energy;
 };
 

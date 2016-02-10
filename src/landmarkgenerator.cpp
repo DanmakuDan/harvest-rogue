@@ -20,6 +20,7 @@
 #include <random>
 #include "axe.h"
 #include "tree.h"
+#include "bed.h"
 
 
 static std::random_device randomDevice;
@@ -92,6 +93,9 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    // Set the player starting position variables
    playerX = cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2);
    playerY = cottageY + (LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT / 2);
+
+   // Add the bed
+   result->AddProp(cottageX + 1, cottageY + 1, Bed::Construct());
 
    // Add tools to the ground...
    result->AddProp(playerX - 3, playerY - 1, Hoe::Construct());

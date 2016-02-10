@@ -12,18 +12,16 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_CROP_H
-#define HARVEST_ROGUE_CROP_H
+#ifndef HARVEST_ROGUE_BED_H
+#define HARVEST_ROGUE_BED_H
 
 #include "prop.h"
-#include "crops.h"
-#include "tickevents.h"
+#include "interactable.h"
 
-class PlantedCrop : public IProp, public IHourlyTickEvent {
+class Bed : public IProp, public IInteractable {
 public:
-   static std::shared_ptr<PlantedCrop> Construct(Crop::Crop crop, CropGrowthType::CropGrowthType cropGrowthType,
-                                                 int hoursLeftToGrow = -1) {
-      return std::shared_ptr<PlantedCrop>(new PlantedCrop(crop, cropGrowthType, hoursLeftToGrow));
+   static std::shared_ptr<Bed> Construct() {
+      return std::shared_ptr<Bed>(new Bed());
    }
 
    // IProp
@@ -32,15 +30,13 @@ public:
    virtual TileType::TileType GetTileType();
    virtual bool Takeable();
 
-   // IHourlyTickEvent
-   virtual void OnHourlyTick();
+   // IInteractable
+   virtual void Interact();
 
 private:
-   PlantedCrop(Crop::Crop crop, CropGrowthType::CropGrowthType cropGrowthType, int hoursLeftToGrow);
-   Crop::Crop Crop;
-   CropGrowthType::CropGrowthType CropGrowthType;
-   int HoursLeftToGrow;
+   Bed();
 };
 
 
-#endif //HARVEST_ROGUE_CROP_H
+#endif //HARVEST_ROGUE_BED_H
+

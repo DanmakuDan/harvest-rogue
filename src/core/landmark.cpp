@@ -105,3 +105,7 @@ bool Landmark::LocateProp(std::shared_ptr<IProp> prop, int &x, int &y) {
 
    return false;
 }
+
+std::vector<LandmarkProp> Landmark::GetAllLandmarkProps() {
+   return this->Props;
+}

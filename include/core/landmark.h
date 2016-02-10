@@ -42,6 +42,7 @@ public:
    std::shared_ptr<IProp> GetProp(int x, int y);
    void RemoveProp(int x, int y);
    bool LocateProp(std::shared_ptr<IProp> prop, int& x, int& y);
+   std::vector<LandmarkProp> GetAllLandmarkProps();
 private:
    Landmark(std::string name, int width, int height);
 

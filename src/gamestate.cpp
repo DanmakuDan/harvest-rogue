@@ -16,6 +16,7 @@
 #include "gamestate.h"
 #include "textgenerator.h"
 #include "landmarkgenerator.h"
+#include "tickevents.h"
 
 GameState::GameState() {
    this->active = true;
@@ -79,7 +80,7 @@ void GameState::InitializeNewGame() {
    this->Landmarks.push_back(LandmarkGenerator::GeneratePlayerFarm(playerX, playerY));
    Player::Get().WarpPlayer(playerX, playerY);
 
-   this->CurrentLandmarkIndex = this->Landmarks.size() - 1;
+   this->CurrentLandmarkIndex = (int)this->Landmarks.size() - 1;
 }
 
 void GameState::StepSimulation() {
@@ -89,9 +90,15 @@ void GameState::StepSimulation() {
    CurrentSecond %= 60;
 
    CurrentHour += CurrentMinute / 60;
+   if (CurrentMinute >= 60) {
+      this->ProcessHourlyTick();
+   }
    CurrentMinute %= 60;
 
    CurrentDay += CurrentHour / 24;
+   if (CurrentHour >= 24) {
+      this->ProcessDailyTick();
+   }
    CurrentHour %= 24;
 
    while (CurrentDay > 30) {
@@ -139,7 +146,7 @@ void GameState::AddLogMessage(std::string Message) {
 }
 
 void GameState::AddLogMessageFmt(const std::string format, ...) {
-   int size = 4096;
+   unsigned long size = 4096;
    std::string str;
    va_list ap;
    while (1) {     // Maximum two passes on a POSIX system...
@@ -153,7 +160,7 @@ void GameState::AddLogMessageFmt(const std::string format, ...) {
          return;
       }
       if (n > -1)  // Needed size returned
-         size = n + 1;   // For null char
+         size = (unsigned long)n + 1;   // For null char
       else
          size *= 2;      // Guess at a larger size (OS specific)
    }
@@ -197,4 +204,50 @@ void GameState::PopDialog() {
 
 void GameState::ClearAllDialogs() {
    this->DialogStack.clear();
+}
+
+void GameState::SleepUntilNextMorning(int hour, int minute, int second) {
+   Player::Get().SetIsSleeping(true);
+   auto currentHour = this->GetCurrentHour();
+   int totalHoursSlept = 0;
+   while((this->GetCurrentHour() != hour) || (this->GetCurrentMinute() != minute)
+         || (this->GetCurrentSecond() != second)) {
+      this->StepSimulation();
+
+      if (currentHour != this->GetCurrentHour()) {
+         currentHour = this->GetCurrentHour();
+         totalHoursSlept++;
+      }
+
+      // If the player wakes up, stop running the sleep simulation.
+      if (!Player::Get().GetIsSleeping()) {
+         GameState::Get().AddLogMessage("Your sleep has been interupted!");
+         GameState::Get().AddLogMessageFmt("You sleept for %i hours!", totalHoursSlept);
+         break;
+      }
+   }
+   GameState::Get().AddLogMessageFmt("You sleept for %i hours!", totalHoursSlept);
+   Player::Get().SetIsSleeping(false);
+}
+
+void GameState::ProcessDailyTick() {
+
+}
+
+void GameState::ProcessHourlyTick() {
+   // Sleeping causes energy gain for the player every hour slept.
+   if (Player::Get().GetIsSleeping()) {
+      Player::Get().AdjustEnergy(10);
+   };
+
+   for (auto landmark : GameState::Landmarks) {
+      for (auto landmarkProp : landmark->GetAllLandmarkProps()) {
+         auto prop = std::dynamic_pointer_cast<IHourlyTickEvent>(landmarkProp.Prop);
+         if (prop == nullptr) {
+            continue;
+         }
+
+         prop->OnHourlyTick();
+      }
+   }
 }

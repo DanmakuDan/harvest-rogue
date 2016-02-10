@@ -76,6 +76,10 @@ void Game::OnKeyPress(int key) {
       GameState::Get().PushDialog(InventoryDialog::Construct());
    }
 
+   if (Action::Requested(action, Action::InteractWithObject)) {
+      Player::Get().InteractWith();
+   }
+
    GameState::Get().StepSimulation();
    this->RenderUI();
 }

@@ -97,6 +97,8 @@ public:
 
    void PopDialog();
 
+   void SleepUntilNextMorning(int hour = 6, int minute = 0, int second = 0);
+
 private:
    bool active;
    std::shared_ptr<IScene> CurrentScene;
@@ -107,6 +109,9 @@ private:
    int CurrentLandmarkIndex;
    eGameStateSeason CurrentSeason;
    int CurrentDay, CurrentYear, CurrentHour, CurrentMinute, CurrentSecond;
+   void ProcessDailyTick();
+
+   void ProcessHourlyTick();
 };
 
 

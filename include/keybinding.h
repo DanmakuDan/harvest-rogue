@@ -48,6 +48,7 @@ namespace Action {
    const Action MenuAccept           = 0x0001000;
    const Action MenuCancel           = 0x0002000;
    const Action PickUpItemFromGround = 0x0004000;
+   const Action InteractWithObject   = 0x0008000;
 
    static bool Requested(Action source, Action test) { return (source & test) > 0; }
 };

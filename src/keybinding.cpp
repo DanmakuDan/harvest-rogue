@@ -30,6 +30,8 @@ Keybinding::Keybinding() {
    this->keybindings[IK_SPACEBAR] = Action::UseTool;
    this->keybindings[IK_ESCAPE] = Action::MenuCancel;
 
+   this->keybindings['q'] = Action::InteractWithObject;
+
    // Vi-style movement this->keys
    this->keybindings['j'] = Action::MoveDown;
    this->keybindings['k'] = Action::MoveUp;

@@ -121,6 +121,7 @@ namespace Tile {
 
          {TileType::Door,                  "Wooden Door",         SurfaceAttribute::VisualObstruction |
                                                                   SurfaceAttribute::Walkable,          CLR_YELLOW,  '-'},
+         {TileType::Bed,                   "Bed",                 SurfaceAttribute::None,              CLR_BRBLUE,  'B'},
          {TileType::Hoe,                   "Hoe",                 SurfaceAttribute::Walkable,          CLR_YELLOW,  '\\'},
          {TileType::Axe,                   "Axe",                 SurfaceAttribute::Walkable,          CLR_WHITE,   'P'},
          {TileType::SeedBag,               "Seed bag",            SurfaceAttribute::Walkable,          CLR_WHITE,   'b'},
@@ -138,16 +139,16 @@ namespace Tile {
 
          // Crops
          {TileType::PotatoSeedling,        "Potato Seedling",     SurfaceAttribute::Walkable,          CLR_YELLOW,  'x'},
-         {TileType::PotatoGrowing,         "Growing Potato",      SurfaceAttribute::Walkable,          CLR_GREEN,   'o'},
-         {TileType::PotatoFullyGrown,      "Fully grown Potato",  SurfaceAttribute::Walkable,          CLR_GREEN,   'Y'},
-         {TileType::PotatoWilted,          "Rotten Potato",       SurfaceAttribute::Walkable,          CLR_YELLOW,  '~'},
-         {TileType::Potato,                "Potato",              SurfaceAttribute::Walkable,          CLR_YELLOW,  'O'},
+         {TileType::PotatoGrowing,         "Growing Potato",      SurfaceAttribute::None,              CLR_GREEN,   'o'},
+         {TileType::PotatoFullyGrown,      "Fully grown Potato",  SurfaceAttribute::None,              CLR_YELLOW,  'O'},
+         {TileType::PotatoWilted,          "Rotten Potato",       SurfaceAttribute::None,              CLR_YELLOW,  '~'},
+         {TileType::Potato,                "Potato",              SurfaceAttribute::None,              CLR_YELLOW,  'O'},
 
          {TileType::WheatSeedling,         "Wheat Seedling",      SurfaceAttribute::Walkable,          CLR_GREEN,   'x'},
-         {TileType::WheatGrowing,          "Growing Wheat",       SurfaceAttribute::Walkable,          CLR_GREEN,   'X'},
-         {TileType::WheatFullyGrown,       "Fully grown Wheat",   SurfaceAttribute::Walkable,          CLR_BRYELLOW,'|'},
-         {TileType::WheatWilted,           "Ruined Wheat",        SurfaceAttribute::Walkable,          CLR_YELLOW,  'f'},
-         {TileType::Wheat,                 "Wheat",               SurfaceAttribute::Walkable,          CLR_BRYELLOW,'Y'}
+         {TileType::WheatGrowing,          "Growing Wheat",       SurfaceAttribute::None,              CLR_GREEN,   'X'},
+         {TileType::WheatFullyGrown,       "Fully grown Wheat",   SurfaceAttribute::None,              CLR_BRYELLOW,'|'},
+         {TileType::WheatWilted,           "Ruined Wheat",        SurfaceAttribute::None,              CLR_YELLOW,  'f'},
+         {TileType::Wheat,                 "Wheat",               SurfaceAttribute::None,              CLR_BRYELLOW,'Y'}
 
 
 
