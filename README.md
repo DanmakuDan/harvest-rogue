@@ -10,6 +10,7 @@ The graphical front-end will begin development next week, but until then, we nee
 
 ![Title](http://i.imgur.com/IfmnANS.png) 
 ![Gameplay](http://i.imgur.com/OPFYIPP.png)
+![Graphics](http://i.imgur.com/NOID09e.png)
 
 Welcome to the project page for Harvest-Rogue, a Harvest Moon-inspired roguelike! This project is very early in development, so check back often for updates!
 
