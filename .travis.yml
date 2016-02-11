@@ -19,7 +19,7 @@ script:
 addons:
   apt:
     sources:
-	- r-packages-precise
+      - r-packages-precise
   packages:
     - gcc-4.8
     - g++-4.8
