@@ -14,6 +14,8 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(harvest_rogue)
 
+INCLUDE(FindPkgConfig)
+
 macro(configure_files srcDir destDir)
     message(STATUS "Configuring directory ${destDir}")
     make_directory(${destDir})
@@ -43,6 +45,11 @@ IF(BUILD_SDL2)
       link_directories("${harvest_rogue_SOURCE_DIR}/windows/sdl2/x64")
 	  configure_files(${harvest_rogue_SOURCE_DIR}/windows/sdl2/x64/runtime ${CMAKE_BINARY_DIR})
    ELSE(WIN32)
+      PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+      PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+      PKG_SEARCH_MODULE(SDL2MIXER REQUIRED SDL2_mixer>=2.0.0)
+
+      INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS} ${SDL2MIXER_INCLUDE_DIRS})
    ENDIF(WIN32)
 ELSE(BUILD_SDL2)
    ADD_DEFINITIONS(-DTEXT_MODE)
@@ -117,7 +124,7 @@ add_executable(harvest_rogue
    ${SOURCE_WIN32_PDCURSES_FILES}
 )
 
-target_link_libraries(harvest_rogue ${CURSES_LIBRARIES} ${SDL2_LIBRARIES})
+target_link_libraries(harvest_rogue ${CURSES_LIBRARIES} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2MIXER_LIBRARIES})
 
 IF(WIN32)
    set_target_properties(harvest_rogue PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
