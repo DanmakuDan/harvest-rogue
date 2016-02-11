@@ -236,7 +236,7 @@ void Player::InteractWith(Direction::Direction direction) {
          newX--;
          break;
       case Direction::Right:
-         newY++;
+         newX++;
          break;
    }
 
