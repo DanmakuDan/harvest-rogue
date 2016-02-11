@@ -19,7 +19,7 @@ Landmark::Landmark(std::string name, int width, int height) {
    this->Width = width;
    this->Height = height;
    this->Props = new LandmarkProp[width * height];
-   memset(this->Props, 0, sizeof(LandmarkProp) * (width * height));
+   std::memset(this->Props, 0, sizeof(LandmarkProp) * (width * height));
    for (auto i = 0; i < width * height; i++) {
       this->Tiles.push_back(Tile::FromTileType(TileType::Nothing));
    }
