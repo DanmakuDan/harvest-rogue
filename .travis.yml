@@ -5,11 +5,7 @@ os:
 compiler:
   - clang
 env:
-  - CMAKEFLAGS=-DBUILD_SDL2=ON
   - CMAKEFLAGS=-DBUILD_SDL2=OFF
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
 before_script:
   - mkdir build
   - cd build
