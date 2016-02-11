@@ -51,8 +51,8 @@ The following tasks are currently being worked on:
 The build process is essentially the same as for Linux, especially if you use [Brew](http://brew.sh/):
 
 ```
-~/projects/harvest-rogue$ brew install gcc make cmake ncurses
-~/projects/harvest-rogue$ cmake .
+~/projects/harvest-rogue$ brew install gcc make cmake ncurses sdl2
+~/projects/harvest-rogue$ cmake . # or `cmake -DBUILD_SDL2=ON .`
 ~/projects/harvest-rogue$ make
 ```
 
