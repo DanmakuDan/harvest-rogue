@@ -222,11 +222,10 @@ void GameState::SleepUntilNextMorning(int hour, int minute, int second) {
       // If the player wakes up, stop running the sleep simulation.
       if (!Player::Get().GetIsSleeping()) {
          GameState::Get().AddLogMessage("Your sleep has been interupted!");
-         GameState::Get().AddLogMessageFmt("You sleept for %i hours!", totalHoursSlept);
          break;
       }
    }
-   GameState::Get().AddLogMessageFmt("You sleept for %i hours!", totalHoursSlept);
+   GameState::Get().AddLogMessageFmt("You slept for %i hours!", totalHoursSlept);
    Player::Get().SetIsSleeping(false);
 }
 
