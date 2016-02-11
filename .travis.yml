@@ -19,7 +19,6 @@ script:
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
 	- r-packages-precise
   packages:
     - gcc-4.8
