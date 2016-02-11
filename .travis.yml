@@ -8,8 +8,6 @@ env:
   - CMAKEFLAGS=-DBUILD_SDL2=ON
   - CMAKEFLAGS=-DBUILD_SDL2=OFF
 before_install:
-  - sudo add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu/ wily main restricted"
-  - sudo add-apt-repository "deb-src http://us.archive.ubuntu.com/ubuntu/ wily main restricted"
   - sudo apt-get update
   - sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
 before_script:
@@ -22,6 +20,7 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
+	- r-packages-precise
   packages:
     - gcc-4.8
     - g++-4.8
