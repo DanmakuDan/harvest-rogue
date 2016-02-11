@@ -51,6 +51,7 @@ IF(BUILD_SDL2)
       include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS} ${SDL2MIXER_INCLUDE_DIRS})
       IF(APPLE)
          include_directories("/usr/local/include")
+         link_directories("/usr/local/lib")
       ENDIF(APPLE)
 
    ENDIF(WIN32)
