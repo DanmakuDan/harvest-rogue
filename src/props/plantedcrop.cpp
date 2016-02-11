@@ -73,9 +73,14 @@ void PlantedCrop::OnHourlyTick() {
    if ((this->HoursLeftToGrow <= 0) && (this->CropGrowthType == CropGrowthType::Growing)) {
       this->CropGrowthType = CropGrowthType::FullyGrown;
    }
+}
 
+void PlantedCrop::Interact() {
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   int x, y;
+   if (!currentLandmark->LocateProp(this->shared_from_this(), x, y)) {
+      throw;
+   }
 
-
-
-
+   currentLandmark->RemoveProp(x, y);
 }

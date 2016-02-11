@@ -15,16 +15,21 @@
 #ifndef HARVEST_ROGUE_CROP_H
 #define HARVEST_ROGUE_CROP_H
 
+#include "interactable.h"
 #include "prop.h"
 #include "crops.h"
 #include "tickevents.h"
 
-class PlantedCrop : public IProp, public IHourlyTickEvent {
+class PlantedCrop : public IProp, public IHourlyTickEvent, public IInteractable,
+  public std::enable_shared_from_this<PlantedCrop> {
 public:
    static std::shared_ptr<PlantedCrop> Construct(Crop::Crop crop, CropGrowthType::CropGrowthType cropGrowthType,
                                                  int hoursLeftToGrow = -1) {
       return std::shared_ptr<PlantedCrop>(new PlantedCrop(crop, cropGrowthType, hoursLeftToGrow));
    }
+
+   // IInteractable
+   virtual void Interact();
 
    // IProp
    virtual std::string GetName();
