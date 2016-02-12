@@ -39,15 +39,15 @@ public:
 
    int GetHeight();
 
-   void WriteText(int x, int y, std::string text, int color = CLR_WHITE);
+   void WriteText(int x, int y, std::string text, Color::Color color = Color::White);
 
-   void WriteCenterText(int y, std::string text, int color = CLR_WHITE);
+   void WriteCenterText(int y, std::string text, Color::Color color = Color::White);
 
    void WriteButton(int x, int y, int width, std::string text, bool active);
 
-   void ClearLine(int y, int color = CLR_WHITE);
+   void ClearLine(int y, Color::Color color = Color::White);
 
-   void WriteCharacter(int x, int y, const char character, int color = CLR_WHITE);
+   void WriteCharacter(int x, int y, const char character, Color::Color color = Color::White);
 
    void WriteTile(int x, int y, Tile::Tile tile);
 

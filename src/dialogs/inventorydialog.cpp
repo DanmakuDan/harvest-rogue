@@ -83,7 +83,7 @@ void InventoryDialog::Render() {
       auto dialogLeft = (Screen::Get().GetWidth() / 2) - (INVENTORY_DIALOG_WIDTH / 2);
       auto dialogTop = (Screen::Get().GetHeight() / 2) - 2;
       Screen::Get().WriteWindow(dialogLeft, dialogTop, INVENTORY_DIALOG_WIDTH, 3, "Inventory");
-      Screen::Get().WriteText(dialogLeft + 2, dialogTop + 1, "(nothing)", CLR_GRAY);
+      Screen::Get().WriteText(dialogLeft + 2, dialogTop + 1, "(nothing)", Color::Gray);
       return;
    }
 
@@ -115,7 +115,7 @@ void InventoryDialog::Render() {
       Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, prop->GetName(), inventoryIndex == this->SelectedInventoryItem);
 
       if (inventoryIndex == this->SelectedInventoryItem) {
-         Screen::Get().WriteText(btnLeft + 1, dialogTop + dialogHeight - 2, prop->GetDescription(), CLR_MAGENTA);
+         Screen::Get().WriteText(btnLeft + 1, dialogTop + dialogHeight - 2, prop->GetDescription(), Color::Magenta);
       }
    }
 

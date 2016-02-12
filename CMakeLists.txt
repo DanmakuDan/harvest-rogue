@@ -80,27 +80,32 @@ ENDIF(BUILD_SDL2)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 file(GLOB SOURCE_FILES "${harvest_rogue_SOURCE_DIR}/src/*.cpp")
+   source_group("" FILES ${SOURCE_FILES})
 
 file(GLOB SOURCE_SCENE_FILES "${harvest_rogue_SOURCE_DIR}/src/scenes/*.cpp")
-   source_group(scenes FILES ${SOURCE_SCENE_FILES})
+   source_group("Scenes" FILES ${SOURCE_SCENE_FILES})
 
 file(GLOB SOURCE_DIALOG_FILES "${harvest_rogue_SOURCE_DIR}/src/dialogs/*.cpp")
-   source_group(dialogs FILES ${SOURCE_DIALOG_FILES})
+   source_group("Dialogs" FILES ${SOURCE_DIALOG_FILES})
 
 file(GLOB SOURCE_PROP_FILES "${harvest_rogue_SOURCE_DIR}/src/props/*.cpp")
-   source_group(props FILES ${SOURCE_PROP_FILES})
+   source_group("Props" FILES ${SOURCE_PROP_FILES})
 
 file(GLOB SOURCE_CORE_FILES "${harvest_rogue_SOURCE_DIR}/src/core/*.cpp")
-   source_group(core FILES ${SOURCE_CORE_FILES})
+   source_group("Core" FILES ${SOURCE_CORE_FILES})
 
 file(GLOB SOURCE_COMMON_FILES "${harvest_rogue_SOURCE_DIR}/src/common/*.cpp")
-   source_group(common FILES ${SOURCE_COMMON_FILES})
+   source_group("Common" FILES ${SOURCE_COMMON_FILES})
 
+file(GLOB SOURCE_ITEMINTERFACES_FILES "${harvest_rogue_SOURCE_DIR}/src/iteminterfaces/*.cpp")
+   source_group("Item Interfaces" FILES ${SOURCE_ITEMINTERFACES_FILES})
+   
 file(GLOB HEADER_FILES
    "${harvest_rogue_SOURCE_DIR}/include/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/common/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/dialogs/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/interfaces/*.h"
+   "${harvest_rogue_SOURCE_DIR}/include/iteminterfaces/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/props/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/scenes/*.h"
    "${harvest_rogue_SOURCE_DIR}/include/core/*.h"
@@ -112,6 +117,7 @@ include_directories(
    ${harvest_rogue_SOURCE_DIR}/include/common
    ${harvest_rogue_SOURCE_DIR}/include/dialogs
    ${harvest_rogue_SOURCE_DIR}/include/interfaces
+   ${harvest_rogue_SOURCE_DIR}/include/iteminterfaces
    ${harvest_rogue_SOURCE_DIR}/include/props
    ${harvest_rogue_SOURCE_DIR}/include/scenes
    ${harvest_rogue_SOURCE_DIR}/include/core
@@ -125,11 +131,17 @@ add_executable(harvest_rogue
    ${SOURCE_FRONTEND_FILES}
    ${SOURCE_CORE_FILES}
    ${SOURCE_COMMON_FILES}
+   ${SOURCE_ITEMINTERFACES_FILES}
    ${HEADER_FILES}
    ${SOURCE_WIN32_PDCURSES_FILES}
 )
 
-target_link_libraries(harvest_rogue ${CURSES_LIBRARIES} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2MIXER_LIBRARIES})
+target_link_libraries(harvest_rogue 
+   ${CURSES_LIBRARIES}
+   ${SDL2_LIBRARIES}
+   ${SDL2IMAGE_LIBRARIES}
+   ${SDL2MIXER_LIBRARIES}
+)
 
 IF(WIN32)
    set_target_properties(harvest_rogue PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")

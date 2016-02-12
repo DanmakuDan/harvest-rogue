@@ -15,27 +15,61 @@
 #ifndef HARVEST_ROGUE_COLORS_H
 #define HARVEST_ROGUE_COLORS_H
 
-#define CLR_DEFAULT    -1
-#define CLR_BLACK       0
-#define CLR_RED         1
-#define CLR_GREEN       2
-#define CLR_YELLOW      3
-#define CLR_BLUE        4
-#define CLR_MAGENTA     5
-#define CLR_CYAN        6
-#define CLR_SILVER      7
-#define CLR_GRAY        8
-#define CLR_BRRED       9
-#define CLR_BRGREEN     10
-#define CLR_BRYELLOW    11
-#define CLR_BRBLUE      12
-#define CLR_BRMAGENTA   13
-#define CLR_BRCYAN      14
-#define CLR_WHITE       15
-#define CLR_INVERSE(X) (X+16)
+#include <string>
 
-#define CLR_IS_INVERSE(X) ((X & 16) > 0)
-#define CLR_PURE(X) (X & 0xF)
+namespace Color {
+   enum Color {
+      Unknown = ~0,
+      Default = -1,
+      Black = 0,
+      Red,
+      Green,
+      Yellow,
+      Blue,
+      Magenta,
+      Cyan,
+      Silver,
+      Gray,
+      BrightRed,
+      BrightGreen,
+      BrightYellow,
+      BrightBlue,
+      BrightMagenta,
+      BrightCyan,
+      White
+   };
+
+   static Color Inverse(Color color) {
+      return (Color)(color + 16);
+   }
+
+   static Color Pure(Color color) {
+      return (Color)((int)color & 0xF);
+   }
+
+   static Color FromString(std::string color) {
+      if (color == "default") return Default;
+      if (color == "black") return Black;
+      if (color == "red") return Red;
+      if (color == "green") return Green;
+      if (color == "yellow") return Yellow;
+      if (color == "blue") return Blue;
+      if (color == "magenta") return Magenta;
+      if (color == "cyan") return Cyan;
+      if (color == "silver") return Silver;
+      if (color == "gray") return Gray;
+      if (color == "brightRed") return BrightRed;
+      if (color == "brightGreen") return BrightGreen;
+      if (color == "brightYellow") return BrightYellow;
+      if (color == "brightBlue") return BrightBlue;
+      if (color == "brightMagenta") return BrightMagenta;
+      if (color == "brightCyan") return BrightCyan;
+      if (color == "white") return White;
+      return Unknown;
+   }
+
+}
+
 
 
 #endif //HARVEST_ROGUE_COLORS_H

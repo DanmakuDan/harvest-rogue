@@ -124,8 +124,8 @@ void Game::RenderTopBar() {
             hour > 11 ? "pm" : "am"
             );
 
-   Screen::Get().ClearLine(0, CLR_INVERSE(CLR_WHITE));
-   Screen::Get().WriteText(0, 0, topStatusBar, CLR_INVERSE(CLR_WHITE));
+   Screen::Get().ClearLine(0, Color::Inverse(Color::White));
+   Screen::Get().WriteText(0, 0, topStatusBar, Color::Inverse(Color::White));
 
    free(topStatusBar);
 }
@@ -186,8 +186,8 @@ void Game::RenderLog() {
    auto startIndex = (logMessageCount < 6) ? 0 : logMessageCount - 6;
 
    for (auto i = 0; (i < 6) && ((startIndex + i) < logMessageCount); i++) {
-      Screen::Get().ClearLine(logMessageOutputTop + i, CLR_CYAN);
-      Screen::Get().WriteText(1, logMessageOutputTop + i, logMessages[startIndex + i], CLR_CYAN);
+      Screen::Get().ClearLine(logMessageOutputTop + i, Color::Cyan);
+      Screen::Get().WriteText(1, logMessageOutputTop + i, logMessages[startIndex + i], Color::Cyan);
    }
 }
 
@@ -201,27 +201,27 @@ void Game::RenderStatusBar() {
       statusBarText << currentLandmark->GetName();
    }
 
-   Screen::Get().ClearLine(statusBarLine, CLR_INVERSE(CLR_WHITE));
-   Screen::Get().WriteText(1, statusBarLine, statusBarText.str(), CLR_INVERSE(CLR_BLUE));
+   Screen::Get().ClearLine(statusBarLine, Color::Inverse(Color::White));
+   Screen::Get().WriteText(1, statusBarLine, statusBarText.str(), Color::Inverse(Color::Blue));
 }
 
 void Game::RenderSideBar() {
    auto sideBarLeft = (Screen::Get().GetWidth() - (GAME_UI_MAP_PADDING_RIGHT)) + 1;
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
 
-   Screen::Get().WriteText(sideBarLeft, 3, "Feeling ", CLR_SILVER);
+   Screen::Get().WriteText(sideBarLeft, 3, "Feeling ", Color::Silver);
    auto playerEnergy = Player::Get().GetEnergy();
    if (playerEnergy <= ENERGY_EXAUSTED) {
-      Screen::Get().WriteText(sideBarLeft + 8, 3, "EXAUSTED", CLR_BRRED);
+      Screen::Get().WriteText(sideBarLeft + 8, 3, "EXAUSTED", Color::BrightRed);
    } else if (playerEnergy <= ENERGY_TIRED) {
-      Screen::Get().WriteText(sideBarLeft + 8, 3, "tired", CLR_BRYELLOW);
+      Screen::Get().WriteText(sideBarLeft + 8, 3, "tired", Color::BrightYellow);
    }else if (playerEnergy <= ENERGY_GOOD) {
-      Screen::Get().WriteText(sideBarLeft + 8, 3, "good", CLR_WHITE);
+      Screen::Get().WriteText(sideBarLeft + 8, 3, "good", Color::White);
    } else  {
-      Screen::Get().WriteText(sideBarLeft + 8, 3, "well rested", CLR_BRGREEN);
+      Screen::Get().WriteText(sideBarLeft + 8, 3, "well rested", Color::BrightGreen);
    }
 
-   Screen::Get().WriteText(sideBarLeft, 4, "Standing on", CLR_SILVER);
+   Screen::Get().WriteText(sideBarLeft, 4, "Standing on", Color::Silver);
    auto currentProp = currentLandmark->GetProp(Player::Get().GetPositionX(), Player::Get().GetPositionY());
    if (currentProp == nullptr) {
       auto currentTile = currentLandmark->GetTile(Player::Get().GetPositionX(), Player::Get().GetPositionY());
@@ -232,13 +232,13 @@ void Game::RenderSideBar() {
    }
 
    auto currentTool = Player::Get().GetCurrentTool();
-   Screen::Get().WriteText(sideBarLeft, 5, "Holding", CLR_SILVER);
+   Screen::Get().WriteText(sideBarLeft, 5, "Holding", Color::Silver);
    if (currentTool == nullptr) {
-      Screen::Get().WriteText(sideBarLeft + 8, 5, "Nothing", CLR_GRAY);
+      Screen::Get().WriteText(sideBarLeft + 8, 5, "Nothing", Color::Gray);
    } else {
       auto prop = std::dynamic_pointer_cast<IProp>(currentTool);
       if (prop == nullptr) {
-         Screen::Get().WriteText(sideBarLeft + 8, 5, "NOT A PROP!", CLR_RED);
+         Screen::Get().WriteText(sideBarLeft + 8, 5, "NOT A PROP!", Color::Red);
       } else {
          Screen::Get().WriteText(sideBarLeft + 8, 5, prop->GetName(),
                                  Tile::FromTileType(prop->GetTileType()).ColorCode);

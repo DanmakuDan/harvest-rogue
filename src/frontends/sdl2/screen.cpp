@@ -97,7 +97,7 @@ int Screen::GetHeight()
    return height / ActualTileSize;
 }
 
-void Screen::WriteText(int x, int y, std::string text, int color)
+void Screen::WriteText(int x, int y, std::string text, Color::Color color)
 {
    int startX = x;
    std::istringstream iss(text);
@@ -111,7 +111,7 @@ void Screen::WriteText(int x, int y, std::string text, int color)
    }
 }
 
-void Screen::WriteCenterText(int y, std::string text, int color)
+void Screen::WriteCenterText(int y, std::string text, Color::Color color)
 {
    auto strWidth = text.find('\n');
    int x = (this->GetWidth() / 2) - (strWidth / 2);
@@ -121,13 +121,13 @@ void Screen::WriteCenterText(int y, std::string text, int color)
 void Screen::WriteButton(int x, int y, int width, std::string text, bool active)
 {
    auto captionLeft = x + (width / 2) - (text.length() / 2);
-   this->WriteText(captionLeft, y, text, active ? CLR_INVERSE(CLR_WHITE) : CLR_WHITE);
+   this->WriteText(captionLeft, y, text, active ? Color::Inverse(Color::White) : Color::White);
 }
 
-void Screen::ClearLine(int y, int color)
+void Screen::ClearLine(int y, Color::Color color)
 {
-   if (color == -1) {
-      color = 0;
+   if (color == Color::Default) {
+      color = Color::Black;
    }
    SDL_Rect destRect;
    destRect.x = 0;
@@ -144,10 +144,10 @@ void Screen::ClearLine(int y, int color)
    SDL_RenderFillRect(renderer, &destRect);
 }
 
-void Screen::WriteCharacter(int x, int y, const char character, int color)
+void Screen::WriteCharacter(int x, int y, const char character, Color::Color color)
 {
-   if (color == -1) {
-      color = 0;
+   if (color == Color::Default -1) {
+      color = Color::Black;
    }
    SDL_Rect srcRect;
    SDL_Rect destRect;
@@ -260,5 +260,5 @@ void Screen::WriteWindow(int x, int y, int width, int height, std::string text)
    }
 
    auto captionLeft = (x + (width / 2)) - (text.size() / 2);
-   this->WriteText(captionLeft, y, text.c_str(), CLR_WHITE);
+   this->WriteText(captionLeft, y, text.c_str(), Color::White);
 }

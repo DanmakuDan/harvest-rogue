@@ -17,12 +17,16 @@
 #include "textgenerator.h"
 #include "landmarkgenerator.h"
 #include "tickevents.h"
+#include "itemloader.h"
 
 GameState::GameState() {
+   ItemLoader::LoadItemDatabase("media/items.json");
+
    this->active = true;
    this->CurrentScene = nullptr;
    this->NextScene = nullptr;
    this->CurrentLandmarkIndex = -1;
+
    Player::Get().WarpPlayer(5, 5);
 
    // Temporary debug stuff

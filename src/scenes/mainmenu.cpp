@@ -78,7 +78,7 @@ void MainMenu::Render() {
                "                         Harvest-Rogue                         "
    );
 
-   Screen::Get().WriteCenterText(top, logo, CLR_WHITE);
+   Screen::Get().WriteCenterText(top, logo, Color::White);
    this->DrawMenu();
 
    Screen::Get().EndScreenUpdate();

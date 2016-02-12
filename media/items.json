@@ -1,0 +1,45 @@
+{
+  "items": {
+
+
+    "Simple Axe": {
+      "description": "A simple axe!",
+      "surfaceAttributes": [ "walkable" ],
+      "itemCategories": [ "tool" ],
+      "colorCode": "white",
+      "characterCode": "P",
+      "gfxTileCode":  19,
+      "interfaces": {
+        "choppingTool": {
+          "strength": 5,
+          "fatigue": 3
+        },
+        "durable": {
+          "durability": 100,
+          "repairable": true
+        }
+      }
+    },
+
+    "Simple Hoe": {
+      "description": "A simple hoe!",
+      "surfaceAttributes": [ "walkable" ],
+      "itemCategories": [ "tool" ],
+      "colorCode": "yellow",
+      "characterCode": "\\",
+      "gfxTileCode": 15,
+      "interfaces": {
+        "tillingTool": {
+          "strength": 5,
+          "fatigue": 3
+        },
+        "durable": {
+          "durability": 100,
+          "repairable": true
+        }
+      }
+    }
+
+
+  }
+}

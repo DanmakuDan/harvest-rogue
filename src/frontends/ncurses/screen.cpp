@@ -35,10 +35,10 @@ Screen::Screen() {
    clear();
 
    for (short i = 0; i < 16; i++) {
-      init_pair(i + (short)1, i, CLR_BLACK);
+      init_pair(i + (short)1, i, Color::Black);
    }
    for (short i = 16; i < 32; i++) {
-      init_pair(i + (short)1, i - (short)15, CLR_WHITE);
+      init_pair(i + (short)1, i - (short)15, Color::White);
    }
 
 }
@@ -55,7 +55,7 @@ int Screen::GetHeight() {
    return getmaxy(stdscr);
 }
 
-void Screen::WriteText(int x, int y, std::string text, int color) {
+void Screen::WriteText(int x, int y, std::string text, Color::Color color) {
 
    std::istringstream iss(text);
    wattron(stdscr, COLOR_PAIR(color + 1));
@@ -66,7 +66,7 @@ void Screen::WriteText(int x, int y, std::string text, int color) {
 
 }
 
-void Screen::WriteCenterText(int y, std::string text, int color) {
+void Screen::WriteCenterText(int y, std::string text, Color::Color color) {
    auto strWidth = text.find('\n');
    auto x = (this->GetWidth() / 2) - (strWidth / 2);
    this->WriteText(x, y, text, color);
@@ -74,7 +74,7 @@ void Screen::WriteCenterText(int y, std::string text, int color) {
 }
 
 void Screen::WriteButton(int x, int y, int width, std::string text, bool active) {
-	wattron(stdscr, COLOR_PAIR(1 + CLR_PURE(CLR_WHITE)));
+	wattron(stdscr, COLOR_PAIR(1 + Color::White));
    if (active) {
       wattron(stdscr, A_BOLD | A_REVERSE);
    } else {
@@ -83,16 +83,16 @@ void Screen::WriteButton(int x, int y, int width, std::string text, bool active)
       mvwprintw(stdscr, y, x + i, " ");
    }
    auto captionLeft = x + (width / 2) - (text.length() / 2);
-   this->WriteText(captionLeft, y, text, CLR_WHITE);
+   this->WriteText(captionLeft, y, text, Color::White);
    if (active) {
 	  wattroff(stdscr, A_BOLD | A_REVERSE);
    } else {
-      wattroff(stdscr, COLOR_PAIR(1 + CLR_WHITE));
+      wattroff(stdscr, COLOR_PAIR(1 + Color::White));
    }
-   wattroff(stdscr, COLOR_PAIR(1 + CLR_PURE(CLR_WHITE)));
+   wattroff(stdscr, COLOR_PAIR(1 + Color::White));
 }
 
-void Screen::ClearLine(int y, int color) {
+void Screen::ClearLine(int y, Color::Color color) {
    wmove(stdscr, y, 0);
    wattron(stdscr, COLOR_PAIR(color + 1));
    for (auto i = 0; i < this->GetWidth(); i++) {
@@ -101,7 +101,7 @@ void Screen::ClearLine(int y, int color) {
    wattroff(stdscr, COLOR_PAIR(1));
 }
 
-void Screen::WriteCharacter(int x, int y, const char character, int color) {
+void Screen::WriteCharacter(int x, int y, const char character, Color::Color color) {
    wattron(stdscr, COLOR_PAIR(1 + color));
    wmove(stdscr, y, x);
    waddch(stdscr, character);
@@ -121,7 +121,7 @@ void Screen::EndScreenUpdate() {
 }
 
 void Screen::WriteWindow(int x, int y, int width, int height, std::string text) {
-   wattron(stdscr, COLOR_PAIR(1 + CLR_BRYELLOW));
+   wattron(stdscr, COLOR_PAIR(1 + Color::BrightYellow));
    for(auto posY = y; posY < y + height; posY++) {
       for(auto posX = x; posX < x + width; posX++) {
          wmove(stdscr, posY, posX);
@@ -133,12 +133,12 @@ void Screen::WriteWindow(int x, int y, int width, int height, std::string text) 
 
       }
    }
-   wattroff(stdscr, COLOR_PAIR(1 + CLR_YELLOW));
-   wattron(stdscr, COLOR_PAIR(1 + CLR_WHITE));
+   wattroff(stdscr, COLOR_PAIR(1 + Color::Yellow));
+   wattron(stdscr, COLOR_PAIR(1 + Color::White));
    auto captionLeft = (x + (width / 2)) - (text.size() / 2);
    wattron(stdscr, A_BOLD);
    wmove(stdscr, y, captionLeft);
    wprintw(stdscr, text.c_str());
    wattroff(stdscr, A_BOLD);
-   wattroff(stdscr, COLOR_PAIR(1 + CLR_WHITE));
+   wattroff(stdscr, COLOR_PAIR(1 + Color::White));
 }
