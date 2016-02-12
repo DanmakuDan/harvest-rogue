@@ -24,7 +24,7 @@
 typedef struct landmark_item_s {
    int x;
    int y;
-   std::shared_ptr<Item> Item;
+   std::shared_ptr<Item> ItemTarget;
 } LandmarkItem;
 
 class Landmark {

@@ -62,7 +62,7 @@ void Landmark::AddItem(int x, int y, std::shared_ptr<Item> item) {
 }
 
 std::shared_ptr<Item> Landmark::GetItem(int x, int y) {
-   return this->Items[x + (y * Width)].Item;
+   return this->Items[x + (y * Width)].ItemTarget;
 }
 
 void Landmark::RemoveItem(int x, int y) {
@@ -79,7 +79,7 @@ bool Landmark::LocateItem(std::shared_ptr<Item> item, int &x, int &y) {
 
    for (int i = 0; i < (Width * Height); i++) {
       auto mapItem = this->Items[i];
-      if (mapItem.Item != item) {
+      if (mapItem.ItemTarget != item) {
          continue;
       }
 
