@@ -115,15 +115,15 @@ void InventoryDialog::Render() {
       }
       auto inventoryItem = playerInventory[inventoryIndex];
       std::stringstream ss;
-      ss << inventoryItem->Item->GetName();
-      auto obtainableInterface = inventoryItem->Item->GetInterface<Obtainable>(ItemInterfaceType::Obtainable);
+      ss << inventoryItem->ItemTarget->GetName();
+      auto obtainableInterface = inventoryItem->ItemTarget->GetInterface<Obtainable>(ItemInterfaceType::Obtainable);
       if (obtainableInterface->GetIsStackable()) {
          ss << " [" << inventoryItem->StackSize << "]";
       }
       Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, ss.str(), inventoryIndex == this->SelectedInventoryItem);
 
       if (inventoryIndex == this->SelectedInventoryItem) {
-         Screen::Get().WriteText(btnLeft + 1, dialogTop + dialogHeight - 2, inventoryItem->Item->GetDescription(), Color::Magenta);
+         Screen::Get().WriteText(btnLeft + 1, dialogTop + dialogHeight - 2, inventoryItem->ItemTarget->GetDescription(), Color::Magenta);
       }
    }
 
@@ -135,7 +135,7 @@ void InventoryDialog::ExecuteSelectedAction() {
    if (this->SelectedInventoryItem == -1) {
       return;
    }
-   auto inventoryItem = std::shared_ptr<Item>(Player::Get().GetInventory()[this->SelectedInventoryItem]->Item);
+   auto inventoryItem = std::shared_ptr<Item>(Player::Get().GetInventory()[this->SelectedInventoryItem]->ItemTarget);
    auto toolItem = std::dynamic_pointer_cast<Item>(inventoryItem);
    if (toolItem != nullptr) {
       // Tool item

@@ -27,7 +27,7 @@
 #define ENERGY_EXAUSTED     15
 
 struct PlayerInventoryItem {
-   std::shared_ptr<Item> Item;
+   std::shared_ptr<Item> ItemTarget;
    int StackSize;
 };
 

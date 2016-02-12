@@ -116,7 +116,7 @@ void Player::SpawnIntoInventory(std::shared_ptr<Item> prop) {
       }
 
       auto item = std::shared_ptr<PlayerInventoryItem>(new PlayerInventoryItem());
-      item->Item = std::shared_ptr<Item>(prop);
+      item->ItemTarget = std::shared_ptr<Item>(prop);
       item->StackSize = 1;
       this->Inventory.push_back(item);
 
@@ -129,7 +129,7 @@ void Player::SpawnIntoInventory(std::shared_ptr<Item> prop) {
    // Item is stackable
    std::shared_ptr<PlayerInventoryItem> destItem = nullptr;
    for (auto item : this->Inventory) {
-      if (item->Item->GetName() != prop->GetName()) {
+      if (item->ItemTarget->GetName() != prop->GetName()) {
          continue;
       }
 
@@ -147,7 +147,7 @@ void Player::SpawnIntoInventory(std::shared_ptr<Item> prop) {
 
    if (destItem == nullptr) {
       destItem = std::shared_ptr<PlayerInventoryItem>(new PlayerInventoryItem());
-      destItem->Item = std::shared_ptr<Item>(prop);
+      destItem->ItemTarget = std::shared_ptr<Item>(prop);
       destItem->StackSize = 0;
       this->Inventory.push_back(destItem);
    }
@@ -208,7 +208,7 @@ void Player::DropInventoryItemOnGround(std::shared_ptr<Item> prop) {
 void Player::RemoveFromInventory(std::shared_ptr<Item> prop) {
    auto i = 0;
    for (auto invProp : this->Inventory) {
-      if (invProp->Item != prop) {
+      if (invProp->ItemTarget != prop) {
          i++;
          continue;
       }
@@ -218,9 +218,9 @@ void Player::RemoveFromInventory(std::shared_ptr<Item> prop) {
          this->Inventory.erase(this->Inventory.begin() + i);
       }
 
-      bool startsWithVowel = invProp->Item->GetName().find_first_of("aAeEiIoOuU") == 0;
+      bool startsWithVowel = invProp->ItemTarget->GetName().find_first_of("aAeEiIoOuU") == 0;
       GameState::Get().AddLogMessageFmt("%s %s has been removed from your inventory.", (startsWithVowel ? "An" : "A"),
-                                        invProp->Item->GetName().c_str());
+                                        invProp->ItemTarget->GetName().c_str());
       break;
    }
 }
