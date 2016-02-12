@@ -13,7 +13,6 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "durable.h"
-#include "..\..\include\iteminterfaces\durable.h"
 
 Durable::Durable()
 {
