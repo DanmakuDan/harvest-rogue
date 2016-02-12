@@ -13,6 +13,10 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "choppingtool.h"
+#include "actiondirectiondialog.h"
+#include "gamestate.h"
+#include "player.h"
+#include "choppable.h"
 
 ChoppingTool::ChoppingTool()
 {
@@ -24,7 +28,48 @@ ChoppingTool::~ChoppingTool()
 
 std::shared_ptr<ChoppingTool> ChoppingTool::Deserialize(picojson::value serializedValue)
 {
-   return std::shared_ptr<ChoppingTool>();
+   auto result = std::shared_ptr<ChoppingTool>(new ChoppingTool());
+
+   if (!serializedValue.is<picojson::object>()) {
+      throw;
+   }
+
+   auto data = serializedValue.get<picojson::object>();
+   for (auto item : data) {
+
+      if (item.first == "strength") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         auto value = item.second.get<double>();
+         if (value != (unsigned int)value) {
+            throw;
+         }
+
+         result->SetStrength(value);
+         continue;
+      }
+
+      if (item.first == "fatigue") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         auto value = item.second.get<double>();
+
+         if (value != (unsigned int)value) {
+            throw;
+         }
+
+         result->SetFatigue((int)value);
+         continue;
+      }
+
+      throw;
+   }
+
+   return result;
 }
 
 int ChoppingTool::GetStrength()
@@ -45,6 +90,52 @@ int ChoppingTool::GetFatigue()
 void ChoppingTool::SetFatigue(int fatigue)
 {
    this->Fatigue = fatigue;
+}
+
+void ChoppingTool::Chop(std::shared_ptr<Item> sourceItem)
+{
+   GameState::Get().PushDialog(ActionDirectionDialog::Construct(sourceItem));
+}
+
+void ChoppingTool::Chop(std::shared_ptr<Item> sourceItem, Direction::Direction direction)
+{
+   auto landmark = GameState::Get().GetCurrentLandmark();
+
+   int targetX, targetY;
+   switch (direction) {
+   case Direction::Up:
+      targetX = Player::Get().GetPositionX();
+      targetY = Player::Get().GetPositionY() - 1;
+      break;
+   case Direction::Down:
+      targetX = Player::Get().GetPositionX();
+      targetY = Player::Get().GetPositionY() + 1;
+      break;
+   case Direction::Left:
+      targetX = Player::Get().GetPositionX() - 1;
+      targetY = Player::Get().GetPositionY();
+      break;
+   case Direction::Right:
+      targetX = Player::Get().GetPositionX() + 1;
+      targetY = Player::Get().GetPositionY();
+      break;
+   }
+
+   auto item = landmark->GetItem(targetX, targetY);
+   if (item == nullptr || !item->HasInterface(ItemInterfaceType::Choppable)) {
+      GameState::Get().AddLogMessage("There is nothing to chop.");
+      return;
+   }
+
+   auto choppable = item->GetInterface<Choppable>(ItemInterfaceType::Choppable);
+   if (choppable == nullptr) {
+      GameState::Get().AddLogMessageFmt("You cannot chop the %s.", item->GetName().c_str());
+      return;
+   }
+
+   GameState::Get().AddLogMessageFmt("You chop at the %s.", item->GetName().c_str());
+
+   choppable->Chop(std::shared_ptr<Item>(item), this);
 }
 
 ItemInterfaceType::ItemInterfaceType ChoppingTool::GetInterfaceType()

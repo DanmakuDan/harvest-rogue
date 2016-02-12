@@ -16,8 +16,7 @@
 #define HARVEST_ROGUE_PLAYER_H
 
 #include "direction.h"
-#include "tool.h"
-#include "prop.h"
+#include "item.h"
 #include <memory>
 #include <vector>
 
@@ -26,6 +25,11 @@
 #define ENERGY_GOOD         50
 #define ENERGY_TIRED        30
 #define ENERGY_EXAUSTED     15
+
+struct PlayerInventoryItem {
+   std::shared_ptr<Item> Item;
+   int StackSize;
+};
 
 class Player {
 private:
@@ -43,13 +47,13 @@ public:
    int GetPositionY();
    void WarpPlayer(int x, int y);
    void WalkPlayer(Direction::Direction direction);
-   std::shared_ptr<ITool> GetCurrentTool();
-   std::vector<std::shared_ptr<IProp>> GetInventory();
-   void SpawnIntoInventory(std::shared_ptr<IProp> prop);
-   void RemoveFromInventory(std::shared_ptr<IProp> prop);
+   std::shared_ptr<Item> GetCurrentTool();
+   std::vector<std::shared_ptr<PlayerInventoryItem>> GetInventory();
+   void SpawnIntoInventory(std::shared_ptr<Item> prop);
+   void RemoveFromInventory(std::shared_ptr<Item> prop);
    void PickUpItemFromGround();
-   void EquipFromInventory(std::shared_ptr<ITool> tool);
-   void DropInventoryItemOnGround(std::shared_ptr<IProp> prop);
+   void EquipFromInventory(std::shared_ptr<Item> tool);
+   void DropInventoryItemOnGround(std::shared_ptr<Item> prop);
    void UseTool();
    void UnequipCurrentTool();
    int GetEnergy();
@@ -62,8 +66,8 @@ public:
 private:
    int PositionX;
    int PositionY;
-   std::shared_ptr<ITool> CurrentTool;
-   std::vector<std::shared_ptr<IProp>> Inventory;
+   std::shared_ptr<Item> CurrentTool;
+   std::vector<std::shared_ptr<PlayerInventoryItem>> Inventory;
    bool IsPassable(int x, int y);
    bool IsSleeping;
    int Energy;

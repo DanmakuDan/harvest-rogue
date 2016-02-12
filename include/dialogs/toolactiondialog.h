@@ -17,7 +17,7 @@
 
 #include <memory>
 #include "dialog.h"
-#include "tool.h"
+#include "item.h"
 
 #define TOOLACTIN_DIALOG_WIDTH  35
 
@@ -31,14 +31,14 @@ namespace ToolActionDialogOption {
 
 class ToolActionDialog : public IDialog {
 public:
-   static std::shared_ptr<ToolActionDialog> Construct(std::shared_ptr<ITool> tool) {
+   static std::shared_ptr<ToolActionDialog> Construct(std::shared_ptr<Item> tool) {
       return std::shared_ptr<ToolActionDialog>(new ToolActionDialog(tool));
    }
    virtual void OnKeyPress(int key);
    virtual void Render();
 private:
-   ToolActionDialog(std::shared_ptr<ITool> tool);
-   std::shared_ptr<ITool> Tool;
+   ToolActionDialog(std::shared_ptr<Item> tool);
+   std::shared_ptr<Item> Tool;
    ToolActionDialogOption::ToolActionDialogOption SelectedOption;
 
    void ExecuteSelectedAction();

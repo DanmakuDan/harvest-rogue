@@ -21,12 +21,14 @@ namespace ItemCategory {
    enum ItemCategory {
       Unknown,
       Tool,
-      Container
+      Container,
+      CraftingMaterial
    };
 
    static ItemCategory FromString(std::string itemCategory) {
       if (itemCategory == "tool") return Tool;
       if (itemCategory == "container") return Container;
+      if (itemCategory == "craftingMaterial") return CraftingMaterial;
 
       return Unknown;
    }

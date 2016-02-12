@@ -13,15 +13,41 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "item.h"
+#include "gamestate.h"
+#include "choppingtool.h"
+#include "tillingtool.h"
+#include "durable.h"
+#include "dropsloot.h"
+
+
+Item Item::Clone(const Item & source)
+{
+   Item result = source;
+
+   for (auto i : source.ItemInterfaces) {
+      if (i.second == nullptr) {
+         result.ItemInterfaces[i.first] = nullptr;
+         continue;
+      }
+      result.ItemInterfaces[i.first] = std::shared_ptr<IItemInterface>(i.second->Clone());
+   }
+
+   return result;
+}
+
+Item::Item()
+{
+   this->Count = 1;
+}
 
 std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> Item::GetInterfaces()
 {
    return this->ItemInterfaces;
 }
 
-std::shared_ptr<IItemInterface> Item::GetInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType)
+bool Item::HasInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType)
 {
-   return this->ItemInterfaces[itemInterfaceType];
+   return this->ItemInterfaces[itemInterfaceType] != nullptr;
 }
 
 void Item::AddInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType, std::shared_ptr<IItemInterface> itemInterface)
@@ -53,6 +79,71 @@ std::string Item::GetDescription()
    return this->Description;
 }
 
+bool Item::Takeable()
+{
+   return this->HasInterface(ItemInterfaceType::Obtainable);
+}
+
+bool Item::IsUsable()
+{
+   if (this->HasInterface(ItemInterfaceType::Durable)) {
+      auto durableInterface = this->GetInterface<Durable>(ItemInterfaceType::Durable);
+      if (durableInterface->GetDurability() <= 0) {
+         GameState::Get().AddLogMessageFmt("The %s is broken and cannot be used.", this->GetName().c_str());
+         return false;
+      }
+   }
+
+   if (this->HasInterface(ItemInterfaceType::ChoppingTool)
+      || this->HasInterface(ItemInterfaceType::TillingTool)
+      )
+      return true;
+   return false;
+}
+
+bool Item::IsEquippable()
+{
+   if (this->HasInterface(ItemInterfaceType::ChoppingTool)
+      || this->HasInterface(ItemInterfaceType::TillingTool)
+      )
+      return true;
+   return false;
+}
+
+void Item::Use()
+{
+   if (this->HasInterface(ItemInterfaceType::ChoppingTool)) {
+      auto choppingTool = this->GetInterface<ChoppingTool>(ItemInterfaceType::ChoppingTool);
+      choppingTool->Chop(this->shared_from_this());
+      return;
+   }   
+}
+
+void Item::Use(Direction::Direction direction)
+{
+   if (this->HasInterface(ItemInterfaceType::ChoppingTool)) {
+      auto choppingTool = this->GetInterface<ChoppingTool>(ItemInterfaceType::ChoppingTool);
+      choppingTool->Chop(this->shared_from_this(), direction);
+      return;
+   }
+}
+
+void Item::Destruct()
+{
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   int x, y;
+   currentLandmark->LocateItem(this->shared_from_this(), x, y);
+   currentLandmark->RemoveItem(x, y);
+
+   if (this->HasInterface(ItemInterfaceType::DropsLoot)) {
+      auto dropsLootInterface = this->GetInterface<DropsLoot>(ItemInterfaceType::DropsLoot);
+      dropsLootInterface->DropLoot(x, y);
+   }
+
+   GameState::Get().AddLogMessageFmt("The %s was destroyed!", this->GetName().c_str());
+   
+}
+
 void Item::SetDescription(std::string description)
 {
    this->Description = description;
@@ -65,15 +156,15 @@ SurfaceAttribute::SurfaceAttribute Item::GetSurfaceAttributes()
 
 void Item::SetSurfaceAttributes(SurfaceAttribute::SurfaceAttribute surfaceAttributes)
 {
-   this->SurfaceAttributes == surfaceAttributes;
+   this->SurfaceAttributes = surfaceAttributes;
 }
 
-void Item::SetColorCode(int colorCode)
+void Item::SetColorCode(Color::Color colorCode)
 {
    this->ColorCode = colorCode;
 }
 
-int Item::GetColorCode()
+Color::Color Item::GetColorCode()
 {
    return this->ColorCode;
 }
@@ -106,4 +197,14 @@ std::list<ItemCategory::ItemCategory> Item::GetItemCategories()
 void Item::SetItemCategories(std::list<ItemCategory::ItemCategory> itemCategories)
 {
    this->ItemCategories = itemCategories;
+}
+
+int Item::GetCount()
+{
+   return this->Count;
+}
+
+void Item::SetCount(int count)
+{
+   this->Count = count;
 }

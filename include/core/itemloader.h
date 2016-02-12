@@ -17,14 +17,14 @@
 #define HARVEST_ROGUE_ITEMLOADER_H
 
 #include <item.h>
-#include <list>
+#include <map>
+#include <string>
 #include "picojson.h"
 
 class ItemLoader {
 public:
-   static std::list<Item> LoadItemDatabase(std::string fileName);
+   static std::map<std::string, Item> LoadItemDatabase(std::string fileName);
 private:
-   static void ParseItemsDictionary(std::pair<const std::string, picojson::value> item);
    static Item ParseItemTopLevel(std::pair<const std::string, picojson::value> item);
    static void ParseItemTopLevelAttribute(Item* item, std::pair<const std::string, picojson::value> source);
    static void ParseItemInterfaces(Item* item, picojson::value source);

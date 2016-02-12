@@ -16,6 +16,9 @@
 #include "durable.h"
 #include "tillingtool.h"
 #include "choppingtool.h"
+#include "choppable.h"
+#include "obtainable.h"
+#include "dropsloot.h"
 
 std::shared_ptr<IItemInterface> IItemInterface::Deserialize(ItemInterfaceType::ItemInterfaceType interfaceType, picojson::value serializedValue)
 {
@@ -29,6 +32,15 @@ std::shared_ptr<IItemInterface> IItemInterface::Deserialize(ItemInterfaceType::I
 
    case ItemInterfaceType::TillingTool:
       return TillingTool::Deserialize(serializedValue);
+
+   case ItemInterfaceType::Choppable:
+      return Choppable::Deserialize(serializedValue);
+
+   case ItemInterfaceType::DropsLoot:
+      return DropsLoot::Deserialize(serializedValue);
+
+   case ItemInterfaceType::Obtainable:
+      return Obtainable::Deserialize(serializedValue);
 
    default:
       return nullptr;

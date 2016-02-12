@@ -16,43 +16,48 @@
 #include "iteminterface.h"
 #include <fstream>
 
-std::list<Item> ItemLoader::LoadItemDatabase(std::string fileName)
+std::map<std::string, Item> ItemLoader::LoadItemDatabase(std::string fileName)
 {
-   std::ifstream fileStream(fileName);
-   picojson::value v;
-   fileStream >> v;
-   std::string err = picojson::get_last_error();
-   if (!err.empty()) {
-      std::cerr << err << std::endl;
-      exit(1);
-   }
-   if (!v.is<picojson::object>()) {
-      std::cerr << "JSON is not an object" << std::endl;
-      exit(2);
-   }
-   const picojson::value::object& obj = v.get<picojson::object>();
-   for (auto i : obj) {
-      ItemLoader::ParseItemsDictionary(i);
-   }
+   std::map<std::string, Item> result;
 
-   return std::list<Item>();
-}
+   std::ifstream fileListStream(fileName);
+   picojson::value fileListValue;
+   fileListStream >> fileListValue;
+   auto definitionFilesObject = fileListValue.get<picojson::object>();
+   for (auto definitionFilesObjectItem : definitionFilesObject) {
+      if (definitionFilesObjectItem.first != "definitionFiles") {
+         throw;
+      }
 
-void ItemLoader::ParseItemsDictionary(std::pair<const std::string, picojson::value> item)
-{
-   if (item.first != "items") {
-      throw;
+      auto defFileItems = definitionFilesObjectItem.second.get<picojson::array>();
+      for (auto definitionFileName : defFileItems) {
+         auto fn = definitionFileName.get<std::string>();
+
+         std::ifstream fileStream(fn);
+         picojson::value v;
+         fileStream >> v;
+
+         auto obj = v.get<picojson::object>();
+         for (auto i : obj) {
+            if (i.first != "items") {
+               continue;
+            }
+
+            if (!i.second.is<picojson::object>()) {
+               throw;
+            }
+
+            auto entries = i.second.get<picojson::object>();
+            for (auto entry : entries) {
+               auto item = ItemLoader::ParseItemTopLevel(entry);
+               result[item.GetName()] = item;
+            }
+
+            break;
+         }
+      }
    }
-
-   if (!item.second.is<picojson::object>()) {
-      throw;
-   }
-
-   auto entries = item.second.get<picojson::object>();
-   for (auto entry : entries) {
-      ItemLoader::ParseItemTopLevel(entry);
-   }
-
+   return result;
 }
 
 Item ItemLoader::ParseItemTopLevel(std::pair<const std::string, picojson::value> item)
@@ -68,7 +73,7 @@ Item ItemLoader::ParseItemTopLevel(std::pair<const std::string, picojson::value>
    for (auto entry : entries) {
       ItemLoader::ParseItemTopLevelAttribute(&result, entry);
    }
-   
+
    return result;
 }
 
@@ -102,7 +107,7 @@ void ItemLoader::ParseItemTopLevelAttribute(Item * item, std::pair<const std::st
       if (!source.second.is<std::string>()) {
          throw;
       }
-      
+
       auto characterCode = source.second.get<std::string>();
       if (characterCode.size() != 1) {
          throw;
@@ -184,7 +189,7 @@ void ItemLoader::ParseItemInterfaces(Item * item, picojson::value source)
 
 void ItemLoader::ParseSurfaceAttributes(Item * item, picojson::array surfaceAttributes)
 {
-   SurfaceAttribute::SurfaceAttribute result;
+   SurfaceAttribute::SurfaceAttribute result = 0;
 
    for (auto attr : surfaceAttributes) {
       if (!attr.is<std::string>()) {

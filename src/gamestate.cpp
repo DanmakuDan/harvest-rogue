@@ -20,7 +20,7 @@
 #include "itemloader.h"
 
 GameState::GameState() {
-   ItemLoader::LoadItemDatabase("media/items.json");
+   this->ItemDatabase = ItemLoader::LoadItemDatabase("media/definitionfiles.json");
 
    this->active = true;
    this->CurrentScene = nullptr;
@@ -233,6 +233,16 @@ void GameState::SleepUntilNextMorning(int hour, int minute, int second) {
    Player::Get().SetIsSleeping(false);
 }
 
+std::map<std::string, Item> GameState::GetItemDatabase()
+{
+   return this->ItemDatabase;
+}
+
+std::shared_ptr<Item> GameState::GetItemFromItemDatabase(std::string itemName)
+{
+   return std::make_shared<Item>(Item::Clone(this->ItemDatabase[itemName]));
+}
+
 void GameState::ProcessDailyTick() {
 
 }
@@ -244,14 +254,15 @@ void GameState::ProcessHourlyTick() {
    };
 
    for (auto landmark : GameState::Landmarks) {
-      auto landmarkProps = landmark->GetAllLandmarkProps();
+      auto landmarkProps = landmark->GetAllLandmarkItems();
       for (int i = 0; i < (landmark->GetWidth() * landmark->GetHeight()); i++) {
-         auto prop = std::dynamic_pointer_cast<IHourlyTickEvent>(landmarkProps[i].Prop);
+         /*auto prop = std::dynamic_pointer_cast<IHourlyTickEvent>(landmarkProps[i].Prop);
          if (prop == nullptr) {
             continue;
          }
 
          prop->OnHourlyTick();
+         */
       }
    }
 }

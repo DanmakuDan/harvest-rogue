@@ -60,17 +60,17 @@ namespace Crop {
 
    static std::vector<Crop> Crops = {
 
-         {CropType::Potato, {{CropGrowthType::Seedling,        TileType::PotatoSeedling   },
-                             {CropGrowthType::Growing,         TileType::PotatoGrowing    },
-                             {CropGrowthType::FullyGrown,      TileType::PotatoFullyGrown },
-                             {CropGrowthType::Wilted,          TileType::PotatoWilted     }
-                            }, "Potato", 24*3,  10},
+         //{CropType::Potato, {{CropGrowthType::Seedling,        TileType::PotatoSeedling   },
+         //                    {CropGrowthType::Growing,         TileType::PotatoGrowing    },
+         //                    {CropGrowthType::FullyGrown,      TileType::PotatoFullyGrown },
+         //                    {CropGrowthType::Wilted,          TileType::PotatoWilted     }
+         //                   }, "Potato", 24*3,  10},
 
-         {CropType::Wheat, {{CropGrowthType::Seedling,         TileType::WheatSeedling    },
-                            {CropGrowthType::Growing,          TileType::WheatGrowing     },
-                            {CropGrowthType::FullyGrown,       TileType::WheatFullyGrown  },
-                            {CropGrowthType::Wilted,           TileType::WheatWilted      }
-                           }, "Wheat", (24*5) + 8,  3}
+         //{CropType::Wheat, {{CropGrowthType::Seedling,         TileType::WheatSeedling    },
+         //                   {CropGrowthType::Growing,          TileType::WheatGrowing     },
+         //                   {CropGrowthType::FullyGrown,       TileType::WheatFullyGrown  },
+         //                   {CropGrowthType::Wilted,           TileType::WheatWilted      }
+         //                  }, "Wheat", (24*5) + 8,  3}
    };
 
    static Crop FromCropType(CropType::CropType cropType) {

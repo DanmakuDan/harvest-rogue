@@ -18,12 +18,14 @@
 #include "scene.h"
 #include "landmark.h"
 #include "dialog.h"
+#include "item.h"
 #include <memory>
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <vector>
 #include <list>
+#include <map>
 #include <stdarg.h>
 #include <string.h>
 
@@ -99,6 +101,9 @@ public:
 
    void SleepUntilNextMorning(int hour = 6, int minute = 0, int second = 0);
 
+   std::map<std::string, Item> GetItemDatabase();
+   std::shared_ptr<Item> GetItemFromItemDatabase(std::string itemName);
+
 private:
    bool active;
    std::shared_ptr<IScene> CurrentScene;
@@ -106,11 +111,11 @@ private:
    std::vector<std::string> Log;
    std::vector<std::shared_ptr<Landmark>> Landmarks;
    std::list<std::shared_ptr<IDialog>> DialogStack;
+   std::map<std::string, Item> ItemDatabase;
    int CurrentLandmarkIndex;
    eGameStateSeason CurrentSeason;
    int CurrentDay, CurrentYear, CurrentHour, CurrentMinute, CurrentSecond;
    void ProcessDailyTick();
-
    void ProcessHourlyTick();
 };
 

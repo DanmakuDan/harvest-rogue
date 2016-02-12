@@ -15,12 +15,9 @@
 #include "landmarkgenerator.h"
 #include "gamestate.h"
 #include "textgenerator.h"
-#include "hoe.h"
 #include "seedbag.h"
 #include <random>
-#include "axe.h"
-#include "tree.h"
-#include "bed.h"
+#include "choppable.h"
 
 
 static std::random_device randomDevice;
@@ -44,19 +41,20 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
          int permille_chance;
          if (n <= (permille_chance = 2500)) {
             result->SetTile(x, y, TileType::GrassTuft);
-         } else if (n <= (permille_chance += 100)) {
-            result->SetTile(x, y, TileType::Weed);
          //} else if (n <= (permille_chance += 100)) {
-         //   result->SetTile(x, y, TileType::Branch);
+         //   result->SetTile(x, y, TileType::Weed);
+         } else if (n <= (permille_chance += 10)) {
+            result->SetTile(x, y, TileType::Grass);
+            result->AddItem(x, y, GameState::Get().GetItemFromItemDatabase("Birch Log"));
          //} else if (n <= (permille_chance += 10)) {
          //   result->SetTile(x, y, TileStone);
          //} else if (n <= (permille_chance += 10)) {
          //   result->SetTile(x, y, TileType::Boulder);
          //} else if (n <= (permille_chance += 5)) {
          //   result->SetTile(x, y, TileType::Stump);
-         } else if (n <= (permille_chance += 35)) {
+         } else if (n <= (permille_chance += 45)) {
             result->SetTile(x, y, TileType::Grass);
-            result->AddProp(x, y, Tree::Construct());
+            result->AddItem(x, y, GameState::Get().GetItemFromItemDatabase("Birch Tree"));
          } else {
             result->SetTile(x, y, TileType::Grass);
          }
@@ -79,9 +77,9 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
             result->SetTile(cottageX + x, cottageY + y, TileType::Stone);
          }
 
-         auto prop = result->GetProp(cottageX + x, cottageY + y);
+         auto prop = result->GetItem(cottageX + x, cottageY + y);
          if (prop != nullptr) {
-            result->RemoveProp(cottageX + x, cottageY + y);
+            result->RemoveItem(cottageX + x, cottageY + y);
          }
       }
    }
@@ -95,15 +93,15 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    playerY = cottageY + (LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT / 2);
 
    // Add the bed
-   result->AddProp(cottageX + 1, cottageY + 1, Bed::Construct());
+   //result->AddItem(cottageX + 1, cottageY + 1, Bed::Construct());
 
-   // Add tools to the ground...
-   result->AddProp(playerX - 3, playerY - 1, Hoe::Construct());
-   result->AddProp(playerX - 2, playerY - 1, Axe::Construct());
+   //// Add tools to the ground...
+   result->AddItem(playerX - 3, playerY - 1, GameState::Get().GetItemFromItemDatabase("Simple Hoe"));
+   result->AddItem(playerX - 2, playerY - 1, GameState::Get().GetItemFromItemDatabase("Simple Axe"));
 
-   // And some potato seeds
-   result->AddProp(playerX - 2, playerY + 1, SeedBag::Construct(CropType::Potato, 15));
-   result->AddProp(playerX - 1, playerY + 1, SeedBag::Construct(CropType::Wheat,  15));
+   //// And some potato seeds
+   //result->AddItem(playerX - 2, playerY + 1, SeedBag::Construct(CropType::Potato, 15));
+   //result->AddItem(playerX - 1, playerY + 1, SeedBag::Construct(CropType::Wheat,  15));
 
    return result;
 }

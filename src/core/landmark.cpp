@@ -18,11 +18,11 @@ Landmark::Landmark(std::string name, int width, int height) {
    this->Name = name;
    this->Width = width;
    this->Height = height;
-   this->Props = new LandmarkProp[width * height];
+   this->Items = new LandmarkItem[width * height];
    
    for (auto i = 0; i < width * height; i++) {
       this->Tiles.push_back(Tile::FromTileType(TileType::Nothing));
-      this->Props[i] = {};
+      this->Items[i] = {};
    }
 }
 
@@ -54,46 +54,43 @@ Tile::Tile Landmark::GetTile(int x, int y) {
    return this->Tiles[index];
 }
 
-void Landmark::AddProp(int x, int y, std::shared_ptr<IProp> prop) {
-   if (this->GetProp(x, y) != nullptr) {
+void Landmark::AddItem(int x, int y, std::shared_ptr<Item> item) {
+   if (this->GetItem(x, y) != nullptr) {
       throw;
    }
-
-   this->Props[x + (y * Width)] = { x, y, std::shared_ptr<IProp>(prop) };
+   this->Items[x + (y * Width)] = { x, y, std::shared_ptr<Item>(item) };
 }
 
-std::shared_ptr<IProp> Landmark::GetProp(int x, int y) {
-   return this->Props[x + (y * Width)].Prop;
-
-   return nullptr;
+std::shared_ptr<Item> Landmark::GetItem(int x, int y) {
+   return this->Items[x + (y * Width)].Item;
 }
 
-void Landmark::RemoveProp(int x, int y) {
-   this->Props[x + (y * Width)] = {};
+void Landmark::RemoveItem(int x, int y) {
+   this->Items[x + (y * Width)] = {};
 }
 
-bool Landmark::LocateProp(std::shared_ptr<IProp> prop, int &x, int &y) {
+bool Landmark::LocateItem(std::shared_ptr<Item> item, int &x, int &y) {
    x = 0;
    y = 0;
 
-   if (prop == nullptr) {
+   if (item == nullptr) {
       return false;
    }
 
    for (int i = 0; i < (Width * Height); i++) {
-      auto mapProp = this->Props[i];
-      if (mapProp.Prop != prop) {
+      auto mapItem = this->Items[i];
+      if (mapItem.Item != item) {
          continue;
       }
 
-      x = mapProp.x;
-      y = mapProp.y;
+      x = mapItem.x;
+      y = mapItem.y;
       return true;
    }
 
    return false;
 }
 
-LandmarkProp* Landmark::GetAllLandmarkProps() {
-   return this->Props;
+LandmarkItem* Landmark::GetAllLandmarkItems() {
+   return this->Items;
 }

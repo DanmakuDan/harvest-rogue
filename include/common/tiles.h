@@ -35,6 +35,11 @@ namespace SurfaceAttribute {
       if (name == "visualObstruction") return VisualObstruction;
       return Invalid;
    }
+
+   static bool HasAttribute(SurfaceAttribute surfaceAttributes, SurfaceAttribute surfaceAttribute)
+   {
+      return (surfaceAttributes & surfaceAttribute) > 0;
+   }
 }
 
 
@@ -47,25 +52,25 @@ namespace TileType {
 
       Grass,
       GrassTuft,
-      Weed,
+      //Weed,
 
       Stone,
-      Branch,
-      Boulder,
-      Stump,
-      Tree,
+      //Branch,
+      //Boulder,
+      //Stump,
+      //Tree,
 
       Water,
 
       BrickWall,
       Door,
 
-      // Tools
-      Hoe,
-      Axe,
+      //// Tools
+      //Hoe,
+      //Axe,
 
-      // Items
-      SeedBag,
+      //// Items
+      //SeedBag,
 
       // UI
       WindowTopLeft,
@@ -78,23 +83,23 @@ namespace TileType {
       WindowBottom,
       WindowBottomRight,
 
-      // Crops
-      PotatoSeedling,
-      PotatoGrowing,
-      PotatoFullyGrown,
-      PotatoWilted,
-      Potato,
+      //// Crops
+      //PotatoSeedling,
+      //PotatoGrowing,
+      //PotatoFullyGrown,
+      //PotatoWilted,
+      //Potato,
 
-      WheatSeedling,
-      WheatGrowing,
-      WheatFullyGrown,
-      WheatWilted,
-      Wheat,
+      //WheatSeedling,
+      //WheatGrowing,
+      //WheatFullyGrown,
+      //WheatWilted,
+      //Wheat,
 
-      // Interactables
-      Bed,
+      //// Interactables
+      //Bed,
 
-      _MAX
+      //_MAX
    };
 
 }
@@ -113,29 +118,29 @@ namespace Tile {
    static std::vector<Tile> Tiles = {
          {TileType::Nothing,               "Nothing",             SurfaceAttribute::None,              Color::Red,     'X', -1},
          {TileType::Player,                "You",                 SurfaceAttribute::None,              Color::White,   '@',  1},
-                                                                                                                   
+         //                                                                                                          
          {TileType::Tilled,                "Tilled Land",         SurfaceAttribute::Walkable,          Color::Yellow,  '=',  2},
-                                                                                                                    
+         //                                                                                                           
          {TileType::Grass,                 "Grass",               SurfaceAttribute::Walkable,          Color::Green,   '.',  3},
          {TileType::GrassTuft,             "Grass Tuft",          SurfaceAttribute::Walkable,          Color::BrightGreen, ',',  5},
-         {TileType::Weed,                  "Weeds",               SurfaceAttribute::Walkable,          Color::Green,   '"',  4},
-                                                                                                                       
+         //{TileType::Weed,                  "Weeds",               SurfaceAttribute::Walkable,          Color::Green,   '"',  4},
+         //                                                                                                              
          {TileType::Stone,                 "Stone",               SurfaceAttribute::Walkable,          Color::Gray,    'o', 12},
-         {TileType::Branch,                "Branch",              SurfaceAttribute::Walkable,          Color::Yellow,  '-',  7},
-         {TileType::Boulder,               "Boulder",             SurfaceAttribute::None,              Color::White,   'O',  6},
-         {TileType::Stump,                 "Stump",               SurfaceAttribute::None,              Color::Yellow,  '#',  8},
-         {TileType::Tree,                  "Tree",                SurfaceAttribute::None,              Color::Yellow,  'T',  9},
-                                                                                                                      
+         //{TileType::Branch,                "Branch",              SurfaceAttribute::Walkable,          Color::Yellow,  '-',  7},
+         //{TileType::Boulder,               "Boulder",             SurfaceAttribute::None,              Color::White,   'O',  6},
+         //{TileType::Stump,                 "Stump",               SurfaceAttribute::None,              Color::Yellow,  '#',  8},
+         //{TileType::Tree,                  "Tree",                SurfaceAttribute::None,              Color::Yellow,  'T',  9},
+         //                                                                                                             
          {TileType::Water,                 "Water",               SurfaceAttribute::Swimmable,         Color::BrightBlue,  '~', 10},
-                                                                                                                       
+         //                                                                                                              
          {TileType::BrickWall,             "Brick Wall",          SurfaceAttribute::VisualObstruction, Color::BrightRed,   '|', 11},
-                                                                                                                       
+         //                                                                                                              
          {TileType::Door,                  "Wooden Door",         SurfaceAttribute::VisualObstruction |                
                                                                   SurfaceAttribute::Walkable,          Color::Yellow,  '-', 14},
-         {TileType::Bed,                   "Bed",                 SurfaceAttribute::None,              Color::BrightBlue,  'B', 13},
-         {TileType::Hoe,                   "Hoe",                 SurfaceAttribute::Walkable,          Color::Yellow,  '\\', 15},
-         {TileType::Axe,                   "Axe",                 SurfaceAttribute::Walkable,          Color::White,   'P', 19},
-         {TileType::SeedBag,               "Seed bag",            SurfaceAttribute::Walkable,          Color::White,   'b', 20},
+         //{TileType::Bed,                   "Bed",                 SurfaceAttribute::None,              Color::BrightBlue,  'B', 13},
+         //{TileType::Hoe,                   "Hoe",                 SurfaceAttribute::Walkable,          Color::Yellow,  '\\', 15},
+         //{TileType::Axe,                   "Axe",                 SurfaceAttribute::Walkable,          Color::White,   'P', 19},
+         //{TileType::SeedBag,               "Seed bag",            SurfaceAttribute::Walkable,          Color::White,   'b', 20},
                                                                                                                        
          // UI                                                                                                         
          {TileType::WindowTopLeft,         "",                    SurfaceAttribute::None,              Color::Yellow,  '=', 16},
@@ -146,20 +151,20 @@ namespace Tile {
          {TileType::WindowRight,           "",                    SurfaceAttribute::None,              Color::Yellow,  '=', 26},
          {TileType::WindowBottomLeft,      "",                    SurfaceAttribute::None,              Color::Yellow,  '=', 32},
          {TileType::WindowBottom,          "",                    SurfaceAttribute::None,              Color::Yellow,  '=', 33},
-         {TileType::WindowBottomRight,     "",                    SurfaceAttribute::None,              Color::Yellow,  '=', 34},
+         {TileType::WindowBottomRight,     "",                    SurfaceAttribute::None,              Color::Yellow,  '=', 34}
                                                                                                                       
-         // Crops                                                                                                     
-         {TileType::PotatoSeedling,        "Potato Seedling",     SurfaceAttribute::Walkable,          Color::Yellow,  'x', 35},
-         {TileType::PotatoGrowing,         "Growing Potato",      SurfaceAttribute::None,              Color::Green,   'o', 36},
-         {TileType::PotatoFullyGrown,      "Fully grown Potato",  SurfaceAttribute::None,              Color::Yellow,  'O', 37},
-         {TileType::PotatoWilted,          "Rotten Potato",       SurfaceAttribute::None,              Color::Yellow,  '~', 21},
-         {TileType::Potato,                "Potato",              SurfaceAttribute::None,              Color::Yellow,  'O', -1},
-                                                                                                                       
-         {TileType::WheatSeedling,         "Wheat Seedling",      SurfaceAttribute::Walkable,          Color::Green,   'x', 27},
-         {TileType::WheatGrowing,          "Growing Wheat",       SurfaceAttribute::None,              Color::Green,   'X', 28},
-         {TileType::WheatFullyGrown,       "Fully grown Wheat",   SurfaceAttribute::None,              Color::BrightYellow,'|', 29},
-         {TileType::WheatWilted,           "Ruined Wheat",        SurfaceAttribute::None,              Color::Yellow,  'f', 21},
-         {TileType::Wheat,                 "Wheat",               SurfaceAttribute::None,              Color::BrightYellow,'Y', -1}
+         //// Crops                                                                                                     
+         //{TileType::PotatoSeedling,        "Potato Seedling",     SurfaceAttribute::Walkable,          Color::Yellow,  'x', 35},
+         //{TileType::PotatoGrowing,         "Growing Potato",      SurfaceAttribute::None,              Color::Green,   'o', 36},
+         //{TileType::PotatoFullyGrown,      "Fully grown Potato",  SurfaceAttribute::None,              Color::Yellow,  'O', 37},
+         //{TileType::PotatoWilted,          "Rotten Potato",       SurfaceAttribute::None,              Color::Yellow,  '~', 21},
+         //{TileType::Potato,                "Potato",              SurfaceAttribute::None,              Color::Yellow,  'O', -1},
+         //                                                                                                              
+         //{TileType::WheatSeedling,         "Wheat Seedling",      SurfaceAttribute::Walkable,          Color::Green,   'x', 27},
+         //{TileType::WheatGrowing,          "Growing Wheat",       SurfaceAttribute::None,              Color::Green,   'X', 28},
+         //{TileType::WheatFullyGrown,       "Fully grown Wheat",   SurfaceAttribute::None,              Color::BrightYellow,'|', 29},
+         //{TileType::WheatWilted,           "Ruined Wheat",        SurfaceAttribute::None,              Color::Yellow,  'f', 21},
+         //{TileType::Wheat,                 "Wheat",               SurfaceAttribute::None,              Color::BrightYellow,'Y', -1}
 
 
 

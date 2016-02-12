@@ -181,13 +181,12 @@ void Screen::WriteCharacter(int x, int y, const char character, Color::Color col
    SDL_RenderCopy(renderer, fontTexture, &srcRect, &destRect);
 }
 
-void Screen::WriteTile(int x, int y, Tile::Tile tile)
+void Screen::WriteTile(int x, int y, int tileIndex, char character, Color::Color color)
 {
    SDL_Rect srcRect;
    SDL_Rect destRect;
-   auto character = (int)tile.GfxTileCode;
-   int tileY = character / GfxTilesPerRow;
-   int tileX = character % GfxTilesPerRow;
+   int tileY = tileIndex / GfxTilesPerRow;
+   int tileX = tileIndex % GfxTilesPerRow;
    srcRect.x = tileX * TileSize;
    srcRect.y = tileY * TileSize;
    srcRect.w = srcRect.h = TileSize;
@@ -220,37 +219,37 @@ void Screen::WriteWindow(int x, int y, int width, int height, std::string text)
          if (posY == y) {
             // Top row
             if (posX == x) {
-               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowTopLeft));
+               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowTopLeft).GfxTileCode, 0, Color::Default);
             }
             else if (posX == (x + width - 1)) {
-               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowTopRight));
+               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowTopRight).GfxTileCode, 0, Color::Default);
             }
             else {
-               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowTop));
+               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowTop).GfxTileCode, 0, Color::Default);
             }
          }
          else if (posY == y + (height - 1)) {
             // Bottom row
             if (posX == x) {
-               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowBottomLeft));
+               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowBottomLeft).GfxTileCode, 0, Color::Default);
             }
             else if (posX == (x + width - 1)) {
-               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowBottomRight));
+               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowBottomRight).GfxTileCode, 0, Color::Default);
             }
             else {
-               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowBottom));
+               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowBottom).GfxTileCode, 0, Color::Default);
             }
          }
          else {
             // Middle Row
             if (posX == x) {
-               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowLeft));
+               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowLeft).GfxTileCode, 0, Color::Default);
             }
             else if (posX == (x + width - 1)) {
-               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowRight));
+               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowRight).GfxTileCode, 0, Color::Default);
             }
             else {
-               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowCenter));
+               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowCenter).GfxTileCode, 0, Color::Default);
             }
          }
 

@@ -13,14 +13,14 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "toolactiondialog.h"
-#include "prop.h"
+#include "item.h"
 #include "screen.h"
 #include "input.h"
 #include "gamestate.h"
 #include "player.h"
 
-ToolActionDialog::ToolActionDialog(std::shared_ptr<ITool> tool) {
-   this->Tool = std::shared_ptr<ITool>(tool);
+ToolActionDialog::ToolActionDialog(std::shared_ptr<Item> tool) {
+   this->Tool = std::shared_ptr<Item>(tool);
    this->SelectedOption = ToolActionDialogOption::EquipTool;
 }
 
@@ -59,7 +59,7 @@ void ToolActionDialog::Render() {
    auto dialogHeight = ToolActionDialogOption::_MAX + 2;
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (TOOLACTIN_DIALOG_WIDTH / 2);
    auto dialogTop = (Screen::Get().GetHeight() / 2) - (dialogHeight / 2);
-   auto prop = dynamic_cast<IProp*>(this->Tool.get());
+   auto prop = dynamic_cast<Item*>(this->Tool.get());
 
    Screen::Get().WriteWindow(dialogLeft, dialogTop, TOOLACTIN_DIALOG_WIDTH, dialogHeight, prop->GetName());
 
@@ -81,7 +81,7 @@ void ToolActionDialog::ExecuteSelectedAction() {
          GameState::Get().ClearAllDialogs();
          break;
       case ToolActionDialogOption::DropTool:
-         Player::Get().DropInventoryItemOnGround(std::dynamic_pointer_cast<IProp>(this->Tool));
+         Player::Get().DropInventoryItemOnGround(std::dynamic_pointer_cast<Item>(this->Tool));
          GameState::Get().ClearAllDialogs();
          break;
    }

@@ -16,13 +16,20 @@
 #define HARVEST_ROGUE_CHOPPINGTOOL_H
 
 #include "iteminterface.h"
+#include "item.h"
+#include "direction.h"
 #include <memory>
 
-class ChoppingTool : public IItemInterface {
+class ChoppingTool : public IItemInterface, public std::enable_shared_from_this<ChoppingTool> {
+public:
+   IItemInterface* Clone() const { return new ChoppingTool(*this); }
 private:
    ChoppingTool();
 
-   ChoppingTool(ChoppingTool const &) { };
+   ChoppingTool(ChoppingTool const &src) {
+      this->Strength = src.Strength;
+      this->Fatigue = src.Fatigue;
+   };
 
    ChoppingTool &operator=(ChoppingTool const &) { };
 public:
@@ -33,6 +40,9 @@ public:
    void SetStrength(int strength);
    int GetFatigue();
    void SetFatigue(int fatigue);
+
+   void Chop(std::shared_ptr<Item> sourceItem);
+   void Chop(std::shared_ptr<Item> sourceItem, Direction::Direction direction);
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();

@@ -13,12 +13,14 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include <memory>
+#include <sstream>
 #include "inventorydialog.h"
 #include "screen.h"
 #include "input.h"
 #include "gamestate.h"
 #include "player.h"
 #include "toolactiondialog.h"
+#include "obtainable.h"
 
 InventoryDialog::InventoryDialog() {
    this->InventoryOffset = 0;
@@ -111,11 +113,17 @@ void InventoryDialog::Render() {
       if (i >= INVENTORY_MAX_ITEMS_SHOWN) {
          break;
       }
-      auto prop = playerInventory[inventoryIndex];
-      Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, prop->GetName(), inventoryIndex == this->SelectedInventoryItem);
+      auto inventoryItem = playerInventory[inventoryIndex];
+      std::stringstream ss;
+      ss << inventoryItem->Item->GetName();
+      auto obtainableInterface = inventoryItem->Item->GetInterface<Obtainable>(ItemInterfaceType::Obtainable);
+      if (obtainableInterface->GetIsStackable()) {
+         ss << " [" << inventoryItem->StackSize << "]";
+      }
+      Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, ss.str(), inventoryIndex == this->SelectedInventoryItem);
 
       if (inventoryIndex == this->SelectedInventoryItem) {
-         Screen::Get().WriteText(btnLeft + 1, dialogTop + dialogHeight - 2, prop->GetDescription(), Color::Magenta);
+         Screen::Get().WriteText(btnLeft + 1, dialogTop + dialogHeight - 2, inventoryItem->Item->GetDescription(), Color::Magenta);
       }
    }
 
@@ -127,8 +135,8 @@ void InventoryDialog::ExecuteSelectedAction() {
    if (this->SelectedInventoryItem == -1) {
       return;
    }
-   auto inventoryItem = std::shared_ptr<IProp>(Player::Get().GetInventory()[this->SelectedInventoryItem]);
-   auto toolItem = std::dynamic_pointer_cast<ITool>(inventoryItem);
+   auto inventoryItem = std::shared_ptr<Item>(Player::Get().GetInventory()[this->SelectedInventoryItem]->Item);
+   auto toolItem = std::dynamic_pointer_cast<Item>(inventoryItem);
    if (toolItem != nullptr) {
       // Tool item
       GameState::Get().PushDialog(ToolActionDialog::Construct(toolItem));

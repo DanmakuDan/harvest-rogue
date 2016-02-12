@@ -21,36 +21,54 @@
 #include "iteminterface.h"
 #include "tiles.h"
 #include "itemcategory.h"
+#include "direction.h"
 
-class Item {
+class Item : public std::enable_shared_from_this<Item> {
 public:
+   static Item Clone(const Item& source);
+   Item();
    std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> GetInterfaces();
-   std::shared_ptr<IItemInterface> GetInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType);
+   bool HasInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType);
    void AddInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType, std::shared_ptr<IItemInterface> itemInterface);
    void RemoveInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType);
-   std::string GetName();
    void SetName(std::string name);
-   std::string GetDescription();
    void SetDescription(std::string description);
-   SurfaceAttribute::SurfaceAttribute GetSurfaceAttributes();
    void SetSurfaceAttributes(SurfaceAttribute::SurfaceAttribute surfaceAttributes);
-   void SetColorCode(int colorCode);
-   int GetColorCode();
+   void SetColorCode(Color::Color colorCode);
    void SetCharacterCode(char characterCode);
-   char GetCharacterCode();
    void SetGfxTileCode(int gfxTileCode);
-   int GetGfxTileCode();
    std::list<ItemCategory::ItemCategory> GetItemCategories();
    void SetItemCategories(std::list<ItemCategory::ItemCategory> itemCategories);
+   int GetCount();
+   void SetCount(int count);
+
+   std::string GetName();
+   std::string GetDescription();
+   SurfaceAttribute::SurfaceAttribute GetSurfaceAttributes();
+   char GetCharacterCode();
+   int GetGfxTileCode();
+   Color::Color GetColorCode();
+   bool Takeable();
+   bool IsUsable();
+   bool IsEquippable();
+   void Use();
+   void Use(Direction::Direction direction);
+   void Destruct();
+
+   template<class T>
+   inline std::shared_ptr<T> GetInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType) {
+      return std::dynamic_pointer_cast<T>(std::shared_ptr<IItemInterface>(this->ItemInterfaces[itemInterfaceType]));
+   }
 private:
    std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> ItemInterfaces;
    std::string Name;
    std::string Description;
-   int ColorCode;
+   Color::Color ColorCode;
    char CharacterCode;
    int GfxTileCode;
    SurfaceAttribute::SurfaceAttribute SurfaceAttributes;
    std::list<ItemCategory::ItemCategory> ItemCategories;
+   int Count;
 };
 
 #endif //HARVEST_ROGUE_ITEM_H

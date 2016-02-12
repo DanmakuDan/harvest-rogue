@@ -1,0 +1,46 @@
+{
+  "items": {
+
+
+    "Birch Tree": {
+      "description": "A birch tree",
+      "surfaceAttributes": [ "visualObstruction" ],
+      "itemCategories": [ ],
+      "colorCode": "yellow",
+      "characterCode": "T",
+      "gfxTileCode": 9,
+      "interfaces": {
+        "choppable": {
+          "chopPoints": 20
+        },
+        "dropsLoot": {
+          "Birch Log": {
+            "chance": 1.0,
+            "amount": {
+              "min": 3,
+              "max": 6
+            }
+          }
+        }
+      }
+    },
+
+
+    "Birch Log": {
+      "description": "A birch branch",
+      "surfaceAttributes": [ "walkable" ],
+      "itemCategories": [ "craftingMaterial" ],
+      "colorCode": "yellow",
+      "characterCode": "-",
+      "gfxTileCode": 7,
+      "interfaces": {
+        "obtainable": {
+          "stackable": true,
+          "maxStackSize": 30
+        }
+      }
+    }
+
+
+  }
+}

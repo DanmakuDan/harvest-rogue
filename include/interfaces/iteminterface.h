@@ -23,6 +23,7 @@ class IItemInterface {
 public:
    static std::shared_ptr<IItemInterface> Deserialize(ItemInterfaceType::ItemInterfaceType interfaceType, picojson::value serializedValue);
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType() = 0;
+   virtual IItemInterface* Clone() const = 0;
 };
 
 #endif //HARVEST_ROGUE_ITEMINTERFACE_H

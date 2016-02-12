@@ -49,7 +49,7 @@ public:
 
    void WriteCharacter(int x, int y, const char character, Color::Color color = Color::White);
 
-   void WriteTile(int x, int y, Tile::Tile tile);
+   void WriteTile(int x, int y, int tileIndex, char character, Color::Color color);
 
    void BeginScreenUpdate();
 

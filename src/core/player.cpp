@@ -18,6 +18,7 @@
 #include "gamestate.h"
 #include "interactiondirectiondialog.h"
 #include "interactable.h"
+#include "obtainable.h"
 
 Player::Player() {
    this->Energy = ENERGY_MAX;
@@ -76,9 +77,8 @@ void Player::WalkPlayer(Direction::Direction direction) {
 
    if (!this->IsPassable(newX, newY)) {
 
-      auto prop = currentLandmark->GetProp(newX, newY);
-      if (prop != nullptr &&
-            !Tile::HasSurfaceAttribute(Tile::FromTileType(prop->GetTileType()), SurfaceAttribute::Walkable)) {
+      auto prop = currentLandmark->GetItem(newX, newY);
+      if (prop != nullptr && !SurfaceAttribute::HasAttribute(prop->GetSurfaceAttributes(), SurfaceAttribute::Walkable)) {
 
          bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
          GameState::Get().AddLogMessageFmt("You are blocked by %s %s.", (startsWithVowel ? "an" : "a"),
@@ -95,24 +95,71 @@ void Player::WalkPlayer(Direction::Direction direction) {
    this->WarpPlayer(newX, newY);
 }
 
-std::shared_ptr<ITool> Player::GetCurrentTool() {
-   return std::shared_ptr<ITool>(this->CurrentTool);
+std::shared_ptr<Item> Player::GetCurrentTool() {
+   return std::shared_ptr<Item>(this->CurrentTool);
 }
 
-std::vector<std::shared_ptr<IProp>> Player::GetInventory() {
+std::vector<std::shared_ptr<PlayerInventoryItem>> Player::GetInventory() {
    return this->Inventory;
 }
 
-void Player::SpawnIntoInventory(std::shared_ptr<IProp> prop) {
-   this->Inventory.push_back(std::shared_ptr<IProp>(prop));
+void Player::SpawnIntoInventory(std::shared_ptr<Item> prop) {
+
+   if (!prop->HasInterface(ItemInterfaceType::Obtainable)) {
+      throw;
+   }
+
+   auto obtainableInterface = prop->GetInterface<Obtainable>(ItemInterfaceType::Obtainable);
+   if (!obtainableInterface->GetIsStackable()) {
+      if (prop->GetCount() > 1) {
+         throw;
+      }
+
+      auto item = std::shared_ptr<PlayerInventoryItem>(new PlayerInventoryItem());
+      item->Item = std::shared_ptr<Item>(prop);
+      item->StackSize = 1;
+      this->Inventory.push_back(item);
+
+      bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
+      GameState::Get().AddLogMessageFmt("%s %s has been placed in your inventory.", (startsWithVowel ? "An" : "A"), prop->GetName().c_str());
+
+      return;
+   }
+
+   // Item is stackable
+   std::shared_ptr<PlayerInventoryItem> destItem = nullptr;
+   for (auto item : this->Inventory) {
+      if (item->Item->GetName() != prop->GetName()) {
+         continue;
+      }
+
+      if (item->StackSize + prop->GetCount() > obtainableInterface->GetMaxStackSize()) {
+         auto diff = obtainableInterface->GetMaxStackSize() - item->StackSize;
+         item->StackSize = obtainableInterface->GetMaxStackSize();
+         prop->SetCount(prop->GetCount() - diff);
+
+         continue;
+      }
+      
+      destItem = std::shared_ptr<PlayerInventoryItem>(item);
+      break;
+   }
+
+   if (destItem == nullptr) {
+      destItem = std::shared_ptr<PlayerInventoryItem>(new PlayerInventoryItem());
+      destItem->Item = std::shared_ptr<Item>(prop);
+      destItem->StackSize = 0;
+      this->Inventory.push_back(destItem);
+   }
+
+   destItem->StackSize += prop->GetCount();
    bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
-   GameState::Get().AddLogMessageFmt("%s %s has been placed in your inventory.", (startsWithVowel ? "An" : "A"),
-                                     prop->GetName().c_str());
+   GameState::Get().AddLogMessageFmt("%s %s has been placed in your inventory.", (startsWithVowel ? "An" : "A"), prop->GetName().c_str());
 }
 
 void Player::PickUpItemFromGround() {
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
-   auto prop = currentLandmark->GetProp(this->GetPositionX(), this->GetPositionY());
+   auto prop = currentLandmark->GetItem(this->GetPositionX(), this->GetPositionY());
 
    if (prop == nullptr) {
       GameState::Get().AddLogMessage("There is nothing on the ground to pick up.");
@@ -127,41 +174,53 @@ void Player::PickUpItemFromGround() {
    bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
    GameState::Get().AddLogMessageFmt("You pick up %s %s.", startsWithVowel ? "an" : "a", prop->GetName().c_str());
 
-   currentLandmark->RemoveProp(this->GetPositionX(), this->GetPositionY());
+   currentLandmark->RemoveItem(this->GetPositionX(), this->GetPositionY());
    this->SpawnIntoInventory(prop);
 }
 
-void Player::EquipFromInventory(std::shared_ptr<ITool> tool) {
+void Player::EquipFromInventory(std::shared_ptr<Item> tool) {
+   if (!tool->IsEquippable()) {
+      GameState::Get().AddLogMessageFmt("You can't equip the %s.", tool->GetName().c_str());
+      return;
+   }
+
    if (this->GetCurrentTool() != nullptr) {
       Player::Get().UnequipCurrentTool();
    }
 
-   auto prop = std::dynamic_pointer_cast<IProp>(tool);
-   this->RemoveFromInventory(prop);
-   this->CurrentTool = std::shared_ptr<ITool>(tool);
+   this->RemoveFromInventory(tool);
+   this->CurrentTool = std::shared_ptr<Item>(tool);
 
-   bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
-   GameState::Get().AddLogMessageFmt("You equip %s %s.", startsWithVowel ? "an" : "a", prop->GetName().c_str());
+   GameState::Get().AddLogMessageFmt("You equip the %s.", tool->GetName().c_str());
 }
 
-void Player::DropInventoryItemOnGround(std::shared_ptr<IProp> prop) {
+void Player::DropInventoryItemOnGround(std::shared_ptr<Item> prop) {
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   if (currentLandmark->GetItem(this->GetPositionX(), this->GetPositionY()) != nullptr) {
+      bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
+      GameState::Get().AddLogMessageFmt("Cannot drop %s %s, Something is already on the ground here.", startsWithVowel ? "an" : "a", prop->GetName().c_str());
+      return;
+   }
    this->RemoveFromInventory(prop);
-   currentLandmark->AddProp(this->GetPositionX(), this->GetPositionY(), prop);
+   currentLandmark->AddItem(this->GetPositionX(), this->GetPositionY(), prop);
 }
 
-void Player::RemoveFromInventory(std::shared_ptr<IProp> prop) {
+void Player::RemoveFromInventory(std::shared_ptr<Item> prop) {
    auto i = 0;
    for (auto invProp : this->Inventory) {
-      if (invProp != prop) {
+      if (invProp->Item != prop) {
          i++;
          continue;
       }
 
-      this->Inventory.erase(this->Inventory.begin() + i);
-      bool startsWithVowel = invProp->GetName().find_first_of("aAeEiIoOuU") == 0;
+      // TODO: This does not take counts into concideration
+      if (--this->Inventory[i]->StackSize == 0) {
+         this->Inventory.erase(this->Inventory.begin() + i);
+      }
+
+      bool startsWithVowel = invProp->Item->GetName().find_first_of("aAeEiIoOuU") == 0;
       GameState::Get().AddLogMessageFmt("%s %s has been removed from your inventory.", (startsWithVowel ? "An" : "A"),
-                                        invProp->GetName().c_str());
+                                        invProp->Item->GetName().c_str());
       break;
    }
 }
@@ -183,7 +242,7 @@ void Player::UnequipCurrentTool() {
       GameState::Get().AddLogMessage("You do not currently have a tool equipped!");
       return;
    }
-   this->SpawnIntoInventory(std::dynamic_pointer_cast<IProp>(this->CurrentTool));
+   this->SpawnIntoInventory(std::dynamic_pointer_cast<Item>(this->CurrentTool));
    this->CurrentTool = nullptr;
 }
 
@@ -193,12 +252,12 @@ bool Player::IsPassable(int x, int y) {
    if (!Tile::HasSurfaceAttribute(tile, SurfaceAttribute::Walkable)) {
       return false;
    }
-   auto prop = currentLandmark->GetProp(x, y);
+   auto prop = currentLandmark->GetItem(x, y);
    if (prop == nullptr) {
       return true;
    }
 
-   return Tile::HasSurfaceAttribute(Tile::FromTileType(prop->GetTileType()), SurfaceAttribute::Walkable);
+   return SurfaceAttribute::HasAttribute(prop->GetSurfaceAttributes(), SurfaceAttribute::Walkable);
 }
 
 int Player::GetEnergy() {
@@ -245,20 +304,21 @@ void Player::InteractWith(Direction::Direction direction) {
    }
 
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
-   auto prop = currentLandmark->GetProp(newX, newY);
+   auto prop = currentLandmark->GetItem(newX, newY);
 
    if (prop == nullptr) {
       GameState::Get().AddLogMessage("There is nothing to interact with in that direction.");
       return;
    }
 
-   auto interactable = std::dynamic_pointer_cast<IInteractable>(prop);
+   /*auto interactable = std::dynamic_pointer_cast<IInteractable>(prop);
    if (interactable == nullptr) {
       GameState::Get().AddLogMessageFmt("The %s cannot be interacted with.", prop->GetName().c_str());
       return;
    }
 
    interactable->Interact();
+   */
 }
 
 void Player::SetIsSleeping(bool sleeping) {

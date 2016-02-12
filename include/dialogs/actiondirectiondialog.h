@@ -17,7 +17,7 @@
 #define HARVEST_ROGUE_ACTIONDIRECTIONDIALOG_H
 
 #include "dialog.h"
-#include "directionaltool.h"
+#include "item.h"
 #include <memory>
 
 #define ACTION_DIALOG_WIDTH      30
@@ -25,14 +25,14 @@
 
 class ActionDirectionDialog : public IDialog {
 public:
-   static std::shared_ptr<ActionDirectionDialog> Construct(std::shared_ptr<IDirectionalTool> targetTool) {
+   static std::shared_ptr<ActionDirectionDialog> Construct(std::shared_ptr<Item> targetTool) {
       return std::shared_ptr<ActionDirectionDialog>(new ActionDirectionDialog(targetTool));
    }
    virtual void OnKeyPress(int key);
    virtual void Render();
 private:
-   ActionDirectionDialog(std::shared_ptr<IDirectionalTool> targetTool);
-   std::shared_ptr<IDirectionalTool> TargetTool;
+   ActionDirectionDialog(std::shared_ptr<Item> targetTool);
+   std::shared_ptr<Item> TargetTool;
 };
 
 

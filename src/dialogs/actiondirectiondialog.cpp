@@ -16,10 +16,11 @@
 #include "actiondirectiondialog.h"
 #include "screen.h"
 #include "input.h"
+#include "direction.h"
 #include "gamestate.h"
 
-ActionDirectionDialog::ActionDirectionDialog(std::shared_ptr<IDirectionalTool> targetTool) {
-   this->TargetTool = std::shared_ptr<IDirectionalTool>(targetTool);
+ActionDirectionDialog::ActionDirectionDialog(std::shared_ptr<Item> targetTool) {
+   this->TargetTool = std::shared_ptr<Item>(targetTool);
 }
 
 void ActionDirectionDialog::OnKeyPress(int key) {

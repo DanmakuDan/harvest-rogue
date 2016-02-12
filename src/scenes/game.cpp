@@ -163,17 +163,18 @@ void Game::RenderMap() {
 
 
          auto groundTile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);
-         Screen::Get().WriteTile(mapX + startX, mapY + startY, groundTile);
+         Screen::Get().WriteTile(mapX + startX, mapY + startY, groundTile.GfxTileCode, groundTile.CharacterCode, groundTile.ColorCode);
 
 
-         auto mapProp = currentLandmark->GetProp(mapX + mapOffsetX, mapY + mapOffsetY);
+         auto mapProp = currentLandmark->GetItem(mapX + mapOffsetX, mapY + mapOffsetY);
          if (mapProp != nullptr) {
-            Screen::Get().WriteTile(mapX + startX, mapY + startY, Tile::FromTileType(mapProp->GetTileType()));
+            Screen::Get().WriteTile(mapX + startX, mapY + startY, mapProp->GetGfxTileCode(), mapProp->GetCharacterCode(), mapProp->GetColorCode());
          }
 
          if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY)) {
             // Draw the player
-            Screen::Get().WriteTile(mapX + startX, mapY + startY, Tile::FromTileType(TileType::Player));;
+            auto playerTile = Tile::FromTileType(TileType::Player);
+            Screen::Get().WriteTile(mapX + startX, mapY + startY, playerTile.GfxTileCode, playerTile.CharacterCode, playerTile.ColorCode);
          } 
       }
    }
@@ -222,13 +223,12 @@ void Game::RenderSideBar() {
    }
 
    Screen::Get().WriteText(sideBarLeft, 4, "Standing on", Color::Silver);
-   auto currentProp = currentLandmark->GetProp(Player::Get().GetPositionX(), Player::Get().GetPositionY());
+   auto currentProp = currentLandmark->GetItem(Player::Get().GetPositionX(), Player::Get().GetPositionY());
    if (currentProp == nullptr) {
       auto currentTile = currentLandmark->GetTile(Player::Get().GetPositionX(), Player::Get().GetPositionY());
       Screen::Get().WriteText(sideBarLeft + 12, 4, currentTile.Name, currentTile.ColorCode);
    } else {
-      Screen::Get().WriteText(sideBarLeft + 12, 4, currentProp->GetName(),
-                              Tile::FromTileType(currentProp->GetTileType()).ColorCode);
+      Screen::Get().WriteText(sideBarLeft + 12, 4, currentProp->GetName(), currentProp->GetColorCode());
    }
 
    auto currentTool = Player::Get().GetCurrentTool();
@@ -236,12 +236,11 @@ void Game::RenderSideBar() {
    if (currentTool == nullptr) {
       Screen::Get().WriteText(sideBarLeft + 8, 5, "Nothing", Color::Gray);
    } else {
-      auto prop = std::dynamic_pointer_cast<IProp>(currentTool);
+      auto prop = std::dynamic_pointer_cast<Item>(currentTool);
       if (prop == nullptr) {
          Screen::Get().WriteText(sideBarLeft + 8, 5, "NOT A PROP!", Color::Red);
       } else {
-         Screen::Get().WriteText(sideBarLeft + 8, 5, prop->GetName(),
-                                 Tile::FromTileType(prop->GetTileType()).ColorCode);
+         Screen::Get().WriteText(sideBarLeft + 8, 5, prop->GetName(), prop->GetColorCode());
       }
    }
 

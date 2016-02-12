@@ -12,38 +12,38 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_TILLINGTOOL_H
-#define HARVEST_ROGUE_TILLINGTOOL_H
+#ifndef HARVEST_ROGUE_OBTAINABLE_H
+#define HARVEST_ROGUE_OBTAINABLE_H
 
 #include "iteminterface.h"
 #include <memory>
 
-class TillingTool : public IItemInterface {
+class Obtainable : public IItemInterface {
 public:
-   IItemInterface* Clone() const { return new TillingTool(*this); }
+   IItemInterface* Clone() const { return new Obtainable(*this); }
 private:
-   TillingTool();
+   Obtainable();
 
-   TillingTool(TillingTool const &src) {
-      this->Strength = src.Strength;
-      this->Fatigue = src.Fatigue;
+   Obtainable(Obtainable const &src) {
+      this->Stackable = src.Stackable;
+      this->MaxStackSize = src.MaxStackSize;
    };
 
-   TillingTool &operator=(TillingTool const &) { };
+   Obtainable &operator=(Obtainable const &) { };
 public:
-   ~TillingTool();
-   static std::shared_ptr<TillingTool> Deserialize(picojson::value serializedValue);
+   ~Obtainable();
+   static std::shared_ptr<Obtainable> Deserialize(picojson::value serializedValue);
 
-   int GetStrength();
-   void SetStrength(int strength);
-   int GetFatigue();
-   void SetFatigue(int fatigue);
+   bool GetIsStackable();
+   void SetIsStackable(bool stackable);
+   int GetMaxStackSize();
+   void SetMaxStackSize(int maxStackSize);
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
 private:
-   int Strength;
-   int Fatigue;
+   bool Stackable;
+   int MaxStackSize;
 };
 
-#endif //HARVEST_ROGUE_TILLINGTOOL_H
+#endif //HARVEST_ROGUE_OBTAINABLE_H

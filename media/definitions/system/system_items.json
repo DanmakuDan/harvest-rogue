@@ -8,7 +8,7 @@
       "itemCategories": [ "tool" ],
       "colorCode": "white",
       "characterCode": "P",
-      "gfxTileCode":  19,
+      "gfxTileCode": 19,
       "interfaces": {
         "choppingTool": {
           "strength": 5,
@@ -17,6 +17,10 @@
         "durable": {
           "durability": 100,
           "repairable": true
+        },
+        "obtainable": {
+          "stackable": false,
+          "maxStackSize": 1
         }
       }
     },
@@ -36,6 +40,10 @@
         "durable": {
           "durability": 100,
           "repairable": true
+        },
+        "obtainable": {
+          "stackable": false,
+          "maxStackSize": 1
         }
       }
     }

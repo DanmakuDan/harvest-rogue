@@ -19,10 +19,15 @@
 #include <memory>
 
 class Durable : public IItemInterface {
+public:
+   IItemInterface* Clone() const { return new Durable(*this); }
 private:
    Durable();
 
-   Durable(Durable const &) { };
+   Durable(Durable const &src) { 
+      this->Repairable = src.Repairable;
+      this->Durability = src.Durability;
+   };
 
    Durable &operator=(Durable const &) { };
 public:
