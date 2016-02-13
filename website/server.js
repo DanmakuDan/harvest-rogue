@@ -21,7 +21,7 @@ everyauth.everymodule
   .findUserById( function (id, callback) {
      sqlConnect(function(c) {
       c.query(
-         'SELECT TOP 1 * FROM UserAccount WHERE Id = ??', [id], function(err, results) {
+         'SELECT TOP 1 * FROM UserAccount WHERE Id = ?', [id], function(err, results) {
             callback(err, results[0]);
          }
       );
@@ -35,7 +35,7 @@ everyauth.facebook
       var promise = this.Promise();
       
       sqlConnect(function(c) { c.query(
-         'SELECT * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ?? AND ProviderId = ?? LIMIT 1', [
+         'SELECT * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
             fbUserMetadata.name, fbUserMetadata.id
          ], function(err, results) {
             if (err) {
@@ -43,14 +43,14 @@ everyauth.facebook
             } else {
                if (results.length == 0) {
                   c.query(
-                     'INSERT INTO UserAccount (UserName, ProviderName, ProviderAccount, ProviderId, CreatedOn) VALUES (??, ??, ??, ??, NOW())', [
+                     'INSERT INTO UserAccount (UserName, ProviderName, ProviderAccount, ProviderId, CreatedOn) VALUES (?, ?, ?, ?, NOW())', [
                         fbUserMetadata.name, 'facebook', fbUserMetadata.name, fbUserMetadata.id
                      ], function(err2, results2) {
                         if(err) {
                            promise.fail(err2);
                         } else {
                            c.query(
-                              'SELECT * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ?? AND ProviderId = ?? LIMIT 1', [
+                              'SELECT * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
                               fbUserMetadata.name, fbUserMetadata.id
                            ], function(err, results) {
                               if (err) {
