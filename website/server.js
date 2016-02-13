@@ -52,18 +52,21 @@ everyauth.facebook
                            c.query(
                               'SELECT * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
                               fbUserMetadata.name, fbUserMetadata.id
-                           ], function(err, results) {
+                           ], function(err3, results3) {
                               if (err) {
-                                 promise.fail(err);
+                                 promise.fail(err3);
                               } else {
-                                 promise.fulfill(results[0]);
+                                 promise.fulfill(results3[0]);
                               }
                            })
                         }
                      }
                   )
                } else {
-                  promise.fulfill(results[0]);
+                  c.query('UPDATE UserAccount SET LastAccessedOn = NOW() WHERE ProviderName = \'facebook\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
+                  fbUserMetadata.name, fbUserMetadata.id]), function(err4, results4) {
+                     promise.fulfill(results[0]);
+                  }
                }
             }
          });
