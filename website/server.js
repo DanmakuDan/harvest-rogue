@@ -28,14 +28,10 @@ function addUser (source, sourceUser) {
    console.log(JSON.stringify(user));
    sqlConnect(function(c) {
       c.query(
-         'INSERT INTO UserAccount SET ? WHERE NOT EXISTS (SELECT * FROM UserAccount WHERE ProviderName=\'facebook\' AND ProviderId=\'' + user.facebook.id + '\')', {
-         "UserName": user.facebook.name, 
-         "ProviderName": source, 
-         "ProviderAccount": user.facebook.name, 
-         "ProviderId": user.facebook.id,
-         "CreatedOn" : new Date()
-         }, function(err, results) {
-            results.insertId
+         'INSERT INTO UserAccount (UserName, ProviderName, ProviderAccount, ProviderId, CreatedOn) VALUES (??, ??, ??, ??, NOW()) WHERE NOT EXISTS ' +
+         ' (SELECT 1 FROM UserAccount WHERE ProviderName = ?? AND ProviderAccount = ?? AND ProviderId = ??) ', [
+            user.facebook.name, source, user.facebook.name, user.facebook.id, source, user.facebook.name, user.facebook.id], function(err, results) {
+            
          }
       );
    });
