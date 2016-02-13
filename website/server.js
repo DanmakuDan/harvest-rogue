@@ -29,10 +29,16 @@ function addUser (source, sourceUser) {
 
       user = usersById[++nextUserId] = {id: nextUserId};
       user[source] = sourceUser;
+      console.log(source);
+      console.log(JSON.stringify(user));
       sqlConnect(function(c) {
-         c.query('INSERT INTO UserAccount(UserName, ProviderName, ProviderAccount, ProviderId, CreatedOn, LastAccessedOn) ' +
-            'VALUES (??, ??, ??, ??, NOW(), NOW())', [
-               user.facebook.name, source, user.facebook.name, user.facebook.id], function(err, results) {
+         c.query('INSERT INTO UserAccount SET ? ', {
+               "UserName": user.facebook.name, 
+               "ProviderName": source, 
+               "ProviderAccount": user.facebook.name, 
+               "ProviderId": user.facebook.id,
+               "CreatedOn" : Date.now()
+               }, function(err, results) {
          });
       });
    }
