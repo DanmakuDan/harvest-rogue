@@ -3,6 +3,17 @@ var everyauth = require('everyauth');
 
 var mysql      = require('mysql');
 
+var app = express()
+   .use(express.static(__dirname + '/public'))
+   .use(express.bodyParser())
+   .use(express.cookieParser('hrjas9fj3'))
+   .use(express.session())
+   .use(everyauth.middleware());
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+
+everyauth.helpExpress(app);
 
 function sqlConnect(callback) {
    var conn = mysql.createConnection({
@@ -77,23 +88,7 @@ everyauth.facebook
       return promise;
    })
    .redirectPath('/');
-
-  
-  
-var usersByFbId = {};
-
-var app = express()
-   .use(express.static(__dirname + '/public'))
-   .use(express.bodyParser())
-   .use(express.cookieParser('hrjas9fj3'))
-   .use(express.session())
-   .use(everyauth.middleware());
-
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-
-everyauth.helpExpress(app);
-
+   
 app.get('/', function (req, res) {
    console.log(everyauth.user);
    res.render('pages/index', { pageTitle: 'Home', user: everyauth.user });
