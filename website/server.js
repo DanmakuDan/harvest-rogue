@@ -17,19 +17,16 @@ function sqlConnect(callback) {
 }
 
 
-everyauth.everymodule
-  .findUserById( function (id, callback) {
-     console.log("Find User:");
-     sqlConnect(function(c) {
-      c.query(
-         'SELECT TOP 1 * FROM UserAccount WHERE Id = ?', [id], function(err, results) {
-            console.log("Find User Result:");
-            console.log(JSON.stringify(results[0]));
-            callback(null, results[0]);
-         }
-      );
+everyauth.everymodule.findUserById( function (id, callback) {
+   console.log("Find User:");
+   sqlConnect(function(c) {
+      c.query('SELECT TOP 1 * FROM UserAccount WHERE Id = ?', [id], function(err, results) {
+         console.log("Find User Result:");
+         console.log(JSON.stringify(results[0]));
+         callback(null, results[0]);
+      });
    });
-  });
+});
   
 everyauth.facebook
    .appId("1683955285227175")
@@ -93,7 +90,7 @@ app.set('view engine', 'jade');
 everyauth.helpExpress(app);
 
 app.get('/', function (req, res) {
-   console.log(everyauth.user);
+   console.log(JSON.stringify(req.user);
    res.render('pages/index', { pageTitle: 'Home', user: everyauth.user });
 });
 
