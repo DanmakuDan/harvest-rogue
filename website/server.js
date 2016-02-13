@@ -29,7 +29,7 @@ function addUser (source, sourceUser) {
 
       user = usersById[++nextUserId] = {id: nextUserId};
       user[source] = sourceUser;
-      console.log(provider);
+      console.log(source);
       console.log(JSON.stringify(user));
       sqlConnect(function(c) {
          c.query('INSERT INTO UserAccount(UserName, ProviderName, ProviderAccount, ProviderId, CreatedOn, LastAccessedOn) ' +
