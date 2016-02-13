@@ -56,7 +56,7 @@ everyauth.facebook
                               if (err) {
                                  promise.fulfill([err3]);
                               } else {
-                                 console.log("3:" + JSON.stringify(results3[0]));
+                                 results3[0].id = results3[0].Id;
                                  promise.fulfill(results3[0]);
                               }
                            })
@@ -66,7 +66,7 @@ everyauth.facebook
                } else {
                   c.query('UPDATE UserAccount SET LastAccessedOn = NOW() WHERE ProviderName = \'facebook\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
                   fbUserMetadata.name, fbUserMetadata.id], function(err4, results4) {
-                     console.log("X:" + JSON.stringify(results[0]));
+                     results[0].id = results[0].Id;
                      promise.fulfill(results[0]);
                   });
                }
