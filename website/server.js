@@ -90,6 +90,8 @@ var app = express()
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
+everyauth.helpExpress(app);
+
 app.get('/', function (req, res) {
    console.log(req.user);
    res.render('pages/index', { pageTitle: 'Home', user: everyauth.user });
