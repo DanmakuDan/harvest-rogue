@@ -8,12 +8,13 @@
     "main": "server.js",
     "dependencies": {
         "everyauth": "0.4.9",
-        "express": "4.13.4",
+        "express": "3.x",
         "jade": "1.11.0",
         "nodemon": "1.8.1",
         "semantic-ui-css": "2.1.8",
         "body-parser": "1.15.0",
         "cookie-parser": "1.4.1",
-        "express-session": "1.13.0"
+        "express-session": "1.13.0",
+        "mysql": "2.10.2"
     }
 }
