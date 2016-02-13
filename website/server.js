@@ -68,6 +68,8 @@ everyauth.facebook
             }
          });
       });
+      
+      return promise;
    })
    .redirectPath('/');
 
