@@ -90,7 +90,7 @@ app.set('view engine', 'jade');
 everyauth.helpExpress(app);
 
 app.get('/', function (req, res) {
-   console.log(JSON.stringify(req.user);
+   console.log(JSON.stringify(req.user));
    res.render('pages/index', { pageTitle: 'Home', user: everyauth.user });
 });
 
