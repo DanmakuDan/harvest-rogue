@@ -17,9 +17,7 @@ function sqlConnect(callback) {
 }
 
 
-var nextUserId = 1;
-var usersById = {};
-
+/*
 function addUser (source, sourceUser) {
    var user;
    user = usersById[++nextUserId] = {id: nextUserId};
@@ -38,23 +36,65 @@ function addUser (source, sourceUser) {
 
    return user;
 }
-
+*/
 
 everyauth.everymodule
   .findUserById( function (id, callback) {
+     sqlConnect(function(c) {
+      c.query(
+         'SELECT TOP 1 * FROM UserAccount WHERE Id = ??', [id], function(err, results) {
+            callback(err, results[0]);
+         }
+      );
+   });
+     
     callback(null, usersById[id]);
   });
   
 everyauth.facebook
-  .appId("1683955285227175")
-  .appSecret("cb3685564098f77f8c95d614eb3eab47")
-  .findOrCreateUser( function (session, accessToken, accessTokenExtra, fbUserMetadata) {
-
-     
+   .appId("1683955285227175")
+   .appSecret("cb3685564098f77f8c95d614eb3eab47")
+   .findOrCreateUser( function (session, accessToken, accessTokenExtra, fbUserMetadata) {
+      var promise = this.Promise();
+      
+      sqlConnect(function(c) { c.query(
+         'SELECT TOP 1 * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ?? AND ProviderId = ??', [
+            fbUserMetadata.name, fbUserMetadata.id
+         ], function(err, results) {
+            if (err) {
+               promise.fail(err);
+            } else {
+               if (results.length == 0) {
+                  c.query(
+                     'INSERT INTO UserAccount (UserName, ProviderName, ProviderAccount, ProviderId, CreatedOn) VALUES (??, ??, ??, ??, NOW())', [
+                        fbUserMetadata.name, 'facebook', fbUserMetadata.name, fbUserMetadata.id
+                     ], function(err2, results2) {
+                        if(err) {
+                           promise.fail(err2);
+                        } else {
+                           c.query(
+                              'SELECT TOP 1 * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ?? AND ProviderId = ??', [
+                              fbUserMetadata.name, fbUserMetadata.id
+                           ], function(err, results) {
+                              if (err) {
+                                 promise.fail(err);
+                              } else {
+                                 promise.fuulfill(results[0]);
+                              }
+                           })
+                        }
+                     }
+                  )
+               } else {
+                  promise.fulfill(results[0]);
+               }
+            }
+         });
+      });
       return usersByFbId[fbUserMetadata.id] || (usersByFbId[fbUserMetadata.id] = addUser('facebook', fbUserMetadata));
    })
-  .redirectPath('/');
-  
+   .redirectPath('/');
+
   
   
 var usersByFbId = {};
