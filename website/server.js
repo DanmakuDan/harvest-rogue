@@ -64,9 +64,9 @@ everyauth.facebook
                   )
                } else {
                   c.query('UPDATE UserAccount SET LastAccessedOn = NOW() WHERE ProviderName = \'facebook\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
-                  fbUserMetadata.name, fbUserMetadata.id]), function(err4, results4) {
+                  fbUserMetadata.name, fbUserMetadata.id], function(err4, results4) {
                      promise.fulfill(results[0]);
-                  }
+                  });
                }
             }
          });
