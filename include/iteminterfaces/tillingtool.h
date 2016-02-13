@@ -15,8 +15,9 @@
 #ifndef HARVEST_ROGUE_TILLINGTOOL_H
 #define HARVEST_ROGUE_TILLINGTOOL_H
 
-#include "iteminterface.h"
 #include <memory>
+#include "iteminterface.h"
+#include "item.h"
 
 class TillingTool : public IItemInterface {
 public:
@@ -38,6 +39,8 @@ public:
    void SetStrength(int strength);
    int GetFatigue();
    void SetFatigue(int fatigue);
+
+   void Till(std::shared_ptr<Item> sourceItem);
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();

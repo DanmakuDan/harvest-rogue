@@ -13,6 +13,8 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "tillingtool.h"
+#include "gamestate.h"
+#include "player.h"
 
 TillingTool::TillingTool()
 {
@@ -24,7 +26,48 @@ TillingTool::~TillingTool()
 
 std::shared_ptr<TillingTool> TillingTool::Deserialize(picojson::value serializedValue)
 {
-   return std::shared_ptr<TillingTool>();
+   auto result = std::shared_ptr<TillingTool>(new TillingTool());
+
+   if (!serializedValue.is<picojson::object>()) {
+      throw;
+   }
+
+   auto data = serializedValue.get<picojson::object>();
+   for (auto item : data) {
+
+      if (item.first == "strength") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         auto value = item.second.get<double>();
+         if (value != (unsigned int)value) {
+            throw;
+         }
+
+         result->SetStrength(value);
+         continue;
+      }
+
+      if (item.first == "fatigue") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         auto value = item.second.get<double>();
+
+         if (value != (unsigned int)value) {
+            throw;
+         }
+
+         result->SetFatigue((int)value);
+         continue;
+      }
+
+      throw;
+   }
+
+   return result;
 }
 
 int TillingTool::GetStrength()
@@ -47,7 +90,29 @@ void TillingTool::SetFatigue(int fatigue)
    this->Fatigue = fatigue;
 }
 
+void TillingTool::Till(std::shared_ptr<Item> sourceItem)
+{
+   auto landmark = GameState::Get().GetCurrentLandmark();
+   if (landmark == nullptr) {
+      return;
+   }
+   
+   auto playerX = Player::Get().GetPositionX();
+   auto playerY = Player::Get().GetPositionY();
+   auto currentTile = landmark->GetTile(playerX, playerY);
+   switch(currentTile.TileType) {
+      case TileType::GrassTuft:
+         landmark->SetTile(playerX, playerY, TileType::Grass);
+         Player::Get().AdjustEnergy(-1);
+         break;
+      case TileType::Grass:
+         landmark->SetTile(playerX, playerY, TileType::Tilled);
+         Player::Get().AdjustEnergy(-2);
+         break;
+   }
+}
+
 ItemInterfaceType::ItemInterfaceType TillingTool::GetInterfaceType()
 {
-   return ItemInterfaceType::ChoppingTool;
+   return ItemInterfaceType::TillingTool;
 }

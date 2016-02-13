@@ -116,7 +116,13 @@ void Item::Use()
       auto choppingTool = this->GetInterface<ChoppingTool>(ItemInterfaceType::ChoppingTool);
       choppingTool->Chop(this->shared_from_this());
       return;
-   }   
+   }  
+
+   if (this->HasInterface(ItemInterfaceType::TillingTool)) {
+      auto tillingTool = this->GetInterface<TillingTool>(ItemInterfaceType::TillingTool);
+      tillingTool->Till(this->shared_from_this());
+      return;
+   }
 }
 
 void Item::Use(Direction::Direction direction)
