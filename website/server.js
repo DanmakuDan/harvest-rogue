@@ -56,7 +56,7 @@ everyauth.facebook
                               if (err) {
                                  promise.fail(err);
                               } else {
-                                 promise.fuulfill(results[0]);
+                                 promise.fulfill(results[0]);
                               }
                            })
                         }
