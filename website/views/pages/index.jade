@@ -15,8 +15,11 @@ block lead
                a(class="mini ui primary labeled icon button" href="https://gitter.im/essial/harvest-rogue") Gitter 
                   i(class="comment icon")
 block content
-   div= "User: " + user
    div(class="ui container")
+      - if (everyauth.loggedIn)
+         h3 Facebook User Data
+         p= JSON.stringify(everyauth.facebook.user)
+   
       h2(class="ui header") News
       div(class="ui raised text segment")
          h3(class="ui header") Feburary 12, 2016

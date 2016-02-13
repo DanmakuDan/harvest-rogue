@@ -6,6 +6,9 @@ var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var fs = require('fs');
 
+var nextUserId = 1;
+var usersById = {};
+
 function addUser (source, sourceUser) {
   var user;
   if (arguments.length === 1) { // password-based
@@ -31,6 +34,8 @@ everyauth.facebook
   })
   .redirectPath('/');
   
+  
+  
 var usersByFbId = {};
 
 app
@@ -43,14 +48,15 @@ app
          secure: true
       }
    }))
-   .use(everyauth.middleware(app))
-   .use(bodyParser.urlencoded({ extended: false }))
+   .use(everyauth.middleware())
+   .use(bodyParser.urlencoded({ extended: true }))
    .use(cookieParser('harvestRogue123'));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
 app.get('/', function (req, res) {
+   console.log(req.user);
    res.render('pages/index', { pageTitle: 'Home', user: everyauth.user });
 });
 
