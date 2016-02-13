@@ -1,6 +1,7 @@
 {
   "definitionFiles": [
     "media/system_items.json",
-    "media/system_nature.json"
+    "media/system_nature.json",
+    "media/general_crops.json"
   ]
 }

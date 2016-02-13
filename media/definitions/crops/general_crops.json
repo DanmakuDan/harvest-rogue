@@ -1,0 +1,92 @@
+{
+  "items": {
+
+    "Cabbage": {
+      "description": "A head cabbage",
+      "surfaceAttributes": [ "walkable" ],
+      "itemCategories": [ "crop" ],
+      "colorCode": "yellow",
+      "characterCode": "O",
+      "gfxTileCode": 20,
+      "interfaces": {
+        "choppable": {
+          "chopPoints": 5
+        },
+        "dropsLoot": {
+          "Cabbage Seed": {
+            "chance": 1.0,
+            "amount": {
+              "min": 0,
+              "max": 3
+            }
+          }
+        },
+        "obtainable": {
+          "stackable": true,
+          "maxStackSize": 60
+        }
+      }
+    },
+
+    "Cabbage Crop": {
+      "description": "A cabbage",
+      "surfaceAttributes": [ "walkable" ],
+      "itemCategories": [ "seed" ],
+      "colorCode": "yellow",
+      "characterCode": ".",
+      "gfxTileCode": 35,
+      "interfaces": {
+        "growable": {
+          "hoursToGrow": 72,
+          "hoursToWilt": 24,
+          "seedling": {
+            "colorCode": "yellow",
+            "characterCode": "x",
+            "gfxTileCode": 35
+          },
+          "growing": {
+            "colorCode": "green",
+            "characterCode": "o",
+            "gfxTileCode": 36
+          },
+          "grown": {
+            "colorCode": "yellow",
+            "characterCode": "O",
+            "gfxTileCode": 37
+          },
+          "wilted": {
+            "colorCode": "yellow",
+            "characterCode": "~",
+            "gfxTileCode": 21
+          }
+        },
+        "harvestable": {
+          "yieldItem": "potato",
+          "yieldMin": 1,
+          "yieldMax": 3
+        }
+      }
+    },
+
+    "Cabbage Seed": {
+      "description": "A cabbage seed",
+      "surfaceAttributes": [ "walkable" ],
+      "itemCategories": [ "seed" ],
+      "colorCode": "yellow",
+      "characterCode": ".",
+      "gfxTileCode": 20,
+      "interfaces": {
+        "obtainable": {
+          "stackable": true,
+          "maxStackSize": 30
+        },
+        "plantable": {
+          "crop": "Cabbage Crop"
+        }
+      }
+    }
+
+
+
+  }
+}

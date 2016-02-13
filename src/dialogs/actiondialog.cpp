@@ -80,7 +80,7 @@ void ActionDialog::ExecuteSelectedAction() {
          break;
 
       case ActionDialogOption::Unequip:
-         Player::Get().UnequipCurrentTool();
+         Player::Get().UnequipCurrentEquippedItem();
          GameState::Get().ClearAllDialogs();
          break;
 

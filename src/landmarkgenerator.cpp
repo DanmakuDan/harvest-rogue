@@ -86,7 +86,7 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
 
    // Place a door
    result->SetTile(cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2),
-                   cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT - 1, TileType::Door);
+                   cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT - 1, TileType::Stone);
 
    // Set the player starting position variables
    playerX = cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2);
@@ -99,8 +99,10 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    result->AddItem(playerX - 3, playerY - 1, GameState::Get().GetItemFromItemDatabase("Simple Hoe"));
    result->AddItem(playerX - 2, playerY - 1, GameState::Get().GetItemFromItemDatabase("Simple Axe"));
 
-   //// And some potato seeds
-   //result->AddItem(playerX - 2, playerY + 1, SeedBag::Construct(CropType::Potato, 15));
+   //// And some seeds
+   auto cabbageSeeds = GameState::Get().GetItemFromItemDatabase("Cabbage Seed");
+   cabbageSeeds->SetCount(10);
+   result->AddItem(playerX - 2, playerY + 1, cabbageSeeds);
    //result->AddItem(playerX - 1, playerY + 1, SeedBag::Construct(CropType::Wheat,  15));
 
    return result;

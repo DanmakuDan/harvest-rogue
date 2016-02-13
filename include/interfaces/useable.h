@@ -12,30 +12,22 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_ITEMCATEGORY_H
-#define HARVEST_ROGUE_ITEMCATEGORY_H
+#ifndef HARVEST_ROGUE_USEABLE_H
+#define HARVEST_ROGUE_USEABLE_H
 
-#include <string>
+#include "item.h"
+#include "direction.h"
 
-namespace ItemCategory {
-   enum ItemCategory {
-      Unknown,
-      Tool,
-      Container,
-      CraftingMaterial,
-      Seed,
-      Crop
-   };
+class IUseable {
+public:
+   virtual void Use(std::shared_ptr<Item> sourceItem) = 0;
+   virtual ~IUseable() {}
+};
 
-   static ItemCategory FromString(std::string itemCategory) {
-      if (itemCategory == "seed") return Seed;
-      if (itemCategory == "crop") return Crop;
-      if (itemCategory == "tool") return Tool;
-      if (itemCategory == "container") return Container;
-      if (itemCategory == "craftingMaterial") return CraftingMaterial;
+class IDirectionallyUsable {
+public:
+   virtual void Use(std::shared_ptr<Item> sourceItem, Direction::Direction direction) = 0;
+   virtual ~IDirectionallyUsable() {}
+};
 
-      return Unknown;
-   }
-}
-
-#endif //HARVEST_ROGUE_ITEMCATEGORY_H
+#endif //HARVEST_ROGUE_USEABLE_H

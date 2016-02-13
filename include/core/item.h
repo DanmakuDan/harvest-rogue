@@ -54,6 +54,9 @@ public:
    void Use();
    void Use(Direction::Direction direction);
    void Destruct();
+   void RemoveOne();
+   void NotifyItemEquipped();
+   void NotifyItemUnequiupped();
 
    template<class T>
    inline std::shared_ptr<T> GetInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType) {

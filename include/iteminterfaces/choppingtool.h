@@ -18,9 +18,11 @@
 #include "iteminterface.h"
 #include "item.h"
 #include "direction.h"
+#include "useable.h"
+#include "equippable.h"
 #include <memory>
 
-class ChoppingTool : public IItemInterface, public std::enable_shared_from_this<ChoppingTool> {
+class ChoppingTool : public IItemInterface, public IUseable, public IDirectionallyUsable, public IEquippable, public std::enable_shared_from_this<ChoppingTool> {
 public:
    IItemInterface* Clone() const { return new ChoppingTool(*this); }
 private:
@@ -46,6 +48,16 @@ public:
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+
+   // IUseable
+   virtual void Use(std::shared_ptr<Item> sourceItem);
+
+   // IDirectionallyUseable
+   virtual void Use(std::shared_ptr<Item> sourceItem, Direction::Direction direction);
+
+   // IEquippable
+   virtual void OnItemEquipped(std::shared_ptr<Item> sourceItem);
+   virtual void OnItemUnequipped(std::shared_ptr<Item> sourceItem);
 private:
    int Strength;
    int Fatigue;

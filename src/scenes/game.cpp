@@ -69,7 +69,7 @@ void Game::OnKeyPress(int key) {
    }
 
    if (Action::Requested(action, Action::UseTool)) {
-      Player::Get().UseTool();
+      Player::Get().UseEquippedItem();
    }
 
    if (Action::Requested(action, Action::OpenActionList)) {
@@ -231,7 +231,7 @@ void Game::RenderSideBar() {
       Screen::Get().WriteText(sideBarLeft + 12, 4, currentProp->GetName(), currentProp->GetColorCode());
    }
 
-   auto currentTool = Player::Get().GetCurrentTool();
+   auto currentTool = Player::Get().GetCurrentlyEquippedItem();
    Screen::Get().WriteText(sideBarLeft, 5, "Holding", Color::Silver);
    if (currentTool == nullptr) {
       Screen::Get().WriteText(sideBarLeft + 8, 5, "Nothing", Color::Gray);

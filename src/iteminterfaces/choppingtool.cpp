@@ -142,3 +142,21 @@ ItemInterfaceType::ItemInterfaceType ChoppingTool::GetInterfaceType()
 {
    return ItemInterfaceType::ChoppingTool;
 }
+
+void ChoppingTool::Use(std::shared_ptr<Item> sourceItem)
+{
+   this->Chop(sourceItem);
+}
+
+void ChoppingTool::Use(std::shared_ptr<Item> sourceItem, Direction::Direction direction)
+{
+   this->Chop(sourceItem, direction);
+}
+
+void ChoppingTool::OnItemEquipped(std::shared_ptr<Item> sourceItem)
+{
+}
+
+void ChoppingTool::OnItemUnequipped(std::shared_ptr<Item> sourceItem)
+{
+}

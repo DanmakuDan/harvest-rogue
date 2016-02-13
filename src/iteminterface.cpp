@@ -19,28 +19,23 @@
 #include "choppable.h"
 #include "obtainable.h"
 #include "dropsloot.h"
+#include "plantable.h"
+#include "growable.h"
+#include "harvestable.h"
 
 std::shared_ptr<IItemInterface> IItemInterface::Deserialize(ItemInterfaceType::ItemInterfaceType interfaceType, picojson::value serializedValue)
 {
    switch (interfaceType) {
 
-   case ItemInterfaceType::ChoppingTool:
-      return ChoppingTool::Deserialize(serializedValue);
-
-   case ItemInterfaceType::Durable:
-      return Durable::Deserialize(serializedValue);
-
-   case ItemInterfaceType::TillingTool:
-      return TillingTool::Deserialize(serializedValue);
-
-   case ItemInterfaceType::Choppable:
-      return Choppable::Deserialize(serializedValue);
-
-   case ItemInterfaceType::DropsLoot:
-      return DropsLoot::Deserialize(serializedValue);
-
-   case ItemInterfaceType::Obtainable:
-      return Obtainable::Deserialize(serializedValue);
+   case ItemInterfaceType::Choppable:        return Choppable::Deserialize(serializedValue);
+   case ItemInterfaceType::ChoppingTool:     return ChoppingTool::Deserialize(serializedValue);
+   case ItemInterfaceType::DropsLoot:        return DropsLoot::Deserialize(serializedValue);
+   case ItemInterfaceType::Durable:          return Durable::Deserialize(serializedValue);
+   case ItemInterfaceType::Growable:         return Growable::Deserialize(serializedValue);
+   case ItemInterfaceType::Harvestable:      return Harvestable::Deserialize(serializedValue);
+   case ItemInterfaceType::Obtainable:       return Obtainable::Deserialize(serializedValue);
+   case ItemInterfaceType::Plantable:        return Plantable::Deserialize(serializedValue);
+   case ItemInterfaceType::TillingTool:      return TillingTool::Deserialize(serializedValue);
 
    default:
       return nullptr;

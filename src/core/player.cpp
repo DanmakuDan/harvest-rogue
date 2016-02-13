@@ -19,6 +19,7 @@
 #include "interactiondirectiondialog.h"
 #include "interactable.h"
 #include "obtainable.h"
+#include "useable.h"
 
 Player::Player() {
    this->Energy = ENERGY_MAX;
@@ -95,8 +96,8 @@ void Player::WalkPlayer(Direction::Direction direction) {
    this->WarpPlayer(newX, newY);
 }
 
-std::shared_ptr<Item> Player::GetCurrentTool() {
-   return std::shared_ptr<Item>(this->CurrentTool);
+std::shared_ptr<Item> Player::GetCurrentlyEquippedItem() {
+   return std::shared_ptr<Item>(this->CurrentlyEquippedItem);
 }
 
 std::vector<std::shared_ptr<PlayerInventoryItem>> Player::GetInventory() {
@@ -178,20 +179,20 @@ void Player::PickUpItemFromGround() {
    this->SpawnIntoInventory(prop);
 }
 
-void Player::EquipFromInventory(std::shared_ptr<Item> tool) {
-   if (!tool->IsEquippable()) {
-      GameState::Get().AddLogMessageFmt("You can't equip the %s.", tool->GetName().c_str());
+void Player::EquipFromInventory(std::shared_ptr<Item> item) {
+   if (!item->IsEquippable()) {
+      GameState::Get().AddLogMessageFmt("You can't equip the %s.", item->GetName().c_str());
       return;
    }
 
-   if (this->GetCurrentTool() != nullptr) {
-      Player::Get().UnequipCurrentTool();
+   if (this->GetCurrentlyEquippedItem() != nullptr) {
+      Player::Get().UnequipCurrentEquippedItem();
    }
 
-   this->RemoveFromInventory(tool);
-   this->CurrentTool = std::shared_ptr<Item>(tool);
-
-   GameState::Get().AddLogMessageFmt("You equip the %s.", tool->GetName().c_str());
+   this->RemoveFromInventory(item);
+   this->CurrentlyEquippedItem = std::shared_ptr<Item>(item);
+   item->NotifyItemEquipped();
+   GameState::Get().AddLogMessageFmt("You equip the %s.", item->GetName().c_str());
 }
 
 void Player::DropInventoryItemOnGround(std::shared_ptr<Item> prop) {
@@ -205,7 +206,7 @@ void Player::DropInventoryItemOnGround(std::shared_ptr<Item> prop) {
    currentLandmark->AddItem(this->GetPositionX(), this->GetPositionY(), prop);
 }
 
-void Player::RemoveFromInventory(std::shared_ptr<Item> prop) {
+bool Player::RemoveFromInventory(std::shared_ptr<Item> prop) {
    auto i = 0;
    for (auto invProp : this->Inventory) {
       if (invProp->ItemTarget != prop) {
@@ -213,37 +214,40 @@ void Player::RemoveFromInventory(std::shared_ptr<Item> prop) {
          continue;
       }
 
-      // TODO: This does not take counts into concideration
-      if (--this->Inventory[i]->StackSize == 0) {
+      if (--this->Inventory[i]->StackSize <= 0) {
          this->Inventory.erase(this->Inventory.begin() + i);
       }
 
       bool startsWithVowel = invProp->ItemTarget->GetName().find_first_of("aAeEiIoOuU") == 0;
       GameState::Get().AddLogMessageFmt("%s %s has been removed from your inventory.", (startsWithVowel ? "An" : "A"),
                                         invProp->ItemTarget->GetName().c_str());
-      break;
+      
+      return true;
    }
+
+   return false;
 }
 
-void Player::UseTool() {
-   if (this->CurrentTool == nullptr) {
+void Player::UseEquippedItem() {
+   if (this->CurrentlyEquippedItem == nullptr) {
+      GameState::Get().AddLogMessage("You do not currently have an item equipped!");
+      return;
+   }
+   if (!this->CurrentlyEquippedItem->IsUsable()) {
+      return;
+   }
+
+   this->CurrentlyEquippedItem->Use();
+}
+
+void Player::UnequipCurrentEquippedItem() {
+   if (this->CurrentlyEquippedItem == nullptr) {
       GameState::Get().AddLogMessage("You do not currently have a tool equipped!");
       return;
    }
-   if (!this->CurrentTool->IsUsable()) {
-      return;
-   }
-
-   this->CurrentTool->Use();
-}
-
-void Player::UnequipCurrentTool() {
-   if (this->CurrentTool == nullptr) {
-      GameState::Get().AddLogMessage("You do not currently have a tool equipped!");
-      return;
-   }
-   this->SpawnIntoInventory(std::dynamic_pointer_cast<Item>(this->CurrentTool));
-   this->CurrentTool = nullptr;
+   this->SpawnIntoInventory(std::dynamic_pointer_cast<Item>(this->CurrentlyEquippedItem));
+   this->CurrentlyEquippedItem->NotifyItemUnequiupped();
+   this->CurrentlyEquippedItem = nullptr;
 }
 
 bool Player::IsPassable(int x, int y) {

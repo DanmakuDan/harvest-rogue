@@ -14,11 +14,13 @@
 
 #include "item.h"
 #include "gamestate.h"
-#include "choppingtool.h"
-#include "tillingtool.h"
 #include "durable.h"
 #include "dropsloot.h"
-
+#include "plantable.h"
+#include "obtainable.h"
+#include "player.h"
+#include "useable.h"
+#include "equippable.h"
 
 Item Item::Clone(const Item & source)
 {
@@ -86,6 +88,19 @@ bool Item::Takeable()
 
 bool Item::IsUsable()
 {
+   std::shared_ptr<IUseable> usableItem;
+   
+   for (auto i : this->GetInterfaces()) {
+      usableItem = std::dynamic_pointer_cast<IUseable>(i.second);
+      if (usableItem != nullptr) {
+         break;
+      }
+   }
+
+   if (usableItem == nullptr) {
+      return false;
+   }
+
    if (this->HasInterface(ItemInterfaceType::Durable)) {
       auto durableInterface = this->GetInterface<Durable>(ItemInterfaceType::Durable);
       if (durableInterface->GetDurability() <= 0) {
@@ -94,52 +109,87 @@ bool Item::IsUsable()
       }
    }
 
-   if (this->HasInterface(ItemInterfaceType::ChoppingTool)
-      || this->HasInterface(ItemInterfaceType::TillingTool)
-      )
-      return true;
-   return false;
+   return true;
 }
 
 bool Item::IsEquippable()
 {
-   if (this->HasInterface(ItemInterfaceType::ChoppingTool)
-      || this->HasInterface(ItemInterfaceType::TillingTool)
-      )
-      return true;
-   return false;
+   std::shared_ptr<IEquippable> equippableItem;
+
+   for (auto i : this->GetInterfaces()) {
+      equippableItem = std::dynamic_pointer_cast<IEquippable>(i.second);
+      if (equippableItem != nullptr) {
+         break;
+      }
+   }
+
+   if (equippableItem == nullptr) {
+      return false;
+   }
+
+   if (this->HasInterface(ItemInterfaceType::Durable)) {
+      auto durableInterface = this->GetInterface<Durable>(ItemInterfaceType::Durable);
+      if (durableInterface->GetDurability() <= 0) {
+         GameState::Get().AddLogMessageFmt("The %s is broken and cannot be equipped.", this->GetName().c_str());
+         return false;
+      }
+   }
+
+   return true;
 }
 
 void Item::Use()
 {
-   if (this->HasInterface(ItemInterfaceType::ChoppingTool)) {
-      auto choppingTool = this->GetInterface<ChoppingTool>(ItemInterfaceType::ChoppingTool);
-      choppingTool->Chop(this->shared_from_this());
-      return;
-   }  
+   std::shared_ptr<IUseable> usableItem;
 
-   if (this->HasInterface(ItemInterfaceType::TillingTool)) {
-      auto tillingTool = this->GetInterface<TillingTool>(ItemInterfaceType::TillingTool);
-      tillingTool->Till(this->shared_from_this());
+   for (auto i : this->GetInterfaces()) {
+      usableItem = std::dynamic_pointer_cast<IUseable>(i.second);
+      if (usableItem != nullptr) {
+         break;
+      }
+   }
+
+   if (usableItem == nullptr) {
       return;
    }
+
+   usableItem->Use(this->shared_from_this());
 }
 
 void Item::Use(Direction::Direction direction)
 {
-   if (this->HasInterface(ItemInterfaceType::ChoppingTool)) {
-      auto choppingTool = this->GetInterface<ChoppingTool>(ItemInterfaceType::ChoppingTool);
-      choppingTool->Chop(this->shared_from_this(), direction);
+   std::shared_ptr<IDirectionallyUsable> usableItem;
+
+   for (auto i : this->GetInterfaces()) {
+      usableItem = std::dynamic_pointer_cast<IDirectionallyUsable>(i.second);
+      if (usableItem != nullptr) {
+         break;
+      }
+   }
+
+   if (usableItem == nullptr) {
       return;
    }
+
+   usableItem->Use(this->shared_from_this(), direction);
 }
 
 void Item::Destruct()
 {
+   this->SetCount(0);
+
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
+
    int x, y;
-   currentLandmark->LocateItem(this->shared_from_this(), x, y);
-   currentLandmark->RemoveItem(x, y);
+   if (currentLandmark->LocateItem(this->shared_from_this(), x, y)) {
+      currentLandmark->RemoveItem(x, y);
+   }
+   
+   if (Player::Get().GetCurrentlyEquippedItem() == this->shared_from_this()) {
+      Player::Get().UnequipCurrentEquippedItem();
+   }
+
+   Player::Get().RemoveFromInventory(this->shared_from_this());
 
    if (this->HasInterface(ItemInterfaceType::DropsLoot)) {
       auto dropsLootInterface = this->GetInterface<DropsLoot>(ItemInterfaceType::DropsLoot);
@@ -148,6 +198,30 @@ void Item::Destruct()
 
    GameState::Get().AddLogMessageFmt("The %s was destroyed!", this->GetName().c_str());
    
+}
+
+void Item::RemoveOne()
+{
+   if (!this->HasInterface(ItemInterfaceType::Obtainable)) {
+      this->Destruct();
+      return;
+   }
+
+   auto obtainable = this->GetInterface<Obtainable>(ItemInterfaceType::Obtainable);
+   if (!obtainable->GetIsStackable() || this->Count <= 1) {
+      this->Destruct();
+      return;
+   }
+
+   this->Count--;
+}
+
+void Item::NotifyItemEquipped()
+{
+}
+
+void Item::NotifyItemUnequiupped()
+{
 }
 
 void Item::SetDescription(std::string description)

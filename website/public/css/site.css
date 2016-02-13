@@ -19,3 +19,8 @@
    border: 1px solid #DDD;
    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
 }
+
+body {
+   background-image: url(../images/bg.png);
+   background-repeat: repeat;
+}

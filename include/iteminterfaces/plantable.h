@@ -12,37 +12,33 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_TILLINGTOOL_H
-#define HARVEST_ROGUE_TILLINGTOOL_H
+#ifndef HARVEST_ROGUE_PLANTABLE_H
+#define HARVEST_ROGUE_PLANTABLE_H
 
-#include <memory>
+
 #include "iteminterface.h"
 #include "item.h"
 #include "useable.h"
 #include "equippable.h"
+#include <memory>
 
-class TillingTool : public IItemInterface, public IUseable, public IEquippable {
+class Plantable : public IItemInterface, public IUseable, public IEquippable {
 public:
-   IItemInterface* Clone() const { return new TillingTool(*this); }
+   IItemInterface* Clone() const { return new Plantable(*this); }
 private:
-   TillingTool();
+   Plantable();
 
-   TillingTool(TillingTool const &src) {
-      this->Strength = src.Strength;
-      this->Fatigue = src.Fatigue;
+   Plantable(Plantable const &src) {
+      this->Crop = src.Crop;
    };
-
-   TillingTool &operator=(TillingTool const &) { };
 public:
-   ~TillingTool();
-   static std::shared_ptr<TillingTool> Deserialize(picojson::value serializedValue);
+   ~Plantable();
+   static std::shared_ptr<Plantable> Deserialize(picojson::value serializedValue);
 
-   int GetStrength();
-   void SetStrength(int strength);
-   int GetFatigue();
-   void SetFatigue(int fatigue);
+   std::string GetCrop();
+   void SetCrop(std::string crop);
 
-   void Till(std::shared_ptr<Item> sourceItem);
+   void Plant(std::shared_ptr<Item> sourceItem);
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
@@ -54,8 +50,7 @@ public:
    virtual void OnItemEquipped(std::shared_ptr<Item> sourceItem);
    virtual void OnItemUnequipped(std::shared_ptr<Item> sourceItem);
 private:
-   int Strength;
-   int Fatigue;
+   std::string Crop;
 };
 
-#endif //HARVEST_ROGUE_TILLINGTOOL_H
+#endif //HARVEST_ROGUE_PLANTABLE_H

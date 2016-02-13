@@ -116,3 +116,16 @@ ItemInterfaceType::ItemInterfaceType TillingTool::GetInterfaceType()
 {
    return ItemInterfaceType::TillingTool;
 }
+
+void TillingTool::Use(std::shared_ptr<Item> sourceItem)
+{
+   this->Till(sourceItem);
+}
+
+void TillingTool::OnItemEquipped(std::shared_ptr<Item> sourceItem)
+{
+}
+
+void TillingTool::OnItemUnequipped(std::shared_ptr<Item> sourceItem)
+{
+}

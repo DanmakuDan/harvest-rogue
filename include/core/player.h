@@ -47,15 +47,15 @@ public:
    int GetPositionY();
    void WarpPlayer(int x, int y);
    void WalkPlayer(Direction::Direction direction);
-   std::shared_ptr<Item> GetCurrentTool();
+   std::shared_ptr<Item> GetCurrentlyEquippedItem();
    std::vector<std::shared_ptr<PlayerInventoryItem>> GetInventory();
    void SpawnIntoInventory(std::shared_ptr<Item> prop);
-   void RemoveFromInventory(std::shared_ptr<Item> prop);
+   bool RemoveFromInventory(std::shared_ptr<Item> prop);
    void PickUpItemFromGround();
    void EquipFromInventory(std::shared_ptr<Item> tool);
    void DropInventoryItemOnGround(std::shared_ptr<Item> prop);
-   void UseTool();
-   void UnequipCurrentTool();
+   void UseEquippedItem();
+   void UnequipCurrentEquippedItem();
    int GetEnergy();
    void SetEnergy(int energy);
    void AdjustEnergy(int energyAdjustment);
@@ -66,7 +66,7 @@ public:
 private:
    int PositionX;
    int PositionY;
-   std::shared_ptr<Item> CurrentTool;
+   std::shared_ptr<Item> CurrentlyEquippedItem;
    std::vector<std::shared_ptr<PlayerInventoryItem>> Inventory;
    bool IsPassable(int x, int y);
    bool IsSleeping;

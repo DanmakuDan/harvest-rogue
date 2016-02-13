@@ -55,19 +55,13 @@ namespace TileType {
       //Weed,
 
       Stone,
-      //Branch,
       //Boulder,
       //Stump,
-      //Tree,
 
       Water,
 
       BrickWall,
       Door,
-
-      //// Tools
-      //Hoe,
-      //Axe,
 
       //// Items
       //SeedBag,
@@ -82,13 +76,6 @@ namespace TileType {
       WindowBottomLeft,
       WindowBottom,
       WindowBottomRight,
-
-      //// Crops
-      //PotatoSeedling,
-      //PotatoGrowing,
-      //PotatoFullyGrown,
-      //PotatoWilted,
-      //Potato,
 
       //WheatSeedling,
       //WheatGrowing,
@@ -138,8 +125,6 @@ namespace Tile {
          {TileType::Door,                  "Wooden Door",         SurfaceAttribute::VisualObstruction |                
                                                                   SurfaceAttribute::Walkable,          Color::Yellow,  '-', 14},
          //{TileType::Bed,                   "Bed",                 SurfaceAttribute::None,              Color::BrightBlue,  'B', 13},
-         //{TileType::Hoe,                   "Hoe",                 SurfaceAttribute::Walkable,          Color::Yellow,  '\\', 15},
-         //{TileType::Axe,                   "Axe",                 SurfaceAttribute::Walkable,          Color::White,   'P', 19},
          //{TileType::SeedBag,               "Seed bag",            SurfaceAttribute::Walkable,          Color::White,   'b', 20},
                                                                                                                        
          // UI                                                                                                         

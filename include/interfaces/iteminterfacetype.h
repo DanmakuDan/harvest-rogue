@@ -21,22 +21,27 @@
 namespace ItemInterfaceType {
    enum ItemInterfaceType {
       Unknown = -1,
-      ChoppingTool = 0,
-      TillingTool,
-      Durable,
-      Obtainable,
+      Choppable = 0,
+      ChoppingTool,
       DropsLoot,
-      Choppable
+      Durable,
+      Growable,
+      Harvestable,
+      Obtainable,
+      Plantable,
+      TillingTool
    };
 
    static ItemInterfaceType FromString(std::string itemInterfaceType) {
-      if (itemInterfaceType == "choppingTool") return ChoppingTool;
-      if (itemInterfaceType == "durable") return Durable;
-      if (itemInterfaceType == "tillingTool") return TillingTool;
-      if (itemInterfaceType == "obtainable") return Obtainable;
-      if (itemInterfaceType == "dropsLoot") return DropsLoot;
-      if (itemInterfaceType == "choppable") return Choppable;
-
+      if (itemInterfaceType == "choppable")        return Choppable;
+      if (itemInterfaceType == "choppingTool")     return ChoppingTool;
+      if (itemInterfaceType == "dropsLoot")        return DropsLoot;
+      if (itemInterfaceType == "durable")          return Durable;
+      if (itemInterfaceType == "growable")         return Growable;
+      if (itemInterfaceType == "harvestable")      return Harvestable;
+      if (itemInterfaceType == "obtainable")       return Obtainable;
+      if (itemInterfaceType == "plantable")        return Plantable;
+      if (itemInterfaceType == "tillingTool")      return TillingTool;
       return Unknown;
    }
 }

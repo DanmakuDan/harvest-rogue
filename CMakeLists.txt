@@ -34,6 +34,7 @@ OPTION(BUILD_SDL2   "Build the SDL2 frontend." OFF)
 
 configure_files(${harvest_rogue_SOURCE_DIR}/media/definitions ${CMAKE_BINARY_DIR}/media)
 configure_files(${harvest_rogue_SOURCE_DIR}/media/definitions/system ${CMAKE_BINARY_DIR}/media)
+configure_files(${harvest_rogue_SOURCE_DIR}/media/definitions/crops ${CMAKE_BINARY_DIR}/media)
    
 IF(BUILD_SDL2)
    ADD_DEFINITIONS(-DGRAPHICS_MODE)
