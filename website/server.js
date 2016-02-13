@@ -17,27 +17,6 @@ function sqlConnect(callback) {
 }
 
 
-/*
-function addUser (source, sourceUser) {
-   var user;
-   user = usersById[++nextUserId] = {id: nextUserId};
-   user[source] = sourceUser;
-   console.log(source);
-   console.log(JSON.stringify(user));
-   sqlConnect(function(c) {
-      c.query(
-         'INSERT INTO UserAccount (UserName, ProviderName, ProviderAccount, ProviderId, CreatedOn) VALUES (??, ??, ??, ??, NOW()) WHERE NOT EXISTS ' +
-         ' (SELECT 1 FROM UserAccount WHERE ProviderName = ?? AND ProviderAccount = ?? AND ProviderId = ??) ', [
-            user.facebook.name, source, user.facebook.name, user.facebook.id, source, user.facebook.name, user.facebook.id], function(err, results) {
-            
-         }
-      );
-   });
-
-   return user;
-}
-*/
-
 everyauth.everymodule
   .findUserById( function (id, callback) {
      sqlConnect(function(c) {
@@ -47,8 +26,6 @@ everyauth.everymodule
          }
       );
    });
-     
-    callback(null, usersById[id]);
   });
   
 everyauth.facebook
@@ -91,7 +68,6 @@ everyauth.facebook
             }
          });
       });
-      return usersByFbId[fbUserMetadata.id] || (usersByFbId[fbUserMetadata.id] = addUser('facebook', fbUserMetadata));
    })
    .redirectPath('/');
 
