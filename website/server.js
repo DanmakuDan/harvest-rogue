@@ -18,11 +18,10 @@ function sqlConnect(callback) {
 
 
 everyauth.everymodule.findUserById( function (id, callback) {
-   console.log("Find User:");
    sqlConnect(function(c) {
       c.query('SELECT * FROM UserAccount WHERE Id = ? LIMIT 1', [id], function(err, results) {
-         console.log("Find User Result: " + id);
          results[0].id = results[0].Id;
+         c.destroy();
          callback(null, results[0]);
       });
    });
@@ -39,6 +38,7 @@ everyauth.facebook
             fbUserMetadata.name, fbUserMetadata.id
          ], function(err, results) {
             if (err) {
+               c.destroy();
                promise.fulfill([err]);
             } else {
                if (results.length == 0) {
@@ -47,6 +47,7 @@ everyauth.facebook
                         fbUserMetadata.name, 'facebook', fbUserMetadata.name, fbUserMetadata.id
                      ], function(err2, results2) {
                         if(err) {
+                           c.destroy();
                            promise.fulfill([err2]);
                         } else {
                            c.query(
@@ -54,9 +55,11 @@ everyauth.facebook
                               fbUserMetadata.name, fbUserMetadata.id
                            ], function(err3, results3) {
                               if (err) {
+                                 c.destroy();
                                  promise.fulfill([err3]);
                               } else {
                                  results3[0].id = results3[0].Id;
+                                 c.destroy();
                                  promise.fulfill(results3[0]);
                               }
                            })
@@ -67,6 +70,7 @@ everyauth.facebook
                   c.query('UPDATE UserAccount SET LastAccessedOn = NOW() WHERE ProviderName = \'facebook\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
                   fbUserMetadata.name, fbUserMetadata.id], function(err4, results4) {
                      results[0].id = results[0].Id;
+                     c.destroy();
                      promise.fulfill(results[0]);
                   });
                }
@@ -94,7 +98,6 @@ app.set('view engine', 'jade');
 everyauth.helpExpress(app);
 
 app.get('/', function (req, res) {
-   console.log(JSON.stringify(req.user));
    res.render('pages/index', { pageTitle: 'Home', user: everyauth.user });
 });
 
