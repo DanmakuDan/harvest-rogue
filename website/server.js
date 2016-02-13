@@ -7,6 +7,7 @@ var mysql      = require('mysql');
 function sqlConnect(callback) {
    var conn = mysql.createConnection({
    host     : 'localhost',
+   user     : 'root',
    database : 'harvestrogue'
    });
    
