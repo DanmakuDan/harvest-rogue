@@ -20,7 +20,7 @@ function sqlConnect(callback) {
 everyauth.everymodule.findUserById( function (id, callback) {
    console.log("Find User:");
    sqlConnect(function(c) {
-      c.query('SELECT TOP 1 * FROM UserAccount WHERE Id = ?', [id], function(err, results) {
+      c.query('SELECT * FROM UserAccount WHERE Id = ? LIMIT 1', [id], function(err, results) {
          console.log("Find User Result: " + id);
          results[0].id = results[0].Id;
          callback(null, results[0]);
