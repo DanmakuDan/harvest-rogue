@@ -20,8 +20,8 @@ function addUser (source, sourceUser) {
 }
 
 everyauth.facebook
-  .appId(fs.readFileSync(__dirname + "/../../../facebook.appid", "utf8"))
-  .appSecret(fs.readFileSync(__dirname + "/../../../facebook.secret", "utf8"))
+  .appId("1683955285227175")
+  .appSecret("cb3685564098f77f8c95d614eb3eab47")
   .handleAuthCallbackError( function (req, res) {
      res.redirect("/");
   })
