@@ -34,9 +34,16 @@ var usersByFbId = {};
 
 app
    .use(express.static(__dirname + '/public'))
-   .use(expressSession({secret: 'harvest-rogue-123'}))
+   .use(expressSession({
+      secret: 'harvest-rogue-123', 
+      resave: false, 
+      saveUninitialized: true, 
+      cookie: {
+         secure: true
+      }
+   }))
    .use(everyauth.middleware(app))
-   .use(bodyParser())
+   .use(bodyParser.urlencoded({ extended: false }))
    .use(cookieParser('harvestRogue123'));
 
 app.set('views', __dirname + '/views');
