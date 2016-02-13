@@ -11,7 +11,7 @@ html
                a(class="item" href="/screenshots") Screenshots
                a(class="item" href="/forums") Forums
                - if (everyauth.loggedIn)
-                  a(class="item" href="/account")= JSON.stringify(everyauth.user.UserName)
+                  //a(class="item" href="/account")= JSON.stringify(everyauth.user.UserName)
                - else
                   a(class="item" href="/login") Log In
          block content
