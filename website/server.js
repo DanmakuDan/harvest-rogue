@@ -79,7 +79,9 @@ everyauth.facebook
    .redirectPath('/');
 
 
-var app = express()
+var app = express.createServer();
+
+app
    .use(express.static(__dirname + '/public'))
    .use(express.bodyParser())
    .use(express.cookieParser('hrjas9fj3'))
