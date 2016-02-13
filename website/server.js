@@ -22,29 +22,27 @@ var usersById = {};
 
 function addUser (source, sourceUser) {
    var user;
-   if (arguments.length === 1) { // password-based
-      user = sourceUser = source;
-      user.id = ++nextUserId;
-      return usersById[nextUserId] = user;
-   } else { // non-password-based
+   user = usersById[++nextUserId] = {id: nextUserId};
+   user[source] = sourceUser;
+   console.log(source);
+   console.log(JSON.stringify(user));
+   sqlConnect(function(c) {
+      c.query(
+         'INSERT INTO UserAccount SET ? WHERE NOT EXISTS (SELECT * FROM UserAccount WHERE ProviderName=\'facebook\' AND ProviderId=\'' + user.facebook.id + '\')', {
+         "UserName": user.facebook.name, 
+         "ProviderName": source, 
+         "ProviderAccount": user.facebook.name, 
+         "ProviderId": user.facebook.id,
+         "CreatedOn" : new Date()
+         }, function(err, results) {
+            results.insertId
+         }
+      );
+   });
 
-      user = usersById[++nextUserId] = {id: nextUserId};
-      user[source] = sourceUser;
-      console.log(source);
-      console.log(JSON.stringify(user));
-      sqlConnect(function(c) {
-         c.query('INSERT INTO UserAccount SET ? ', {
-               "UserName": user.facebook.name, 
-               "ProviderName": source, 
-               "ProviderAccount": user.facebook.name, 
-               "ProviderId": user.facebook.id,
-               "CreatedOn" : Date.now()
-               }, function(err, results) {
-         });
-      });
-   }
    return user;
 }
+
 
 everyauth.everymodule
   .findUserById( function (id, callback) {
@@ -55,6 +53,8 @@ everyauth.facebook
   .appId("1683955285227175")
   .appSecret("cb3685564098f77f8c95d614eb3eab47")
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, fbUserMetadata) {
+
+     
       return usersByFbId[fbUserMetadata.id] || (usersByFbId[fbUserMetadata.id] = addUser('facebook', fbUserMetadata));
    })
   .redirectPath('/');
