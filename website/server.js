@@ -35,7 +35,7 @@ everyauth.facebook
       var promise = this.Promise();
       
       sqlConnect(function(c) { c.query(
-         'SELECT TOP 1 * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ?? AND ProviderId = ??', [
+         'SELECT * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ?? AND ProviderId = ?? LIMIT 1', [
             fbUserMetadata.name, fbUserMetadata.id
          ], function(err, results) {
             if (err) {
@@ -50,7 +50,7 @@ everyauth.facebook
                            promise.fail(err2);
                         } else {
                            c.query(
-                              'SELECT TOP 1 * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ?? AND ProviderId = ??', [
+                              'SELECT * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ?? AND ProviderId = ?? LIMIT 1', [
                               fbUserMetadata.name, fbUserMetadata.id
                            ], function(err, results) {
                               if (err) {
