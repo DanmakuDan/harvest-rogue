@@ -54,7 +54,7 @@ function getDocumentationPage(pageName, callbackPass, callbackFail) {
 
 function getForums(callbackPass, callbackFail) {
    sqlConnect(function(c) {
-      c.query('SELECT * FROM Forum ORDER BY TableOrder ASC', function(err, results) {
+      c.query('SELECT *, (SELECT COUNT(*) FROM ForumPost WHERE ForumPost.ForumId = Forum.Id) AS Posts FROM Forum ORDER BY TableOrder ASC', function(err, results) {
          c.destroy();
          if (results == null || results.length == 0) {
             callbackFail();
@@ -113,6 +113,15 @@ function setDocumentationPage(userId, pageName, title, content, callbackDone) {
       [title, content, userId, realPageName], function(err, results) {
          c.destroy();
          callbackDone();
+      });
+   });
+}
+
+function updateForumPostCount(forumName, callback) {
+   sqlConnect(function(c) {
+      c.query('UPDATE Forum SET Posts = Posts+1 WHERE Name = ?', [forumName], function(err, results) {
+         c.destroy();
+         callback();
       });
    });
 }
