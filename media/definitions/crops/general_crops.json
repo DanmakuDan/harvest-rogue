@@ -38,7 +38,7 @@
       "interfaces": {
         "growable": {
           "hoursToGrow": 72,
-          "hoursToWilt": 24,
+          "hoursToWilt": 25,
           "seedling": {
             "colorCode": "yellow",
             "characterCode": "x",

@@ -15,9 +15,11 @@
 #ifndef HARVEST_ROGUE_TICKEVENTS_H
 #define HARVEST_ROGUE_TICKEVENTS_H
 
+#include "item.h"
+
 class IHourlyTickEvent {
 public:
-   virtual void OnHourlyTick() = 0;
+   virtual void OnHourlyTick(std::shared_ptr<Item> sourceItem) = 0;
 };
 
 #endif //HARVEST_ROGUE_TICKEVENTS_H

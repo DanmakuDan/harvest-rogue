@@ -18,6 +18,7 @@
 
 #include "iteminterface.h"
 #include "crops.h"
+#include "tickevents.h"
 #include <memory>
 
 struct GrowableTileCode {
@@ -26,7 +27,7 @@ struct GrowableTileCode {
    int GfxTileCode;
 };
 
-class Growable : public IItemInterface {
+class Growable : public IItemInterface, public IHourlyTickEvent {
 public:
    IItemInterface* Clone() const { return new Growable(*this); }
 private:
@@ -44,8 +45,29 @@ public:
    ~Growable();
    static std::shared_ptr<Growable> Deserialize(picojson::value serializedValue);
    
+   void SetHoursToGrow(int hoursToGrow);
+   int GetHoursToGrow();
+   void SetHoursToWilt(int hoursToWilt);
+   int GetHoursToWilt();
+   void SetSeedlingGrowableTileCode(GrowableTileCode growableTileCode);
+   GrowableTileCode GetSeedlingGrowableTileCode();
+   void SetGrowingGrowableTileCode(GrowableTileCode growableTileCode);
+   GrowableTileCode GetGrowingGrowableTileCode();
+   void SetGrownGrowableTileCode(GrowableTileCode growableTileCode);
+   GrowableTileCode GetGrownGrowableTileCode();
+   void SetWiltedGrowableTileCode(GrowableTileCode growableTileCode);
+   GrowableTileCode GetWiltedGrowableTileCode();
+   void SetCropGrowthType(CropGrowthType::CropGrowthType cropGrowthType);
+   CropGrowthType::CropGrowthType GetCropGrowthType();
+   
+
+   void StartGrowing(std::shared_ptr<Item> sourceItem);
+
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+
+   // IHourlyTickEvent
+   virtual void OnHourlyTick(std::shared_ptr<Item> sourceItem);
 private:
    int HoursToGrow;
    int HoursToWilt;
@@ -53,6 +75,9 @@ private:
    GrowableTileCode Growing;
    GrowableTileCode Grown;
    GrowableTileCode Wilted;
+   CropGrowthType::CropGrowthType CropGrowthType;
+   static void ApplyGrowableTileCode(std::shared_ptr<Item> sourceItem, GrowableTileCode growableTileCode);
+   static GrowableTileCode ParseGrowableTileCode(picojson::value serializedValue);
 };
 
 #endif //HARVEST_ROGUE_GROWABLE_H

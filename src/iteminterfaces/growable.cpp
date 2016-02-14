@@ -35,21 +35,239 @@ std::shared_ptr<Growable> Growable::Deserialize(picojson::value serializedValue)
    auto data = serializedValue.get<picojson::object>();
    for (auto item : data) {
 
-      /*if (item.first == "yieldItem") {
-         if (!item.second.is<std::string>()) {
+      if (item.first == "hoursToGrow") {
+         if (!item.second.is<double>()) {
             throw;
          }
 
-         auto value = item.second.get<std::string>();
-         result->SetYieldItem(value);
+         auto value = item.second.get<double>();
+         if (value != (unsigned long)value) {
+            throw;
+         }
+
+         result->SetHoursToGrow((int)value);
          continue;
-      }*/
+      }
+
+      if (item.first == "hoursToWilt") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         auto value = item.second.get<double>();
+         if (value != (unsigned long)value) {
+            throw;
+         }
+
+         result->SetHoursToWilt((int)value);
+         continue;
+      }
+
+      if (item.first == "seedling") {
+         result->SetSeedlingGrowableTileCode(Growable::ParseGrowableTileCode(item.second));
+         continue;
+      }
+
+      if (item.first == "growing") {
+         result->SetGrowingGrowableTileCode(Growable::ParseGrowableTileCode(item.second));
+         continue;
+      }
+
+      if (item.first == "grown") {
+         result->SetGrownGrowableTileCode(Growable::ParseGrowableTileCode(item.second));
+         continue;
+      }
+
+      if (item.first == "wilted") {
+         result->SetWiltedGrowableTileCode(Growable::ParseGrowableTileCode(item.second));
+         continue;
+      }
+
+      throw;
    }
 
    return result;
 }
 
+void Growable::SetHoursToGrow(int hoursToGrow)
+{
+   this->HoursToGrow = hoursToGrow;
+}
+
+int Growable::GetHoursToGrow()
+{
+   return this->HoursToGrow;
+}
+
+void Growable::SetHoursToWilt(int hoursToWilt)
+{
+   this->HoursToWilt = hoursToWilt;
+}
+
+int Growable::GetHoursToWilt()
+{
+   return this->HoursToWilt;
+}
+
+void Growable::SetSeedlingGrowableTileCode(GrowableTileCode growableTileCode)
+{
+   this->Seedling = growableTileCode;
+}
+
+GrowableTileCode Growable::GetSeedlingGrowableTileCode()
+{
+   return this->Seedling;
+}
+
+void Growable::SetGrowingGrowableTileCode(GrowableTileCode growableTileCode)
+{
+   this->Growing = growableTileCode;
+}
+
+GrowableTileCode Growable::GetGrowingGrowableTileCode()
+{
+   return this->Growing;
+}
+
+void Growable::SetGrownGrowableTileCode(GrowableTileCode growableTileCode)
+{
+   this->Grown = growableTileCode;
+}
+
+GrowableTileCode Growable::GetGrownGrowableTileCode()
+{
+   return this->Grown;
+}
+
+void Growable::SetWiltedGrowableTileCode(GrowableTileCode growableTileCode)
+{
+   this->Wilted = growableTileCode;
+}
+
+GrowableTileCode Growable::GetWiltedGrowableTileCode()
+{
+   return this->Wilted;
+}
+
+void Growable::SetCropGrowthType(CropGrowthType::CropGrowthType cropGrowthType)
+{
+   this->CropGrowthType = cropGrowthType;
+}
+
+CropGrowthType::CropGrowthType Growable::GetCropGrowthType()
+{
+   return this->CropGrowthType;
+}
+
+void Growable::StartGrowing(std::shared_ptr<Item> sourceItem)
+{
+   Growable::ApplyGrowableTileCode(sourceItem, this->GetSeedlingGrowableTileCode());
+   this->SetCropGrowthType(CropGrowthType::Seedling);
+}
+
 ItemInterfaceType::ItemInterfaceType Growable::GetInterfaceType()
 {
    return ItemInterfaceType::Growable;
+}
+
+void Growable::OnHourlyTick(std::shared_ptr<Item> sourceItem)
+{
+   if (this->GetCropGrowthType() == CropGrowthType::Wilted) {
+      return;
+   }
+   
+   if (this->HoursToGrow > 0) {
+      this->HoursToGrow--;
+
+      if ((this->HoursToGrow > 0) && (this->GetCropGrowthType() == CropGrowthType::Seedling)) {
+         this->SetCropGrowthType(CropGrowthType::Growing);
+         Growable::ApplyGrowableTileCode(sourceItem, this->GetGrowingGrowableTileCode());
+         return;
+      }
+
+      if (this->HoursToGrow <= 0) {
+         this->SetCropGrowthType(CropGrowthType::FullyGrown);
+         Growable::ApplyGrowableTileCode(sourceItem, this->GetGrownGrowableTileCode());
+      }
+
+      return;
+   }
+
+      
+   if (HoursToWilt > 0) {
+      if (--this->HoursToWilt <= 0) {
+         this->SetCropGrowthType(CropGrowthType::Wilted);
+         Growable::ApplyGrowableTileCode(sourceItem, this->GetWiltedGrowableTileCode());
+         return;
+      }
+   }
+   
+   
+}
+
+void Growable::ApplyGrowableTileCode(std::shared_ptr<Item> sourceItem, GrowableTileCode growableTileCode)
+{
+   sourceItem->SetCharacterCode(growableTileCode.CharacterCode);
+   sourceItem->SetColorCode(growableTileCode.ColorCode);
+   sourceItem->SetGfxTileCode(growableTileCode.GfxTileCode);
+}
+
+GrowableTileCode Growable::ParseGrowableTileCode(picojson::value serializedValue)
+{
+   GrowableTileCode result;
+
+   if (!serializedValue.is<picojson::object>()) {
+      throw;
+   }
+
+   auto data = serializedValue.get<picojson::object>();
+
+   for (auto item : data) {
+      if (item.first == "colorCode") {
+         if (!item.second.is<std::string>()) {
+            throw;
+         }
+
+         auto value = item.second.get<std::string>();
+         auto color = Color::FromString(value);
+         if (color == Color::Unknown) {
+            throw;
+         }
+         result.ColorCode = color;
+         continue;
+      }
+
+      if (item.first == "characterCode") {
+         if (!item.second.is<std::string>()) {
+            throw;
+         }
+
+         auto value = item.second.get<std::string>();
+
+         if (value.size() != 1) {
+            throw;
+         }
+
+         result.CharacterCode = value.front();
+         continue;
+      }
+
+      if (item.first == "gfxTileCode") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         auto value = item.second.get<double>();
+         if (value != (unsigned long)value) {
+            throw;
+         }
+
+         result.GfxTileCode = value;
+         continue;
+      }
+
+      throw;
+   }
+
+   return result;
 }

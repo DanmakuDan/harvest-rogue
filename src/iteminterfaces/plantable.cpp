@@ -15,6 +15,7 @@
 #include "plantable.h"
 #include "gamestate.h"
 #include "player.h"
+#include "growable.h"
 
 Plantable::Plantable()
 {
@@ -83,7 +84,21 @@ void Plantable::Plant(std::shared_ptr<Item> sourceItem)
    crop->SetCount(1);
    currentLandmark->AddItem(x, y, crop);
 
+   auto growableInterface = crop->GetInterface<Growable>(ItemInterfaceType::Growable);
+   if (growableInterface != nullptr) {
+      growableInterface->StartGrowing(crop);
+   }
+
    sourceItem->RemoveOne();
+   // Equip another item if we can find one
+   for (auto item : Player::Get().GetInventory()) {
+      if (item->ItemTarget->GetName() != sourceItem->GetName()) {
+         continue;
+      }
+
+      Player::Get().EquipFromInventory(item->ItemTarget);
+      break;
+   }
 }
 
 

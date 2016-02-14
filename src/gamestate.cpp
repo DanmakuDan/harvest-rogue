@@ -254,15 +254,25 @@ void GameState::ProcessHourlyTick() {
    };
 
    for (auto landmark : GameState::Landmarks) {
-      auto landmarkProps = landmark->GetAllLandmarkItems();
-      /*for (int i = 0; i < (landmark->GetWidth() * landmark->GetHeight()); i++) {
-         auto prop = std::dynamic_pointer_cast<IHourlyTickEvent>(landmarkProps[i].Prop);
-         if (prop == nullptr) {
+      auto landmarkItems = landmark->GetAllLandmarkItems();
+      for (auto landmarkItem : landmarkItems) {
+         if (landmarkItem.second == nullptr) {
+            continue;
+         }
+         std::shared_ptr<IHourlyTickEvent> hourlyTickEvent;
+
+         for (auto i : landmarkItem.second->ItemTarget->GetInterfaces()) {
+            hourlyTickEvent = std::dynamic_pointer_cast<IHourlyTickEvent>(i.second);
+            if (hourlyTickEvent != nullptr) {
+               break;
+            }
+         }
+
+         if (hourlyTickEvent == nullptr) {
             continue;
          }
 
-         prop->OnHourlyTick();
-         
-      }*/
+         hourlyTickEvent->OnHourlyTick(landmarkItem.second->ItemTarget);
+      }
    }
 }
