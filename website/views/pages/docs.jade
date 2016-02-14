@@ -12,7 +12,7 @@ block content
       - if((everyauth.loggedIn) && (everyauth.user.CanEditDocs == 1))
          h2(class="ui header") Edit Page
          div(class="ui raised text segment message")
-            form(class="ui form" method="post")
+            form(class="ui form" method="post" action="/docs/#{sub}")
                input(type="hidden" name="isNew" value="#{isNew}")
                div(class="field")
                   label Caption
