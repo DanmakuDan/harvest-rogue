@@ -109,6 +109,10 @@ app.get('/forums', function (req, res) {
    res.render('pages/forums', { pageTitle: 'Forums' });
 });
 
+app.get('/docs', function (req, res) {
+   res.render('pages/docs', { pageTitle: 'Documentation' });
+});
+
 app.get('/login', function (req, res) {
    if (everyauth.loggedIn) {
       res.redirect("/");
