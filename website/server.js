@@ -1,8 +1,18 @@
 var express = require('express');
 var everyauth = require('everyauth');
-var markdown = require('markdown').markdown;
+var marked = require('marked');
 var mysql      = require('mysql');
 
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: true,
+  smartLists: true,
+  smartypants: true
+});
 
 function sqlConnect(callback) {
    var conn = mysql.createConnection({
@@ -162,7 +172,7 @@ app.get('/docs/:docName', function (req, res) {
          sub: req.params.docName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_"),
          title: docTitle, 
          content: docContent,
-         data: markdown.toHTML(docContent) 
+         data: marked(docContent) 
       });
    }, function() {
       // Page does not exist
@@ -175,7 +185,7 @@ app.get('/docs/:docName', function (req, res) {
          sub: req.params.docName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_"), 
          title: docTitle,
          content: '', 
-         data: markdown.toHTML(docContent) 
+         data: marked(docContent) 
          });   
    });
    
