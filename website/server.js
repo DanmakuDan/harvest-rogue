@@ -400,7 +400,7 @@ app.get('/login', function (req, res) {
 
 app.post('/forums/:forumId/addPost', function(req, res) {
    if (!everyauth.loggedIn) {
-      res.redirect("/");
+      res.redirect("/error");
    } else {
       addForumPost(req.user.Id, req.params.forumId, req.body.postTitle, req.body.postContent, function(postId) {
          res.redirect("/forumPost/" + postId);
