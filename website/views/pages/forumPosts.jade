@@ -6,9 +6,9 @@ block content
    div(class="ui container")
       h2(class="ui header") Forum - #{forumName}
       div(class="ui raised text segment message")
-      
-         a(class="ui primary labeled icon button" href="/forum/${forumName}/newpost") Post a new topic 
-            i(class="add square icon")
+         - if (everyauth.loggedIn)
+            a(class="ui primary labeled icon button" href="/forum/${forumName}/newpost") Post a new topic 
+               i(class="add square icon")
             
          div(class="ui relaxed divided list")
             - for post in posts
