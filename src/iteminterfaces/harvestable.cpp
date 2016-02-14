@@ -53,7 +53,7 @@ std::shared_ptr<Harvestable> Harvestable::Deserialize(picojson::value serialized
          if (value != (unsigned int)value) {
             throw;
          }
-         result->SetYieldMinimum(value);
+         result->SetYieldMinimum((int)value);
          continue;
       }
 
@@ -66,7 +66,7 @@ std::shared_ptr<Harvestable> Harvestable::Deserialize(picojson::value serialized
          if (value != (unsigned int)value) {
             throw;
          }
-         result->SetYieldMaximum(value);
+         result->SetYieldMaximum((int)value);
          continue;
       }
 

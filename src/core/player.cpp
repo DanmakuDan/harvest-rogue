@@ -122,7 +122,9 @@ void Player::SpawnIntoInventory(std::shared_ptr<Item> prop) {
       this->Inventory.push_back(item);
 
       bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
-      GameState::Get().AddLogMessageFmt("%s %s has been placed in your inventory.", (startsWithVowel ? "An" : "A"), prop->GetName().c_str());
+      if (prop->GetCount() > 0) {
+         GameState::Get().AddLogMessageFmt("%s %s has been placed in your inventory.", (startsWithVowel ? "An" : "A"), prop->GetName().c_str());
+      }
 
       return;
    }
@@ -155,7 +157,9 @@ void Player::SpawnIntoInventory(std::shared_ptr<Item> prop) {
 
    destItem->StackSize += prop->GetCount();
    bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
-   GameState::Get().AddLogMessageFmt("%s %s has been placed in your inventory.", (startsWithVowel ? "An" : "A"), prop->GetName().c_str());
+   if (prop->GetCount() > 0) {
+      GameState::Get().AddLogMessageFmt("%s %s has been placed in your inventory.", (startsWithVowel ? "An" : "A"), prop->GetName().c_str());
+   }
 }
 
 void Player::PickUpItemFromGround() {

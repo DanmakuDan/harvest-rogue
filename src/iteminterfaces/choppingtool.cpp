@@ -47,7 +47,7 @@ std::shared_ptr<ChoppingTool> ChoppingTool::Deserialize(picojson::value serializ
             throw;
          }
 
-         result->SetStrength(value);
+         result->SetStrength((int)value);
          continue;
       }
 

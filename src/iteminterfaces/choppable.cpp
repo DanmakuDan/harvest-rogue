@@ -43,7 +43,7 @@ std::shared_ptr<Choppable> Choppable::Deserialize(picojson::value serializedValu
          if (value != (unsigned int)value) {
             throw;
          }
-         result->SetChopPoints(value);
+         result->SetChopPoints((int)value);
          continue;
       }
 

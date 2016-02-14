@@ -149,17 +149,17 @@ void Game::RenderMap() {
    auto mapOffsetY = playerY - (drawHeight / 2);
 
    // Don't go beyond map boundaries
-   if (mapOffsetX + drawWidth > totalMapWidth)
-      mapOffsetX = totalMapWidth - (drawWidth - 1);
-   if (mapOffsetY + drawHeight > totalMapHeight)
-      mapOffsetY = totalMapHeight - (drawHeight - 1);
+   if (mapOffsetX + drawWidth > (int)totalMapWidth)
+      mapOffsetX = (int)totalMapWidth - (drawWidth - 1);
+   if (mapOffsetY + drawHeight > (int)totalMapHeight)
+      mapOffsetY = (int)totalMapHeight - (drawHeight - 1);
 
    mapOffsetX = mapOffsetX < 0 ? 0 : mapOffsetX;
    mapOffsetY = mapOffsetY < 0 ? 0 : mapOffsetY;
 
    // Draw loop
-   for (auto mapY = 0; mapY < drawHeight - startY && mapY <= totalMapHeight - startY; mapY++) {
-      for (auto mapX = 0; mapX < drawWidth - startX && mapX <= totalMapWidth - startX; mapX++) {
+   for (auto mapY = 0; mapY < drawHeight - startY && mapY <= (int)totalMapHeight - startY; mapY++) {
+      for (auto mapX = 0; mapX < drawWidth - startX && mapX <= (int)totalMapWidth - startX; mapX++) {
 
 
          auto groundTile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);

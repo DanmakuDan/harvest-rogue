@@ -18,11 +18,9 @@ Landmark::Landmark(std::string name, int width, int height) {
    this->Name = name;
    this->Width = width;
    this->Height = height;
-   this->Items = new LandmarkItem[width * height];
    
    for (auto i = 0; i < width * height; i++) {
       this->Tiles.push_back(Tile::FromTileType(TileType::Nothing));
-      this->Items[i] = {};
    }
 }
 
@@ -58,15 +56,21 @@ void Landmark::AddItem(int x, int y, std::shared_ptr<Item> item) {
    if (this->GetItem(x, y) != nullptr) {
       throw;
    }
-   this->Items[x + (y * Width)] = { x, y, std::shared_ptr<Item>(item) };
+
+   LandmarkItem landmarkItem = { x, y, std::shared_ptr<Item>(item) };
+   this->Items[x + (y * Width)] = std::make_shared<LandmarkItem>(landmarkItem);
 }
 
 std::shared_ptr<Item> Landmark::GetItem(int x, int y) {
-   return this->Items[x + (y * Width)].ItemTarget;
+   auto result = this->Items[x + (y * Width)];
+   if (result == nullptr) {
+      return nullptr;
+   }
+   return result->ItemTarget;
 }
 
 void Landmark::RemoveItem(int x, int y) {
-   this->Items[x + (y * Width)] = {};
+   this->Items.erase(x + (y * Width));
 }
 
 bool Landmark::LocateItem(std::shared_ptr<Item> item, int &x, int &y) {
@@ -77,20 +81,23 @@ bool Landmark::LocateItem(std::shared_ptr<Item> item, int &x, int &y) {
       return false;
    }
 
-   for (int i = 0; i < (Width * Height); i++) {
-      auto mapItem = this->Items[i];
-      if (mapItem.ItemTarget != item) {
+   for(auto i: this->Items) {
+      auto mapItem = i.second;
+      if (mapItem == nullptr) {
+         continue;
+      }
+      if (mapItem->ItemTarget != item) {
          continue;
       }
 
-      x = mapItem.x;
-      y = mapItem.y;
+      x = mapItem->x;
+      y = mapItem->y;
       return true;
    }
 
    return false;
 }
 
-LandmarkItem* Landmark::GetAllLandmarkItems() {
+std::map<int, std::shared_ptr<LandmarkItem>> Landmark::GetAllLandmarkItems() {
    return this->Items;
 }

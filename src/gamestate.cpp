@@ -158,7 +158,7 @@ void GameState::AddLogMessageFmt(const std::string format, ...) {
       va_start(ap, format);
       int n = vsnprintf((char *) str.data(), size, format.c_str(), ap);
       va_end(ap);
-      if (n > -1 && n < size) {  // Everything worked
+      if (n > -1 && n < (int)size) {  // Everything worked
          str.resize(n);
          this->AddLogMessage(str);
          return;
@@ -255,14 +255,14 @@ void GameState::ProcessHourlyTick() {
 
    for (auto landmark : GameState::Landmarks) {
       auto landmarkProps = landmark->GetAllLandmarkItems();
-      for (int i = 0; i < (landmark->GetWidth() * landmark->GetHeight()); i++) {
-         /*auto prop = std::dynamic_pointer_cast<IHourlyTickEvent>(landmarkProps[i].Prop);
+      /*for (int i = 0; i < (landmark->GetWidth() * landmark->GetHeight()); i++) {
+         auto prop = std::dynamic_pointer_cast<IHourlyTickEvent>(landmarkProps[i].Prop);
          if (prop == nullptr) {
             continue;
          }
 
          prop->OnHourlyTick();
-         */
-      }
+         
+      }*/
    }
 }

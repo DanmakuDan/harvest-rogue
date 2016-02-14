@@ -42,14 +42,14 @@ public:
    std::shared_ptr<Item> GetItem(int x, int y);
    void RemoveItem(int x, int y);
    bool LocateItem(std::shared_ptr<Item> item, int& x, int& y);
-   LandmarkItem* GetAllLandmarkItems();
+   std::map<int, std::shared_ptr<LandmarkItem>> GetAllLandmarkItems();
 private:
    Landmark(std::string name, int width, int height);
 
    std::vector<Tile::Tile> Tiles;
    std::string Name;
    unsigned int Width, Height;
-   LandmarkItem* Items;
+   std::map<int, std::shared_ptr<LandmarkItem>> Items;
 };
 
 

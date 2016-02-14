@@ -114,14 +114,14 @@ void Screen::WriteText(int x, int y, std::string text, Color::Color color)
 void Screen::WriteCenterText(int y, std::string text, Color::Color color)
 {
    auto strWidth = text.find('\n');
-   int x = (this->GetWidth() / 2) - (strWidth / 2);
+   int x = (this->GetWidth() / 2) - ((int)strWidth / 2);
    this->WriteText(x, y, text, color);
 }
 
 void Screen::WriteButton(int x, int y, int width, std::string text, bool active)
 {
    auto captionLeft = x + (width / 2) - (text.length() / 2);
-   this->WriteText(captionLeft, y, text, active ? Color::Inverse(Color::White) : Color::White);
+   this->WriteText((int)captionLeft, y, text, active ? Color::Inverse(Color::White) : Color::White);
 }
 
 void Screen::ClearLine(int y, Color::Color color)
@@ -259,5 +259,5 @@ void Screen::WriteWindow(int x, int y, int width, int height, std::string text)
    }
 
    auto captionLeft = (x + (width / 2)) - (text.size() / 2);
-   this->WriteText(captionLeft, y, text.c_str(), Color::White);
+   this->WriteText((int)captionLeft, y, text.c_str(), Color::White);
 }

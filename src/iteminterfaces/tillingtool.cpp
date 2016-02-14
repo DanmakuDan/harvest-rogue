@@ -45,7 +45,7 @@ std::shared_ptr<TillingTool> TillingTool::Deserialize(picojson::value serialized
             throw;
          }
 
-         result->SetStrength(value);
+         result->SetStrength((int)value);
          continue;
       }
 

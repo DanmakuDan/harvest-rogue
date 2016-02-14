@@ -43,7 +43,7 @@ std::shared_ptr<Durable> Durable::Deserialize(picojson::value serializedValue)
             throw;
          }
 
-         result->SetDurability(value);
+         result->SetDurability((int)value);
          continue;
       }
 

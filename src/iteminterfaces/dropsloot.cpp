@@ -72,7 +72,7 @@ std::shared_ptr<DropsLoot> DropsLoot::Deserialize(picojson::value serializedValu
                   if (amount != (unsigned int)amount) {
                      throw;
                   }
-                  lootItem.AmountMin = amount;
+                  lootItem.AmountMin = (int)amount;
                   continue;
                }
 
@@ -84,7 +84,7 @@ std::shared_ptr<DropsLoot> DropsLoot::Deserialize(picojson::value serializedValu
                   if (amount != (unsigned int)amount) {
                      throw;
                   }
-                  lootItem.AmountMax = amount;
+                  lootItem.AmountMax = (int)amount;
                   continue;
                }
 
