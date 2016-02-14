@@ -288,6 +288,16 @@ app.get('/forum/:name', function(req, res) {
    })
 });
 
+app.get('/forum/:forumName/newpost', function (req, res) {
+   getForum(req.params.forumName, function(forum) {
+      res.render('pages/forumNewPost', { 
+      pageTitle: forum.Title + ' - New Post', 
+      forum: forum
+   });
+   }, function() { res.redirect("/forums"); }); 
+});
+
+
 app.get('/docs', function (req, res) {
    res.redirect('/docs/home');
 });
