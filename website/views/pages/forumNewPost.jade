@@ -1,0 +1,15 @@
+extends ../layout.jade
+
+block lead
+
+block content
+   div(class="ui container")
+      h2(class="ui header") Account Login
+      div(class="ui raised text segment message")
+         form(class="ui form" method="post" action="/forums/#{forum.Id}/addPost")
+            div(class="field")
+               label Post title
+               input(type="text" name="postTitle" placeholder="Post Title")
+            div(class="field")
+               label Message
+               textarea(rows=20 name="postContent")
