@@ -45,9 +45,8 @@ function createDocumentationPage(userId, pageName, title, content, callbackDone)
 function setDocumentationPage(userId, pageName, title, content, callbackDone) {
    var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
    sqlConnect(function(c) {
-      c.query('UPDATE Documentation SET Title = ?, Content = ?, LastEditedOn = NOW(), LastedEditedBy = ? WHERE Name = ?', 
+      c.query('UPDATE Documentation SET Title = ?, Content = ?, LastEditedOn = NOW(), LastEditedBy = ? WHERE Name = ?', 
       [title, content, userId, realPageName], function(err, results) {
-         console.log(JSON.stringify(err));
          c.destroy();
          callbackDone();
       });
