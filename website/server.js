@@ -400,9 +400,9 @@ app.get('/login', function (req, res) {
 
 app.post('/forums/:forumId/addPost', function(req, res) {
    if (req.user == null) {
-      res.redirect("/");
+      res.redirect("/error");
    } else if (req.body.postTitle.trim().length <= 0 || req.body.postContent.trim().length <= 0) {
-      res.redirect("/");         
+      res.redirect("/error2");         
    } else {
       addForumPost(req.user.Id, req.params.forumId, req.body.postTitle, req.body.postContent, function(postId) {
          res.redirect("/forumPost/" + postId);
