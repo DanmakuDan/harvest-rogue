@@ -47,6 +47,7 @@ function setDocumentationPage(userId, pageName, title, content, callbackDone) {
    sqlConnect(function(c) {
       c.query('UPDATE Documentation SET Title = ?, Content = ?, LastEditedOn = NOW(), LastedEditedBy = ? WHERE Name = ?', 
       [title, content, userId, realPageName], function(err, results) {
+         console.log(JSON.stringify(err));
          c.destroy();
          callbackDone();
       });
