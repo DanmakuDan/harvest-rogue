@@ -157,7 +157,6 @@ app.get('/docs/:docName', function (req, res) {
       var docContent = doc.Content;
       
       res.render('pages/docs', { 
-         user: req.user,
          isNew: false,
          pageTitle: 'Documentation [' + docTitle + ']', 
          title: docTitle, 
@@ -169,7 +168,6 @@ app.get('/docs/:docName', function (req, res) {
       var docContent = "No page content.";
       
       res.render('pages/docs', {
-         user: req.user, 
          isNew: true, 
          pageTitle: 'Documentation [' + docTitle + ']', 
          sub: req.params.docName, 
