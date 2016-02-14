@@ -71,7 +71,7 @@ function getForumPosts(forumName, callbackPass, callbackFail) {
          c.query('SELECT * FROM ForumPost WHERE ForumId IN (SELECT Id FROM Forum WHERE Name = ?) ORDER BY CreatedOn DESC', 
          [forumName], function(err, results) {
             c.destroy();
-            if (results == null || results.length == 0) {
+            if (results == null) {
                callbackFail();
             } else {
                callbackPass(results);
