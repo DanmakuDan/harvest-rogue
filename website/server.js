@@ -1,6 +1,6 @@
 var express = require('express');
 var everyauth = require('everyauth');
-
+var markdown = require('markdown').markdown;
 var mysql      = require('mysql');
 
 
@@ -16,6 +16,42 @@ function sqlConnect(callback) {
    });
 }
 
+function getDocumentationPage(pageName, callbackPass, callbackFail) {
+   var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
+   sqlConnect(function(c) {
+      c.query('SELECT * FROM Documentation WHERE Name = ? LIMIT 1', [realPageName], function(err, results) {
+         c.destroy();
+         if (results == null || results.length == 0) {
+            callbackFail();
+         } else {
+            callbackPass(results[0]);
+         }
+      });
+   });
+}
+
+
+function createDocumentationPage(pageName, title, content, callbackDone) {
+   var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
+   sqlConnect(function(c) {
+      c.query('INSERT INTO Documentation (Name, Title, Content, LastEditedBy, LastEditedOn) VALUES (?, ?, ?, ?, NOW())', 
+      [realPageName, title, content, everyauth.user.id], function(err, results) {
+         c.destroy();
+         callbackDone();
+      });
+   });
+}
+
+function setDocumentationPage(pageName, title, content, callbackDone) {
+   var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
+   sqlConnect(function(c) {
+      c.query('UPDATE Documentation SET Title = ?, Content = ?, LastEditedOn = NOW(), LastedEditedBy = ? WHERE Name = ?', 
+      [title, content, everyauth.user.id, realPageName], function(err, results) {
+         c.destroy();
+         callbackDone();
+      });
+   });
+}
 
 everyauth.everymodule.findUserById( function (id, callback) {
    sqlConnect(function(c) {
@@ -110,7 +146,57 @@ app.get('/forums', function (req, res) {
 });
 
 app.get('/docs', function (req, res) {
-   res.render('pages/docs', { pageTitle: 'Documentation' });
+   res.redirect('/docs/home');
+});
+
+
+app.get('/docs/:docName', function (req, res) {
+   getDocumentationPage(req.params.docName, function(doc) {
+      // Page exists
+      var docTitle = doc.Title;
+      var docContent = doc.Content;
+      
+      res.render('pages/docs', { 
+         isNew: false,
+         pageTitle: 'Documentation [' + docTitle + ']', 
+         title: docTitle, 
+         data: markdown.toHTML(docContent) 
+      });
+   }, function() {
+      // Page does not exist
+      var docTitle = "No Page";
+      var docContent = "No page content.";
+      
+      res.render('pages/docs', { 
+         isNew: true, 
+         pageTitle: 'Documentation [' + docTitle + ']', 
+         sub: req.params.docName, 
+         title: docTitle, 
+         data: markdown.toHTML(docContent) 
+         });   
+   });
+   
+   
+});
+
+
+app.post('/docs/:docName', function (req, res) {
+   if (!everyauth.loggedIn || !everyauth.user.CanEditDocs) {
+      res.redirect('/');
+      return;
+   }
+   
+   if (req.body.isNew) {
+      createDocumentationPage(req.params.docName, req.body.pageTitle, req.body.pageContent, function() {
+         res.redirect('/docs/' + req.params.docName);
+      });
+   } else {
+      setDocumentationPage(req.params.docName, req.body.pageTitle, req.body.pageContent, function() {
+         res.redirect('/docs/' + req.params.docName);
+      });
+   }
+   
+   
 });
 
 app.get('/downloads', function (req, res) {
