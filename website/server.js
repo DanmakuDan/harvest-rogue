@@ -182,7 +182,7 @@ app.get('/docs/:docName', function (req, res) {
 
 
 app.post('/docs/:docName', function (req, res) {
-   if (!everyauth.loggedIn || req.user.CanEditDocs.data[0] != 1) {
+   if (!everyauth.loggedIn || req.user.CanEditDocs != 1) {
       res.redirect('/');
       return;
    }
