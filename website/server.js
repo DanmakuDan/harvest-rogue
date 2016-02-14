@@ -68,7 +68,7 @@ function getForums(callbackPass, callbackFail) {
 function getForumPosts(forumName, callbackPass, callbackFail) {
    updateForumViewCount(forumName, function() {
       sqlConnect(function(c) {
-         c.query('SELECT * FROM ForumPost WHERE ForumId IN (SELECT Id FROM Forum WHERE Name = ? LIMIT 1) ORDER BY CreatedOn DESC', 
+         c.query('SELECT * FROM ForumPost WHERE ForumId IN (SELECT Id FROM Forum WHERE Name = ?) ORDER BY CreatedOn DESC', 
          [forumName], function(err, results) {
             c.destroy();
             if (results == null || results.length == 0) {
