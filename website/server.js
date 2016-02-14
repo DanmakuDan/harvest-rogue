@@ -31,22 +31,22 @@ function getDocumentationPage(pageName, callbackPass, callbackFail) {
 }
 
 
-function createDocumentationPage(pageName, title, content, callbackDone) {
+function createDocumentationPage(userId, pageName, title, content, callbackDone) {
    var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
    sqlConnect(function(c) {
       c.query('INSERT INTO Documentation (Name, Title, Content, LastEditedBy, LastEditedOn) VALUES (?, ?, ?, ?, NOW())', 
-      [realPageName, title, content, everyauth.user.id], function(err, results) {
+      [realPageName, title, content, userId], function(err, results) {
          c.destroy();
          callbackDone();
       });
    });
 }
 
-function setDocumentationPage(pageName, title, content, callbackDone) {
+function setDocumentationPage(userId, pageName, title, content, callbackDone) {
    var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
    sqlConnect(function(c) {
       c.query('UPDATE Documentation SET Title = ?, Content = ?, LastEditedOn = NOW(), LastedEditedBy = ? WHERE Name = ?', 
-      [title, content, everyauth.user.id, realPageName], function(err, results) {
+      [title, content, userId, realPageName], function(err, results) {
          c.destroy();
          callbackDone();
       });
@@ -191,11 +191,11 @@ app.post('/docs/:docName', function (req, res) {
    
    if (req.body.isNew) {
       createDocumentationPage(req.params.docName, req.body.pageTitle, req.body.pageContent, function() {
-         res.redirect('/docs/' + req.params.docName);
+         res.redirect(req.user.Id, '/docs/' + req.params.docName);
       });
    } else {
       setDocumentationPage(req.params.docName, req.body.pageTitle, req.body.pageContent, function() {
-         res.redirect('/docs/' + req.params.docName);
+         res.redirect(req.user.Id, '/docs/' + req.params.docName);
       });
    }
    
