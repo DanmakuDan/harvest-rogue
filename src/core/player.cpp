@@ -194,9 +194,13 @@ void Player::EquipFromInventory(std::shared_ptr<Item> item) {
    }
 
    this->RemoveFromInventory(item);
-   this->CurrentlyEquippedItem = std::shared_ptr<Item>(item);
+
+   auto newItem = std::make_shared<Item>(Item::Clone(*item.get()));
+   newItem->SetCount(1);
+
+   this->CurrentlyEquippedItem = std::shared_ptr<Item>(newItem);
    item->NotifyItemEquipped();
-   GameState::Get().AddLogMessageFmt("You equip the %s.", item->GetName().c_str());
+   GameState::Get().AddLogMessageFmt("You equip the %s.", newItem->GetName().c_str());
 }
 
 void Player::DropInventoryItemOnGround(std::shared_ptr<Item> prop) {
@@ -207,7 +211,11 @@ void Player::DropInventoryItemOnGround(std::shared_ptr<Item> prop) {
       return;
    }
    this->RemoveFromInventory(prop);
-   currentLandmark->AddItem(this->GetPositionX(), this->GetPositionY(), prop);
+
+
+   auto newProp = std::make_shared<Item>(Item::Clone(*prop.get()));
+   newProp->SetCount(1);
+   currentLandmark->AddItem(this->GetPositionX(), this->GetPositionY(), newProp);
 }
 
 bool Player::RemoveFromInventory(std::shared_ptr<Item> prop) {
