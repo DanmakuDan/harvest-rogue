@@ -134,7 +134,7 @@ void ChoppingTool::Chop(std::shared_ptr<Item> sourceItem, Direction::Direction d
    }
 
    GameState::Get().AddLogMessageFmt("You chop at the %s.", item->GetName().c_str());
-
+   Player::Get().AdjustEnergy(this->GetFatigue());
    choppable->Chop(std::shared_ptr<Item>(item), this);
 }
 

@@ -22,12 +22,18 @@
 #include "useable.h"
 
 Player::Player() {
-   this->Energy = ENERGY_MAX;
-   this->IsSleeping = false;
+   Reset();
 }
 
 Player::~Player() {
 
+}
+
+void Player::Reset()
+{
+   this->Energy = ENERGY_MAX;
+   this->IsSleeping = false;
+   this->Inventory.clear();
 }
 
 int Player::GetPositionX() {

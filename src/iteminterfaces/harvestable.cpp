@@ -14,6 +14,10 @@
 
 #include "harvestable.h"
 #include "gamestate.h"
+#include "growable.h"
+#include <random>
+
+std::default_random_engine harvestableGenerator;
 
 Harvestable::Harvestable()
 {
@@ -83,7 +87,7 @@ std::string Harvestable::GetYieldItem()
 
 void Harvestable::SetYieldItem(std::string yieldItem)
 {
-   this->YieldItem = YieldItem;
+   this->YieldItem = yieldItem;
 }
 
 int Harvestable::GetYieldMinimum()
@@ -93,7 +97,7 @@ int Harvestable::GetYieldMinimum()
 
 void Harvestable::SetYieldMinimum(int yieldMinimum)
 {
-   this->YieldMinimum = YieldMinimum;
+   this->YieldMinimum = yieldMinimum;
 }
 
 int Harvestable::GetYieldMaximum()
@@ -109,4 +113,27 @@ void Harvestable::SetYieldMaximum(int yieldMaximum)
 ItemInterfaceType::ItemInterfaceType Harvestable::GetInterfaceType()
 {
    return ItemInterfaceType::Harvestable;
+}
+
+void Harvestable::Interact(std::shared_ptr<Item> sourceItem)
+{
+   auto growableInterface = sourceItem->GetInterface<Growable>(ItemInterfaceType::Growable);
+   if (growableInterface != nullptr) {
+      if (!growableInterface->IsFullyGrown()) {
+         GameState::Get().AddLogMessageFmt("You cannot harvest the %s because it is not fully grown!", sourceItem->GetName().c_str());
+         return;
+      }
+   }
+
+   std::uniform_int_distribution<int> distribution(this->GetYieldMinimum(), this->GetYieldMaximum());
+   auto amount = distribution(harvestableGenerator);
+   auto harvest = GameState::Get().GetItemFromItemDatabase(this->GetYieldItem());
+   harvest->SetCount(amount);
+   
+   int x, y;
+   auto currentLandmark = GameState::Get().GetCurrentLandmark();
+   currentLandmark->LocateItem(sourceItem, x, y);
+   sourceItem->Destruct();
+   currentLandmark->AddItem(x, y, harvest);
+
 }

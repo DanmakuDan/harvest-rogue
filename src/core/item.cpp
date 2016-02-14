@@ -316,5 +316,6 @@ int Item::GetCount()
 
 void Item::SetCount(int count)
 {
+
    this->Count = count;
 }

@@ -43,6 +43,7 @@ public:
       return player;
    }
 
+   void Reset();
    int GetPositionX();
    int GetPositionY();
    void WarpPlayer(int x, int y);

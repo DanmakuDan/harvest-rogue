@@ -17,9 +17,10 @@
 
 
 #include "iteminterface.h"
+#include "interactable.h"
 #include <memory>
 
-class Harvestable : public IItemInterface {
+class Harvestable : public IItemInterface, public IInteractable {
 public:
    IItemInterface* Clone() const { return new Harvestable(*this); }
 private:
@@ -43,6 +44,9 @@ public:
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+
+   // IInteractable
+   virtual void Interact(std::shared_ptr<Item> sourceItem);
 private:
    std::string YieldItem;
    int YieldMinimum;

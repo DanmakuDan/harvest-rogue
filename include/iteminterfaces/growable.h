@@ -63,6 +63,7 @@ public:
    
 
    void StartGrowing(std::shared_ptr<Item> sourceItem);
+   bool IsFullyGrown();
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();

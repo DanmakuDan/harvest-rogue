@@ -21,20 +21,9 @@
 
 GameState::GameState() {
    this->ItemDatabase = ItemLoader::LoadItemDatabase("media/definitionfiles.json");
-
    this->active = true;
    this->CurrentScene = nullptr;
    this->NextScene = nullptr;
-   this->CurrentLandmarkIndex = -1;
-
-   Player::Get().WarpPlayer(5, 5);
-
-   // Temporary debug stuff
-   this->AddLogMessage("Welcome to Harvest-Rogue!");
-   this->AddLogMessage("This is a pre-alpha release. Got feedback? Open an issue on github!");
-   this->AddLogMessage("https://github.com/essial/harvest-rogue");
-
-
 }
 
 GameState::~GameState() {
@@ -80,11 +69,22 @@ void GameState::InitializeNewGame() {
    this->DialogStack.clear();
    this->Landmarks.clear();
 
+   
+   this->CurrentLandmarkIndex = -1;
+
+   Player::Get().Reset();
+
    int playerX, playerY;
    this->Landmarks.push_back(LandmarkGenerator::GeneratePlayerFarm(playerX, playerY));
    Player::Get().WarpPlayer(playerX, playerY);
 
    this->CurrentLandmarkIndex = (int)this->Landmarks.size() - 1;
+
+   // Temporary debug stuff
+   this->AddLogMessage("Welcome to Harvest-Rogue, Alpha 1!");
+   this->AddLogMessage("This is a pre-alpha release. Got feedback? Open an issue on github!");
+   this->AddLogMessage("https://github.com/essial/harvest-rogue");
+
 }
 
 void GameState::StepSimulation() {

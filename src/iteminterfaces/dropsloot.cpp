@@ -115,6 +115,9 @@ void DropsLoot::DropLoot(int x, int y)
    std::uniform_int_distribution<int> distribution(lootItem.AmountMin, lootItem.AmountMax);
    auto amount = distribution(generator);
 
+   if (amount == 0) {
+      return;
+   }
    if (!item->HasInterface(ItemInterfaceType::Obtainable)) {
       if (amount > 1) {
          GameState::Get().AddLogMessage("Only items that have an obtainable interface can spawn more than 1 at a time.");

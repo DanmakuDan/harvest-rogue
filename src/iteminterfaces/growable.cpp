@@ -165,6 +165,11 @@ void Growable::StartGrowing(std::shared_ptr<Item> sourceItem)
    this->SetCropGrowthType(CropGrowthType::Seedling);
 }
 
+bool Growable::IsFullyGrown()
+{
+   return this->GetCropGrowthType() == CropGrowthType::FullyGrown;
+}
+
 ItemInterfaceType::ItemInterfaceType Growable::GetInterfaceType()
 {
    return ItemInterfaceType::Growable;

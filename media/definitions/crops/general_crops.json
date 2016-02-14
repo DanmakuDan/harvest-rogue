@@ -7,7 +7,7 @@
       "itemCategories": [ "crop" ],
       "colorCode": "yellow",
       "characterCode": "O",
-      "gfxTileCode": 20,
+      "gfxTileCode": 38,
       "interfaces": {
         "choppable": {
           "chopPoints": 5
@@ -65,7 +65,7 @@
           }
         },
         "harvestable": {
-          "yieldItem": "potato",
+          "yieldItem": "Cabbage",
           "yieldMin": 1,
           "yieldMax": 3
         }

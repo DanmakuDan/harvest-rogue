@@ -103,11 +103,11 @@ void TillingTool::Till(std::shared_ptr<Item> sourceItem)
    switch(currentTile.TileType) {
       case TileType::GrassTuft:
          landmark->SetTile(playerX, playerY, TileType::Grass);
-         Player::Get().AdjustEnergy(-1);
+         Player::Get().AdjustEnergy(this->GetFatigue());
          break;
       case TileType::Grass:
          landmark->SetTile(playerX, playerY, TileType::Tilled);
-         Player::Get().AdjustEnergy(-2);
+         Player::Get().AdjustEnergy(this->GetFatigue());
          break;
    }
 }
