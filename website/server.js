@@ -126,6 +126,36 @@ function updateForumViewCount(forumName, callback) {
    });
 }
 
+function addForumReply(userId, forumPostId, message, callbackPass, callbackFail) {
+   sqlConnect(function(c) {
+      c.query('INSERT INTO PostReply (ForumPostId, Content, CreatedBy, CreatedOn) VALUES (?, ?, ?, NOW())', 
+      [forumPostId, message, userId], function(err, results) {
+         c.destroy();
+         if (results == null) {
+            callbackFail();
+         } else {
+            callbackPass();
+         }
+      });
+   });
+}
+
+function addForumPost(userId, forumId, title, message, callbackPass, callbackFail) {
+   sqlConnect(function(c) {
+      c.query('INSERT INTO ForumPost (ForumId, Title, CreatedBy, CreatedOn) VALUES (?, ?, ?, NOW())', 
+      [forumId, title, userId], function(err, results) {
+         c.destroy();
+         if (results == null) {
+            callbackFail();
+         } else {
+            addForumReply(userId, results.insertId, message, function() {
+               callbackPass(results.insertId);
+            }, function() { callbackFail(); });
+         }
+      });
+   });
+}
+
 everyauth.everymodule.findUserById( function (id, callback) {
    sqlConnect(function(c) {
       c.query('SELECT * FROM UserAccount WHERE Id = ? LIMIT 1', [id], function(err, results) {
@@ -368,6 +398,15 @@ app.get('/login', function (req, res) {
    }
 });
 
+app.post('/forums/:forumId/addPost', function(req, res) {
+   if (!everyauth.loggedIn) {
+      res.redirect("/");
+   } else {
+      addForumPost(req.user.Id, req.params.forumId, req.body.postTitle, req.body.postContent, function(postId) {
+         res.redirect("/forumPost/" + postId);
+      }, function() { res.redirect("/"); })
+   }
+});
 
 
 
