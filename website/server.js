@@ -207,13 +207,9 @@ app.get('/docs/:docName', function (req, res) {
 
 app.post('/docs/:docName', function (req, res) {
    if ((req.user == null) || (req.user.CanEditDocs != 1)) {
-      console.log("Not logged in...");
-      console.log(JSON.stringify(req.user));
       res.redirect('/');
       return;
    }
-   
-   console.log(JSON.stringify(req.body));
    
    if (req.body.isNew == "true") {
       createDocumentationPage(req.user.Id, req.params.docName, req.body.pageTitle, req.body.pageContent, function() {
