@@ -65,7 +65,6 @@ function createDocumentationPage(userId, pageName, title, content, callbackDone)
 }
 
 function setDocumentationPage(userId, pageName, title, content, callbackDone) {
-   console.log("Update:" + content);
    var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
    sqlConnect(function(c) {
       c.query('UPDATE Documentation SET Title = ?, Content = ?, LastEditedOn = NOW(), LastEditedBy = ? WHERE Name = ?', 
@@ -213,6 +212,8 @@ app.post('/docs/:docName', function (req, res) {
       res.redirect('/');
       return;
    }
+   
+   console.log(JSON.stringify(req.body));
    
    if (req.body.isNew == "true") {
       createDocumentationPage(req.user.Id, req.params.docName, req.body.pageTitle, req.body.pageContent, function() {
