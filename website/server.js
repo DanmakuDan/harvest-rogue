@@ -184,6 +184,11 @@ app.get('/forums', function (req, res) {
    });
 });
 
+app.get('/forum/:name', function(req, res) {
+   
+   res.render('pages/forumPosts', { pageTitle: 'Forum' })
+});
+
 app.get('/docs', function (req, res) {
    res.redirect('/docs/home');
 });
