@@ -54,7 +54,7 @@ function getDocumentationPage(pageName, callbackPass, callbackFail) {
 
 function getForums(callbackPass, callbackFail) {
    sqlConnect(function(c) {
-      c.query('SELECT * FROM Forum ORDER BY Order ASC', function(err, results) {
+      c.query('SELECT * FROM Forum ORDER BY TableOrder ASC', function(err, results) {
          c.destroy();
          if (results == null || results.length == 0) {
             callbackFail();
