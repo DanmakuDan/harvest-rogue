@@ -327,14 +327,12 @@ void Player::InteractWith(Direction::Direction direction) {
       return;
    }
 
-   /*auto interactable = std::dynamic_pointer_cast<IInteractable>(prop);
-   if (interactable == nullptr) {
+   if (!prop->IsInteractable()) {
       GameState::Get().AddLogMessageFmt("The %s cannot be interacted with.", prop->GetName().c_str());
       return;
    }
 
-   interactable->Interact();
-   */
+   prop->Interact();
 }
 
 void Player::SetIsSleeping(bool sleeping) {

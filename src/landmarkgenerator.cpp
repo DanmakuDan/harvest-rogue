@@ -92,7 +92,7 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    playerY = cottageY + (LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT / 2);
 
    // Add the bed
-   //result->AddItem(cottageX + 1, cottageY + 1, Bed::Construct());
+   result->AddItem(cottageX + 1, cottageY + 1, GameState::Get().GetItemFromItemDatabase("Simple Bed"));
 
    //// Add tools to the ground...
    result->AddItem(playerX - 3, playerY - 1, GameState::Get().GetItemFromItemDatabase("Simple Hoe"));
@@ -102,7 +102,6 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    auto cabbageSeeds = GameState::Get().GetItemFromItemDatabase("Cabbage Seed");
    cabbageSeeds->SetCount(10);
    result->AddItem(playerX - 2, playerY + 1, cabbageSeeds);
-   //result->AddItem(playerX - 1, playerY + 1, SeedBag::Construct(CropType::Wheat,  15));
 
    return result;
 }

@@ -21,6 +21,7 @@
 #include "player.h"
 #include "useable.h"
 #include "equippable.h"
+#include "interactable.h"
 
 Item Item::Clone(const Item & source)
 {
@@ -136,6 +137,35 @@ bool Item::IsEquippable()
    }
 
    return true;
+}
+
+bool Item::IsInteractable()
+{
+   for (auto i : this->GetInterfaces()) {
+      if (std::dynamic_pointer_cast<IInteractable>(i.second) != nullptr) {
+         return true;
+      }
+   }
+
+   return false;
+}
+
+void Item::Interact()
+{
+   std::shared_ptr<IInteractable> interactableItem;
+
+   for (auto i : this->GetInterfaces()) {
+      interactableItem = std::dynamic_pointer_cast<IInteractable>(i.second);
+      if (interactableItem != nullptr) {
+         break;
+      }
+   }
+
+   if (interactableItem == nullptr) {
+      return ;
+   }
+
+   interactableItem->Interact(this->shared_from_this());
 }
 
 void Item::Use()

@@ -3,7 +3,7 @@
 
 
     "Simple Axe": {
-      "description": "A simple axe!",
+      "description": "A simple axe",
       "surfaceAttributes": [ "walkable" ],
       "itemCategories": [ "tool" ],
       "colorCode": "white",
@@ -26,7 +26,7 @@
     },
 
     "Simple Hoe": {
-      "description": "A simple hoe!",
+      "description": "A simple hoe",
       "surfaceAttributes": [ "walkable" ],
       "itemCategories": [ "tool" ],
       "colorCode": "yellow",
@@ -45,6 +45,18 @@
           "stackable": false,
           "maxStackSize": 1
         }
+      }
+    },
+
+    "Simple Bed": {
+      "description": "A simple bed",
+      "surfaceAttributes": [ ],
+      "itemCategories": [ "tool" ],
+      "colorCode": "brightBlue",
+      "characterCode": "B",
+      "gfxTileCode": 13,
+      "interfaces": {
+        "restable": { }
       }
     }
 

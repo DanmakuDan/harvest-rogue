@@ -29,7 +29,8 @@ namespace ItemInterfaceType {
       Harvestable,
       Obtainable,
       Plantable,
-      TillingTool
+      TillingTool,
+      Restable
    };
 
    static ItemInterfaceType FromString(std::string itemInterfaceType) {
@@ -42,6 +43,7 @@ namespace ItemInterfaceType {
       if (itemInterfaceType == "obtainable")       return Obtainable;
       if (itemInterfaceType == "plantable")        return Plantable;
       if (itemInterfaceType == "tillingTool")      return TillingTool;
+      if (itemInterfaceType == "restable")         return Restable;
       return Unknown;
    }
 }

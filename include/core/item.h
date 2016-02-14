@@ -50,9 +50,11 @@ public:
    Color::Color GetColorCode();
    bool Takeable();
    bool IsUsable();
-   bool IsEquippable();
    void Use();
    void Use(Direction::Direction direction);
+   bool IsEquippable();
+   bool IsInteractable();
+   void Interact();
    void Destruct();
    void RemoveOne();
    void NotifyItemEquipped();

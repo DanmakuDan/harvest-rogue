@@ -265,7 +265,7 @@ GrowableTileCode Growable::ParseGrowableTileCode(picojson::value serializedValue
             throw;
          }
 
-         result.GfxTileCode = value;
+         result.GfxTileCode = (int)value;
          continue;
       }
 

@@ -12,15 +12,31 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_INTERACTABLE_H
-#define HARVEST_ROGUE_INTERACTABLE_H
+#include "restable.h"
+#include "gamestate.h"
 
-#include "item.h"
+Restable::Restable()
+{
+}
 
-class IInteractable {
-public:
-   virtual void Interact(std::shared_ptr<Item> sourceItem) = 0;
-   virtual ~IInteractable() {}
-};
+Restable::~Restable()
+{
+}
 
-#endif //HARVEST_ROGUE_INTERACTABLE_H
+std::shared_ptr<Restable> Restable::Deserialize(picojson::value serializedValue)
+{
+   auto result = std::shared_ptr<Restable>(new Restable());
+
+   return result;
+}
+
+ItemInterfaceType::ItemInterfaceType Restable::GetInterfaceType()
+{
+   return ItemInterfaceType::Restable;
+}
+
+void Restable::Interact(std::shared_ptr<Item> sourceItem)
+{
+   GameState::Get().AddLogMessage("You lay in the bed and go to sleep...");
+   GameState::Get().SleepUntilNextMorning();
+}

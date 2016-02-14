@@ -77,15 +77,6 @@ namespace TileType {
       WindowBottom,
       WindowBottomRight,
 
-      //WheatSeedling,
-      //WheatGrowing,
-      //WheatFullyGrown,
-      //WheatWilted,
-      //Wheat,
-
-      //// Interactables
-      //Bed,
-
       //_MAX
    };
 
@@ -110,13 +101,10 @@ namespace Tile {
          //                                                                                                           
          {TileType::Grass,                 "Grass",               SurfaceAttribute::Walkable,          Color::Green,   '.',  3},
          {TileType::GrassTuft,             "Grass Tuft",          SurfaceAttribute::Walkable,          Color::BrightGreen, ',',  5},
-         //{TileType::Weed,                  "Weeds",               SurfaceAttribute::Walkable,          Color::Green,   '"',  4},
          //                                                                                                              
          {TileType::Stone,                 "Stone",               SurfaceAttribute::Walkable,          Color::Gray,    'o', 12},
-         //{TileType::Branch,                "Branch",              SurfaceAttribute::Walkable,          Color::Yellow,  '-',  7},
          //{TileType::Boulder,               "Boulder",             SurfaceAttribute::None,              Color::White,   'O',  6},
          //{TileType::Stump,                 "Stump",               SurfaceAttribute::None,              Color::Yellow,  '#',  8},
-         //{TileType::Tree,                  "Tree",                SurfaceAttribute::None,              Color::Yellow,  'T',  9},
          //                                                                                                             
          {TileType::Water,                 "Water",               SurfaceAttribute::Swimmable,         Color::BrightBlue,  '~', 10},
          //                                                                                                              
