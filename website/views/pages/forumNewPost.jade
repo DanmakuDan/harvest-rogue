@@ -4,7 +4,7 @@ block lead
 
 block content
    div(class="ui container")
-      h2(class="ui header") Account Login
+      h2(class="ui header")= forum.Title
       div(class="ui raised text segment message")
          form(class="ui form" method="post" action="/forums/#{forum.Id}/addPost")
             div(class="field")
@@ -12,4 +12,5 @@ block content
                input(type="text" name="postTitle" placeholder="Post Title")
             div(class="field")
                label Message
-               textarea(rows=20 name="postContent")
+               textarea(rows=15 name="postContent")
+            button(class="ui button" type="submit") Create Post
