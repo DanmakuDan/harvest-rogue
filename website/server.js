@@ -132,6 +132,7 @@ function addForumReply(userId, forumPostId, message, callbackPass, callbackFail)
       [forumPostId, message, userId], function(err, results) {
          c.destroy();
          if (results == null) {
+            console.log(err);
             callbackFail();
          } else {
             callbackPass();
@@ -146,6 +147,7 @@ function addForumPost(userId, forumId, title, message, callbackPass, callbackFai
       [forumId, title, userId], function(err, results) {
          c.destroy();
          if (results == null) {
+            console.log(err);
             callbackFail();
          } else {
             addForumReply(userId, results.insertId, message, function() {
@@ -400,9 +402,9 @@ app.get('/login', function (req, res) {
 
 app.post('/forums/:forumId/addPost', function(req, res) {
    if (req.user == null) {
-      res.redirect("/error");
+      res.redirect("/");
    } else if (req.body.postTitle.trim().length <= 0 || req.body.postContent.trim().length <= 0) {
-      res.redirect("/error2");         
+      res.redirect("/");         
    } else {
       addForumPost(req.user.Id, req.params.forumId, req.body.postTitle, req.body.postContent, function(postId) {
          res.redirect("/forumPost/" + postId);
