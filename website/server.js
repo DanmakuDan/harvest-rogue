@@ -182,7 +182,7 @@ app.get('/docs/:docName', function (req, res) {
 
 
 app.post('/docs/:docName', function (req, res) {
-   if ((!everyauth.loggedIn) || (req.user.CanEditDocs != 1)) {
+   if ((req.user == null) || (req.user.CanEditDocs != 1)) {
       console.log("Not logged in...");
       console.log(JSON.stringify(req.user));
       res.redirect('/');
