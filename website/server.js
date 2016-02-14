@@ -153,6 +153,60 @@ everyauth.facebook
    })
    .redirectPath('/');
 
+everyauth.github
+  .appId('1d0ea07e8fcffa312e6d')
+  .appSecret('7ebe0bfff0c66a62dc74bcf5debfb82ffe091252')
+  .findOrCreateUser( function (session, accessToken, accessTokenExtra, githubUserMetadata) {
+      var promise = this.Promise();
+      
+      sqlConnect(function(c) { c.query(
+         'SELECT * FROM UserAccount WHERE ProviderName = \'github\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
+            githubUserMetadata.name, githubUserMetadata.id
+         ], function(err, results) {
+            if (err) {
+               c.destroy();
+               promise.fulfill([err]);
+            } else {
+               if (results.length == 0) {
+                  c.query(
+                     'INSERT INTO UserAccount (UserName, ProviderName, ProviderAccount, ProviderId, CreatedOn) VALUES (?, ?, ?, ?, NOW())', [
+                        githubUserMetadata.name, 'github', githubUserMetadata.name, githubUserMetadata.id
+                     ], function(err2, results2) {
+                        if(err) {
+                           c.destroy();
+                           promise.fulfill([err2]);
+                        } else {
+                           c.query(
+                              'SELECT * FROM UserAccount WHERE ProviderName = \'github\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
+                              githubUserMetadata.name, githubUserMetadata.id
+                           ], function(err3, results3) {
+                              if (err) {
+                                 c.destroy();
+                                 promise.fulfill([err3]);
+                              } else {
+                                 results3[0].id = results3[0].Id;
+                                 c.destroy();
+                                 promise.fulfill(results3[0]);
+                              }
+                           })
+                        }
+                     }
+                  )
+               } else {
+                  c.query('UPDATE UserAccount SET LastAccessedOn = NOW() WHERE ProviderName = \'facebook\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
+                  githubUserMetadata.name, githubUserMetadata.id], function(err4, results4) {
+                     results[0].id = results[0].Id;
+                     c.destroy();
+                     promise.fulfill(results[0]);
+                  });
+               }
+            }
+         });
+      });
+      
+      return promise;
+  })
+  .redirectPath('/');
 
 var app = express.createServer();
 
