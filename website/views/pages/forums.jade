@@ -5,4 +5,15 @@ block lead
 block content
    div(class="ui container")
       h2(class="ui header") Forums
-      span (todo)
+      div(class="ui raised text segment message")
+         - each forum in forums
+            div(class="ui items")
+               div(class="item")
+                  div(class="ui tiny image")
+                     img(src="/images/forum-pin-icon.png")
+                  div(class="content")
+                     div(class="header")
+                        a(href="/forum/#{forum.name}")= forum.Title
+                     div(class="description")
+                        div= forum.Description
+                        div #{forum.Views} views, #{forum.Posts} posts

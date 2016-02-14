@@ -52,6 +52,19 @@ function getDocumentationPage(pageName, callbackPass, callbackFail) {
    });
 }
 
+function getForums(callbackPass, callbackFail) {
+   sqlConnect(function(c) {
+      c.query('SELECT * FROM Forum ORDER BY Order ASC', function(err, results) {
+         c.destroy();
+         if (results == null || results.length == 0) {
+            callbackFail();
+         } else {
+            callbackPass(results);
+         }
+      });
+   });
+}
+
 
 function createDocumentationPage(userId, pageName, title, content, callbackDone) {
    var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
@@ -164,7 +177,11 @@ app.get('/screenshots', function (req, res) {
 });
 
 app.get('/forums', function (req, res) {
-   res.render('pages/forums', { pageTitle: 'Forums' });
+   getForums(function(rows) {
+      res.render('pages/forums', { pageTitle: 'Forums', forums = rows });
+   }, function() {
+      res.redirect("/");
+   });
 });
 
 app.get('/docs', function (req, res) {
