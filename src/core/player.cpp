@@ -34,6 +34,7 @@ void Player::Reset()
    this->Energy = ENERGY_MAX;
    this->IsSleeping = false;
    this->Inventory.clear();
+   this->CurrentlyEquippedItem = nullptr;
 }
 
 int Player::GetPositionX() {
