@@ -113,6 +113,10 @@ app.get('/docs', function (req, res) {
    res.render('pages/docs', { pageTitle: 'Documentation' });
 });
 
+app.get('/downloads', function (req, res) {
+   res.render('pages/downloads', { pageTitle: 'Downloads' });
+});
+
 app.get('/login', function (req, res) {
    if (everyauth.loggedIn) {
       res.redirect("/");
