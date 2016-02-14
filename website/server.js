@@ -277,10 +277,11 @@ app.get('/forums', function (req, res) {
 });
 
 app.get('/forum/:name', function(req, res) {
-   getForumPosts(req.params.name, function(forumName, rows) {
+   getForumPosts(req.params.name, function(forumTitle, rows) {
       res.render('pages/forumPosts', { 
-         pageTitle: 'Forum - ' + forumName, 
-         forumName: forumName, 
+         pageTitle: 'Forum - ' + forumTitle, 
+         forumTitle: forumTitle, 
+         forumName = req.params.name,
          posts: rows 
       }); 
    }, function() {

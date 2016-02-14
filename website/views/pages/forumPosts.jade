@@ -4,7 +4,7 @@ block lead
 
 block content
    div(class="ui container")
-      h2(class="ui header") Forum - #{forumName}
+      h2(class="ui header") Forum - #{forumTitle}
       div(class="ui raised text segment message")
          - if (everyauth.loggedIn)
             a(class="ui primary labeled icon button" href="/forum/#{forumName}/newpost") Post a new topic 
