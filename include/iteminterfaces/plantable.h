@@ -51,6 +51,7 @@ public:
    virtual void OnItemUnequipped(std::shared_ptr<Item> sourceItem);
 private:
    std::string Crop;
+
 };
 
 #endif //HARVEST_ROGUE_PLANTABLE_H

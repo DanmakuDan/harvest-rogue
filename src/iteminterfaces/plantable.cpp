@@ -101,8 +101,6 @@ void Plantable::Plant(std::shared_ptr<Item> sourceItem)
    }
 }
 
-
-
 ItemInterfaceType::ItemInterfaceType Plantable::GetInterfaceType()
 {
    return ItemInterfaceType::Plantable;
@@ -120,3 +118,4 @@ void Plantable::OnItemEquipped(std::shared_ptr<Item> sourceItem)
 void Plantable::OnItemUnequipped(std::shared_ptr<Item> sourceItem)
 {
 }
+

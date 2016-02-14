@@ -42,22 +42,26 @@
           "seedling": {
             "colorCode": "yellow",
             "characterCode": "x",
-            "gfxTileCode": 35
+            "gfxTileCode": 35,
+            "surfaceAttributes": [ "walkable" ]
           },
           "growing": {
             "colorCode": "green",
             "characterCode": "o",
-            "gfxTileCode": 36
+            "gfxTileCode": 36,
+            "surfaceAttributes": [ ]
           },
           "grown": {
             "colorCode": "yellow",
             "characterCode": "O",
-            "gfxTileCode": 37
+            "gfxTileCode": 37,
+            "surfaceAttributes": [ ]
           },
           "wilted": {
             "colorCode": "yellow",
             "characterCode": "~",
-            "gfxTileCode": 21
+            "gfxTileCode": 21,
+            "surfaceAttributes": [ ]
           }
         },
         "harvestable": {

@@ -182,12 +182,14 @@ void Growable::OnHourlyTick(std::shared_ptr<Item> sourceItem)
       if ((this->HoursToGrow > 0) && (this->GetCropGrowthType() == CropGrowthType::Seedling)) {
          this->SetCropGrowthType(CropGrowthType::Growing);
          Growable::ApplyGrowableTileCode(sourceItem, this->GetGrowingGrowableTileCode());
+         sourceItem->SetSurfaceAttributes(this->GetGrowingGrowableTileCode().SurfaceAttributes);
          return;
       }
 
       if (this->HoursToGrow <= 0) {
          this->SetCropGrowthType(CropGrowthType::FullyGrown);
          Growable::ApplyGrowableTileCode(sourceItem, this->GetGrownGrowableTileCode());
+         sourceItem->SetSurfaceAttributes(this->GetGrownGrowableTileCode().SurfaceAttributes);
       }
 
       return;
@@ -198,6 +200,7 @@ void Growable::OnHourlyTick(std::shared_ptr<Item> sourceItem)
       if (--this->HoursToWilt <= 0) {
          this->SetCropGrowthType(CropGrowthType::Wilted);
          Growable::ApplyGrowableTileCode(sourceItem, this->GetWiltedGrowableTileCode());
+         sourceItem->SetSurfaceAttributes(this->GetWiltedGrowableTileCode().SurfaceAttributes);
          return;
       }
    }
@@ -266,8 +269,37 @@ GrowableTileCode Growable::ParseGrowableTileCode(picojson::value serializedValue
          continue;
       }
 
+      if (item.first == "surfaceAttributes") {
+         if (!item.second.is<picojson::array>()) {
+            throw;
+         }
+
+         auto value = item.second.get<picojson::array>();
+         result.SurfaceAttributes = Growable::ParseSurfaceAttributes(value);
+         continue;
+      }
+
       throw;
    }
 
    return result;
+}
+
+SurfaceAttribute::SurfaceAttribute Growable::ParseSurfaceAttributes(picojson::array surfaceAttributes)
+{
+   SurfaceAttribute::SurfaceAttribute result = 0;
+
+   for (auto attr : surfaceAttributes) {
+      if (!attr.is<std::string>()) {
+         throw;
+      }
+      auto attrName = attr.get<std::string>();
+      auto surfaceAttribute = SurfaceAttribute::FromString(attrName);
+      if (surfaceAttribute == SurfaceAttribute::Invalid) {
+         throw;
+      }
+      result |= surfaceAttribute;
+   }
+
+   return 0;
 }

@@ -25,6 +25,7 @@ struct GrowableTileCode {
    Color::Color ColorCode;
    char CharacterCode;
    int GfxTileCode;
+   SurfaceAttribute::SurfaceAttribute SurfaceAttributes;
 };
 
 class Growable : public IItemInterface, public IHourlyTickEvent {
@@ -78,6 +79,7 @@ private:
    CropGrowthType::CropGrowthType CropGrowthType;
    static void ApplyGrowableTileCode(std::shared_ptr<Item> sourceItem, GrowableTileCode growableTileCode);
    static GrowableTileCode ParseGrowableTileCode(picojson::value serializedValue);
+   static SurfaceAttribute::SurfaceAttribute ParseSurfaceAttributes(picojson::array surfaceAttributes);
 };
 
 #endif //HARVEST_ROGUE_GROWABLE_H
