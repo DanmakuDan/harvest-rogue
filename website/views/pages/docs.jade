@@ -6,7 +6,7 @@ block content
    div(class="ui container")
       - if(title != null && data != null)
          h2(class="ui header")= title
-         div(class="ui raised text segment message")
+         div(class="ui raised text segment message" id="markdownArea")
             |!{data}
          
       - if((everyauth.loggedIn) && (everyauth.user.CanEditDocs == 1))
@@ -21,3 +21,9 @@ block content
                   label Page Content
                   textarea(rows=20 name="pageContent") #{content}
                button(class="ui button" type="submit") Save Changes
+               
+   script(type="text/javascript")
+      | $(function() {
+      |    $("#pageContent").find("table").addClass("ui celled table");
+      | })
+      |
