@@ -6,7 +6,7 @@ block content
    div(class="ui container")
       - if(title != null && data != null)
          h2(class="ui header")= title
-         div(class="ui raised text segment message" id="markdownArea")
+         div(class="ui raised text segment message")
             |!{data}
          
       - if((everyauth.loggedIn) && (everyauth.user.CanEditDocs == 1))

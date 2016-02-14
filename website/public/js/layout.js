@@ -19,7 +19,4 @@ $(function() {
       on: 'hover'
    });
    
-   $("#pageContent table")
-      .find("table")
-      .addClass("ui celled table");    
 })
