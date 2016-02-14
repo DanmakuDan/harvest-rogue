@@ -151,7 +151,6 @@ app.get('/docs', function (req, res) {
 
 
 app.get('/docs/:docName', function (req, res) {
-   console.log(JSON.stringify(req.user));
    getDocumentationPage(req.params.docName, function(doc) {
       // Page exists
       var docTitle = doc.Title;
@@ -182,7 +181,7 @@ app.get('/docs/:docName', function (req, res) {
 
 
 app.post('/docs/:docName', function (req, res) {
-   if (!everyauth.loggedIn || !everyauth.user.CanEditDocs) {
+   if (!everyauth.loggedIn || req.user.CanEditDocs.data[0] != 1) {
       res.redirect('/');
       return;
    }

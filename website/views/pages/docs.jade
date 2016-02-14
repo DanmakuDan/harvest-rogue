@@ -9,7 +9,7 @@ block content
          div(class="ui raised text segment message")
             |!{data}
          
-      - if((everyauth.loggedIn) && (everyauth.user.CanEditDocs == 1))
+      - if((everyauth.loggedIn) && (everyauth.user.CanEditDocs.data[0] == 1))
          h2(class="ui header") Edit Page
          div(class="ui raised text segment message")
             form(class="ui form" method="post")
