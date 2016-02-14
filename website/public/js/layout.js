@@ -17,5 +17,9 @@ $(function() {
    // show dropdown on hover
    $('.main.menu  .ui.dropdown').dropdown({
       on: 'hover'
-   });    
+   });
+   
+   $("#pageContent")
+      .find("table")
+      .addClass("ui celled table");    
 })
