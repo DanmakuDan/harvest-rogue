@@ -16,8 +16,8 @@ block content
                input(type="hidden" name="isNew" value="#{isNew}")
                div(class="field")
                   label Caption
-                  input(type="text" name="pageTitle" placeholder="Page Title")
+                  input(type="text" name="pageTitle" placeholder="Page Title" value="#{title}")
                div(class="field")
                   label Page Content
-                  textarea(rows=20 name="pageContent")
+                  textarea(rows=20 name="pageContent") #{content}
                button(class="ui button" type="submit") Save Changes

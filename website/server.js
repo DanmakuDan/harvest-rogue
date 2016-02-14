@@ -161,6 +161,7 @@ app.get('/docs/:docName', function (req, res) {
          pageTitle: 'Documentation [' + docTitle + ']', 
          sub: req.params.docName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_"),
          title: docTitle, 
+         content: docContent,
          data: markdown.toHTML(docContent) 
       });
    }, function() {
@@ -172,7 +173,8 @@ app.get('/docs/:docName', function (req, res) {
          isNew: true, 
          pageTitle: 'Documentation [' + docTitle + ']', 
          sub: req.params.docName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_"), 
-         title: docTitle, 
+         title: docTitle,
+         content: '', 
          data: markdown.toHTML(docContent) 
          });   
    });
