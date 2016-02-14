@@ -281,7 +281,7 @@ app.get('/forum/:name', function(req, res) {
       res.render('pages/forumPosts', { 
          pageTitle: 'Forum - ' + forumTitle, 
          forumTitle: forumTitle, 
-         forumName = req.params.name,
+         forumName: req.params.name,
          posts: rows 
       }); 
    }, function() {
