@@ -399,7 +399,7 @@ app.get('/login', function (req, res) {
 });
 
 app.post('/forums/:forumId/addPost', function(req, res) {
-   if (req.user == null) {
+   if (req.user.Id == null) {
       res.redirect("/");
    } else if (req.body.postTitle.trim().length <= 0 || req.body.postContent.trim().length <= 0) {
       res.redirect("/");         
