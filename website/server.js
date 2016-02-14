@@ -151,7 +151,7 @@ app.get('/docs', function (req, res) {
 
 
 app.get('/docs/:docName', function (req, res) {
-   console.log(JSON.stringify(everyauth.user));
+   console.log(JSON.stringify(req.user));
    getDocumentationPage(req.params.docName, function(doc) {
       // Page exists
       var docTitle = doc.Title;
