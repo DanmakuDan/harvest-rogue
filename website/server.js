@@ -14,6 +14,18 @@ marked.setOptions({
   smartypants: true
 });
 
+var markedRenderer = new marked.Renderer();
+markedRenderer.table = function (header, body) {
+     return '<table class="ui very compact striped table">\n'
+    + '<thead>\n'
+    + header
+    + '</thead>\n'
+    + '<tbody>\n'
+    + body
+    + '</tbody>\n'
+    + '</table>\n';
+}
+
 function sqlConnect(callback) {
    var conn = mysql.createConnection({
    host     : 'localhost',
@@ -172,7 +184,7 @@ app.get('/docs/:docName', function (req, res) {
          sub: req.params.docName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_"),
          title: docTitle, 
          content: docContent,
-         data: marked(docContent) 
+         data: marked(docContent, { renderer: markedRenderer }) 
       });
    }, function() {
       // Page does not exist
@@ -185,7 +197,7 @@ app.get('/docs/:docName', function (req, res) {
          sub: req.params.docName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_"), 
          title: docTitle,
          content: '', 
-         data: marked(docContent) 
+         data: marked(docContent, { renderer: markedRenderer }) 
          });   
    });
    
