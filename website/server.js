@@ -177,6 +177,9 @@ app.get('/docs/:docName', function (req, res) {
       // Page exists
       var docTitle = doc.Title;
       var docContent = doc.Content;
+      if (doc.Content == null) {
+         doc.Content = "";
+      }
       
       res.render('pages/docs', { 
          isNew: false,
