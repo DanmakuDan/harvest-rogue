@@ -65,6 +65,20 @@ function getForums(callbackPass, callbackFail) {
    });
 }
 
+function getForumPosts(forumName, callbackPass, callbackFail) {
+   updateForumViewCount(forumName, function() {
+      sqlConnect(function(c) {
+         c.query('SELECT * FROM ForumPost WHERE ForumId = ? ORDER BY CreatedOn DESC', function(err, results) {
+            c.destroy();
+            if (results == null || results.length == 0) {
+               callbackFail();
+            } else {
+               callbackPass(results);
+            }
+         });
+      });
+   });
+}
 
 function createDocumentationPage(userId, pageName, title, content, callbackDone) {
    var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
@@ -84,6 +98,15 @@ function setDocumentationPage(userId, pageName, title, content, callbackDone) {
       [title, content, userId, realPageName], function(err, results) {
          c.destroy();
          callbackDone();
+      });
+   });
+}
+
+function updateForumViewCount(forumName, callback) {
+   sqlConnect(function(c) {
+      c.query('UPDATE Forum SET Views = Views+1 WHERE Name = ?', [forumName], function(err, results) {
+         c.destroy();
+         callback();
       });
    });
 }
@@ -239,8 +262,15 @@ app.get('/forums', function (req, res) {
 });
 
 app.get('/forum/:name', function(req, res) {
-   
-   res.render('pages/forumPosts', { pageTitle: 'Forum' })
+   getForumPosts(req.params.name, function(forumName, rows) {
+      res.render('pages/forumPosts', { 
+         pageTitle: 'Forum - ' + forumName, 
+         forumName: forumName, 
+         posts: rows 
+      }); 
+   }, function() {
+      res.redirect("/forum");
+   })
 });
 
 app.get('/docs', function (req, res) {
