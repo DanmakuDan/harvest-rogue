@@ -391,7 +391,7 @@ app.get('/downloads', function (req, res) {
 });
 
 app.get('/login', function (req, res) {
-   if (req.user == null) {
+   if (req.user != null) {
       res.redirect("/");
    } else {
       res.render('pages/login', { pageTitle: 'Account Login' });
@@ -399,7 +399,7 @@ app.get('/login', function (req, res) {
 });
 
 app.post('/forums/:forumId/addPost', function(req, res) {
-   if (req.user.Id == null) {
+   if (req.user == null) {
       res.redirect("/");
    } else if (req.body.postTitle.trim().length <= 0 || req.body.postContent.trim().length <= 0) {
       res.redirect("/");         
