@@ -4,12 +4,12 @@ block lead
 
 block content
    div(class="ui container")
-      -if (title != null && data != null)
+      - if(title != null && data != null)
          h2(class="ui header")= title
          div(class="ui raised text segment message")
             |!{data}
          
-      -if (everyauth.loggedIn && everyauth.user.CanEditDocs)
+      - if((everyauth.loggedIn) && (everyauth.user.CanEditDocs == true))
          h2(class="ui header") Edit Page
          div(class="ui raised text segment message")
             form(class="ui form" method="post")
