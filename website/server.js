@@ -191,7 +191,7 @@ app.post('/docs/:docName', function (req, res) {
       return;
    }
    
-   if (req.body.isNew) {
+   if (req.body.isNew == "true") {
       createDocumentationPage(req.user.Id, req.params.docName, req.body.pageTitle, req.body.pageContent, function() {
          res.redirect('/docs/' + req.params.docName);
       });
