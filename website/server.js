@@ -178,7 +178,7 @@ app.get('/screenshots', function (req, res) {
 
 app.get('/forums', function (req, res) {
    getForums(function(rows) {
-      res.render('pages/forums', { pageTitle: 'Forums', forums = rows });
+      res.render('pages/forums', { pageTitle: 'Forums', forums: rows });
    }, function() {
       res.redirect("/");
    });
