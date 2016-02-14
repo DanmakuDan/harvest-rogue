@@ -17,8 +17,9 @@ function sqlConnect(callback) {
 }
 
 function getDocumentationPage(pageName, callbackPass, callbackFail) {
+   var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
    sqlConnect(function(c) {
-      c.query('SELECT * FROM Documentation WHERE Name = ? LIMIT 1', [pageName], function(err, results) {
+      c.query('SELECT * FROM Documentation WHERE Name = ? LIMIT 1', [realPageName], function(err, results) {
          c.destroy();
          if (results == null || results.length == 0) {
             callbackFail();
@@ -31,9 +32,10 @@ function getDocumentationPage(pageName, callbackPass, callbackFail) {
 
 
 function createDocumentationPage(userId, pageName, title, content, callbackDone) {
+   var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
    sqlConnect(function(c) {
       c.query('INSERT INTO Documentation (Name, Title, Content, LastEditedBy, LastEditedOn) VALUES (?, ?, ?, ?, NOW())', 
-      [pageName, title, content, userId], function(err, results) {
+      [realPageName, title, content, userId], function(err, results) {
          c.destroy();
          callbackDone();
       });
@@ -41,9 +43,10 @@ function createDocumentationPage(userId, pageName, title, content, callbackDone)
 }
 
 function setDocumentationPage(userId, pageName, title, content, callbackDone) {
+   var realPageName = pageName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_");
    sqlConnect(function(c) {
       c.query('UPDATE Documentation SET Title = ?, Content = ?, LastEditedOn = NOW(), LastedEditedBy = ? WHERE Name = ?', 
-      [title, content, userId, pageName], function(err, results) {
+      [title, content, userId, realPageName], function(err, results) {
          c.destroy();
          callbackDone();
       });
@@ -148,7 +151,7 @@ app.get('/docs', function (req, res) {
 
 
 app.get('/docs/:docName', function (req, res) {
-   getDocumentationPage(req.params.docName.toLowerCase(), function(doc) {
+   getDocumentationPage(req.params.docName, function(doc) {
       // Page exists
       var docTitle = doc.Title;
       var docContent = doc.Content;
@@ -156,7 +159,7 @@ app.get('/docs/:docName', function (req, res) {
       res.render('pages/docs', { 
          isNew: false,
          pageTitle: 'Documentation [' + docTitle + ']', 
-         sub: req.params.docName,
+         sub: req.params.docName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_"),
          title: docTitle, 
          data: markdown.toHTML(docContent) 
       });
@@ -168,7 +171,7 @@ app.get('/docs/:docName', function (req, res) {
       res.render('pages/docs', {
          isNew: true, 
          pageTitle: 'Documentation [' + docTitle + ']', 
-         sub: req.params.docName, 
+         sub: req.params.docName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_"), 
          title: docTitle, 
          data: markdown.toHTML(docContent) 
          });   
@@ -187,12 +190,12 @@ app.post('/docs/:docName', function (req, res) {
    }
    
    if (req.body.isNew) {
-      createDocumentationPage(req.params.docName.toLowerCase(), req.body.pageTitle, req.body.pageContent, function() {
-         res.redirect(req.user.Id, '/docs/' + req.params.docName);
+      createDocumentationPage(req.user.Id, req.params.docName, req.body.pageTitle, req.body.pageContent, function() {
+         res.redirect('/docs/' + req.params.docName);
       });
    } else {
-      setDocumentationPage(req.params.docName.toLowerCase(), req.body.pageTitle, req.body.pageContent, function() {
-         res.redirect(req.user.Id, '/docs/' + req.params.docName);
+      setDocumentationPage(req.user.Id, req.params.docName, req.body.pageTitle, req.body.pageContent, function() {
+         res.redirect('/docs/' + req.params.docName);
       });
    }
    
