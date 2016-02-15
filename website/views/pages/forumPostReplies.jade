@@ -5,11 +5,7 @@ block lead
 block content
    div(class="ui container")
       h2(class="ui header") Post - #{post.Title}
-      div(class="ui raised text segment message")
-         - if (everyauth.loggedIn)
-            a(class="ui primary labeled icon button" href="/forum/posts/#{postId}/reply") Post a reply
-               i(class="add square icon")
-            
+      div(class="ui raised text segment message")          
          div(class="ui relaxed divided list")
             div(class="ui comments")
                h3(class="ui dividing header") Post Replies
@@ -27,3 +23,9 @@ block content
                            - if (everyauth.loggedIn && (post.CreatedBy == everyauth.user.Id))
                               a(class="Reply") Edit
                               a(class="Reply") Delete
+         - if (everyauth.loggedIn)
+            form(class="ui form" method="post" action="/forum/posts/#{post.Id}/addReply")
+               div(class="field")
+                  label Message
+                  textarea(rows=15 name="replyContent")
+               button(class="ui button" type="submit") Reply to Post
