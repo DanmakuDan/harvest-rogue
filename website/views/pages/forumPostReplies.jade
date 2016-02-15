@@ -24,4 +24,6 @@ block content
                         div(class="text")
                            |!{markdownify(reply.Content)}
                         div(class="actions")
-                           a(class="Reply")
+                           - if (post.CreatedBy == everyauth.user.Id)
+                              a(class="Reply") Edit
+                              a(class="Reply") Delete
