@@ -78,6 +78,19 @@ function getForum(forumName, callbackPass, callbackFail) {
    });
 }
 
+function getPostById(id, callbackPass, callbackFail) {
+   sqlConnect(function(c) {
+      c.query('SELECT * FROM ForumPost WHERE Id = ? LIMIT 1', [id], function(err, results) {
+         c.destroy();
+         if (results == null || results.length == 0) {
+            callbackFail();
+         } else {
+            callbackPass(results[0]);
+         }
+      });
+   });
+}
+
 function getForumPosts(forumName, callbackPass, callbackFail) {
    getForum(forumName, function(forum) {
       updateForumViewCount(forumName, function() {
@@ -438,14 +451,17 @@ app.post('/forums/:forumId/addPost', function(req, res) {
 });
 
 app.get('/forum/posts/:postId', function(req, res) {
-   GetPostReplies(req.params.postId, function(replies) {
-      res.render('pages/forumPostReplies', { 
-         pageTitle: 'Post Replies', 
-         postId: req.params.postId,
-         replies: replies,
-         markdownify: function(text) { return marked(text, { renderer: markedRenderer }); }
-      });
-   } , function() { res.redirect("/"); });
+   getPostById(req.params.postId, function(postResult) {
+      GetPostReplies(req.params.postId, function(replies) {
+         res.render('pages/forumPostReplies', { 
+            pageTitle: 'Post Replies', 
+            postId: req.params.postId,
+            post: postResult,
+            replies: replies,
+            markdownify: function(text) { return marked(text, { renderer: markedRenderer }); }
+         });
+      } , function() { res.redirect("/"); });
+   }, function() { res.redirect("/"); });
 });
 
 
