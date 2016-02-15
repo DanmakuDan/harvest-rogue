@@ -20,8 +20,11 @@ block content
                            |!{markdownify(reply.Content)}
                         div(class="actions")
                            - if (everyauth.loggedIn && (reply.CreatedBy == everyauth.user.Id))
-                              a(class="Reply") Edit
-                              a(class="Reply") Delete
+                              a(class="Reply" href="/forum/postreply/#{reply.Id}/edit") Edit
+                              a(class="Reply" href="/forum/postreply/#{reply.Id}/delete") Delete
+                           - else if (everyauth.loggedIn && everyauth.user.IsAdmin == 1)
+                              a(class="Reply" href="/forum/postreply/#{reply.Id}/edit") Edit (Admin)
+                              a(class="Reply" href="/forum/postreply/#{reply.Id}/delete") Delete (Admin)
                   div(class="ui divider")
          - if (everyauth.loggedIn)
             h3("ui header") New Reply
