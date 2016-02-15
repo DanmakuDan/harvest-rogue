@@ -209,6 +209,15 @@ function GetPostReplies(postId, callbackPass, callbackFail) {
    });
 }
 
+function deletePost(postId, callbackPass, callbackFail) {
+   sqlConnect(function(c) {
+      c.query('DELETE FROM PostReply WHERE PostId = ?', [postId], function(err, results) {
+         c.query('DELETE FROM Post WHERE Id = ?', [postId], function(err, results) {
+            callbackPass();
+         });
+      });
+   });
+}
 
 everyauth.everymodule.findUserById( function (id, callback) {
    sqlConnect(function(c) {
@@ -496,9 +505,23 @@ app.post('/forum/posts/:postId/addReply', function(req, res) {
          res.redirect("/forum/posts/" + req.params.postId);
       }, function() { res.redirect("/"); });
    }
-   
-   
 });
+
+app.get('/forum/posts/:postId/delete', function(req, res) {
+   if (req.user == null) {
+      res.redirect("/");
+   } else {
+      getPostById(req.params.postId, function(postResult) {
+         deletePost(postResult.Id, function() {
+            getForumById(postResult.ForumId, function(forumResult) {
+               res.redirect("/forum/" + forumResult.Name);
+            }, function() { res.redirect("/"); });
+         }, function() { res.redirect("/"); });
+      }, function() { res.redirect("/"); });
+      
+   }
+});
+
 
 app.listen(80, function () {
    console.log('Listening on port 80..');
