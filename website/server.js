@@ -95,7 +95,7 @@ function getForumPosts(forumName, callbackPass, callbackFail) {
    getForum(forumName, function(forum) {
       updateForumViewCount(forumName, function() {
          sqlConnect(function(c) {
-            c.query('SELECT * FROM ForumPost WHERE ForumId = ? ORDER BY CreatedOn DESC', [forum.Id], function(err, results) {
+            c.query('SELECT *, (SELECT UserName FROM UserAccount WHERE UserAccount.Id = ForumPost.CreatedBy) AS CreatedUserName FROM ForumPost WHERE ForumId = ? ORDER BY CreatedOn DESC', [forum.Id], function(err, results) {
                c.destroy();
                if (results == null) {
                   callbackFail();

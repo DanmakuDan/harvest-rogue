@@ -16,4 +16,4 @@ block content
                   i(class="large write middle aligned icon")
                   div(class="content")
                      a(class="header" href="/forum/posts/#{post.Id}")= post.Title
-                     div(class="description") Posted on #{post.CreatedOn.toUTCString()}
+                     div(class="description") Posted by #{post.CreatedUserName} on #{post.CreatedOn.toUTCString()}
