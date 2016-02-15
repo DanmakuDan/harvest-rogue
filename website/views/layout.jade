@@ -12,7 +12,7 @@ html
                a(class="item" href="/downloads") Downloads
                a(class="item" href="/docs") Docs
                a(class="item" href="/forums") Forums
-               - if (everyauth.loggedIn)
+               - if (everyauth.user != null)
                   a(class="item" href="/account")= everyauth.user.UserName
                - else
                   a(class="item" href="/login") Log In
