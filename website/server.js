@@ -512,7 +512,7 @@ app.get('/forum/posts/:postId/delete', function(req, res) {
       res.redirect("/");
    } else {
       getPostById(req.params.postId, function(postResult) {
-         if ((req.user == null) || (req.user.IsAdmin != 1) || (req.user.Id != postResult.CreatedBy)) {
+         if ((req.user == null) || ((req.user.IsAdmin != 1) && (req.user.Id != postResult.CreatedBy))) {
             res.redirect("/");   
          } else {
             deletePost(postResult.Id, function() {
