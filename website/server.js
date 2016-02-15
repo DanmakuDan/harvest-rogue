@@ -212,9 +212,19 @@ function GetPostReplies(postId, callbackPass, callbackFail) {
 function deletePost(postId, callbackPass, callbackFail) {
    sqlConnect(function(c) {
       c.query('DELETE FROM PostReply WHERE PostId = ?', [postId], function(err, results) {
-         c.query('DELETE FROM Post WHERE Id = ?', [postId], function(err, results) {
-            callbackPass();
-         });
+         if(err != null) {
+            console.log(JSON.stringify(err));
+            callbackFail();
+         } else {
+            c.query('DELETE FROM Post WHERE Id = ?', [postId], function(err2, results) {
+               if(err2 != null) {
+                  console.log(JSON.stringify(err2));
+                  callbackFail();
+               } else {
+                  callbackPass();
+               }
+            });  
+         }
       });
    });
 }
