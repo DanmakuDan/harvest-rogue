@@ -449,7 +449,7 @@ app.post('/forums/:forumId/addPost', function(req, res) {
       res.redirect("/");         
    } else {
       addForumPost(req.user.Id, req.params.forumId, req.body.postTitle, req.body.postContent, function(postId) {
-         res.redirect("/forumPost/" + postId);
+         res.redirect("/forum/posts/" + postId);
       }, function() { res.redirect("/"); })
    }
 });
