@@ -225,7 +225,7 @@ everyauth.facebook
                      'INSERT INTO UserAccount (UserName, ProviderName, ProviderAccount, ProviderId, CreatedOn) VALUES (?, ?, ?, ?, NOW())', [
                         fbUserMetadata.name, 'facebook', fbUserMetadata.name, fbUserMetadata.id
                      ], function(err2, results2) {
-                        if(err) {
+                        if(err2) {
                            c.destroy();
                            promise.fulfill([err2]);
                         } else {
@@ -233,7 +233,7 @@ everyauth.facebook
                               'SELECT * FROM UserAccount WHERE ProviderName = \'facebook\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
                               fbUserMetadata.name, fbUserMetadata.id
                            ], function(err3, results3) {
-                              if (err) {
+                              if (err3) {
                                  c.destroy();
                                  promise.fulfill([err3]);
                               } else {
@@ -280,7 +280,7 @@ everyauth.github
                      'INSERT INTO UserAccount (UserName, ProviderName, ProviderAccount, ProviderId, CreatedOn) VALUES (?, ?, ?, ?, NOW())', [
                         githubUserMetadata.name, 'github', githubUserMetadata.name, githubUserMetadata.id
                      ], function(err2, results2) {
-                        if(err) {
+                        if(err2) {
                            c.destroy();
                            promise.fulfill([err2]);
                         } else {
@@ -288,13 +288,17 @@ everyauth.github
                               'SELECT * FROM UserAccount WHERE ProviderName = \'github\' AND ProviderAccount = ? AND ProviderId = ? LIMIT 1', [
                               githubUserMetadata.name, githubUserMetadata.id
                            ], function(err3, results3) {
-                              if (err) {
+                              if (err3) {
                                  c.destroy();
                                  promise.fulfill([err3]);
                               } else {
-                                 results3[0].id = results3[0].Id;
-                                 c.destroy();
-                                 promise.fulfill(results3[0]);
+                                 if (results3[0] == null) {
+                                    promise.fulfill([err3]);
+                                 } else {
+                                    results3[0].id = results3[0].Id;
+                                    c.destroy();
+                                    promise.fulfill(results3[0]);
+                                 }
                               }
                            })
                         }
