@@ -34,7 +34,7 @@ block content
                   label Message
                   textarea(rows=5 name="replyContent")
                button(class="ui button" type="submit") Reply to Post
-               - if (everyauth.loggedIn && (reply.CreatedBy == everyauth.user.Id))
+               - if (everyauth.loggedIn && (post.CreatedBy == everyauth.user.Id))
                   button(class="ui red button" type="submit") Delete Post
                - else if (everyauth.loggedIn && everyauth.user.IsAdmin == 1)
                   button(class="ui red button" type="submit") Delete Post (Admin)
