@@ -7,8 +7,9 @@ block content
       h2(class="ui header") Post - #{post.Title}
       div(class="ui raised text segment message")          
          div(class="ui relaxed divided list")
+            h3(class="ui dividing header") Post Replies
+            div(class="ui divider")
             div(class="ui comments")
-               h3(class="ui dividing header") Post Replies
                - for reply in replies
                   div(class="comment")
                      a(class="avatar")
@@ -23,8 +24,8 @@ block content
                            - if (everyauth.loggedIn && (post.CreatedBy == everyauth.user.Id))
                               a(class="Reply") Edit
                               a(class="Reply") Delete
+                  div(class="ui divider")
          - if (everyauth.loggedIn)
-            div(class="ui divider")
             h3("ui header") New Reply
             form(class="ui form" method="post" action="/forum/posts/#{post.Id}/addReply")
                div(class="field")
