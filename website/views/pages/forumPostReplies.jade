@@ -4,7 +4,7 @@ block lead
 
 block content
    div(class="ui container")
-      h2(class="ui header") Forum - #{post.Title}
+      h2(class="ui header") Post - #{post.Title}
       div(class="ui raised text segment message")
          - if (everyauth.loggedIn)
             a(class="ui primary labeled icon button" href="/forum/posts/#{postId}/reply") Post a reply
@@ -24,6 +24,6 @@ block content
                         div(class="text")
                            |!{markdownify(reply.Content)}
                         div(class="actions")
-                           - if (everyauth.user != null && post.CreatedBy == everyauth.user.Id)
+                           - if (everyauth.loggedIn && (post.CreatedBy == everyauth.user.Id)
                               a(class="Reply") Edit
                               a(class="Reply") Delete
