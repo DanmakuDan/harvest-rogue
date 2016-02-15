@@ -21,6 +21,7 @@ block content
                         a(class="author")= reply.UserName
                         div(class="metadata")
                            span(class="date")= reply.CreatedOn.toUTCString()
-                        div(class="text") #{markdownify(reply.Content)}
+                        div(class="text")
+                           |!{markdownify(reply.Content)}
                         div(class="actions")
                            a(class="Reply")
