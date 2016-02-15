@@ -8,9 +8,7 @@ We need help with the website, game code, art, sound/music, testing, and porting
 
 [HarvestRogue subreddit](https://www.reddit.com/r/harvestrogue/)
 
-![Title](http://i.imgur.com/IfmnANS.png) 
-![Gameplay](http://i.imgur.com/OPFYIPP.png)
-![Graphics](http://i.imgur.com/YzbjjBD.png)
+![Graphics](http://www.harvestrogue.com/images/screenshots/alpha1.png)
 
 Welcome to the project page for Harvest-Rogue, a Harvest Moon-inspired roguelike! This project is very early in development, so check back often for updates!
 
@@ -24,13 +22,6 @@ While testing the game, pressing F12 at any time will immediately quit the game.
 * Press <kbd>a</kbd> to open the actions menu directly
 * Press <kbd>i</kbd> to open the inventory menu directly
 * Press <kbd>SPACEBAR</kbd> to use the currently equipped tool
-
-## Tasks
-The following tasks are currently being worked on:
-
-* General Features
-    - Statistics Window Area
-    - Inventory Management
 
 ## Compiling
 
