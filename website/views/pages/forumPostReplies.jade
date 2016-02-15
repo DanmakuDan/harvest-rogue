@@ -24,8 +24,9 @@ block content
                               a(class="Reply") Edit
                               a(class="Reply") Delete
          - if (everyauth.loggedIn)
+            div(class="ui divider")
             form(class="ui form" method="post" action="/forum/posts/#{post.Id}/addReply")
                div(class="field")
                   label Message
-                  textarea(rows=15 name="replyContent")
+                  textarea(rows=5 name="replyContent")
                button(class="ui button" type="submit") Reply to Post
