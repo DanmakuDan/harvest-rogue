@@ -1,7 +1,8 @@
-var express = require('express');
-var everyauth = require('everyauth');
-var marked = require('marked');
-var mysql      = require('mysql');
+var express       = require('express');
+var everyauth     = require('everyauth');
+var marked        = require('marked');
+var mysql         = require('mysql');
+var compression   = require('compression');
 
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -360,7 +361,8 @@ app
    .use(express.bodyParser())
    .use(express.cookieParser('hrjas9fj3'))
    .use(express.session())
-   .use(everyauth.middleware());
+   .use(everyauth.middleware())
+   .use(compression());
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
