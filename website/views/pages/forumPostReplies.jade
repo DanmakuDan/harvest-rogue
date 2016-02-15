@@ -19,7 +19,7 @@ block content
                         div(class="text")
                            |!{markdownify(reply.Content)}
                         div(class="actions")
-                           - if (everyauth.loggedIn && (post.CreatedBy == everyauth.user.Id))
+                           - if (everyauth.loggedIn && (reply.CreatedBy == everyauth.user.Id))
                               a(class="Reply") Edit
                               a(class="Reply") Delete
                   div(class="ui divider")
