@@ -8,7 +8,10 @@ head
    meta(name="msvalidate.01" content="5018DACC1064CFFB213D7397F70B62DC")
    meta(property="og:image" content="http://www.harvestrogue.com/logo-square.png")
    meta(property="og:description" content="This open source roguelike has you farming, crafting, mining, socializing, questing, looting, and more!")
-   title= "Harvest-Rogue - " + pageTitle
+   - if titleOverride
+      title= pageTitle
+   - else
+      title= "Harvest-Rogue - " + pageTitle
    link(rel="stylesheet" type="text/css" href="/css/semantic.min.css")
    link(rel="stylesheet" type="text/css" href="/css/site.css")
    
