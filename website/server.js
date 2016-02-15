@@ -167,6 +167,22 @@ function addForumPost(userId, forumId, title, message, callbackPass, callbackFai
    });
 }
 
+function GetPostReplies(postId, callbackPass, callbackFail) {
+   sqlConnect(function(c) {
+      c.query('SELECT *, (SELECT UserName FROM UserAccount WHERE UserAccount.Id = PostReply.CreatedBy) AS UserName FROM PostReply WHERE ForumPostId = ? ORDER BY CreatedOn ASC', 
+      [postId], function(err, results) {
+         c.destroy();
+         if (results == null) {
+            console.log(err);
+            callbackFail();
+         } else {
+            callbackPass(results);
+         }
+      });
+   });
+   
+}
+
 everyauth.everymodule.findUserById( function (id, callback) {
    sqlConnect(function(c) {
       c.query('SELECT * FROM UserAccount WHERE Id = ? LIMIT 1', [id], function(err, results) {
@@ -419,6 +435,17 @@ app.post('/forums/:forumId/addPost', function(req, res) {
          res.redirect("/forumPost/" + postId);
       }, function() { res.redirect("/"); })
    }
+});
+
+app.post('/forum/posts/:postId', function(req, res) {
+   GetPostReplies(req.params.postId, function(replies) {
+      res.render('pages/forumPostReplies', { 
+         pageTitle: 'Post Replies', 
+         postId: req.params.postId,
+         replies: replies,
+         markdownify: function(text) { return marked(text, { renderer: markedRenderer }); }
+      });
+   } , function() { res.redirect("/"); });
 });
 
 

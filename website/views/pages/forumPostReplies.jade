@@ -1,0 +1,26 @@
+extends ../layout.jade
+
+block lead
+
+block content
+   div(class="ui container")
+      h2(class="ui header") Forum - #{forumTitle}
+      div(class="ui raised text segment message")
+         - if (everyauth.loggedIn)
+            a(class="ui primary labeled icon button" href="/forum/posts/#{postId}/reply") Post a reply
+               i(class="add square icon")
+            
+         div(class="ui relaxed divided list")
+            div(class="ui comments")
+               h3(class="ui dividing header") Post Replies
+               - for reply in replies
+                  div(class="comment")
+                     a(class="avatar")
+                        img(src="/images/profile-icon.png")
+                     div(class="content")
+                        a(class="author")= reply.UserName
+                        div(class="metadata")
+                           span(class="date")= reply.CreatedOn.toUTCString()
+                        div(class="text")= markdownify(reply.Content)
+                        div(class="actions")
+                           a(class="Reply")
