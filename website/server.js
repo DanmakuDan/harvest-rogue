@@ -193,8 +193,8 @@ function GetPostReplies(postId, callbackPass, callbackFail) {
          }
       });
    });
-   
 }
+
 
 everyauth.everymodule.findUserById( function (id, callback) {
    sqlConnect(function(c) {
@@ -464,7 +464,19 @@ app.get('/forum/posts/:postId', function(req, res) {
    }, function() { res.redirect("/"); });
 });
 
-
+app.post('/forum/posts/:postId/addReply', function(req, res) {
+   if (req.user == null) {
+      res.redirect("/");
+   } else if (req.body.postTitle.trim().length <= 0 || req.body.postContent.trim().length <= 0) {
+      res.redirect("/forum/posts/" + req.params.postId);         
+   } else {
+      addForumReply(req.user.id, req.params.postId, req.body.replyContent, function() {
+         res.redirect("/forum/posts/" + req.params.postId);
+      }, function() { res.redirect("/"); });
+   }
+   
+   
+});
 
 app.listen(80, function () {
    console.log('Listening on port 80..');

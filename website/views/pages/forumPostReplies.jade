@@ -24,8 +24,8 @@ block content
                               a(class="Reply") Edit
                               a(class="Reply") Delete
          - if (everyauth.loggedIn)
-            h3("ui header") Reply
             div(class="ui divider")
+            h3("ui header") New Reply
             form(class="ui form" method="post" action="/forum/posts/#{post.Id}/addReply")
                div(class="field")
                   label Message
