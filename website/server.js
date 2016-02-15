@@ -216,7 +216,7 @@ function deletePost(postId, callbackPass, callbackFail) {
             console.log(JSON.stringify(err));
             callbackFail();
          } else {
-            c.query('DELETE FROM Post WHERE Id = ?', [postId], function(err2, results) {
+            c.query('DELETE FROM ForumPost WHERE Id = ?', [postId], function(err2, results) {
                if(err2 != null) {
                   console.log(JSON.stringify(err2));
                   callbackFail();
