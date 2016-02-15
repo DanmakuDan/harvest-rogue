@@ -467,7 +467,7 @@ app.get('/forum/posts/:postId', function(req, res) {
 app.post('/forum/posts/:postId/addReply', function(req, res) {
    if (req.user == null) {
       res.redirect("/");
-   } else if (req.body.postTitle.trim().length <= 0 || req.body.postContent.trim().length <= 0) {
+   } else if (req.body.replyContent.trim().length <= 0) {
       res.redirect("/forum/posts/" + req.params.postId);         
    } else {
       addForumReply(req.user.id, req.params.postId, req.body.replyContent, function() {
