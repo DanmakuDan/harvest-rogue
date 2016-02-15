@@ -78,6 +78,20 @@ function getForum(forumName, callbackPass, callbackFail) {
    });
 }
 
+function getForumById(forumId, callbackPass, callbackFail) {
+   sqlConnect(function(c) {
+      c.query('SELECT * FROM Forum WHERE Id = ? LIMIT 1', [forumId], function(err, results) {
+         c.destroy();
+         if (results == null || results.length == 0) {
+            callbackFail();
+         } else {
+            callbackPass(results[0]);
+         }
+      });
+   });
+}
+
+
 function getPostById(id, callbackPass, callbackFail) {
    sqlConnect(function(c) {
       c.query('SELECT * FROM ForumPost WHERE Id = ? LIMIT 1', [id], function(err, results) {
@@ -457,13 +471,17 @@ app.post('/forums/:forumId/addPost', function(req, res) {
 app.get('/forum/posts/:postId', function(req, res) {
    getPostById(req.params.postId, function(postResult) {
       GetPostReplies(req.params.postId, function(replies) {
-         res.render('pages/forumPostReplies', { 
-            pageTitle: 'Post Replies', 
-            postId: req.params.postId,
-            post: postResult,
-            replies: replies,
-            markdownify: function(text) { return marked(text, { renderer: markedRenderer }); }
-         });
+         getForumById(postResult.ForumId, function(forumResult) {
+            res.render('pages/forumPostReplies', { 
+               pageTitle: 'Post Replies', 
+               postId: req.params.postId,
+               post: postResult,
+               replies: replies,
+               forumName: forumResult.Name,
+               forumTitle: forumResult.Title,
+               markdownify: function(text) { return marked(text, { renderer: markedRenderer }); }
+            });
+         }, function() { res.redirect("/"); });
       } , function() { res.redirect("/"); });
    }, function() { res.redirect("/"); });
 });
