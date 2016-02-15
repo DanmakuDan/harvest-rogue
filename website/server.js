@@ -437,7 +437,7 @@ app.post('/forums/:forumId/addPost', function(req, res) {
    }
 });
 
-app.post('/forum/posts/:postId', function(req, res) {
+app.get('/forum/posts/:postId', function(req, res) {
    GetPostReplies(req.params.postId, function(replies) {
       res.render('pages/forumPostReplies', { 
          pageTitle: 'Post Replies', 
