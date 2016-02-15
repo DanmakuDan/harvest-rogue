@@ -17,6 +17,7 @@
         "express-session": "1.13.0",
         "mysql": "2.10.2",
         "marked": "0.3.5",
-        "compression": "1.6.1"
+        "compression": "1.6.1",
+        "forcedomain": "0.6.0"
     }
 }

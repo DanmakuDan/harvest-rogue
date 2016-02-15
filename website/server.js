@@ -3,6 +3,7 @@ var everyauth     = require('everyauth');
 var marked        = require('marked');
 var mysql         = require('mysql');
 var compression   = require('compression');
+var forceDomain   = require('forcedomain');
 
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -362,7 +363,10 @@ app
    .use(express.cookieParser('hrjas9fj3'))
    .use(express.session())
    .use(everyauth.middleware())
-   .use(compression());
+   .use(compression())
+   .use(forceDomain({
+      hostname: 'www.harvestrogue.com'
+   }));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
