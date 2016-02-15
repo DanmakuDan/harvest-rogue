@@ -374,16 +374,16 @@ app.set('view engine', 'jade');
 everyauth.helpExpress(app);
 
 app.get('/', function (req, res) {
-   res.render('pages/index', { titleOverride: true, pageTitle: 'The Open Source Farming Roguelike!', user: everyauth.user });
+   res.render('pages/index', { pageTitle: 'The Open Source Farming Roguelike!', user: everyauth.user });
 });
 
 app.get('/screenshots', function (req, res) {
-   res.render('pages/screenshots', { pageTitle: 'Screenshots' });
+   res.render('pages/screenshots', { pageTitle: 'Harvest-Rogue - Screenshots' });
 });
 
 app.get('/forums', function (req, res) {
    getForums(function(rows) {
-      res.render('pages/forums', { pageTitle: 'Forums', forums: rows });
+      res.render('pages/forums', { pageTitle: 'Harvest-Rogue - Forums', forums: rows });
    }, function() {
       res.redirect("/");
    });
@@ -392,7 +392,7 @@ app.get('/forums', function (req, res) {
 app.get('/forum/:name', function(req, res) {
    getForumPosts(req.params.name, function(forumTitle, rows) {
       res.render('pages/forumPosts', { 
-         pageTitle: 'Forum - ' + forumTitle, 
+         pageTitle: 'Harvest-Rogue - Forum - ' + forumTitle, 
          forumTitle: forumTitle, 
          forumName: req.params.name,
          posts: rows 
@@ -405,7 +405,7 @@ app.get('/forum/:name', function(req, res) {
 app.get('/forum/:forumName/newpost', function (req, res) {
    getForum(req.params.forumName, function(forum) {
       res.render('pages/forumNewPost', { 
-      pageTitle: forum.Title + ' - New Post', 
+      pageTitle: 'Harvest-Rogue - ' + forum.Title + ' - New Post', 
       forum: forum
    });
    }, function() { res.redirect("/forums"); }); 
@@ -425,7 +425,7 @@ app.get('/docs/:docName', function (req, res) {
       
       res.render('pages/docs', { 
          isNew: false,
-         pageTitle: 'Documentation [' + docTitle + ']', 
+         pageTitle: 'Harvest-Rogue - Documentation [' + docTitle + ']', 
          sub: req.params.docName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_"),
          title: docTitle, 
          content: docContent,
@@ -438,7 +438,7 @@ app.get('/docs/:docName', function (req, res) {
       
       res.render('pages/docs', {
          isNew: true, 
-         pageTitle: 'Documentation [' + docTitle + ']', 
+         pageTitle: 'Harvest-Rogue - Documentation [' + docTitle + ']', 
          sub: req.params.docName.toLowerCase().replace(/[^A-Z0-9]+/ig, "_"), 
          title: docTitle,
          content: '', 
@@ -470,14 +470,14 @@ app.post('/docs/:docName', function (req, res) {
 });
 
 app.get('/downloads', function (req, res) {
-   res.render('pages/downloads', { pageTitle: 'Downloads' });
+   res.render('pages/downloads', { pageTitle: 'Harvest-Rogue - Downloads' });
 });
 
 app.get('/login', function (req, res) {
    if (req.user != null) {
       res.redirect("/");
    } else {
-      res.render('pages/login', { pageTitle: 'Account Login' });
+      res.render('pages/login', { pageTitle: 'Harvest-Rogue - Account Login' });
    }
 });
 
@@ -498,7 +498,7 @@ app.get('/forum/posts/:postId', function(req, res) {
       GetPostReplies(req.params.postId, function(replies) {
          getForumById(postResult.ForumId, function(forumResult) {
             res.render('pages/forumPostReplies', { 
-               pageTitle: 'Post Replies', 
+               pageTitle: 'Harvest-Rogue - Post Replies', 
                postId: req.params.postId,
                post: postResult,
                replies: replies,
