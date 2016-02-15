@@ -374,7 +374,7 @@ app.set('view engine', 'jade');
 everyauth.helpExpress(app);
 
 app.get('/', function (req, res) {
-   res.render('pages/index', { pageTitle: 'The Open Source Farming Roguelike!', user: everyauth.user });
+   res.render('pages/index', { titleOverride: true, pageTitle: 'The Open Source Farming Roguelike!', user: everyauth.user });
 });
 
 app.get('/screenshots', function (req, res) {
