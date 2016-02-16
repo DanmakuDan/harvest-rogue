@@ -224,7 +224,7 @@ void Player::PickUpItemFromGround() {
       return;
    }
 
-   if (!prop->Takeable()) {
+   if (!prop->IsTakeable()) {
       GameState::Get().AddLogMessageFmt("You cannot pick the %s up.", prop->GetName().c_str());
       return;
    }

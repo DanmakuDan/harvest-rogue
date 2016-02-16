@@ -82,7 +82,7 @@ std::string Item::GetDescription()
    return this->Description;
 }
 
-bool Item::Takeable()
+bool Item::IsTakeable()
 {
    return this->HasInterface(ItemInterfaceType::Obtainable);
 }

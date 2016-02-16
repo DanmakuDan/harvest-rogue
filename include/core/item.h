@@ -24,6 +24,8 @@
 #include "itemcategory.h"
 #include "direction.h"
 
+// The base class for all items in the system.
+// This object specifically tracks all item interfaces for this item, as well as the number of items.
 class Item : public std::enable_shared_from_this<Item> {
 public:
    static Item Clone(const Item& source);
@@ -49,7 +51,7 @@ public:
    char GetCharacterCode();
    int GetGfxTileCode();
    Color::Color GetColorCode();
-   bool Takeable();
+   bool IsTakeable();
    bool IsUsable();
    void Use();
    void Use(Direction::Direction direction);

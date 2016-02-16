@@ -19,6 +19,7 @@
 #include <memory>
 #include "item.h"
 
+// Declares that this object has the ability to contain items
 class IItemContainer {
 public:
    virtual ItemListPtr GetAllItems();
