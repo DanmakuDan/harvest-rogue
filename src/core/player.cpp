@@ -305,7 +305,7 @@ ItemPtr Player::RemoveFromInventory(ItemPtr sourceItem, int amountToMove) {
       return result;
    }
 
-   return false;
+   return nullptr;
 }
 
 void Player::UseEquippedItem() {
