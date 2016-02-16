@@ -18,11 +18,13 @@
 #include <vector>
 #include <memory>
 #include "item.h"
+#include "nameable.h"
 
 // Declares that this object has the ability to contain items
-class IItemContainer {
+class IItemContainer : 
+   public INameable {
 public:
-   virtual ItemListPtr GetAllItems();
+   virtual ItemListPtr GetAllItems() = 0;
 
    virtual ~IItemContainer() {}
 };

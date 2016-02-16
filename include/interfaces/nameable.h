@@ -12,35 +12,17 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_CONTAINER_H
-#define HARVEST_ROGUE_CONTAINER_H
+#ifndef HARVEST_ROGUE_NAMEABLE_H
+#define HARVEST_ROGUE_NAMEABLE_H
 
+#include <string>
 
-#include "iteminterface.h"
-#include "crops.h"
-#include "tickevents.h"
-#include "interactable.h"
-#include <memory>
-
-
-class Container : 
-   public IItemInterface, 
-   public IInteractable {
+class INameable {
 public:
-   Container* Clone() const { return new Container(*this); }
-private:
-   Container();
+   virtual std::string GetName() = 0;
 
-   Container(Container const &src) { };
-public:
-   ~Container();
-   static std::shared_ptr<Container> Deserialize(picojson::value serializedValue);
-
-   // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
-
-   // IInteractable
-   void Interact(ItemPtr sourceItem);
+   virtual ~INameable() {}
 };
 
-#endif //HARVEST_ROGUE_CONTAINER_H
+
+#endif HARVEST_ROGUE_NAMEABLE_H

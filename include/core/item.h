@@ -23,10 +23,13 @@
 #include "tiles.h"
 #include "itemcategory.h"
 #include "direction.h"
+#include "nameable.h"
 
 // The base class for all items in the system.
 // This object specifically tracks all item interfaces for this item, as well as the number of items.
-class Item : public std::enable_shared_from_this<Item> {
+class Item : 
+   public INameable,
+   public std::enable_shared_from_this<Item> {
 public:
    static Item Clone(const Item& source);
    Item();
@@ -45,7 +48,6 @@ public:
    int GetCount();
    void SetCount(int count);
 
-   std::string GetName();
    std::string GetDescription();
    SurfaceAttribute::SurfaceAttribute GetSurfaceAttributes();
    char GetCharacterCode();
@@ -67,6 +69,9 @@ public:
    inline std::shared_ptr<T> GetInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType) {
       return std::dynamic_pointer_cast<T>(std::shared_ptr<IItemInterface>(this->ItemInterfaces[itemInterfaceType]));
    }
+
+   // INameable
+   std::string GetName();
 
 private:
    std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> ItemInterfaces;

@@ -107,7 +107,7 @@ ItemPtr Player::GetCurrentlyEquippedItem() {
    return ItemPtr(this->CurrentlyEquippedItem);
 }
 
-ItemListPtr Player::GetInventory() {
+ItemListPtr Player::GetAllItems() {
    return this->Inventory;
 }
 
@@ -415,4 +415,9 @@ void Player::SetIsSleeping(bool sleeping) {
 
 bool Player::GetIsSleeping() {
    return this->IsSleeping;
+}
+
+std::string Player::GetName()
+{
+   return "Player";
 }

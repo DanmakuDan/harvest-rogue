@@ -17,6 +17,8 @@
 
 #include "direction.h"
 #include "item.h"
+#include "nameable.h"
+#include "itemcontainer.h"
 #include <memory>
 #include <vector>
 
@@ -28,7 +30,8 @@
 
 #define MOVE_AMOUNT_EVERYTHING -1
 
-class Player {
+class Player : 
+   public IItemContainer {
 private:
    Player();
    Player(Player const &) { };
@@ -46,7 +49,7 @@ public:
    void WarpPlayer(int x, int y);
    void WalkPlayer(Direction::Direction direction);
    ItemPtr GetCurrentlyEquippedItem();
-   ItemListPtr GetInventory();
+   ItemListPtr GetAllItems();
    void TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer = MOVE_AMOUNT_EVERYTHING);
    ItemPtr RemoveFromInventory(ItemPtr sourceItem, int amountToMove = MOVE_AMOUNT_EVERYTHING);
    void PickUpItemFromGround();
@@ -61,6 +64,9 @@ public:
    void InteractWith(Direction::Direction direction);
    void SetIsSleeping(bool sleeping);
    bool GetIsSleeping();
+
+   // INameable
+   std::string GetName();
 private:
    int PositionX;
    int PositionY;

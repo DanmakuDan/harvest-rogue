@@ -20,6 +20,7 @@
 #include <vector>
 #include "tiles.h"
 #include "item.h"
+#include "nameable.h"
 
 typedef struct landmark_item_s {
    int x;
@@ -27,13 +28,13 @@ typedef struct landmark_item_s {
    ItemPtr ItemTarget;
 } LandmarkItem;
 
-class Landmark {
+class Landmark 
+   : public INameable{
 public:
    static std::shared_ptr<Landmark> Construct(std::string name, int width, int height) {
       return std::shared_ptr<Landmark>(new Landmark(name, width, height));
    }
 
-   std::string GetName();
    unsigned int GetWidth();
    unsigned int GetHeight();
    void SetTile(int x, int y, TileType::TileType tile);
@@ -43,6 +44,10 @@ public:
    void RemoveItem(int x, int y);
    bool LocateItem(ItemPtr item, int& x, int& y);
    std::map<int, std::shared_ptr<LandmarkItem>> GetAllLandmarkItems();
+
+   // INameable
+   std::string GetName();
+
 private:
    Landmark(std::string name, int width, int height);
 

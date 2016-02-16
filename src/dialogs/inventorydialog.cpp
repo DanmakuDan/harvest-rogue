@@ -31,7 +31,7 @@ void InventoryDialog::OnKeyPress(int key) {
 
    auto action = Input::Get().GetActionForKeyPress(key);
 
-   auto playerTotalInventoryCount = (int)Player::Get().GetInventory().size();
+   auto playerTotalInventoryCount = (int)Player::Get().GetAllItems().size();
 
    if (Action::Requested(action, Action::MenuCancel)) {
       GameState::Get().PopDialog();
@@ -78,7 +78,7 @@ void InventoryDialog::OnKeyPress(int key) {
 }
 
 void InventoryDialog::Render() {
-   auto inventoryCount = (int)Player::Get().GetInventory().size();
+   auto inventoryCount = (int)Player::Get().GetAllItems().size();
 
    if (inventoryCount == 0) {
       this->SelectedInventoryItem = -1;
@@ -102,7 +102,7 @@ void InventoryDialog::Render() {
    auto btnWidth = INVENTORY_DIALOG_WIDTH - 2;
    auto btnTop = dialogTop;
 
-   auto playerInventory = Player::Get().GetInventory();
+   auto playerInventory = Player::Get().GetAllItems();
 
    for(auto i = 0; i < dialogHeight - 2; i++) {
       auto inventoryIndex = i + this->InventoryOffset;
@@ -135,7 +135,7 @@ void InventoryDialog::ExecuteSelectedAction() {
    if (this->SelectedInventoryItem == -1) {
       return;
    }
-   auto inventoryItem = ItemPtr(Player::Get().GetInventory()[this->SelectedInventoryItem]);
+   auto inventoryItem = ItemPtr(Player::Get().GetAllItems()[this->SelectedInventoryItem]);
    GameState::Get().PushDialog(ToolActionDialog::Construct(inventoryItem));
 
    // Standard prop item
