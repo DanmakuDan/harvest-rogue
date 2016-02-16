@@ -18,6 +18,7 @@
 #include "gamestate.h"
 #include "mainmenu.h"
 #include "actiondialog.h"
+#include "player.h"
 #include "inventorydialog.h"
 
 GameMenuDialog::GameMenuDialog() {
@@ -87,7 +88,7 @@ void GameMenuDialog::ExecuteSelectedAction() {
          break;
 
       case GameMenuDialogOption::Inventory:
-         GameState::Get().PushDialog(InventoryDialog::Construct());
+         GameState::Get().PushDialog(InventoryDialog::Construct(Player::Get().AsItemContainer()));
          break;
 
       case GameMenuDialogOption::Quit:

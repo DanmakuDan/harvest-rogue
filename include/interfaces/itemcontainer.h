@@ -20,6 +20,9 @@
 #include "item.h"
 #include "nameable.h"
 
+class IItemContainer; // Foward declaration for the typedef
+typedef IItemContainer* ItemContainerPtr;
+
 // Declares that this object has the ability to contain items
 class IItemContainer : 
    public INameable {
@@ -27,6 +30,8 @@ public:
    virtual ItemListPtr GetAllItems() = 0;
 
    virtual ~IItemContainer() {}
+
+   virtual ItemContainerPtr AsItemContainer() = 0;
 };
 
 #endif //HARVEST_ROGUE_ITEMCONTAINER_H

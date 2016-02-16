@@ -17,23 +17,25 @@
 
 #include <memory>
 #include "dialog.h"
+#include "itemcontainer.h"
 
 #define INVENTORY_DIALOG_WIDTH      40
 #define INVENTORY_MAX_ITEMS_SHOWN   5
 
 class InventoryDialog : public IDialog {
 public:
-   static std::shared_ptr<InventoryDialog> Construct() {
-      return std::shared_ptr<InventoryDialog>(new InventoryDialog());
+   static std::shared_ptr<InventoryDialog> Construct(ItemContainerPtr itemContainer) {
+      return std::shared_ptr<InventoryDialog>(new InventoryDialog(itemContainer));
    }
    virtual void OnKeyPress(int key);
    virtual void Render();
 private:
-   InventoryDialog();
+   InventoryDialog(ItemContainerPtr itemContainer);
    int InventoryOffset;
    int SelectedInventoryItem;
-
    void ExecuteSelectedAction();
+
+   ItemContainerPtr ItemContainer;
 };
 
 

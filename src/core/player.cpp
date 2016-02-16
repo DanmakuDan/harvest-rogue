@@ -111,6 +111,11 @@ ItemListPtr Player::GetAllItems() {
    return this->Inventory;
 }
 
+ItemContainerPtr Player::AsItemContainer()
+{
+   return reinterpret_cast<ItemContainerPtr>(this);
+}
+
 void Player::TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer) {
    
    // The player cannot obtain items that aren't obtainable

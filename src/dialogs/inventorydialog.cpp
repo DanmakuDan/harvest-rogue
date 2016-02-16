@@ -18,32 +18,32 @@
 #include "screen.h"
 #include "input.h"
 #include "gamestate.h"
-#include "player.h"
 #include "toolactiondialog.h"
 #include "obtainable.h"
 
-InventoryDialog::InventoryDialog() {
+InventoryDialog::InventoryDialog(ItemContainerPtr itemContainer) {
    this->InventoryOffset = 0;
    this->SelectedInventoryItem = 0;
+   this->ItemContainer = itemContainer;
 }
 
 void InventoryDialog::OnKeyPress(int key) {
 
    auto action = Input::Get().GetActionForKeyPress(key);
 
-   auto playerTotalInventoryCount = (int)Player::Get().GetAllItems().size();
+   auto totalInventoryCount = (int)this->ItemContainer->GetAllItems().size();
 
    if (Action::Requested(action, Action::MenuCancel)) {
       GameState::Get().PopDialog();
    }
 
-   if (playerTotalInventoryCount <= 0) {
+   if (totalInventoryCount <= 0) {
       return;
    }
 
    if (Action::Requested(action, Action::MenuDown)) {
       this->SelectedInventoryItem++;
-      if (this->SelectedInventoryItem >= playerTotalInventoryCount) {
+      if (this->SelectedInventoryItem >= totalInventoryCount) {
          this->SelectedInventoryItem = 0;
       }
    }
@@ -51,7 +51,7 @@ void InventoryDialog::OnKeyPress(int key) {
    if (Action::Requested(action, Action::MenuUp)) {
       this->SelectedInventoryItem--;
       if (this->SelectedInventoryItem < 0) {
-         this->SelectedInventoryItem = playerTotalInventoryCount - 1;
+         this->SelectedInventoryItem = totalInventoryCount - 1;
 
       }
    }
@@ -59,8 +59,8 @@ void InventoryDialog::OnKeyPress(int key) {
    // Ensure the inventory scrolls properly
    if (this->SelectedInventoryItem >= (INVENTORY_MAX_ITEMS_SHOWN / 2)) {
       this->InventoryOffset = this->SelectedInventoryItem - (INVENTORY_MAX_ITEMS_SHOWN / 2);
-      if (this->InventoryOffset >= (playerTotalInventoryCount - INVENTORY_MAX_ITEMS_SHOWN)) {
-         this->InventoryOffset = (playerTotalInventoryCount - INVENTORY_MAX_ITEMS_SHOWN);
+      if (this->InventoryOffset >= (totalInventoryCount - INVENTORY_MAX_ITEMS_SHOWN)) {
+         this->InventoryOffset = (totalInventoryCount - INVENTORY_MAX_ITEMS_SHOWN);
       }
       if (this->InventoryOffset < 0) {
          this->InventoryOffset = 0;
@@ -78,7 +78,7 @@ void InventoryDialog::OnKeyPress(int key) {
 }
 
 void InventoryDialog::Render() {
-   auto inventoryCount = (int)Player::Get().GetAllItems().size();
+   auto inventoryCount = (int)this->ItemContainer->GetAllItems().size();
 
    if (inventoryCount == 0) {
       this->SelectedInventoryItem = -1;
@@ -102,18 +102,16 @@ void InventoryDialog::Render() {
    auto btnWidth = INVENTORY_DIALOG_WIDTH - 2;
    auto btnTop = dialogTop;
 
-   auto playerInventory = Player::Get().GetAllItems();
-
    for(auto i = 0; i < dialogHeight - 2; i++) {
       auto inventoryIndex = i + this->InventoryOffset;
-      if (inventoryIndex >= playerInventory.size()) {
+      if (inventoryIndex >= this->ItemContainer->GetAllItems().size()) {
          break;
       }
 
       if (i >= INVENTORY_MAX_ITEMS_SHOWN) {
          break;
       }
-      auto inventoryItem = playerInventory[inventoryIndex];
+      auto inventoryItem = this->ItemContainer->GetAllItems()[inventoryIndex];
       std::stringstream ss;
       ss << inventoryItem->GetName();
       auto obtainableInterface = inventoryItem->GetInterface<Obtainable>(ItemInterfaceType::Obtainable);
@@ -135,7 +133,7 @@ void InventoryDialog::ExecuteSelectedAction() {
    if (this->SelectedInventoryItem == -1) {
       return;
    }
-   auto inventoryItem = ItemPtr(Player::Get().GetAllItems()[this->SelectedInventoryItem]);
+   auto inventoryItem = ItemPtr(this->ItemContainer->GetAllItems()[this->SelectedInventoryItem]);
    GameState::Get().PushDialog(ToolActionDialog::Construct(inventoryItem));
 
    // Standard prop item

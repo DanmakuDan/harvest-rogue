@@ -80,7 +80,7 @@ void Game::OnKeyPress(int key) {
    }
 
    if (Action::Requested(action, Action::OpenInventory)) {
-      GameState::Get().PushDialog(InventoryDialog::Construct());
+      GameState::Get().PushDialog(InventoryDialog::Construct(Player::Get().AsItemContainer()));
    }
 
    if (Action::Requested(action, Action::InteractWithObject)) {
