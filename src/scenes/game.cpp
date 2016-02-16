@@ -12,7 +12,8 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#include <tiles.h>
+#include "tiles.h"
+#include <sstream>
 #include "input.h"
 #include "gamestate.h"
 #include "player.h"
@@ -21,6 +22,8 @@
 #include "actiondialog.h"
 #include "inventorydialog.h"
 #include "screen.h"
+#include "iteminterfacetype.h"
+#include "obtainable.h"
 
 #ifdef WIN32
 #include "windowsshim.h"
@@ -233,18 +236,20 @@ void Game::RenderSideBar() {
 
    auto currentTool = Player::Get().GetCurrentlyEquippedItem();
    Screen::Get().WriteText(sideBarLeft, 5, "Holding", Color::Silver);
+   std::stringstream currentToolStr;
    if (currentTool == nullptr) {
-      Screen::Get().WriteText(sideBarLeft + 8, 5, "Nothing", Color::Gray);
-   } else {
-      auto prop = std::dynamic_pointer_cast<Item>(currentTool);
-      if (prop == nullptr) {
-         Screen::Get().WriteText(sideBarLeft + 8, 5, "NOT A PROP!", Color::Red);
-      } else {
-         Screen::Get().WriteText(sideBarLeft + 8, 5, prop->GetName(), prop->GetColorCode());
+      currentToolStr << "Nothing";
+   }
+   else {
+      currentToolStr << currentTool->GetName();
+
+      auto obtainableInterface = currentTool->GetInterface<Obtainable>(ItemInterfaceType::Obtainable);
+      if (obtainableInterface->GetIsStackable()) {
+         currentToolStr << " (";
+         currentToolStr << currentTool->GetCount();
+         currentToolStr << ")";
       }
    }
-
-
-
+   Screen::Get().WriteText(sideBarLeft + 8, 5, currentToolStr.str(), Color::Gray);
 
 }

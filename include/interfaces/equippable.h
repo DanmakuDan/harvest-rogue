@@ -20,8 +20,8 @@
 
 class IEquippable {
 public:
-   virtual void OnItemEquipped(std::shared_ptr<Item> sourceItem) = 0;
-   virtual void OnItemUnequipped(std::shared_ptr<Item> sourceItem) = 0;
+   virtual void OnItemEquipped(ItemPtr sourceItem) = 0;
+   virtual void OnItemUnequipped(ItemPtr sourceItem) = 0;
    virtual ~IEquippable() {}
 };
 

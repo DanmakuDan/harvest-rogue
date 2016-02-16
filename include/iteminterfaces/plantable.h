@@ -38,17 +38,17 @@ public:
    std::string GetCrop();
    void SetCrop(std::string crop);
 
-   void Plant(std::shared_ptr<Item> sourceItem);
+   void Plant(ItemPtr sourceItem);
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
 
    // IUseable
-   virtual void Use(std::shared_ptr<Item> sourceItem);
+   virtual void Use(ItemPtr sourceItem);
 
    // IEquippable
-   virtual void OnItemEquipped(std::shared_ptr<Item> sourceItem);
-   virtual void OnItemUnequipped(std::shared_ptr<Item> sourceItem);
+   virtual void OnItemEquipped(ItemPtr sourceItem);
+   virtual void OnItemUnequipped(ItemPtr sourceItem);
 private:
    std::string Crop;
 

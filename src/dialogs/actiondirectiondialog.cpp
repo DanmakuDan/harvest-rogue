@@ -19,8 +19,8 @@
 #include "direction.h"
 #include "gamestate.h"
 
-ActionDirectionDialog::ActionDirectionDialog(std::shared_ptr<Item> targetTool) {
-   this->TargetTool = std::shared_ptr<Item>(targetTool);
+ActionDirectionDialog::ActionDirectionDialog(ItemPtr targetTool) {
+   this->TargetTool = ItemPtr(targetTool);
 }
 
 void ActionDirectionDialog::OnKeyPress(int key) {

@@ -52,16 +52,16 @@ Tile::Tile Landmark::GetTile(int x, int y) {
    return this->Tiles[index];
 }
 
-void Landmark::AddItem(int x, int y, std::shared_ptr<Item> item) {
+void Landmark::AddItem(int x, int y, ItemPtr item) {
    if (this->GetItem(x, y) != nullptr) {
       throw;
    }
 
-   LandmarkItem landmarkItem = { x, y, std::shared_ptr<Item>(item) };
+   LandmarkItem landmarkItem = { x, y, ItemPtr(item) };
    this->Items[x + (y * Width)] = std::make_shared<LandmarkItem>(landmarkItem);
 }
 
-std::shared_ptr<Item> Landmark::GetItem(int x, int y) {
+ItemPtr Landmark::GetItem(int x, int y) {
    auto result = this->Items[x + (y * Width)];
    if (result == nullptr) {
       return nullptr;
@@ -73,7 +73,7 @@ void Landmark::RemoveItem(int x, int y) {
    this->Items.erase(x + (y * Width));
 }
 
-bool Landmark::LocateItem(std::shared_ptr<Item> item, int &x, int &y) {
+bool Landmark::LocateItem(ItemPtr item, int &x, int &y) {
    x = 0;
    y = 0;
 

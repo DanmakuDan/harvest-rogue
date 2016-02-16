@@ -12,14 +12,33 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_TICKEVENTS_H
-#define HARVEST_ROGUE_TICKEVENTS_H
+#ifndef HARVEST_ROGUE_CONTAINER_H
+#define HARVEST_ROGUE_CONTAINER_H
 
-#include "item.h"
 
-class IHourlyTickEvent {
+#include "iteminterface.h"
+#include "crops.h"
+#include "tickevents.h"
+#include "interactable.h"
+#include <memory>
+
+
+class Container : public IItemInterface, public IInteractable {
 public:
-   virtual void OnHourlyTick(ItemPtr sourceItem) = 0;
+   Container* Clone() const { return new Container(*this); }
+private:
+   Container();
+
+   Container(Container const &src) { };
+public:
+   ~Container();
+   static std::shared_ptr<Container> Deserialize(picojson::value serializedValue);
+
+   // IItemInterface
+   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+
+   // IInteractable
+   void Interact(ItemPtr sourceItem);
 };
 
-#endif //HARVEST_ROGUE_TICKEVENTS_H
+#endif //HARVEST_ROGUE_CONTAINER_H

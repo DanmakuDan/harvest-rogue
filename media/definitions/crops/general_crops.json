@@ -16,7 +16,7 @@
           "Cabbage Seed": {
             "chance": 1.0,
             "amount": {
-              "min": 0,
+              "min": 1,
               "max": 3
             }
           }

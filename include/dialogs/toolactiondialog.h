@@ -31,14 +31,14 @@ namespace ToolActionDialogOption {
 
 class ToolActionDialog : public IDialog {
 public:
-   static std::shared_ptr<ToolActionDialog> Construct(std::shared_ptr<Item> tool) {
+   static std::shared_ptr<ToolActionDialog> Construct(ItemPtr tool) {
       return std::shared_ptr<ToolActionDialog>(new ToolActionDialog(tool));
    }
    virtual void OnKeyPress(int key);
    virtual void Render();
 private:
-   ToolActionDialog(std::shared_ptr<Item> tool);
-   std::shared_ptr<Item> Tool;
+   ToolActionDialog(ItemPtr tool);
+   ItemPtr Tool;
    ToolActionDialogOption::ToolActionDialogOption SelectedOption;
 
    void ExecuteSelectedAction();

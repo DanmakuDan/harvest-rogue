@@ -103,70 +103,116 @@ void Player::WalkPlayer(Direction::Direction direction) {
    this->WarpPlayer(newX, newY);
 }
 
-std::shared_ptr<Item> Player::GetCurrentlyEquippedItem() {
-   return std::shared_ptr<Item>(this->CurrentlyEquippedItem);
+ItemPtr Player::GetCurrentlyEquippedItem() {
+   return ItemPtr(this->CurrentlyEquippedItem);
 }
 
-std::vector<std::shared_ptr<PlayerInventoryItem>> Player::GetInventory() {
+ItemListPtr Player::GetInventory() {
    return this->Inventory;
 }
 
-void Player::SpawnIntoInventory(std::shared_ptr<Item> prop) {
-
-   if (!prop->HasInterface(ItemInterfaceType::Obtainable)) {
+void Player::TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer) {
+   
+   // The player cannot obtain items that aren't obtainable
+   if (!sourceItem->HasInterface(ItemInterfaceType::Obtainable)) {
       throw;
    }
 
-   auto obtainableInterface = prop->GetInterface<Obtainable>(ItemInterfaceType::Obtainable);
-   if (!obtainableInterface->GetIsStackable()) {
-      if (prop->GetCount() > 1) {
-         throw;
-      }
+   auto obtainableInterface = sourceItem->GetInterface<Obtainable>(ItemInterfaceType::Obtainable);
 
-      auto item = std::shared_ptr<PlayerInventoryItem>(new PlayerInventoryItem());
-      item->ItemTarget = std::shared_ptr<Item>(prop);
-      item->StackSize = 1;
-      this->Inventory.push_back(item);
+   // A MOVE_AMOUNT_EVERYTHING of amountToTransfer (the default value) means we want to transfer all of the items
+   if (amountToTransfer == MOVE_AMOUNT_EVERYTHING) {
+      amountToTransfer = sourceItem->GetCount();
+   }
 
-      bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
-      if (prop->GetCount() > 0) {
-         GameState::Get().AddLogMessageFmt("%s %s has been placed in your inventory.", (startsWithVowel ? "An" : "A"), prop->GetName().c_str());
-      }
-
+   // If there are no items in the stack, or the transfer amount is nothing, then there is nothing to transfer.
+   if (sourceItem->GetCount() <= 0 || amountToTransfer == 0) {
       return;
    }
 
-   // Item is stackable
-   std::shared_ptr<PlayerInventoryItem> destItem = nullptr;
-   for (auto item : this->Inventory) {
-      if (item->ItemTarget->GetName() != prop->GetName()) {
+   // Do a sanity check and make sure we are not trying to transfer more items than exists in the stack
+   if (sourceItem->GetCount() < amountToTransfer) {
+      throw;
+   }
+
+   // First determine if the item is stackable. 
+   if (!obtainableInterface->GetIsStackable()) {
+
+      // The item is not stackable, so we know we need to create it in the inventory.
+      auto destItem = std::make_shared<Item>(Item::Clone(*sourceItem));
+
+      // Do a sanity check to make sure there's at most 1 item present.
+      if (sourceItem->GetCount() > 1) {
+         throw;
+      }
+
+      // Move the counts from the source to destination items
+      destItem->SetCount(amountToTransfer);
+      sourceItem->SetCount(sourceItem->GetCount() - amountToTransfer);
+
+      // Add the new item to the inventory
+      this->Inventory.push_back(destItem);
+
+      // Destroy the source item if there's none left
+      if (sourceItem->GetCount() <= 0) {
+         sourceItem->Destruct(false);
+      }
+
+      // Notify the player, then return
+      GameState::Get().AddLogMessageFmt("%i %s has been placed in your inventory.", amountToTransfer, sourceItem->GetName().c_str());
+      return;
+   }
+
+   // If we made it here, the item is stackable
+   // Loop through the inventory and see if we can place the items into an existing stack.
+
+   for (auto destItem : this->Inventory) {
+
+      // Loop until we find an item in our inventory that matches the one we're spawning
+      if (destItem->GetName() != sourceItem->GetName()) {
          continue;
       }
 
-      if (item->StackSize + prop->GetCount() > obtainableInterface->GetMaxStackSize()) {
-         auto diff = obtainableInterface->GetMaxStackSize() - item->StackSize;
-         item->StackSize = obtainableInterface->GetMaxStackSize();
-         prop->SetCount(prop->GetCount() - diff);
+      // If we got here, we've found an item in the inventory matching the one we're spawning.
+      // If the item stack is already full, move on to the next item in the inventory
+      if (destItem->GetCount() == obtainableInterface->GetMaxStackSize()) {
+         continue;
+      }
 
+      // See if this stack will be able to contain the entire stack of items we're spawning
+      if (destItem->GetCount() + sourceItem->GetCount() > obtainableInterface->GetMaxStackSize()) {
+
+         // This item's stack size isn't enough to contain all the items we're spawning, so
+         // max out this stack, and subtract it out of the items left to spawn
+         auto diff = obtainableInterface->GetMaxStackSize() - destItem->GetCount();
+         destItem->SetCount(obtainableInterface->GetMaxStackSize());
+         sourceItem->SetCount(sourceItem->GetCount() - diff);
+
+         // Loop back to the next inventory item, maybe there's more items of the same type in the stack
          continue;
       }
       
-      destItem = std::shared_ptr<PlayerInventoryItem>(item);
-      break;
+      // We've found an inventory item with enough capacity to take the rest of the items, so transfer
+      // the stack to the inventory item
+      destItem->SetCount(destItem->GetCount() + sourceItem->GetCount());
+      
+      // And destroy the original item
+      sourceItem->Destruct(false);
+
+      GameState::Get().AddLogMessageFmt("%i %s has been placed in your inventory.", amountToTransfer, destItem->GetName().c_str());
+      return;
    }
 
-   if (destItem == nullptr) {
-      destItem = std::shared_ptr<PlayerInventoryItem>(new PlayerInventoryItem());
-      destItem->ItemTarget = std::shared_ptr<Item>(prop);
-      destItem->StackSize = 0;
-      this->Inventory.push_back(destItem);
-   }
+   // We haven't found an item stack for this item yet, so let's simply move the item into
+   // the inventory
 
-   destItem->StackSize += prop->GetCount();
-   bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
-   if (prop->GetCount() > 0) {
-      GameState::Get().AddLogMessageFmt("%s %s has been placed in your inventory.", (startsWithVowel ? "An" : "A"), prop->GetName().c_str());
-   }
+   auto newItem = std::make_shared<Item>(Item::Clone(*sourceItem.get()));
+   newItem->SetCount(sourceItem->GetCount());
+   this->Inventory.push_back(newItem);
+   sourceItem->Destruct(false);
+
+
+   GameState::Get().AddLogMessageFmt("%i %s has been placed in your inventory.", amountToTransfer, newItem->GetName().c_str());
 }
 
 void Player::PickUpItemFromGround() {
@@ -183,14 +229,10 @@ void Player::PickUpItemFromGround() {
       return;
    }
 
-   bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
-   GameState::Get().AddLogMessageFmt("You pick up %s %s.", startsWithVowel ? "an" : "a", prop->GetName().c_str());
-
-   currentLandmark->RemoveItem(this->GetPositionX(), this->GetPositionY());
-   this->SpawnIntoInventory(prop);
+   this->TransferIntoInventory(prop, MOVE_AMOUNT_EVERYTHING);
 }
 
-void Player::EquipFromInventory(std::shared_ptr<Item> item) {
+void Player::EquipFromInventory(ItemPtr item) {
    if (!item->IsEquippable()) {
       GameState::Get().AddLogMessageFmt("You can't equip the %s.", item->GetName().c_str());
       return;
@@ -200,48 +242,67 @@ void Player::EquipFromInventory(std::shared_ptr<Item> item) {
       Player::Get().UnequipCurrentEquippedItem();
    }
 
-   this->RemoveFromInventory(item);
-
-   auto newItem = std::make_shared<Item>(Item::Clone(*item.get()));
-   newItem->SetCount(1);
-
-   this->CurrentlyEquippedItem = std::shared_ptr<Item>(newItem);
+   auto newItem = this->RemoveFromInventory(item, MOVE_AMOUNT_EVERYTHING);
+   this->CurrentlyEquippedItem = ItemPtr(newItem);
    item->NotifyItemEquipped();
    GameState::Get().AddLogMessageFmt("You equip the %s.", newItem->GetName().c_str());
 }
 
-void Player::DropInventoryItemOnGround(std::shared_ptr<Item> prop) {
+void Player::DropInventoryItemOnGround(ItemPtr prop) {
+
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
    if (currentLandmark->GetItem(this->GetPositionX(), this->GetPositionY()) != nullptr) {
+
       bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
       GameState::Get().AddLogMessageFmt("Cannot drop %s %s, Something is already on the ground here.", startsWithVowel ? "an" : "a", prop->GetName().c_str());
+
       return;
    }
-   this->RemoveFromInventory(prop);
 
+   auto newProp = this->RemoveFromInventory(prop, 1);
 
-   auto newProp = std::make_shared<Item>(Item::Clone(*prop.get()));
-   newProp->SetCount(1);
    currentLandmark->AddItem(this->GetPositionX(), this->GetPositionY(), newProp);
 }
 
-bool Player::RemoveFromInventory(std::shared_ptr<Item> prop) {
+ItemPtr Player::RemoveFromInventory(ItemPtr sourceItem, int amountToMove) {
    auto i = 0;
+
+   auto result = std::make_shared<Item>(Item::Clone(*sourceItem.get()));
+   
+   // Loop through the inventory until we find our item
    for (auto invProp : this->Inventory) {
-      if (invProp->ItemTarget != prop) {
+
+      // If not, move on to the next item
+      if (invProp != sourceItem) {
+
+         // (We're also keeping track of the index we're at)
          i++;
          continue;
       }
 
-      if (--this->Inventory[i]->StackSize <= 0) {
+      // Are we moving the entire stack?
+      if (amountToMove == MOVE_AMOUNT_EVERYTHING || amountToMove == invProp->GetCount()) {
+
+         // Transfer all the things
+         result->SetCount(invProp->GetCount());
+
+         // And remove the source item
          this->Inventory.erase(this->Inventory.begin() + i);
+         invProp->Destruct(false);
+
+         // All done!
+         return result;
       }
 
-      bool startsWithVowel = invProp->ItemTarget->GetName().find_first_of("aAeEiIoOuU") == 0;
-      GameState::Get().AddLogMessageFmt("%s %s has been removed from your inventory.", (startsWithVowel ? "An" : "A"),
-                                        invProp->ItemTarget->GetName().c_str());
       
-      return true;
+      // Otherwise, we're going to remove ~some~ of the items
+      result->SetCount(amountToMove);
+      invProp->SetCount(invProp->GetCount() - amountToMove);
+
+
+      GameState::Get().AddLogMessageFmt("%i %s has been removed from your inventory.", amountToMove, invProp->GetName().c_str());
+      
+      return result;
    }
 
    return false;
@@ -264,9 +325,15 @@ void Player::UnequipCurrentEquippedItem() {
       GameState::Get().AddLogMessage("You do not currently have a tool equipped!");
       return;
    }
-   this->SpawnIntoInventory(std::dynamic_pointer_cast<Item>(this->CurrentlyEquippedItem));
-   this->CurrentlyEquippedItem->NotifyItemUnequiupped();
+
+   // Note: When the item is transferred into inventory, there is a check to
+   //       ensure it is not currently equipped. You *MUST* clear the equipped
+   //       item *before* transferring it or you will get the callstack of death.
+   ItemPtr currentItem = this->CurrentlyEquippedItem;
    this->CurrentlyEquippedItem = nullptr;
+
+   this->TransferIntoInventory(currentItem);
+   this->CurrentlyEquippedItem->NotifyItemUnequiupped();
 }
 
 bool Player::IsPassable(int x, int y) {

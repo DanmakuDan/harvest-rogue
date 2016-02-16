@@ -42,17 +42,17 @@ public:
    int GetFatigue();
    void SetFatigue(int fatigue);
 
-   void Till(std::shared_ptr<Item> sourceItem);
+   void Till(ItemPtr sourceItem);
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
 
    // IUseable
-   virtual void Use(std::shared_ptr<Item> sourceItem);
+   virtual void Use(ItemPtr sourceItem);
 
    // IEquippable
-   virtual void OnItemEquipped(std::shared_ptr<Item> sourceItem);
-   virtual void OnItemUnequipped(std::shared_ptr<Item> sourceItem);
+   virtual void OnItemEquipped(ItemPtr sourceItem);
+   virtual void OnItemUnequipped(ItemPtr sourceItem);
 private:
    int Strength;
    int Fatigue;

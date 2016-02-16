@@ -38,7 +38,7 @@ public:
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
 
    // IInteractable
-   void Interact(std::shared_ptr<Item> sourceItem);
+   void Interact(ItemPtr sourceItem);
 };
 
 #endif //HARVEST_ROGUE_RESTABLE_H

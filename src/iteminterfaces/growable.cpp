@@ -159,7 +159,7 @@ CropGrowthType::CropGrowthType Growable::GetCropGrowthType()
    return this->CropGrowthType;
 }
 
-void Growable::StartGrowing(std::shared_ptr<Item> sourceItem)
+void Growable::StartGrowing(ItemPtr sourceItem)
 {
    Growable::ApplyGrowableTileCode(sourceItem, this->GetSeedlingGrowableTileCode());
    this->SetCropGrowthType(CropGrowthType::Seedling);
@@ -175,7 +175,7 @@ ItemInterfaceType::ItemInterfaceType Growable::GetInterfaceType()
    return ItemInterfaceType::Growable;
 }
 
-void Growable::OnHourlyTick(std::shared_ptr<Item> sourceItem)
+void Growable::OnHourlyTick(ItemPtr sourceItem)
 {
    if (this->GetCropGrowthType() == CropGrowthType::Wilted) {
       return;
@@ -213,7 +213,7 @@ void Growable::OnHourlyTick(std::shared_ptr<Item> sourceItem)
    
 }
 
-void Growable::ApplyGrowableTileCode(std::shared_ptr<Item> sourceItem, GrowableTileCode growableTileCode)
+void Growable::ApplyGrowableTileCode(ItemPtr sourceItem, GrowableTileCode growableTileCode)
 {
    sourceItem->SetCharacterCode(growableTileCode.CharacterCode);
    sourceItem->SetColorCode(growableTileCode.ColorCode);

@@ -90,7 +90,7 @@ void TillingTool::SetFatigue(int fatigue)
    this->Fatigue = fatigue;
 }
 
-void TillingTool::Till(std::shared_ptr<Item> sourceItem)
+void TillingTool::Till(ItemPtr sourceItem)
 {
    auto landmark = GameState::Get().GetCurrentLandmark();
    if (landmark == nullptr) {
@@ -117,15 +117,15 @@ ItemInterfaceType::ItemInterfaceType TillingTool::GetInterfaceType()
    return ItemInterfaceType::TillingTool;
 }
 
-void TillingTool::Use(std::shared_ptr<Item> sourceItem)
+void TillingTool::Use(ItemPtr sourceItem)
 {
    this->Till(sourceItem);
 }
 
-void TillingTool::OnItemEquipped(std::shared_ptr<Item> sourceItem)
+void TillingTool::OnItemEquipped(ItemPtr sourceItem)
 {
 }
 
-void TillingTool::OnItemUnequipped(std::shared_ptr<Item> sourceItem)
+void TillingTool::OnItemUnequipped(ItemPtr sourceItem)
 {
 }

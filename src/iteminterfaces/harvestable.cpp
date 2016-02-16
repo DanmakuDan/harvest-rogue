@@ -115,7 +115,7 @@ ItemInterfaceType::ItemInterfaceType Harvestable::GetInterfaceType()
    return ItemInterfaceType::Harvestable;
 }
 
-void Harvestable::Interact(std::shared_ptr<Item> sourceItem)
+void Harvestable::Interact(ItemPtr sourceItem)
 {
    auto growableInterface = sourceItem->GetInterface<Growable>(ItemInterfaceType::Growable);
    if (growableInterface != nullptr) {
@@ -133,7 +133,7 @@ void Harvestable::Interact(std::shared_ptr<Item> sourceItem)
    int x, y;
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
    currentLandmark->LocateItem(sourceItem, x, y);
-   sourceItem->Destruct();
+   sourceItem->Destruct(true);
    currentLandmark->AddItem(x, y, harvest);
 
 }

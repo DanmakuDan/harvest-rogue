@@ -24,7 +24,7 @@
 typedef struct landmark_item_s {
    int x;
    int y;
-   std::shared_ptr<Item> ItemTarget;
+   ItemPtr ItemTarget;
 } LandmarkItem;
 
 class Landmark {
@@ -38,10 +38,10 @@ public:
    unsigned int GetHeight();
    void SetTile(int x, int y, TileType::TileType tile);
    Tile::Tile GetTile(int x, int y);
-   void AddItem(int x, int y, std::shared_ptr<Item> item);
-   std::shared_ptr<Item> GetItem(int x, int y);
+   void AddItem(int x, int y, ItemPtr item);
+   ItemPtr GetItem(int x, int y);
    void RemoveItem(int x, int y);
-   bool LocateItem(std::shared_ptr<Item> item, int& x, int& y);
+   bool LocateItem(ItemPtr item, int& x, int& y);
    std::map<int, std::shared_ptr<LandmarkItem>> GetAllLandmarkItems();
 private:
    Landmark(std::string name, int width, int height);

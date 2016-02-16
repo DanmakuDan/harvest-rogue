@@ -19,7 +19,7 @@
 
 class IInteractable {
 public:
-   virtual void Interact(std::shared_ptr<Item> sourceItem) = 0;
+   virtual void Interact(ItemPtr sourceItem) = 0;
    virtual ~IInteractable() {}
 };
 

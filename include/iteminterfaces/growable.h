@@ -62,14 +62,14 @@ public:
    CropGrowthType::CropGrowthType GetCropGrowthType();
    
 
-   void StartGrowing(std::shared_ptr<Item> sourceItem);
+   void StartGrowing(ItemPtr sourceItem);
    bool IsFullyGrown();
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
 
    // IHourlyTickEvent
-   virtual void OnHourlyTick(std::shared_ptr<Item> sourceItem);
+   virtual void OnHourlyTick(ItemPtr sourceItem);
 private:
    int HoursToGrow;
    int HoursToWilt;
@@ -78,7 +78,7 @@ private:
    GrowableTileCode Grown;
    GrowableTileCode Wilted;
    CropGrowthType::CropGrowthType CropGrowthType;
-   static void ApplyGrowableTileCode(std::shared_ptr<Item> sourceItem, GrowableTileCode growableTileCode);
+   static void ApplyGrowableTileCode(ItemPtr sourceItem, GrowableTileCode growableTileCode);
    static GrowableTileCode ParseGrowableTileCode(picojson::value serializedValue);
    static SurfaceAttribute::SurfaceAttribute ParseSurfaceAttributes(picojson::array surfaceAttributes);
 };

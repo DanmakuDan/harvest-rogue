@@ -23,6 +23,7 @@
 #include "growable.h"
 #include "harvestable.h"
 #include "restable.h"
+#include "container.h"
 
 std::shared_ptr<IItemInterface> IItemInterface::Deserialize(ItemInterfaceType::ItemInterfaceType interfaceType, picojson::value serializedValue)
 {
@@ -30,6 +31,7 @@ std::shared_ptr<IItemInterface> IItemInterface::Deserialize(ItemInterfaceType::I
 
    case ItemInterfaceType::Choppable:        return Choppable::Deserialize(serializedValue);
    case ItemInterfaceType::ChoppingTool:     return ChoppingTool::Deserialize(serializedValue);
+   case ItemInterfaceType::Container:        return Container::Deserialize(serializedValue);
    case ItemInterfaceType::DropsLoot:        return DropsLoot::Deserialize(serializedValue);
    case ItemInterfaceType::Durable:          return Durable::Deserialize(serializedValue);
    case ItemInterfaceType::Growable:         return Growable::Deserialize(serializedValue);

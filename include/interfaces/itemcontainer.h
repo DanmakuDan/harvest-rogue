@@ -12,14 +12,18 @@
     You should have received a copy of the GNU General Public License
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_TICKEVENTS_H
-#define HARVEST_ROGUE_TICKEVENTS_H
+#ifndef HARVEST_ROGUE_ITEMCONTAINER_H
+#define HARVEST_ROGUE_ITEMCONTAINER_H
 
+#include <vector>
+#include <memory>
 #include "item.h"
 
-class IHourlyTickEvent {
+class IItemContainer {
 public:
-   virtual void OnHourlyTick(ItemPtr sourceItem) = 0;
+   virtual ItemListPtr GetAllItems();
+
+   virtual ~IItemContainer() {}
 };
 
-#endif //HARVEST_ROGUE_TICKEVENTS_H
+#endif //HARVEST_ROGUE_ITEMCONTAINER_H

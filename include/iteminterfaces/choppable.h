@@ -35,7 +35,7 @@ public:
 
    int GetChopPoints();
    void SetChopPoints(int chopPoints);
-   void Chop(std::shared_ptr<Item>sourceItem, ChoppingTool* choppingTool);
+   void Chop(ItemPtr sourceItem, ChoppingTool* choppingTool);
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();

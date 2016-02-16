@@ -63,10 +63,10 @@ void Choppable::SetChopPoints(int chopPoints)
    this->ChopPoints = chopPoints;
 }
 
-void Choppable::Chop(std::shared_ptr<Item>sourceItem, ChoppingTool* choppingTool)
+void Choppable::Chop(ItemPtr sourceItem, ChoppingTool* choppingTool)
 {
    if (this->GetChopPoints() < choppingTool->GetStrength()) {
-      sourceItem->Destruct();
+      sourceItem->Destruct(true);
       return;
    }
 

@@ -20,13 +20,13 @@
 
 class IUseable {
 public:
-   virtual void Use(std::shared_ptr<Item> sourceItem) = 0;
+   virtual void Use(ItemPtr sourceItem) = 0;
    virtual ~IUseable() {}
 };
 
 class IDirectionallyUsable {
 public:
-   virtual void Use(std::shared_ptr<Item> sourceItem, Direction::Direction direction) = 0;
+   virtual void Use(ItemPtr sourceItem, Direction::Direction direction) = 0;
    virtual ~IDirectionallyUsable() {}
 };
 

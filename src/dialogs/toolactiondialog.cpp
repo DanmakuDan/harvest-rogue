@@ -19,8 +19,8 @@
 #include "gamestate.h"
 #include "player.h"
 
-ToolActionDialog::ToolActionDialog(std::shared_ptr<Item> tool) {
-   this->Tool = std::shared_ptr<Item>(tool);
+ToolActionDialog::ToolActionDialog(ItemPtr tool) {
+   this->Tool = ItemPtr(tool);
    this->SelectedOption = ToolActionDialogOption::EquipTool;
 }
 
@@ -81,7 +81,7 @@ void ToolActionDialog::ExecuteSelectedAction() {
          GameState::Get().ClearAllDialogs();
          break;
       case ToolActionDialogOption::DropTool:
-         Player::Get().DropInventoryItemOnGround(std::dynamic_pointer_cast<Item>(this->Tool));
+         Player::Get().DropInventoryItemOnGround(this->Tool);
          GameState::Get().ClearAllDialogs();
          break;
    }

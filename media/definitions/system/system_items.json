@@ -58,6 +58,20 @@
       "interfaces": {
         "restable": { }
       }
+    },
+
+    "Simple Chest": {
+      "description": "A simple chest",
+      "surfaceAttributes": [ ],
+      "itemCategories": [ "container" ],
+      "colorCode": "brightRed",
+      "characterCode": "#",
+      "gfxTileCode": 40,
+      "interfaces": {
+        "container": {
+
+        }
+      }
     }
 
 

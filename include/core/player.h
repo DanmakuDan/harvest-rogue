@@ -26,10 +26,7 @@
 #define ENERGY_TIRED        30
 #define ENERGY_EXAUSTED     15
 
-struct PlayerInventoryItem {
-   std::shared_ptr<Item> ItemTarget;
-   int StackSize;
-};
+#define MOVE_AMOUNT_EVERYTHING -1
 
 class Player {
 private:
@@ -48,13 +45,13 @@ public:
    int GetPositionY();
    void WarpPlayer(int x, int y);
    void WalkPlayer(Direction::Direction direction);
-   std::shared_ptr<Item> GetCurrentlyEquippedItem();
-   std::vector<std::shared_ptr<PlayerInventoryItem>> GetInventory();
-   void SpawnIntoInventory(std::shared_ptr<Item> prop);
-   bool RemoveFromInventory(std::shared_ptr<Item> prop);
+   ItemPtr GetCurrentlyEquippedItem();
+   ItemListPtr GetInventory();
+   void TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer = MOVE_AMOUNT_EVERYTHING);
+   ItemPtr RemoveFromInventory(ItemPtr sourceItem, int amountToMove = MOVE_AMOUNT_EVERYTHING);
    void PickUpItemFromGround();
-   void EquipFromInventory(std::shared_ptr<Item> tool);
-   void DropInventoryItemOnGround(std::shared_ptr<Item> prop);
+   void EquipFromInventory(ItemPtr tool);
+   void DropInventoryItemOnGround(ItemPtr prop);
    void UseEquippedItem();
    void UnequipCurrentEquippedItem();
    int GetEnergy();
@@ -67,8 +64,8 @@ public:
 private:
    int PositionX;
    int PositionY;
-   std::shared_ptr<Item> CurrentlyEquippedItem;
-   std::vector<std::shared_ptr<PlayerInventoryItem>> Inventory;
+   ItemPtr CurrentlyEquippedItem;
+   ItemListPtr Inventory;
    bool IsPassable(int x, int y);
    bool IsSleeping;
    int Energy;

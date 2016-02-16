@@ -35,7 +35,7 @@ ItemInterfaceType::ItemInterfaceType Restable::GetInterfaceType()
    return ItemInterfaceType::Restable;
 }
 
-void Restable::Interact(std::shared_ptr<Item> sourceItem)
+void Restable::Interact(ItemPtr sourceItem)
 {
    GameState::Get().AddLogMessage("You lay in the bed and go to sleep...");
    GameState::Get().SleepUntilNextMorning();

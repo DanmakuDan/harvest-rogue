@@ -91,6 +91,8 @@ public:
 
    std::shared_ptr<Landmark> GetCurrentLandmark();
 
+   std::vector<std::shared_ptr<Landmark>> GetAllLandmarks();
+
    std::shared_ptr<IDialog> GetCurrentDialog();
 
    void PushDialog(std::shared_ptr<IDialog> dialog);
@@ -102,7 +104,7 @@ public:
    void SleepUntilNextMorning(int hour = 6, int minute = 0, int second = 0);
 
    std::map<std::string, Item> GetItemDatabase();
-   std::shared_ptr<Item> GetItemFromItemDatabase(std::string itemName);
+   ItemPtr GetItemFromItemDatabase(std::string itemName);
 
 private:
    bool active;

@@ -92,12 +92,12 @@ void ChoppingTool::SetFatigue(int fatigue)
    this->Fatigue = fatigue;
 }
 
-void ChoppingTool::Chop(std::shared_ptr<Item> sourceItem)
+void ChoppingTool::Chop(ItemPtr sourceItem)
 {
    GameState::Get().PushDialog(ActionDirectionDialog::Construct(sourceItem));
 }
 
-void ChoppingTool::Chop(std::shared_ptr<Item> sourceItem, Direction::Direction direction)
+void ChoppingTool::Chop(ItemPtr sourceItem, Direction::Direction direction)
 {
    auto landmark = GameState::Get().GetCurrentLandmark();
 
@@ -135,7 +135,7 @@ void ChoppingTool::Chop(std::shared_ptr<Item> sourceItem, Direction::Direction d
 
    GameState::Get().AddLogMessageFmt("You chop at the %s.", item->GetName().c_str());
    Player::Get().AdjustEnergy(this->GetFatigue());
-   choppable->Chop(std::shared_ptr<Item>(item), this);
+   choppable->Chop(ItemPtr(item), this);
 }
 
 ItemInterfaceType::ItemInterfaceType ChoppingTool::GetInterfaceType()
@@ -143,20 +143,20 @@ ItemInterfaceType::ItemInterfaceType ChoppingTool::GetInterfaceType()
    return ItemInterfaceType::ChoppingTool;
 }
 
-void ChoppingTool::Use(std::shared_ptr<Item> sourceItem)
+void ChoppingTool::Use(ItemPtr sourceItem)
 {
    this->Chop(sourceItem);
 }
 
-void ChoppingTool::Use(std::shared_ptr<Item> sourceItem, Direction::Direction direction)
+void ChoppingTool::Use(ItemPtr sourceItem, Direction::Direction direction)
 {
    this->Chop(sourceItem, direction);
 }
 
-void ChoppingTool::OnItemEquipped(std::shared_ptr<Item> sourceItem)
+void ChoppingTool::OnItemEquipped(ItemPtr sourceItem)
 {
 }
 
-void ChoppingTool::OnItemUnequipped(std::shared_ptr<Item> sourceItem)
+void ChoppingTool::OnItemUnequipped(ItemPtr sourceItem)
 {
 }

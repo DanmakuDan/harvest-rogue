@@ -25,14 +25,14 @@
 
 class ActionDirectionDialog : public IDialog {
 public:
-   static std::shared_ptr<ActionDirectionDialog> Construct(std::shared_ptr<Item> targetTool) {
+   static std::shared_ptr<ActionDirectionDialog> Construct(ItemPtr targetTool) {
       return std::shared_ptr<ActionDirectionDialog>(new ActionDirectionDialog(targetTool));
    }
    virtual void OnKeyPress(int key);
    virtual void Render();
 private:
-   ActionDirectionDialog(std::shared_ptr<Item> targetTool);
-   std::shared_ptr<Item> TargetTool;
+   ActionDirectionDialog(ItemPtr targetTool);
+   ItemPtr TargetTool;
 };
 
 

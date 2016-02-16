@@ -46,7 +46,7 @@ public:
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
 
    // IInteractable
-   virtual void Interact(std::shared_ptr<Item> sourceItem);
+   virtual void Interact(ItemPtr sourceItem);
 private:
    std::string YieldItem;
    int YieldMinimum;

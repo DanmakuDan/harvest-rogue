@@ -94,6 +94,9 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    // Add the bed
    result->AddItem(cottageX + 1, cottageY + 1, GameState::Get().GetItemFromItemDatabase("Simple Bed"));
 
+   // Add a chest
+   result->AddItem(cottageX + 9, cottageY+1, GameState::Get().GetItemFromItemDatabase("Simple Chest"));
+
    //// Add tools to the ground...
    result->AddItem(playerX - 3, playerY - 1, GameState::Get().GetItemFromItemDatabase("Simple Hoe"));
    result->AddItem(playerX - 2, playerY - 1, GameState::Get().GetItemFromItemDatabase("Simple Axe"));

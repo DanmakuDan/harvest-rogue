@@ -62,7 +62,7 @@ void Plantable::SetCrop(std::string crop)
    this->Crop = crop;
 }
 
-void Plantable::Plant(std::shared_ptr<Item> sourceItem)
+void Plantable::Plant(ItemPtr sourceItem)
 {
    auto x = Player::Get().GetPositionX();
    auto y = Player::Get().GetPositionY();
@@ -90,15 +90,7 @@ void Plantable::Plant(std::shared_ptr<Item> sourceItem)
    }
 
    sourceItem->RemoveOne();
-   // Equip another item if we can find one
-   for (auto item : Player::Get().GetInventory()) {
-      if (item->ItemTarget->GetName() != sourceItem->GetName()) {
-         continue;
-      }
 
-      Player::Get().EquipFromInventory(item->ItemTarget);
-      break;
-   }
 }
 
 ItemInterfaceType::ItemInterfaceType Plantable::GetInterfaceType()
@@ -106,16 +98,16 @@ ItemInterfaceType::ItemInterfaceType Plantable::GetInterfaceType()
    return ItemInterfaceType::Plantable;
 }
 
-void Plantable::Use(std::shared_ptr<Item> sourceItem)
+void Plantable::Use(ItemPtr sourceItem)
 {
    this->Plant(sourceItem);
 }
 
-void Plantable::OnItemEquipped(std::shared_ptr<Item> sourceItem)
+void Plantable::OnItemEquipped(ItemPtr sourceItem)
 {
 }
 
-void Plantable::OnItemUnequipped(std::shared_ptr<Item> sourceItem)
+void Plantable::OnItemUnequipped(ItemPtr sourceItem)
 {
 }
 

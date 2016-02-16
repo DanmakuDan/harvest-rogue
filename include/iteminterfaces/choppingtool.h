@@ -43,21 +43,21 @@ public:
    int GetFatigue();
    void SetFatigue(int fatigue);
 
-   void Chop(std::shared_ptr<Item> sourceItem);
-   void Chop(std::shared_ptr<Item> sourceItem, Direction::Direction direction);
+   void Chop(ItemPtr sourceItem);
+   void Chop(ItemPtr sourceItem, Direction::Direction direction);
 
    // IItemInterface
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
 
    // IUseable
-   virtual void Use(std::shared_ptr<Item> sourceItem);
+   virtual void Use(ItemPtr sourceItem);
 
    // IDirectionallyUseable
-   virtual void Use(std::shared_ptr<Item> sourceItem, Direction::Direction direction);
+   virtual void Use(ItemPtr sourceItem, Direction::Direction direction);
 
    // IEquippable
-   virtual void OnItemEquipped(std::shared_ptr<Item> sourceItem);
-   virtual void OnItemUnequipped(std::shared_ptr<Item> sourceItem);
+   virtual void OnItemEquipped(ItemPtr sourceItem);
+   virtual void OnItemUnequipped(ItemPtr sourceItem);
 private:
    int Strength;
    int Fatigue;

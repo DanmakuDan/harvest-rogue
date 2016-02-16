@@ -188,6 +188,11 @@ std::shared_ptr<Landmark> GameState::GetCurrentLandmark() {
 
 }
 
+std::vector<std::shared_ptr<Landmark>> GameState::GetAllLandmarks()
+{
+   return this->Landmarks;
+}
+
 std::shared_ptr<IDialog> GameState::GetCurrentDialog() {
    if (this->DialogStack.empty()) {
       return nullptr;
@@ -238,7 +243,7 @@ std::map<std::string, Item> GameState::GetItemDatabase()
    return this->ItemDatabase;
 }
 
-std::shared_ptr<Item> GameState::GetItemFromItemDatabase(std::string itemName)
+ItemPtr GameState::GetItemFromItemDatabase(std::string itemName)
 {
    return std::make_shared<Item>(Item::Clone(this->ItemDatabase[itemName]));
 }

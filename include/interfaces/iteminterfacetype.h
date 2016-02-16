@@ -23,6 +23,7 @@ namespace ItemInterfaceType {
       Unknown = -1,
       Choppable = 0,
       ChoppingTool,
+      Container,
       DropsLoot,
       Durable,
       Growable,
@@ -36,6 +37,7 @@ namespace ItemInterfaceType {
    static ItemInterfaceType FromString(std::string itemInterfaceType) {
       if (itemInterfaceType == "choppable")        return Choppable;
       if (itemInterfaceType == "choppingTool")     return ChoppingTool;
+      if (itemInterfaceType == "container")        return Container;
       if (itemInterfaceType == "dropsLoot")        return DropsLoot;
       if (itemInterfaceType == "durable")          return Durable;
       if (itemInterfaceType == "growable")         return Growable;

@@ -204,42 +204,48 @@ void Item::Use(Direction::Direction direction)
    usableItem->Use(this->shared_from_this(), direction);
 }
 
-void Item::Destruct()
+void Item::Destruct(bool dropLoot)
 {
+   int x, y;
+   bool itemFoundOnGround = false;
+
    this->SetCount(0);
 
-   auto currentLandmark = GameState::Get().GetCurrentLandmark();
-
-   int x, y;
-   if (currentLandmark->LocateItem(this->shared_from_this(), x, y)) {
-      currentLandmark->RemoveItem(x, y);
+   // Make sure this item doesn't exist in a landmark
+   for (auto landmark : GameState::Get().GetAllLandmarks()) {
+      
+      if (landmark->LocateItem(this->shared_from_this(), x, y)) {
+         landmark->RemoveItem(x, y);
+         itemFoundOnGround = true;
+         break;
+      }
    }
    
+   // If this item is currently equipped on the player, unequip it
    if (Player::Get().GetCurrentlyEquippedItem() == this->shared_from_this()) {
       Player::Get().UnequipCurrentEquippedItem();
    }
 
-   Player::Get().RemoveFromInventory(this->shared_from_this());
+   // Remove this item from the player's inventory, if it is there.
+   Player::Get().RemoveFromInventory(this->shared_from_this(), MOVE_AMOUNT_EVERYTHING);
 
-   if (this->HasInterface(ItemInterfaceType::DropsLoot)) {
+   // If this item drops loot, now's the time to drop it, if it was on the ground to begin with
+   if (dropLoot && itemFoundOnGround && this->HasInterface(ItemInterfaceType::DropsLoot)) {
       auto dropsLootInterface = this->GetInterface<DropsLoot>(ItemInterfaceType::DropsLoot);
       dropsLootInterface->DropLoot(x, y);
    }
-
-   GameState::Get().AddLogMessageFmt("The %s was destroyed!", this->GetName().c_str());
-   
 }
 
 void Item::RemoveOne()
 {
    if (!this->HasInterface(ItemInterfaceType::Obtainable)) {
-      this->Destruct();
+      this->Destruct(false);
       return;
    }
 
    auto obtainable = this->GetInterface<Obtainable>(ItemInterfaceType::Obtainable);
    if (!obtainable->GetIsStackable() || this->Count <= 1) {
-      this->Destruct();
+      this->Destruct(false);
       return;
    }
 
@@ -316,6 +322,5 @@ int Item::GetCount()
 
 void Item::SetCount(int count)
 {
-
    this->Count = count;
 }

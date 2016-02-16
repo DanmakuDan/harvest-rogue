@@ -18,6 +18,7 @@
 #include <map>
 #include <memory>
 #include <list>
+#include <vector>
 #include "iteminterface.h"
 #include "tiles.h"
 #include "itemcategory.h"
@@ -55,7 +56,7 @@ public:
    bool IsEquippable();
    bool IsInteractable();
    void Interact();
-   void Destruct();
+   void Destruct(bool dropLoot);
    void RemoveOne();
    void NotifyItemEquipped();
    void NotifyItemUnequiupped();
@@ -64,6 +65,7 @@ public:
    inline std::shared_ptr<T> GetInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType) {
       return std::dynamic_pointer_cast<T>(std::shared_ptr<IItemInterface>(this->ItemInterfaces[itemInterfaceType]));
    }
+
 private:
    std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> ItemInterfaces;
    std::string Name;
@@ -75,5 +77,8 @@ private:
    std::list<ItemCategory::ItemCategory> ItemCategories;
    int Count;
 };
+
+typedef std::shared_ptr<Item> ItemPtr;
+typedef std::vector<ItemPtr> ItemListPtr;
 
 #endif //HARVEST_ROGUE_ITEM_H
