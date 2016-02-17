@@ -4,7 +4,7 @@
 We need help with the website, game code, art, sound/music, testing, and porting efforts. Open an issue, or click on the chat badge below to start contributing! If you don't feel like contributing, but are interested in seeing this progress, please star this repository to help increase its visibility. It really helps!
 
 [![Gitter](https://badges.gitter.im/essial/harvest-rogue.svg)](https://gitter.im/essial/harvest-rogue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Build Status](https://travis-ci.org/essial/harvest-rogue.svg?branch=master)](https://travis-ci.org/essial/harvest-rogue)
+[![Build Status](https://travis-ci.org/HarvestRogue/harvest-rogue.svg?branch=master)](https://travis-ci.org/HarvestRogue/harvest-rogue)
 
 [HarvestRogue subreddit](https://www.reddit.com/r/harvestrogue/)
 
@@ -30,7 +30,7 @@ While testing the game, pressing F12 at any time will immediately quit the game.
 * Install <code>build-essential</code>, <code>cmake</code>, and <code>autotools</code> packages for your host environment.
   * For text builds (default), you also need <code>libncurses-dev</code>
   * For graphical builds, you also need <code>libsdl2-dev</code>, <code>libsdl2-image-dev</code>, and <code>libsdl2-mixer-dev</code>
-* Clone the source to your home folder with <code>git clone git@github.com:essial/harvest-rogue.git</code>
+* Clone the source to your home folder with <code>git clone git@github.com:HarvestRogue/harvest-rogue.git</code>
 * Create and navigate to an empty output folder like <code>[projectroot]/output/</code>.
 * Generate the autotools build scripts by running <code>$ cmake .. -DCMAKE_INSTALL_PREFIX=/usr/bin</code>
   * For text mode, this is the default and no further parameters are needed
