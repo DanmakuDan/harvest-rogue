@@ -28,26 +28,26 @@ void InteractionDirectionDialog::OnKeyPress(int key) {
    auto action = Input::Get().GetActionForKeyPress(key);
 
    if (Action::Requested(action, Action::MoveUp)) {
-      Player::Get().InteractWith(Direction::Up);
       GameState::Get().ClearAllDialogs();
+      Player::Get().InteractWith(Direction::Up);
       return;
    }
 
    if (Action::Requested(action, Action::MoveDown)) {
-      Player::Get().InteractWith(Direction::Down);
       GameState::Get().ClearAllDialogs();
+      Player::Get().InteractWith(Direction::Down);
       return;
    }
 
    if (Action::Requested(action, Action::MoveLeft)) {
-      Player::Get().InteractWith(Direction::Left);
       GameState::Get().ClearAllDialogs();
+      Player::Get().InteractWith(Direction::Left);
       return;
    }
 
    if (Action::Requested(action, Action::MoveRight)) {
-      Player::Get().InteractWith(Direction::Right);
       GameState::Get().ClearAllDialogs();
+      Player::Get().InteractWith(Direction::Right);
       return;
    }
 

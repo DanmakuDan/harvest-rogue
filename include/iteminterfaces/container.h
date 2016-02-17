@@ -20,12 +20,14 @@
 #include "crops.h"
 #include "tickevents.h"
 #include "interactable.h"
+#include "itemcontainer.h"
 #include <memory>
 
 
 class Container : 
    public IItemInterface, 
-   public IInteractable {
+   public IInteractable,
+   public IItemContainer {
 public:
    Container* Clone() const { return new Container(*this); }
 private:
@@ -40,7 +42,17 @@ public:
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
 
    // IInteractable
-   void Interact(ItemPtr sourceItem);
+   virtual void Interact(ItemPtr sourceItem);
+
+   // IItemContainer
+   virtual ItemListPtr GetAllItems();
+   virtual ItemContainerPtr AsItemContainer();
+
+   // INameable
+   virtual std::string GetName();
+
+private:
+   ItemListPtr Contents;
 };
 
 #endif //HARVEST_ROGUE_CONTAINER_H

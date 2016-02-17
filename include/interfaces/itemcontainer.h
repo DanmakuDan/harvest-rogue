@@ -28,10 +28,9 @@ class IItemContainer :
    public INameable {
 public:
    virtual ItemListPtr GetAllItems() = 0;
+   virtual ItemContainerPtr AsItemContainer() = 0;
 
    virtual ~IItemContainer() {}
-
-   virtual ItemContainerPtr AsItemContainer() = 0;
 };
 
 #endif //HARVEST_ROGUE_ITEMCONTAINER_H

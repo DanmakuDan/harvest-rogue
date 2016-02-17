@@ -14,6 +14,8 @@
 
 #include "container.h"
 #include "gamestate.h"
+#include "itemtransferdialog.h"
+#include "player.h"
 
 Container::Container()
 {
@@ -37,5 +39,20 @@ ItemInterfaceType::ItemInterfaceType Container::GetInterfaceType()
 
 void Container::Interact(ItemPtr sourceItem)
 {
-   
+   GameState::Get().PushDialog(ItemTransferDialog::Construct(Player::Get().AsItemContainer(), this->AsItemContainer()));
+}
+
+ItemListPtr Container::GetAllItems()
+{
+   return this->GetAllItems();
+}
+
+ItemContainerPtr Container::AsItemContainer()
+{
+   return static_cast<ItemContainerPtr>(this);
+}
+
+std::string Container::GetName()
+{
+   return "Container";
 }
