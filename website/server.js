@@ -297,8 +297,8 @@ everyauth.facebook
    .redirectPath('/');
 
 everyauth.github
-  .appId('1d0ea07e8fcffa312e6d')
-  .appSecret('7ebe0bfff0c66a62dc74bcf5debfb82ffe091252')
+  .appId('472a3e2094075982bc3a')
+  .appSecret('4a3e40522834afc2dff5978838a445919b455ad6')
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, githubUserMetadata) {
       var promise = this.Promise();
       
