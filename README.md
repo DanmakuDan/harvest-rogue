@@ -3,7 +3,7 @@
 **We are actively looking for contributers of all types!**
 We need help with the website, game code, art, sound/music, testing, and porting efforts. Open an issue, or click on the chat badge below to start contributing! If you don't feel like contributing, but are interested in seeing this progress, please star this repository to help increase its visibility. It really helps!
 
-[![Gitter](https://badges.gitter.im/essial/harvest-rogue.svg)](https://gitter.im/essial/harvest-rogue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/HarvestRogue/harvest-rogue.svg)](https://gitter.im/HarvestRogue/harvest-rogue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Build Status](https://travis-ci.org/HarvestRogue/harvest-rogue.svg?branch=master)](https://travis-ci.org/HarvestRogue/harvest-rogue)
 
 [HarvestRogue subreddit](https://www.reddit.com/r/harvestrogue/)
