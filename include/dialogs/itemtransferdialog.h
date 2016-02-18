@@ -20,6 +20,9 @@
 #include "itemcontainer.h"
 
 class ItemTransferDialog: public IDialog {
+private:
+	enum eItemDialogSide { LeftSide, RightSide };
+
 public:
    static std::shared_ptr<ItemTransferDialog> Construct(ItemContainerPtr firstContainer, ItemContainerPtr secondContainer) {
       return std::shared_ptr<ItemTransferDialog>(new ItemTransferDialog(firstContainer, secondContainer));
@@ -29,8 +32,28 @@ public:
 private:
    ItemTransferDialog(ItemContainerPtr firstContainer, ItemContainerPtr secondContainer);
 
+   void DrawDialogHeader(int x, int y, int width, int height);
+   void DrawItemDialog(int x, int y, int width, int height, eItemDialogSide side);
+   void DrawSelectedItemDescription();
+
+   void MoveSelectorInWindow(int adjustment);
+   void SwitchSelectedWindow();
+   void HandleActionButtonPressed();
+
+   void RemoveItemFromEitherContainer(ItemPtr item);
+   void AddItemToEndOfCurrentContainer(ItemPtr item);
+   void SwapItems(ItemPtr itemA, ItemPtr itemB);
+   void SplitItem(ItemPtr item);
+   void CombineItems(ItemPtr source, ItemPtr dest);
+
    ItemContainerPtr FirstContainer;
    ItemContainerPtr SecondContainer;
+
+   eItemDialogSide ItemSelectorSide;
+   int FirstItemSelectorIndex;
+   int SecondItemSelectorIndex;
+
+   ItemPtr SelectedItem;
 };
 
 #endif //HARVEST_ROGUE_ITEMTRANSFERDIALOG_H

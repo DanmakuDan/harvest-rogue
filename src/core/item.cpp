@@ -227,7 +227,7 @@ void Item::Destruct(bool dropLoot)
    }
 
    // Remove this item from the player's inventory, if it is there.
-   Player::Get().RemoveFromInventory(this->shared_from_this(), MOVE_AMOUNT_EVERYTHING);
+   Player::Get().RemoveItem(this->shared_from_this(), MOVE_AMOUNT_EVERYTHING);
 
    // If this item drops loot, now's the time to drop it, if it was on the ground to begin with
    if (dropLoot && itemFoundOnGround && this->HasInterface(ItemInterfaceType::DropsLoot)) {

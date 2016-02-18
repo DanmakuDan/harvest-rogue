@@ -116,6 +116,78 @@ ItemContainerPtr Player::AsItemContainer()
    return reinterpret_cast<ItemContainerPtr>(this);
 }
 
+void Player::AddItem(ItemPtr item, int count, bool dontStack)
+{
+   if (!dontStack) {
+      this->TransferIntoInventory(item, count);
+      return;
+   }
+
+   auto newItem = std::make_shared<Item>(Item::Clone(*item));
+   this->Inventory.push_back(newItem);
+}
+
+void Player::RemoveItem(ItemPtr item, int count)
+{
+   this->RemoveFromInventory(item, count);
+}
+
+void Player::SwapItem(ItemPtr itemA, ItemPtr itemB)
+{
+   auto firstItemLocation = std::find(this->Inventory.begin(), this->Inventory.end(), itemA);
+   if (firstItemLocation == this->Inventory.end()) {
+      return;
+   }
+
+   auto secondItemLocation = std::find(this->Inventory.begin(), this->Inventory.end(), itemB);
+   if (secondItemLocation == this->Inventory.end()) {
+      // We're actually swapping in an item that we don't already have
+      firstItemLocation->swap(itemB);
+      return;
+   }
+   // We're swapping between two items we have
+   std::iter_swap(firstItemLocation, secondItemLocation);
+}
+
+void Player::SplitItem(ItemPtr item)
+{
+   auto itemLocation = std::find(this->Inventory.begin(), this->Inventory.end(), item);
+   if (itemLocation == this->Inventory.end()) {
+      return;
+   }
+
+   auto newItem = std::make_shared<Item>(Item::Clone(*item));
+   auto splitSize = item->GetCount() / 2;
+   auto difference = (item->GetCount() - splitSize); // We don't want rounding issues
+   item->SetCount(splitSize);
+   newItem->SetCount(difference);
+   this->Inventory.insert(itemLocation + 1, newItem);
+}
+
+void Player::CombineItems(ItemPtr source, ItemPtr dest)
+{
+   auto destItemLocation = std::find(this->Inventory.begin(), this->Inventory.end(), dest);
+   auto sourceItemLocation = std::find(this->Inventory.begin(), this->Inventory.end(), source);
+
+   auto movingFromHere = sourceItemLocation != this->Inventory.end();
+   auto movingToHere = destItemLocation != this->Inventory.end();
+
+   if (!movingFromHere && !movingToHere) {
+      return;
+   }
+
+   if (movingToHere) {
+      destItemLocation->get()->SetCount(destItemLocation->get()->GetCount() + source->GetCount());
+      source->SetCount(0);
+   }
+
+   if (!movingFromHere) {
+      return;
+   }
+
+   this->Inventory.erase(sourceItemLocation);
+}
+
 void Player::TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer) {
    
    // The player cannot obtain items that aren't obtainable

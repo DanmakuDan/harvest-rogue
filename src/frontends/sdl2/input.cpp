@@ -14,6 +14,7 @@ along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "input.h"
 #include "gamestate.h"
+#include "config.h"
 #include <SDL2/SDL.h>
 
 Input::Input() {
