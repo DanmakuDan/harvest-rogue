@@ -135,5 +135,6 @@ void Harvestable::Interact(ItemPtr sourceItem)
    currentLandmark->LocateItem(sourceItem, x, y);
    sourceItem->Destruct(true);
    currentLandmark->AddItem(x, y, harvest);
+   GameState::Get().AddLogMessageFmt("You harvest the %s and place it on the ground.", sourceItem->GetName().c_str());
 
 }
