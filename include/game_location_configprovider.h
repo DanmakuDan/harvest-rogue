@@ -18,10 +18,10 @@
 #include "config.h"
 
 /*
- * GameLocationConfigProvider is a simple ConfigProvider that stores configuration data in the game's directory.
+ * GameLocationConfigProvider is a simple IConfigProvider that stores configuration data in the game's directory.
  */
 
-class GameLocationConfigProvider : public ConfigProvider {
+class GameLocationConfigProvider : public IConfigProvider {
    public:
       GameLocationConfigProvider();
 

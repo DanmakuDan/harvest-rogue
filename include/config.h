@@ -17,11 +17,11 @@
 
 #include "keybinding.h"
 
-class ConfigProvider;
+class IConfigProvider;
 
 class Config {
    public:
-      static ConfigProvider* provider;
+      static IConfigProvider* provider;
 
       int GetScreenWidth();
       int GetScreenHeight();
@@ -36,8 +36,10 @@ class Config {
       Keybinding keybinding = Keybinding();
 };
 
-class ConfigProvider {
+class IConfigProvider {
    public:
+      virtual ~IConfigProvider() {};
+
       virtual Config GetConfig() = 0;
       virtual void SaveConfig() = 0;
 };

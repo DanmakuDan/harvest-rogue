@@ -25,7 +25,7 @@
 #endif
 #define KILL_KEY (0x108+12) // F12
 
-ConfigProvider* Config::provider = new GameLocationConfigProvider();
+IConfigProvider* Config::provider = new GameLocationConfigProvider();
 
 int main() {
    GameState::Get().SetCurrentScene(MainMenu::Construct());
