@@ -47,6 +47,11 @@ public:
    // IItemContainer
    virtual ItemListPtr GetAllItems();
    virtual ItemContainerPtr AsItemContainer();
+   virtual void AddItem(ItemPtr item, int count, bool dontStack);
+   virtual void RemoveItem(ItemPtr item, int count = -1);
+   virtual void SwapItem(ItemPtr itemA, ItemPtr itemB);
+   virtual void SplitItem(ItemPtr item);
+   virtual void CombineItems(ItemPtr source, ItemPtr dest);
 
    // INameable
    virtual std::string GetName();

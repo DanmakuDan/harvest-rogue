@@ -121,6 +121,17 @@ void Screen::WriteCenterText(int y, std::string text, Color::Color color)
 void Screen::WriteButton(int x, int y, int width, std::string text, bool active)
 {
    auto captionLeft = x + (width / 2) - (text.length() / 2);
+
+   if (true == active) {
+      SDL_Rect destRect;
+      destRect.x = x * TileSize * Zoom;
+      destRect.y = y * TileSize * Zoom;
+      destRect.h = TileSize * Zoom;
+      destRect.w = TileSize * Zoom * width;
+      SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+      SDL_RenderFillRect(renderer, &destRect);
+   }
+
    this->WriteText((int)captionLeft, y, text, active ? Color::Inverse(Color::White) : Color::White);
 }
 

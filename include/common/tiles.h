@@ -93,7 +93,7 @@ namespace Tile {
    } Tile;
 
 
-   static std::vector<Tile> Tiles = {
+   static Tile Tiles[] = {
          {TileType::Nothing,               "Nothing",             SurfaceAttribute::None,              Color::Red,     'X', -1},
          {TileType::Player,                "You",                 SurfaceAttribute::None,              Color::White,   '@',  1},
          //                                                                                                          
@@ -144,12 +144,7 @@ namespace Tile {
    };
 
    static Tile FromTileType(TileType::TileType tileType) {
-      for (auto tile : Tiles) {
-         if (tile.TileType == tileType) {
-            return tile;
-         }
-      }
-      return Tiles.front();
+      return Tiles[tileType];
    }
 
    static bool HasSurfaceAttribute(Tile tile, SurfaceAttribute::SurfaceAttribute surfaceAttributeType) {

@@ -28,8 +28,6 @@
 #define ENERGY_TIRED        30
 #define ENERGY_EXAUSTED     15
 
-#define MOVE_AMOUNT_EVERYTHING -1
-
 class Player : 
    public IItemContainer {
 private:
@@ -49,8 +47,6 @@ public:
    void WarpPlayer(int x, int y);
    void WalkPlayer(Direction::Direction direction);
    ItemPtr GetCurrentlyEquippedItem();
-   void TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer = MOVE_AMOUNT_EVERYTHING);
-   ItemPtr RemoveFromInventory(ItemPtr sourceItem, int amountToMove = MOVE_AMOUNT_EVERYTHING);
    void PickUpItemFromGround();
    void EquipFromInventory(ItemPtr tool);
    void DropInventoryItemOnGround(ItemPtr prop);
@@ -70,7 +66,17 @@ public:
    // IItemContainer
    virtual ItemListPtr GetAllItems();
    virtual ItemContainerPtr AsItemContainer();
+   virtual void AddItem(ItemPtr item, int count, bool dontStack);
+   virtual void RemoveItem(ItemPtr item, int count);
+   virtual void SwapItem(ItemPtr itemA, ItemPtr itemB);
+   virtual void SplitItem(ItemPtr item);
+   virtual void CombineItems(ItemPtr source, ItemPtr dest);
+
 private:
+   void TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer = MOVE_AMOUNT_EVERYTHING);
+   ItemPtr RemoveFromInventory(ItemPtr sourceItem, int amountToMove = MOVE_AMOUNT_EVERYTHING);
+
+
    int PositionX;
    int PositionY;
    ItemPtr CurrentlyEquippedItem;

@@ -23,12 +23,19 @@
 class IItemContainer; // Foward declaration for the typedef
 typedef IItemContainer* ItemContainerPtr;
 
+#define MOVE_AMOUNT_EVERYTHING -1
+
 // Declares that this object has the ability to contain items
 class IItemContainer : 
    public INameable {
 public:
    virtual ItemListPtr GetAllItems() = 0;
    virtual ItemContainerPtr AsItemContainer() = 0;
+   virtual void AddItem(ItemPtr item, int count, bool dontStack) = 0;
+   virtual void RemoveItem(ItemPtr item, int count = -1) = 0;
+   virtual void SwapItem(ItemPtr itemA, ItemPtr itemB) = 0;
+   virtual void SplitItem(ItemPtr item) = 0;
+   virtual void CombineItems(ItemPtr source, ItemPtr dest) = 0;
 
    virtual ~IItemContainer() {}
 };
