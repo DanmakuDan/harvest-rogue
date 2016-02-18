@@ -32,11 +32,11 @@ Keybinding::Keybinding() {
 
    this->keybindings['q'] = Action::InteractWithObject;
 
-   // Vi-style movement this->keys
-   this->keybindings['j'] = Action::MoveDown;
-   this->keybindings['k'] = Action::MoveUp;
-   this->keybindings['l'] = Action::MoveRight;
-   this->keybindings['h'] = Action::MoveLeft;
+   // Vi-style movement keys
+   this->keybindings['j'] = Action::MoveDown | Action::MenuDown;
+   this->keybindings['k'] = Action::MoveUp | Action::MenuUp;
+   this->keybindings['l'] = Action::MoveRight | Action::MenuRight;
+   this->keybindings['h'] = Action::MoveLeft | Action::MenuLeft;
 }
 
 Keybinding::~Keybinding() {
