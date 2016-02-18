@@ -13,11 +13,11 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "input.h"
+#include "config.h"
 #include <curses.h>
 
 Input::Input() {
-   // TODO: How will a user's custom keybinding be loaded? External to this class or here?
-   this->keybinding = Keybinding();
+   this->keybinding = Config::provider->GetConfig().GetKeybinding();
 
    this->InputTimeout = -1;
    notimeout(stdscr, TRUE);

@@ -15,6 +15,8 @@
 #include "input.h"
 #include "gamestate.h"
 #include "mainmenu.h"
+#include "config.h"
+#include "game_location_configprovider.h"
 
 #ifdef WIN32
 #define RESIZE_KEY 0x222
@@ -23,8 +25,9 @@
 #endif
 #define KILL_KEY (0x108+12) // F12
 
-int main() {
+ConfigProvider* Config::provider = new GameLocationConfigProvider();
 
+int main() {
    GameState::Get().SetCurrentScene(MainMenu::Construct());
 
    while (GameState::Get().IsActive()) {
@@ -45,6 +48,9 @@ int main() {
             GameState::Get().GetCurrentScene()->OnKeyPress(ch);
       }
    }
+
+   Config::provider->SaveConfig();
+
    return 0;
 }
 
