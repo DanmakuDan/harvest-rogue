@@ -13,6 +13,7 @@ You should have received a copy of the GNU General Public License
 along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "screen.h"
+#include "config.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -59,7 +60,10 @@ Screen::Screen() {
    IMG_Init(IMG_INIT_PNG);
    Mix_Init(MIX_INIT_OGG);
 
-   SDL_CreateWindowAndRenderer(1280, 720, SDL_WindowFlags::SDL_WINDOW_SHOWN, &window, &renderer);
+   int windowWidth = Config::provider->GetConfig().GetScreenWidth();
+   int windowHeight = Config::provider->GetConfig().GetScreenHeight();
+
+   SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WindowFlags::SDL_WINDOW_SHOWN, &window, &renderer);
    SDL_SetWindowTitle(window, "Harvest-Rogue - Graphical Mode");
 
    int w, h;
