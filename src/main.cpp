@@ -18,13 +18,6 @@
 #include "config.h"
 #include "game_location_configprovider.h"
 
-#ifdef WIN32
-#define RESIZE_KEY 0x222
-#else
-#define RESIZE_KEY 0x200
-#endif
-#define KILL_KEY (0x108+12) // F12
-
 IConfigProvider* Config::provider = new GameLocationConfigProvider();
 
 int main() {

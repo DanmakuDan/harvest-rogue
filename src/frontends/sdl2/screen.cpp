@@ -63,7 +63,7 @@ Screen::Screen() {
    int windowWidth = Config::provider->GetConfig().GetScreenWidth();
    int windowHeight = Config::provider->GetConfig().GetScreenHeight();
 
-   SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WindowFlags::SDL_WINDOW_SHOWN, &window, &renderer);
+   SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WindowFlags::SDL_WINDOW_RESIZABLE, &window, &renderer);
    SDL_SetWindowTitle(window, "Harvest-Rogue - Graphical Mode");
 
    int w, h;
