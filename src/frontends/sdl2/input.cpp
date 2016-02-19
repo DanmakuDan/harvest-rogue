@@ -50,7 +50,12 @@ int Input::WaitForAndGetKeyPress()
          default:
             return evt.key.keysym.sym;
          }
-
+         case SDL_WINDOWEVENT:
+            switch(evt.window.event) {
+               case SDL_WINDOWEVENT_RESIZED:
+               case SDL_WINDOWEVENT_MAXIMIZED:
+               return RESIZE_KEY;
+            }
       }
    }
 }

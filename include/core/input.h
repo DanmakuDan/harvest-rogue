@@ -18,6 +18,13 @@
 #include <memory>
 #include "keybinding.h"
 
+#ifdef WIN32
+#define RESIZE_KEY 0x222
+#else
+#define RESIZE_KEY 0x200
+#endif
+#define KILL_KEY (0x108+12) // F12
+
 class Input {
 private:
    Input();
