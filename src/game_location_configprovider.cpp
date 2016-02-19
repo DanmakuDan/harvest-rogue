@@ -13,10 +13,21 @@
    along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "game_location_configprovider.h"
+#include <fstream>
 
 GameLocationConfigProvider::GameLocationConfigProvider() {
-   // TODO: Deserialize config from file
-   this->config = Config();
+   std::ifstream configFile("settings.json");
+
+   if (configFile) {
+      // Deserialize config from file
+      picojson::value configValue;
+      configFile >> configValue;
+      configFile.close();
+
+      this->config = Config::Deserialize(configValue);
+   } else {
+      this->config = Config();
+   }
 }
 
 Config GameLocationConfigProvider::GetConfig() {
@@ -24,5 +35,10 @@ Config GameLocationConfigProvider::GetConfig() {
 }
 
 void GameLocationConfigProvider::SaveConfig() {
-   // TODO: Serialize configuration to file
+   // Serialize configuration to file
+   std::ofstream configFile("settings.json");
+
+   auto json = Config::Serialize(this->config);
+   configFile << json.serialize(true);
+   configFile.close();
 }

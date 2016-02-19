@@ -18,10 +18,73 @@ int Config::GetScreenWidth() {
    return this->screenWidth;
 }
 
+void Config::SetScreenWidth(int width) {
+   this->screenWidth = width;
+}
+
 int Config::GetScreenHeight() {
    return this->screenHeight;
 }
 
+void Config::SetScreenHeight(int height) {
+   this->screenHeight = height;
+}
+
 Keybinding Config::GetKeybinding() {
    return this->keybinding;
+}
+
+void Config::SetKeybinding(Keybinding binding) {
+   this->keybinding = binding;
+}
+
+picojson::value Config::Serialize(Config config) {
+   picojson::object result;
+
+   result["screenWidth"] = picojson::value((double)config.GetScreenWidth());
+   result["screenHeight"] = picojson::value((double)config.GetScreenHeight());
+
+   // TODO: Include keybindings?
+
+   return picojson::value(result);
+}
+
+Config Config::Deserialize(picojson::value serializedValue) {
+   auto result = Config();
+
+   if (!serializedValue.is<picojson::object>()) {
+      throw;
+   }
+
+   auto data = serializedValue.get<picojson::object>();
+   for (auto item : data) {
+      if (item.first == "screenWidth") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         auto value = item.second.get<double>();
+         result.SetScreenWidth(value);
+         continue;
+      }
+
+      if (item.first == "screenHeight") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         auto value = item.second.get<double>();
+         result.SetScreenHeight(value);
+         continue;
+      }
+
+      if (item.first == "keybindings") {
+         result.SetKeybinding(Keybinding::Deserialize(item.second));
+         continue;
+      }
+
+      throw;
+   }
+
+   return result;
 }

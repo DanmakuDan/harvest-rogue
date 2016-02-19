@@ -16,20 +16,28 @@
 #define HARVEST_ROGUE_CONFIG_H
 
 #include "keybinding.h"
+#include "picojson.h"
+#include <memory>
 
 class IConfigProvider;
 
 class Config {
    public:
+      static picojson::value Serialize(Config config);
+      static Config Deserialize(picojson::value serializedValue);
+
       static IConfigProvider* provider;
 
       int GetScreenWidth();
+      void SetScreenWidth(int width);
+
       int GetScreenHeight();
+      void SetScreenHeight(int height);
 
       Keybinding GetKeybinding();
+      void SetKeybinding(Keybinding binding);
 
    private:
-
       int screenWidth = 640;
       int screenHeight = 480;
 
