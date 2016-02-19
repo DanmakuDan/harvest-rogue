@@ -40,3 +40,6 @@ Release/
 
 # Node
 website/node_modules
+
+# User data
+settings.json

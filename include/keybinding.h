@@ -15,6 +15,7 @@
 #ifndef HARVEST_ROGUE_KEYBINDING_H
 #define HARVEST_ROGUE_KEYBINDING_H
 
+#include "picojson.h"
 #include <map>
 
 #define IK_LEFT_ARROW  0404
@@ -56,6 +57,9 @@ namespace Action {
 
 class Keybinding {
 public:
+   static picojson::value Serialize(Keybinding binding);
+   static Keybinding Deserialize(picojson::value serializedValue);
+
    Keybinding();
 
    ~Keybinding();

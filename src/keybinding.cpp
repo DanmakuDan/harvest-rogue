@@ -51,3 +51,11 @@ Action::Action Keybinding::GetAction(int key) {
       return it->second;
    }
 }
+
+picojson::value Keybinding::Serialize(Keybinding binding) {
+   // TODO
+}
+
+Keybinding Keybinding::Deserialize(picojson::value serializedValue) {
+   // TODO
+}
