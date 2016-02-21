@@ -22,7 +22,6 @@
 #include "actiondialog.h"
 #include "inventorydialog.h"
 #include "screen.h"
-#include "iteminterfacetype.h"
 #include "obtainable.h"
 
 #ifdef WIN32
@@ -122,7 +121,7 @@ void Game::RenderTopBar() {
             GameState::Get().GetCurrentYear(),
             eGameStateSeasonDescs[GameState::Get().GetCurrentSeason()].c_str(),
             GameState::Get().GetCurrentDay(),
-            hour % 12,
+            hour + (hour == 0 ? 12 : hour > 12 ? -12 : 0),
             minute,
             hour > 11 ? "pm" : "am"
             );
@@ -136,7 +135,7 @@ void Game::RenderTopBar() {
 void Game::RenderMap() {
    // Screen rendering offsets
    auto startX = 1;
-   auto startY = 1;
+   auto startY = 2;
 
    auto playerX = Player::Get().GetPositionX();
    auto playerY = Player::Get().GetPositionY();
@@ -160,6 +159,7 @@ void Game::RenderMap() {
    mapOffsetX = mapOffsetX < 0 ? 0 : mapOffsetX;
    mapOffsetY = mapOffsetY < 0 ? 0 : mapOffsetY;
 
+   Screen::Get().WriteWindow(startX - 1, startY - 1, drawWidth + 1, drawHeight, "");
    // Draw loop
    for (auto mapY = 0; mapY < drawHeight - startY && mapY <= (int)totalMapHeight - startY; mapY++) {
       for (auto mapX = 0; mapX < drawWidth - startX && mapX <= (int)totalMapWidth - startX; mapX++) {
@@ -216,7 +216,7 @@ void Game::RenderSideBar() {
    Screen::Get().WriteText(sideBarLeft, 3, "Feeling ", Color::Silver);
    auto playerEnergy = Player::Get().GetEnergy();
    if (playerEnergy <= ENERGY_EXAUSTED) {
-      Screen::Get().WriteText(sideBarLeft + 8, 3, "EXAUSTED", Color::BrightRed);
+      Screen::Get().WriteText(sideBarLeft + 8, 3, "EXHAUSTED", Color::BrightRed);
    } else if (playerEnergy <= ENERGY_TIRED) {
       Screen::Get().WriteText(sideBarLeft + 8, 3, "tired", Color::BrightYellow);
    }else if (playerEnergy <= ENERGY_GOOD) {

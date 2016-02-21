@@ -59,9 +59,8 @@ void ToolActionDialog::Render() {
    auto dialogHeight = ToolActionDialogOption::_MAX + 2;
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (TOOLACTIN_DIALOG_WIDTH / 2);
    auto dialogTop = (Screen::Get().GetHeight() / 2) - (dialogHeight / 2);
-   auto prop = dynamic_cast<Item*>(this->Tool.get());
 
-   Screen::Get().WriteWindow(dialogLeft, dialogTop, TOOLACTIN_DIALOG_WIDTH, dialogHeight, prop->GetName());
+   Screen::Get().WriteWindow(dialogLeft, dialogTop, TOOLACTIN_DIALOG_WIDTH, dialogHeight, this->Tool->GetName());
 
    auto btnLeft = dialogLeft + 1;
    auto btnWidth = TOOLACTIN_DIALOG_WIDTH - 2;

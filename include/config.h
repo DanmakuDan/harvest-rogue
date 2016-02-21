@@ -18,38 +18,68 @@
 #include "keybinding.h"
 #include "picojson.h"
 #include <memory>
+#include <fstream>
 
 class IConfigProvider;
-
+class Config;
+typedef std::shared_ptr<Config> ConfigPtr;
 class Config {
-   public:
-      static picojson::value Serialize(Config config);
-      static Config Deserialize(picojson::value serializedValue);
+private:
+   Config(Config const &) { };
+   Config &operator=(Config const &) { };
 
-      static IConfigProvider* provider;
+public:
+   static Config &Get() {
+      static Config config;
+      return config;
+   }
 
-      int GetScreenWidth();
-      void SetScreenWidth(int width);
+   int GetScreenWidth();
+   void SetScreenWidth(int width);
 
-      int GetScreenHeight();
-      void SetScreenHeight(int height);
+   int GetScreenHeight();
+   void SetScreenHeight(int height);
 
-      Keybinding GetKeybinding();
-      void SetKeybinding(Keybinding binding);
+   int GetScreenX();
+   void SetScreenX(int x);
 
-   private:
-      int screenWidth = 640;
-      int screenHeight = 480;
+   int GetScreenY();
+   void SetScreenY(int y);
 
-      Keybinding keybinding = Keybinding();
-};
+   Keybinding GetKeybinding();
+   void SetKeybinding(Keybinding binding);
 
-class IConfigProvider {
-   public:
-      virtual ~IConfigProvider() {};
+private:
+   Config() {
+      std::ifstream configFile("settings.json");
 
-      virtual Config GetConfig() = 0;
-      virtual void SaveConfig() = 0;
+      if (!configFile) {
+         // Accept defaults
+         return;
+      }
+
+      // Deserialize config from file
+      picojson::value configValue;
+      configFile >> configValue;
+      configFile.close();
+
+      this->Deserialize(configValue);
+   }
+   ~Config() {
+      std::ofstream configFile("settings.json");
+
+      auto json = this->Serialize();
+      configFile << json.serialize(true);
+      configFile.close();
+   }
+   picojson::value Serialize();
+   void Deserialize(picojson::value serializedValue);
+   int ScreenWidth = 1280;
+   int ScreenHeight = 720;
+   int ScreenX = 0;
+   int ScreenY = 0;
+
+   Keybinding keybinding = Keybinding();
 };
 
 #endif // HARVEST_ROGUE_CONFIG_H

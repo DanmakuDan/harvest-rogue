@@ -17,9 +17,7 @@
 #include "player.h"
 #include "gamestate.h"
 #include "interactiondirectiondialog.h"
-#include "interactable.h"
 #include "obtainable.h"
-#include "useable.h"
 
 Player::Player() {
    Reset();
@@ -410,7 +408,7 @@ void Player::UnequipCurrentEquippedItem() {
    this->CurrentlyEquippedItem = nullptr;
 
    this->TransferIntoInventory(currentItem);
-   this->CurrentlyEquippedItem->NotifyItemUnequiupped();
+   this->CurrentlyEquippedItem->NotifyItemUnequipped();
 }
 
 bool Player::IsPassable(int x, int y) {

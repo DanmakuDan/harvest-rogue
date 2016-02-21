@@ -51,7 +51,9 @@ private:
 
    eItemDialogSide ItemSelectorSide;
    int FirstItemSelectorIndex;
+   int FirstItemViewOffset;
    int SecondItemSelectorIndex;
+   int SecondItemViewOffset;
 
    ItemPtr SelectedItem;
 };

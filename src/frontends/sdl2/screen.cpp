@@ -20,7 +20,7 @@ along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 #include <sstream>
 
 static int TileSize = 16;
-static int Zoom = 1;
+static int Zoom = 2;
 
 static SDL_Window *window;
 static SDL_Renderer *renderer;
@@ -60,10 +60,12 @@ Screen::Screen() {
    IMG_Init(IMG_INIT_PNG);
    Mix_Init(MIX_INIT_OGG);
 
-   int windowWidth = Config::provider->GetConfig().GetScreenWidth();
-   int windowHeight = Config::provider->GetConfig().GetScreenHeight();
+   int windowWidth = Config::Get().GetScreenWidth();
+   int windowHeight = Config::Get().GetScreenHeight();
 
-   SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WindowFlags::SDL_WINDOW_RESIZABLE, &window, &renderer);
+   SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WindowFlags::SDL_WINDOW_RESIZABLE | SDL_WindowFlags::SDL_WINDOW_HIDDEN,
+                               &window, &renderer);
+
    SDL_SetWindowTitle(window, "Harvest-Rogue - Graphical Mode");
 
    int w, h;
@@ -76,6 +78,10 @@ Screen::Screen() {
    GfxTilesPerRow = w / TileSize;
 
    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+   SDL_SetWindowPosition(window, Config::Get().GetScreenX(), Config::Get().GetScreenY());
+   SDL_SetWindowSize(window, Config::Get().GetScreenWidth(), Config::Get().GetScreenHeight());
+   SDL_ShowWindow(window);
 }
 
 Screen::~Screen()
@@ -126,7 +132,7 @@ void Screen::WriteButton(int x, int y, int width, std::string text, bool active)
 {
    auto captionLeft = x + (width / 2) - (text.length() / 2);
 
-   if (true == active) {
+   if (active) {
       SDL_Rect destRect;
       destRect.x = x * TileSize * Zoom;
       destRect.y = y * TileSize * Zoom;
@@ -196,7 +202,7 @@ void Screen::WriteCharacter(int x, int y, const char character, Color::Color col
    SDL_RenderCopy(renderer, fontTexture, &srcRect, &destRect);
 }
 
-void Screen::WriteTile(int x, int y, int tileIndex, char character, Color::Color color)
+void Screen::WriteTile(int x, int y, int tileIndex, char, Color::Color)
 {
    SDL_Rect srcRect;
    SDL_Rect destRect;

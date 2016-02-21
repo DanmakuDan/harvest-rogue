@@ -36,7 +36,29 @@
       "interfaces": {
         "obtainable": {
           "stackable": true,
+          "maxStackSize": 5
+        }
+      }
+    },
+    
+    "Wooden Stick": {
+      "description": "Found in sticky situations",
+      "surfaceAttributes": [ "walkable" ],
+      "itemCategories": [ "craftingMaterial" ],
+      "colorCode": "yellow",
+      "characterCode": "\\",
+      "gfxTileCode": 7,
+      "interfaces": {
+        "obtainable": {
+          "stackable": true,
           "maxStackSize": 30
+        },
+        "craftable": {
+          "materialsRequired": {
+            "Birch Log": {
+              "amount": 5
+            }
+          }
         }
       }
     }

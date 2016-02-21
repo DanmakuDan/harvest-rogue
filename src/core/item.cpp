@@ -16,11 +16,8 @@
 #include "gamestate.h"
 #include "durable.h"
 #include "dropsloot.h"
-#include "plantable.h"
 #include "obtainable.h"
 #include "player.h"
-#include "useable.h"
-#include "equippable.h"
 #include "interactable.h"
 
 Item Item::Clone(const Item & source)
@@ -206,7 +203,7 @@ void Item::Use(Direction::Direction direction)
 
 void Item::Destruct(bool dropLoot)
 {
-   int x, y;
+   int x = 0, y = 0;
    bool itemFoundOnGround = false;
 
    this->SetCount(0);
@@ -256,7 +253,7 @@ void Item::NotifyItemEquipped()
 {
 }
 
-void Item::NotifyItemUnequiupped()
+void Item::NotifyItemUnequipped()
 {
 }
 

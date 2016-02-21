@@ -159,7 +159,7 @@ void GameState::AddLogMessageFmt(const std::string format, ...) {
       int n = vsnprintf((char *) str.data(), size, format.c_str(), ap);
       va_end(ap);
       if (n > -1 && n < (int)size) {  // Everything worked
-         str.resize(n);
+         str.resize((unsigned long)n);
          this->AddLogMessage(str);
          return;
       }

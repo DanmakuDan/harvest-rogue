@@ -19,13 +19,13 @@
 #include <memory>
 
 #define GAMEMENU_DIALOG_WIDTH  30
-#define GAMEMENU_DIALOG_HEIGHT 7
 
 namespace GameMenuDialogOption {
    enum GameMenuDialogOption {
       Status = 0,
       Inventory,
       Actions,
+      Craft,
       SaveGame,
       Quit,
       _MAX
@@ -38,8 +38,11 @@ public:
    static std::shared_ptr<GameMenuDialog> Construct() {
       return std::shared_ptr<GameMenuDialog>(new GameMenuDialog());
    }
+
+   // IDialog
    virtual void OnKeyPress(int key);
    virtual void Render();
+
 private:
    GameMenuDialog();
    GameMenuDialogOption::GameMenuDialogOption SelectedOption;

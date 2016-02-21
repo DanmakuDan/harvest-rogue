@@ -16,8 +16,8 @@
 
 Landmark::Landmark(std::string name, int width, int height) {
    this->Name = name;
-   this->Width = width;
-   this->Height = height;
+   this->Width = (unsigned int)width;
+   this->Height = (unsigned int)height;
    
    for (auto i = 0; i < width * height; i++) {
       this->Tiles.push_back(Tile::FromTileType(TileType::Nothing));

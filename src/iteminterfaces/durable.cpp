@@ -39,9 +39,6 @@ std::shared_ptr<Durable> Durable::Deserialize(picojson::value serializedValue)
          }
 
          auto value = item.second.get<double>();
-         if (value != (unsigned int)value) {
-            throw;
-         }
 
          result->SetDurability((int)value);
          continue;

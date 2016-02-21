@@ -123,9 +123,6 @@ void ItemLoader::ParseItemTopLevelAttribute(Item * item, std::pair<const std::st
       }
 
       auto gfxTileCode = source.second.get<double>();
-      if (gfxTileCode != (unsigned int)gfxTileCode) {
-         throw;
-      }
 
       item->SetGfxTileCode((int)gfxTileCode);
       return;
@@ -146,12 +143,12 @@ void ItemLoader::ParseItemTopLevelAttribute(Item * item, std::pair<const std::st
 
       auto items = source.second.get<picojson::array>();
       std::list<ItemCategory::ItemCategory> itemCategories;
-      for (auto item : items) {
-         if (!item.is<std::string>()) {
+      for (auto curItem : items) {
+         if (!curItem.is<std::string>()) {
             throw;
          }
 
-         auto category = ItemCategory::FromString(item.get<std::string>());
+         auto category = ItemCategory::FromString(curItem.get<std::string>());
          if (category == ItemCategory::Unknown) {
             throw;
          }

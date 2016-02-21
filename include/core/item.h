@@ -63,7 +63,7 @@ public:
    void Destruct(bool dropLoot);
    void RemoveOne();
    void NotifyItemEquipped();
-   void NotifyItemUnequiupped();
+   void NotifyItemUnequipped();
 
    template<class T>
    inline std::shared_ptr<T> GetInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType) {

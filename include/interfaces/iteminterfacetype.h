@@ -24,6 +24,7 @@ namespace ItemInterfaceType {
       Choppable = 0,
       ChoppingTool,
       Container,
+      Craftable,
       DropsLoot,
       Durable,
       Growable,
@@ -39,6 +40,7 @@ namespace ItemInterfaceType {
       if (itemInterfaceType == "choppingTool")     return ChoppingTool;
       if (itemInterfaceType == "container")        return Container;
       if (itemInterfaceType == "dropsLoot")        return DropsLoot;
+      if (itemInterfaceType == "craftable")        return Craftable;
       if (itemInterfaceType == "durable")          return Durable;
       if (itemInterfaceType == "growable")         return Growable;
       if (itemInterfaceType == "harvestable")      return Harvestable;

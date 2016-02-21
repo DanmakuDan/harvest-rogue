@@ -24,7 +24,9 @@ ItemTransferDialog::ItemTransferDialog(ItemContainerPtr firstContainer, ItemCont
    this->SecondContainer = secondContainer;
    this->ItemSelectorSide = eItemDialogSide::LeftSide;
    this->FirstItemSelectorIndex = 0;
+   this->FirstItemViewOffset = 0;
    this->SecondItemSelectorIndex = 0;
+   this->SecondItemViewOffset = 0;
 }
 
 void ItemTransferDialog::OnKeyPress(int key)
@@ -77,41 +79,54 @@ void ItemTransferDialog::DrawDialogHeader(int x, int y, int width, int height)
 
 void ItemTransferDialog::DrawItemDialog(int x, int y, int width, int height, eItemDialogSide side)
 {
-   auto container = (side == eItemDialogSide::LeftSide) ? this->FirstContainer : this->SecondContainer;
-   auto itemSelectorIndex = (this->ItemSelectorSide == eItemDialogSide::LeftSide)
-      ? this->FirstItemSelectorIndex
-      : this->SecondItemSelectorIndex;
+   auto leftSide = (side == eItemDialogSide::LeftSide);
+
+   auto container         = leftSide ? this->FirstContainer         : this->SecondContainer;
+   auto itemSelectorIndex = leftSide ? this->FirstItemSelectorIndex : this->SecondItemSelectorIndex;
+   auto viewOffset        = leftSide ? &this->FirstItemViewOffset   : &this->SecondItemViewOffset;
 
    // Draw the caption bar above the item window
    Screen::Get().WriteWindow(x, y - 3, width, 3);
-   auto containerNameLength = container->GetName().size();
+   auto containerNameLength = (int)container->GetName().size();
    Screen::Get().WriteText(x + (width / 2) - (containerNameLength / 2), 8, container->GetName());
 
    // Draw the item window frame
    Screen::Get().WriteWindow(x, y, width, height);
 
    // Draw the items in the dialog
-   auto maxItemsToShow = height - 4;
+   auto maxItemsToShow = height - 2;
    auto containerItems = container->GetAllItems();
+
+   // Adjust the vertical scroll to make sure all items can be scrolled through
+   if (this->ItemSelectorSide == side) {
+      *viewOffset = itemSelectorIndex - (maxItemsToShow / 2);
+   }
+
+   if (*viewOffset + maxItemsToShow > containerItems.size() + 1) {
+      *viewOffset = ((int)containerItems.size() + 1) - maxItemsToShow;
+   }
+
+   if (*viewOffset < 0) {
+      *viewOffset = 0;
+   }
+
+
 
    y += 1;
 
    for (auto itemIndexOffset = 0; itemIndexOffset < maxItemsToShow; itemIndexOffset++) {
-      if (itemIndexOffset > containerItems.size()) {
-         break;
-      }
-      else if (itemIndexOffset == containerItems.size()) {
-         if (this->ItemSelectorSide == side && itemSelectorIndex == itemIndexOffset) {
+      if (itemIndexOffset + *viewOffset == containerItems.size()) {
+         if (this->ItemSelectorSide == side && itemSelectorIndex == itemIndexOffset + *viewOffset) {
             // TODO: We need a way to draw a "selector" without rendering an actual button...
             Screen::Get().WriteButton(x + 2, y, width - 3, "", true);
          }
          break;
       }
 
-      auto containerItem = containerItems[itemIndexOffset];
+      auto containerItem = containerItems[itemIndexOffset + *viewOffset];
       auto lineTextColor = Color::White;
 
-      if (this->ItemSelectorSide == side && itemSelectorIndex == itemIndexOffset) {
+      if ((this->ItemSelectorSide == side) && (itemSelectorIndex == itemIndexOffset + *viewOffset)) {
          lineTextColor = Color::Inverse(Color::White);
 
          // TODO: We need a way to draw a "selector" without rendering an actual button...

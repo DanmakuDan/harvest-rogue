@@ -28,18 +28,17 @@ class Container :
    public IItemInterface, 
    public IInteractable,
    public IItemContainer {
-public:
-   Container* Clone() const { return new Container(*this); }
 private:
    Container();
 
    Container(Container const &src) { };
 public:
    ~Container();
-   static std::shared_ptr<Container> Deserialize(picojson::value serializedValue);
 
    // IItemInterface
+   Container* Clone() const { return new Container(*this); }
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   static std::shared_ptr<Container> Deserialize(picojson::value serializedValue);
 
    // IInteractable
    virtual void Interact(ItemPtr sourceItem);

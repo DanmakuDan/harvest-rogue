@@ -8,7 +8,7 @@
       "itemCategories": [ "tool" ],
       "colorCode": "white",
       "characterCode": "P",
-      "gfxTileCode": 19,
+      "gfxTileCode": 49,
       "interfaces": {
         "choppingTool": {
           "strength": 5,
@@ -31,7 +31,7 @@
       "itemCategories": [ "tool" ],
       "colorCode": "yellow",
       "characterCode": "\\",
-      "gfxTileCode": 15,
+      "gfxTileCode": 51,
       "interfaces": {
         "tillingTool": {
           "strength": 5,
@@ -44,6 +44,13 @@
         "obtainable": {
           "stackable": false,
           "maxStackSize": 1
+        },
+        "craftable": {
+          "materialsRequired": {
+            "Wooden Stick": {
+              "amount": 2
+            }
+          }
         }
       }
     },

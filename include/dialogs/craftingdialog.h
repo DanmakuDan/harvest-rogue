@@ -12,24 +12,23 @@
    You should have received a copy of the GNU General Public License
    along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
-#ifndef HARVEST_ROGUE_GAME_LOCATION_CONFIGPROVIDER_H
-#define HARVEST_ROGUE_GAME_LOCATION_CONFIGPROVIDER_H
+#ifndef HARVEST_ROGUE_CRAFTINGDIALOG_H
+#define HARVEST_ROGUE_CRAFTINGDIALOG_H
 
-#include "config.h"
+#include "dialog.h"
 
-/*
- * GameLocationConfigProvider is a simple IConfigProvider that stores configuration data in the game's directory.
- */
+class CraftingDialog : public IDialog {
+public:
+   static std::shared_ptr<CraftingDialog> Construct() {
+      return std::shared_ptr<CraftingDialog>(new CraftingDialog());
+   }
 
-class GameLocationConfigProvider : public IConfigProvider {
-   public:
-      GameLocationConfigProvider();
+   // IDialog
+   virtual void OnKeyPress(int key);
+   virtual void Render();
 
-      Config GetConfig();
-      void SaveConfig();
-
-   private:
-      Config config;
+   void DrawDialogHeader(int x, int y, int width, int height);
 };
 
-#endif // HARVEST_ROGUE_GAME_LOCATION_CONFIGPROVIDER_H
+
+#endif //HARVEST_ROGUE_CRAFTINGDIALOG_H
