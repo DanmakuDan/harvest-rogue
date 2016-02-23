@@ -15,8 +15,10 @@
 #include "choppable.h"
 #include "gamestate.h"
 
-Choppable::Choppable()
-{
+IItemInterface* Choppable::Clone() const { return new Choppable(*this); }
+
+Choppable::Choppable(): 
+   ChopPoints(0) {
 }
 
 Choppable::~Choppable()

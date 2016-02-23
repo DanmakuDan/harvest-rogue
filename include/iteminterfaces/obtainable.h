@@ -20,7 +20,7 @@
 
 class Obtainable : public IItemInterface {
 public:
-   IItemInterface* Clone() const { return new Obtainable(*this); }
+   IItemInterface* Clone() const override;
 private:
    Obtainable();
 
@@ -29,7 +29,7 @@ private:
       this->MaxStackSize = src.MaxStackSize;
    };
 
-   Obtainable &operator=(Obtainable const &) { };
+   Obtainable &operator=(Obtainable const &) = delete;
 public:
    ~Obtainable();
    static std::shared_ptr<Obtainable> Deserialize(picojson::value serializedValue);
@@ -40,7 +40,7 @@ public:
    void SetMaxStackSize(int maxStackSize);
 
    // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
 private:
    bool Stackable;
    int MaxStackSize;

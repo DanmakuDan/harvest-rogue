@@ -30,18 +30,17 @@ void ToolActionDialog::OnKeyPress(int key) {
 
    if (Action::Requested(action, Action::MenuDown)) {
       if (this->SelectedOption >= ToolActionDialogOption::_MAX - 1) {
-         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption) 0;
+         this->SelectedOption = ToolActionDialogOption::ToolActionDialogOption(0);
       } else {
-         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption) ((int) this->SelectedOption + 1);
+         this->SelectedOption = ToolActionDialogOption::ToolActionDialogOption(this->SelectedOption + 1);
       }
    }
 
    if (Action::Requested(action, Action::MenuUp)) {
-      if (this->SelectedOption <= (ToolActionDialogOption::ToolActionDialogOption) 0) {
-         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption)
-               ((int) ToolActionDialogOption::_MAX - 1);
+      if (this->SelectedOption <= ToolActionDialogOption::ToolActionDialogOption(0)) {
+         this->SelectedOption = ToolActionDialogOption::ToolActionDialogOption(ToolActionDialogOption::_MAX - 1);
       } else {
-         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption) ((int) this->SelectedOption - 1);
+         this->SelectedOption = ToolActionDialogOption::ToolActionDialogOption(this->SelectedOption - 1);
       }
    }
 
@@ -82,6 +81,8 @@ void ToolActionDialog::ExecuteSelectedAction() {
       case ToolActionDialogOption::DropTool:
          Player::Get().DropInventoryItemOnGround(this->Tool);
          GameState::Get().ClearAllDialogs();
+         break;
+      default: 
          break;
    }
 }

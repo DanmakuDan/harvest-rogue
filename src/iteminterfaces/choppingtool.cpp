@@ -18,6 +18,8 @@
 #include "player.h"
 #include "choppable.h"
 
+IItemInterface* ChoppingTool::Clone() const { return new ChoppingTool(*this); }
+
 ChoppingTool::ChoppingTool()
 {
 }

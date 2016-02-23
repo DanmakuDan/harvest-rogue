@@ -23,9 +23,9 @@
 
 class Game : public IScene {
 public:
-   virtual void InitializeScreen();
+   void InitializeScreen() override;
 
-   virtual void OnKeyPress(int key);
+   void OnKeyPress(int key) override;
 
    static std::shared_ptr<Game> Construct() {
       return std::shared_ptr<Game>(new Game());

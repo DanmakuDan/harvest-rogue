@@ -15,12 +15,9 @@
 #ifndef HARVEST_ROGUE_NAMEABLE_H
 #define HARVEST_ROGUE_NAMEABLE_H
 
-#include <string>
-
 class INameable {
 public:
    virtual std::string GetName() = 0;
-
    virtual ~INameable() {}
 };
 

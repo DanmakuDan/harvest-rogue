@@ -1,86 +1,85 @@
 {
-  "items": {
-
-
-    "Simple Axe": {
-      "description": "A simple axe",
-      "surfaceAttributes": [ "walkable" ],
-      "itemCategories": [ "tool" ],
-      "colorCode": "white",
-      "characterCode": "P",
-      "gfxTileCode": 49,
-      "interfaces": {
-        "choppingTool": {
-          "strength": 5,
-          "fatigue": 3
-        },
-        "durable": {
-          "durability": 100,
-          "repairable": true
-        },
-        "obtainable": {
-          "stackable": false,
-          "maxStackSize": 1
-        }
-      }
-    },
-
-    "Simple Hoe": {
-      "description": "A simple hoe",
-      "surfaceAttributes": [ "walkable" ],
-      "itemCategories": [ "tool" ],
-      "colorCode": "yellow",
-      "characterCode": "\\",
-      "gfxTileCode": 51,
-      "interfaces": {
-        "tillingTool": {
-          "strength": 5,
-          "fatigue": 3
-        },
-        "durable": {
-          "durability": 100,
-          "repairable": true
-        },
-        "obtainable": {
-          "stackable": false,
-          "maxStackSize": 1
-        },
-        "craftable": {
-          "materialsRequired": {
-            "Wooden Stick": {
-              "amount": 2
+   "items": {
+      "Simple Axe": {
+         "description": "A simple axe",
+         "surfaceAttributes": [ "walkable" ],
+         "itemCategories": [ "tool" ],
+         "colorCode": "white",
+         "characterCode": "P",
+         "gfxTileCode": 49,
+         "interfaces": {
+            "choppingTool": {
+               "strength": 5,
+               "fatigue": 3
+            },
+            "durable": {
+               "durability": 100,
+               "repairable": true
+            },
+            "obtainable": {
+               "stackable": false,
+               "maxStackSize": 1
             }
-          }
-        }
+         }
+      },
+
+      "Simple Hoe": {
+         "description": "A simple hoe",
+         "surfaceAttributes": [ "walkable" ],
+         "itemCategories": [ "tool" ],
+         "colorCode": "yellow",
+         "characterCode": "\\",
+         "gfxTileCode": 51,
+         "interfaces": {
+            "tillingTool": {
+               "strength": 5,
+               "fatigue": 3
+            },
+            "durable": {
+               "durability": 100,
+               "repairable": true
+            },
+            "obtainable": {
+               "stackable": false,
+               "maxStackSize": 1
+            },
+            "craftable": {
+               "secondsToCraft": 1200,
+               "materialsRequired": {
+                  "Wooden Stick": {
+                     "amount": 2
+                  }
+               }
+            }
+         }
+      },
+
+      "Simple Bed": {
+         "description": "A simple bed",
+         "surfaceAttributes": [ ],
+         "itemCategories": [ "tool" ],
+         "colorCode": "brightBlue",
+         "characterCode": "B",
+         "gfxTileCode": 13,
+         "interfaces": {
+            "restable": { }
+         }
+      },
+
+      "Simple Chest": {
+         "description": "A simple chest",
+         "surfaceAttributes": [ ],
+         "itemCategories": [ "container" ],
+         "colorCode": "brightRed",
+         "characterCode": "#",
+         "gfxTileCode": 40,
+         "interfaces": {
+            "container": {
+
+            }
+         }
       }
-    },
-
-    "Simple Bed": {
-      "description": "A simple bed",
-      "surfaceAttributes": [ ],
-      "itemCategories": [ "tool" ],
-      "colorCode": "brightBlue",
-      "characterCode": "B",
-      "gfxTileCode": 13,
-      "interfaces": {
-        "restable": { }
-      }
-    },
-
-    "Simple Chest": {
-      "description": "A simple chest",
-      "surfaceAttributes": [ ],
-      "itemCategories": [ "container" ],
-      "colorCode": "brightRed",
-      "characterCode": "#",
-      "gfxTileCode": 40,
-      "interfaces": {
-        "container": {
-
-        }
-      }
-    }
 
 
-  }
+   }
 }

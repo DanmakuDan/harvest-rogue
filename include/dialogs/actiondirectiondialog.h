@@ -28,10 +28,11 @@ public:
    static std::shared_ptr<ActionDirectionDialog> Construct(ItemPtr targetTool) {
       return std::shared_ptr<ActionDirectionDialog>(new ActionDirectionDialog(targetTool));
    }
-   virtual void OnKeyPress(int key);
-   virtual void Render();
+
+   void OnKeyPress(int key) override;
+   void Render() override;
 private:
-   ActionDirectionDialog(ItemPtr targetTool);
+   explicit ActionDirectionDialog(ItemPtr targetTool);
    ItemPtr TargetTool;
 };
 

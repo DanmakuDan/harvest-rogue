@@ -46,7 +46,7 @@ public:
    std::map<int, std::shared_ptr<LandmarkItem>> GetAllLandmarkItems();
 
    // INameable
-   std::string GetName();
+   std::string GetName() override;
 
 private:
    Landmark(std::string name, int width, int height);

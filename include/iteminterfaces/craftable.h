@@ -19,28 +19,34 @@
 #include "picojson.h"
 #include <map>
 
+
+class Craftable;
+typedef std::shared_ptr<Craftable> CraftablePtr;
 class Craftable
    : public IItemInterface {
 
 private:
    Craftable();
-   Craftable(Craftable const &src) { };
+   Craftable(Craftable const &) { };
 
 public:
    ~Craftable();
 
-   // IItemInterface
-   Craftable* Clone() const { return new Craftable(*this); }
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
-   static std::shared_ptr<Craftable> Deserialize(picojson::value serializedValue);
-
-   std::map<std::string, int> GetRequiredMaterials();
+   std::map<std::string, int> GetRequiredMaterials() const;
    void SetRequiredMaterial(std::string itemName, int amount);
    int GetRequiredMaterialAmount(std::string itemName);
+   int GetSecondsToCraft() const;
+   void SetSecondsToCraft(int value);
+
+   // IItemInterface
+   Craftable* Clone() const override;
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
+   static std::shared_ptr<Craftable> Deserialize(picojson::value serializedValue);
 
 private:
    std::map<std::string, int> RequiredMaterials;
-   static void DeserializeMaterialsRequired(picojson::value serializedValue, Craftable *craftable);
+   static void DeserializeMaterialsRequired(picojson::value serializedValue, CraftablePtr craftable);
+   int SecondsToCraft;
 };
 
 

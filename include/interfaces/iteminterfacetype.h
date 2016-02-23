@@ -16,7 +16,6 @@
 #define HARVEST_ROGUE_ITEMINTERFACETYPE_H
 
 #include <string>
-#include <map>
 
 namespace ItemInterfaceType {
    enum ItemInterfaceType {

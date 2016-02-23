@@ -17,6 +17,8 @@
 #include "player.h"
 #include "growable.h"
 
+IItemInterface* Plantable::Clone() const { return new Plantable(*this); }
+
 Plantable::Plantable()
 {
 }

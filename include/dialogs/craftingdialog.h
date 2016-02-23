@@ -17,7 +17,6 @@
 
 #include "dialog.h"
 #include <map>
-#include <list>
 
 class CraftingDialog : public IDialog {
 public:
@@ -26,15 +25,22 @@ public:
    }
 
    // IDialog
-   virtual void OnKeyPress(int key);
-   virtual void Render();
+   void OnKeyPress(int key) override;
+   void Render() override;
 
 private:
    CraftingDialog();
+   void SelectPreviousCategory();
+   void SelectNextCategory();
+   void SelectNextItem();
+   void SelectPreviousItem();
    void DrawDialogHeader(int x, int y, int width, int height);
    void DrawNavigationDialog();
+   void DrawDetailsDialog();
    void AddItemToCategory(std::string category, ItemPtr item);
-   std::map<std::string, ItemListPtr> ItemCategories;
+   std::map<std::string, std::vector<ItemPtr>> ItemCategories;
+   std::string CurrentCategory;
+   ItemPtr CurrentItem;
 };
 
 

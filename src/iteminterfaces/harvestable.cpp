@@ -19,6 +19,8 @@
 
 std::default_random_engine harvestableGenerator;
 
+IItemInterface* Harvestable::Clone() const { return new Harvestable(*this); }
+
 Harvestable::Harvestable()
 {
 }

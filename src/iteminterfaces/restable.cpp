@@ -15,6 +15,8 @@
 #include "restable.h"
 #include "gamestate.h"
 
+IItemInterface* Restable::Clone() const { return new Restable(*this); }
+
 Restable::Restable()
 {
 }

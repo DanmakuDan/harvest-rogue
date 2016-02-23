@@ -20,9 +20,8 @@
 
 class MainMenu : public IScene {
 public:
-   virtual void InitializeScreen();
-
-   virtual void OnKeyPress(int key);
+   void InitializeScreen() override;
+   void OnKeyPress(int key) override;
 
    virtual void Render();
 

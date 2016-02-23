@@ -14,23 +14,32 @@
 
 #include "player.h"
 #include "gamestate.h"
-#include "textgenerator.h"
 #include "landmarkgenerator.h"
 #include "tickevents.h"
 #include "itemloader.h"
+#include <sstream>
+#include <cstdarg>
 
 GameState::GameState() {
    this->ItemDatabase = ItemLoader::LoadItemDatabase("media/definitionfiles.json");
    this->active = true;
    this->CurrentScene = nullptr;
    this->NextScene = nullptr;
+   this->CurrentLandmarkIndex = 0;
+   this->CurrentSeason = SeasonSpring;
+   this->CurrentDay = 1;
+   this->CurrentHour = 6;
+   this->CurrentMinute = 0;
+   this->CurrentSecond = 0;
+   this->CurrentYear = 1;
+
 }
 
 GameState::~GameState() {
 
 }
 
-std::shared_ptr<IScene> GameState::GetCurrentScene() {
+std::shared_ptr<IScene> GameState::GetCurrentScene() const {
    return std::shared_ptr<IScene>(this->CurrentScene);
 }
 
@@ -38,7 +47,7 @@ void GameState::SetCurrentScene(std::shared_ptr<IScene> newScene) {
    this->NextScene = std::shared_ptr<IScene>(newScene);
 }
 
-bool GameState::IsActive() {
+bool GameState::IsActive() const {
    return this->active;
 }
 
@@ -60,7 +69,7 @@ bool GameState::TransitionScene() {
 
 void GameState::InitializeNewGame() {
    CurrentDay = 1;
-   CurrentSeason = (eGameStateSeason) 0;
+   CurrentSeason = eGameStateSeason(0);
    CurrentYear = 1;
    CurrentHour = 6;
    CurrentMinute = 0;
@@ -78,7 +87,7 @@ void GameState::InitializeNewGame() {
    this->Landmarks.push_back(LandmarkGenerator::GeneratePlayerFarm(playerX, playerY));
    Player::Get().WarpPlayer(playerX, playerY);
 
-   this->CurrentLandmarkIndex = (int)this->Landmarks.size() - 1;
+   this->CurrentLandmarkIndex = int(this->Landmarks.size()) - 1;
 
    // Temporary debug stuff
    this->AddLogMessage("Welcome to Harvest-Rogue, Alpha 1!");
@@ -107,9 +116,9 @@ void GameState::StepSimulation() {
 
    while (CurrentDay > 30) {
       CurrentDay -= 30;
-      CurrentSeason = (eGameStateSeason) ((int) CurrentSeason + 1);
-      if ((int) CurrentSeason > 3) {
-         CurrentSeason = (eGameStateSeason) 0;
+      CurrentSeason = eGameStateSeason(int(CurrentSeason) + 1);
+      if (int(CurrentSeason) > 3) {
+         CurrentSeason = eGameStateSeason(0);
          CurrentYear++;
       }
       std::stringstream seasonNotice;
@@ -118,27 +127,27 @@ void GameState::StepSimulation() {
    }
 }
 
-int GameState::GetCurrentDay() {
+int GameState::GetCurrentDay() const {
    return this->CurrentDay;
 }
 
-eGameStateSeason GameState::GetCurrentSeason() {
+eGameStateSeason GameState::GetCurrentSeason() const {
    return this->CurrentSeason;
 }
 
-int GameState::GetCurrentYear() {
+int GameState::GetCurrentYear() const {
    return this->CurrentYear;
 }
 
-int GameState::GetCurrentHour() {
+int GameState::GetCurrentHour() const {
    return this->CurrentHour;
 }
 
-int GameState::GetCurrentMinute() {
+int GameState::GetCurrentMinute() const {
    return this->CurrentMinute;
 }
 
-int GameState::GetCurrentSecond() {
+int GameState::GetCurrentSecond() const {
    return this->CurrentSecond;
 }
 
@@ -156,21 +165,21 @@ void GameState::AddLogMessageFmt(const std::string format, ...) {
    while (1) {     // Maximum two passes on a POSIX system...
       str.resize(size);
       va_start(ap, format);
-      int n = vsnprintf((char *) str.data(), size, format.c_str(), ap);
+      auto n = vsnprintf(const_cast<char *>(str.data()), size, format.c_str(), ap);
       va_end(ap);
-      if (n > -1 && n < (int)size) {  // Everything worked
-         str.resize((unsigned long)n);
+      if (n > -1 && n < int(size)) {  // Everything worked
+         str.resize(unsigned long(n));
          this->AddLogMessage(str);
          return;
       }
       if (n > -1)  // Needed size returned
-         size = (unsigned long)n + 1;   // For null char
+         size = unsigned long(n) + 1;   // For null char
       else
          size *= 2;      // Guess at a larger size (OS specific)
    }
 }
 
-std::vector<std::string> GameState::GetLogMessages() {
+std::vector<std::string> GameState::GetLogMessages() const {
    return this->Log;
 }
 
@@ -188,8 +197,7 @@ std::shared_ptr<Landmark> GameState::GetCurrentLandmark() {
 
 }
 
-std::vector<std::shared_ptr<Landmark>> GameState::GetAllLandmarks()
-{
+std::vector<std::shared_ptr<Landmark>> GameState::GetAllLandmarks() const {
    return this->Landmarks;
 }
 
@@ -238,8 +246,7 @@ void GameState::SleepUntilNextMorning(int hour, int minute, int second) {
    Player::Get().SetIsSleeping(false);
 }
 
-std::map<std::string, ItemPtr> GameState::GetItemDatabase()
-{
+std::map<std::string, ItemPtr> GameState::GetItemDatabase() const {
    return this->ItemDatabase;
 }
 

@@ -53,9 +53,13 @@ Action::Action Keybinding::GetAction(int key) {
 }
 
 picojson::value Keybinding::Serialize(Keybinding binding) {
-   // TODO
+   picojson::object result;
+
+   return picojson::value(result);
 }
 
 Keybinding Keybinding::Deserialize(picojson::value serializedValue) {
-   // TODO
+   Keybinding result;
+
+   return result;
 }

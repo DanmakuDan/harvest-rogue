@@ -18,7 +18,6 @@
 
 
 #include "iteminterface.h"
-#include "choppingtool.h"
 #include <memory>
 #include <string>
 #include <list>
@@ -32,7 +31,7 @@ struct DropsLootItem {
 
 class DropsLoot : public IItemInterface {
 public:
-   IItemInterface* Clone() const { return new DropsLoot(*this); }
+   IItemInterface* Clone() const override;
 private:
    DropsLoot();
 
@@ -40,7 +39,7 @@ private:
       this->Loot = src.Loot;
    };
 
-   DropsLoot &operator=(DropsLoot const &) { };
+   DropsLoot &operator=(DropsLoot const &) = delete;
 public:
    ~DropsLoot();
    static std::shared_ptr<DropsLoot> Deserialize(picojson::value serializedValue);
@@ -48,7 +47,7 @@ public:
    void DropLoot(int x, int y);
 
    // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
 private:
 
    std::list<DropsLootItem> Loot;

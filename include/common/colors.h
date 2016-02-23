@@ -15,8 +15,6 @@
 #ifndef HARVEST_ROGUE_COLORS_H
 #define HARVEST_ROGUE_COLORS_H
 
-#include <string>
-
 namespace Color {
    enum Color {
       Unknown = ~0,
@@ -40,11 +38,11 @@ namespace Color {
    };
 
    static Color Inverse(Color color) {
-      return (Color)(color + 16);
+      return Color(color + 16);
    }
 
    static Color Pure(Color color) {
-      return (Color)((int)color & 0xF);
+      return Color(int(color) & 0xF);
    }
 
    static Color FromString(std::string color) {

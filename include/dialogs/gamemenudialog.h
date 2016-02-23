@@ -40,8 +40,8 @@ public:
    }
 
    // IDialog
-   virtual void OnKeyPress(int key);
-   virtual void Render();
+   void OnKeyPress(int key) override;
+   void Render() override;
 
 private:
    GameMenuDialog();

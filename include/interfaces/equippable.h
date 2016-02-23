@@ -16,7 +16,6 @@
 #define HARVEST_ROGUE_EQUIPPABLE_H
 
 #include "item.h"
-#include "direction.h"
 
 class IEquippable {
 public:

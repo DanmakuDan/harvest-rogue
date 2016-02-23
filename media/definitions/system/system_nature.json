@@ -1,68 +1,69 @@
 {
-  "items": {
+   "items": {
 
 
-    "Birch Tree": {
-      "description": "A birch tree",
-      "surfaceAttributes": [ "visualObstruction" ],
-      "itemCategories": [ ],
-      "colorCode": "yellow",
-      "characterCode": "T",
-      "gfxTileCode": 9,
-      "interfaces": {
-        "choppable": {
-          "chopPoints": 20
-        },
-        "dropsLoot": {
-          "Birch Log": {
-            "chance": 1.0,
-            "amount": {
-              "min": 3,
-              "max": 6
+      "Birch Tree": {
+         "description": "A birch tree",
+         "surfaceAttributes": [ "visualObstruction" ],
+         "itemCategories": [ ],
+         "colorCode": "yellow",
+         "characterCode": "T",
+         "gfxTileCode": 9,
+         "interfaces": {
+            "choppable": {
+               "chopPoints": 20
+            },
+            "dropsLoot": {
+               "Birch Twig": {
+                  "chance": 1.0,
+                  "amount": {
+                     "min": 3,
+                     "max": 6
+                  }
+               }
             }
-          }
-        }
-      }
-    },
+         }
+      },
 
 
-    "Birch Log": {
-      "description": "A birch branch",
-      "surfaceAttributes": [ "walkable" ],
-      "itemCategories": [ "craftingMaterial" ],
-      "colorCode": "yellow",
-      "characterCode": "-",
-      "gfxTileCode": 7,
-      "interfaces": {
-        "obtainable": {
-          "stackable": true,
-          "maxStackSize": 5
-        }
-      }
-    },
-    
-    "Wooden Stick": {
-      "description": "Found in sticky situations",
-      "surfaceAttributes": [ "walkable" ],
-      "itemCategories": [ "craftingMaterial" ],
-      "colorCode": "yellow",
-      "characterCode": "\\",
-      "gfxTileCode": 7,
-      "interfaces": {
-        "obtainable": {
-          "stackable": true,
-          "maxStackSize": 30
-        },
-        "craftable": {
-          "materialsRequired": {
-            "Birch Log": {
-              "amount": 5
+      "Birch Twig": {
+         "description": "A birch branch",
+         "surfaceAttributes": [ "walkable" ],
+         "itemCategories": [ "craftingMaterial" ],
+         "colorCode": "yellow",
+         "characterCode": "-",
+         "gfxTileCode": 7,
+         "interfaces": {
+            "obtainable": {
+               "stackable": true,
+               "maxStackSize": 5
             }
-          }
-        }
+         }
+      },
+
+      "Wooden Stick": {
+         "description": "Found in sticky situations",
+         "surfaceAttributes": [ "walkable" ],
+         "itemCategories": [ "craftingMaterial" ],
+         "colorCode": "yellow",
+         "characterCode": "\\",
+         "gfxTileCode": 7,
+         "interfaces": {
+            "obtainable": {
+               "stackable": true,
+               "maxStackSize": 30
+            },
+            "craftable": {
+               "secondsToCraft": 60,
+               "materialsRequired": {
+                  "Birch Log": {
+                     "amount": 5
+                  }
+               }
+            }
+         }
       }
-    }
 
 
-  }
+   }
 }

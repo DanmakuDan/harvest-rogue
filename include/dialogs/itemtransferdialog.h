@@ -27,8 +27,9 @@ public:
    static std::shared_ptr<ItemTransferDialog> Construct(ItemContainerPtr firstContainer, ItemContainerPtr secondContainer) {
       return std::shared_ptr<ItemTransferDialog>(new ItemTransferDialog(firstContainer, secondContainer));
    }
-   virtual void OnKeyPress(int key);
-   virtual void Render();
+
+   void OnKeyPress(int key) override;
+   void Render() override;
 private:
    ItemTransferDialog(ItemContainerPtr firstContainer, ItemContainerPtr secondContainer);
 

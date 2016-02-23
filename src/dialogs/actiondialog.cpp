@@ -28,17 +28,17 @@ void ActionDialog::OnKeyPress(int key) {
 
    if (Action::Requested(action, Action::MenuDown)) {
       if (this->SelectedOption >= ActionDialogOption::_MAX - 1) {
-         this->SelectedOption = (ActionDialogOption::ActionDialogOption) 0;
+         this->SelectedOption = ActionDialogOption::ActionDialogOption(0);
       } else {
-         this->SelectedOption = (ActionDialogOption::ActionDialogOption) ((int) this->SelectedOption + 1);
+         this->SelectedOption = ActionDialogOption::ActionDialogOption(this->SelectedOption + 1);
       }
    }
 
    if (Action::Requested(action, Action::MenuUp)) {
-      if (this->SelectedOption <= (ActionDialogOption::ActionDialogOption) 0) {
-         this->SelectedOption = (ActionDialogOption::ActionDialogOption) ((int) ActionDialogOption::_MAX - 1);
+      if (this->SelectedOption <= ActionDialogOption::ActionDialogOption(0)) {
+         this->SelectedOption = ActionDialogOption::ActionDialogOption(ActionDialogOption::_MAX - 1);
       } else {
-         this->SelectedOption = (ActionDialogOption::ActionDialogOption) ((int) this->SelectedOption - 1);
+         this->SelectedOption = ActionDialogOption::ActionDialogOption(this->SelectedOption - 1);
       }
    }
 
@@ -86,6 +86,9 @@ void ActionDialog::ExecuteSelectedAction() {
 
       case ActionDialogOption::InteractWith:
          Player::Get().InteractWith();
+         break;
+
+      default:
          break;
    }
 }

@@ -19,6 +19,8 @@
 
 std::default_random_engine generator;
 
+IItemInterface* DropsLoot::Clone() const { return new DropsLoot(*this); }
+
 DropsLoot::DropsLoot()
 {
 }

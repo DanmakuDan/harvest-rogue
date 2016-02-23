@@ -14,6 +14,8 @@
 
 #include "durable.h"
 
+IItemInterface* Durable::Clone() const { return new Durable(*this); }
+
 Durable::Durable()
 {
 }

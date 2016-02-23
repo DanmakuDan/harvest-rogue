@@ -22,6 +22,8 @@ Craftable::~Craftable() {
 
 }
 
+Craftable* Craftable::Clone() const { return new Craftable(*this); }
+
 ItemInterfaceType::ItemInterfaceType Craftable::GetInterfaceType() {
    return ItemInterfaceType::Craftable;
 }
@@ -36,7 +38,16 @@ std::shared_ptr<Craftable> Craftable::Deserialize(picojson::value serializedValu
    auto data = serializedValue.get<picojson::object>();
    for (auto item : data) {
       if (item.first == "materialsRequired") {
-         //Craftable::DeserializeMaterialsRequired(item.second, result);
+         Craftable::DeserializeMaterialsRequired(item.second, result);
+         continue;
+      }
+
+      if (item.first == "secondsToCraft") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         result->SetSecondsToCraft(int(item.second.get<double>()));
          continue;
       }
 
@@ -46,7 +57,7 @@ std::shared_ptr<Craftable> Craftable::Deserialize(picojson::value serializedValu
    return result;
 }
 
-std::map<std::string, int> Craftable::GetRequiredMaterials() {
+std::map<std::string, int> Craftable::GetRequiredMaterials() const {
    return this->RequiredMaterials;
 }
 
@@ -62,7 +73,15 @@ int Craftable::GetRequiredMaterialAmount(std::string itemName) {
    return this->RequiredMaterials[itemName];
 }
 
-void Craftable::DeserializeMaterialsRequired(picojson::value serializedValue, Craftable *craftable) {
+int Craftable::GetSecondsToCraft() const {
+   return this->SecondsToCraft;
+}
+
+void Craftable::SetSecondsToCraft(int value) {
+   this->SecondsToCraft = value;
+}
+
+void Craftable::DeserializeMaterialsRequired(picojson::value serializedValue, CraftablePtr craftable) {
    if (!serializedValue.is<picojson::object>()) {
       throw;
    }
@@ -77,7 +96,7 @@ void Craftable::DeserializeMaterialsRequired(picojson::value serializedValue, Cr
                throw;
             }
 
-            craftable->SetRequiredMaterial(itemName, (int)itemDetails.second.get<double>());
+            craftable->SetRequiredMaterial(itemName, int(itemDetails.second.get<double>()));
             continue;
          }
 

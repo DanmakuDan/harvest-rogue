@@ -14,6 +14,7 @@ along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "screen.h"
 #include "config.h"
+#include "tiles.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -70,11 +71,11 @@ Screen::Screen() {
 
    int w, h;
    fontTexture = IMG_LoadTexture(renderer, "media/font16.png");
-   SDL_QueryTexture(fontTexture, NULL, NULL, &w, &h);
+   SDL_QueryTexture(fontTexture, nullptr, nullptr, &w, &h);
    TextTilesPerRow = w / TileSize;
 
    tileTexture = IMG_LoadTexture(renderer, "media/tileset16.png");
-   SDL_QueryTexture(tileTexture, NULL, NULL, &w, &h);
+   SDL_QueryTexture(tileTexture, nullptr, nullptr, &w, &h);
    GfxTilesPerRow = w / TileSize;
 
    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
@@ -93,15 +94,13 @@ Screen::~Screen()
    SDL_Quit();
 }
 
-int Screen::GetWidth()
-{
+int Screen::GetWidth() const {
    int width, height;
    SDL_GetWindowSize(window, &width, &height);
    return width / ActualTileSize;
 }
 
-int Screen::GetHeight()
-{
+int Screen::GetHeight() const {
    int width, height;
    SDL_GetWindowSize(window, &width, &height);
    return height / ActualTileSize;
@@ -124,7 +123,7 @@ void Screen::WriteText(int x, int y, std::string text, Color::Color color)
 void Screen::WriteCenterText(int y, std::string text, Color::Color color)
 {
    auto strWidth = text.find('\n');
-   int x = (this->GetWidth() / 2) - ((int)strWidth / 2);
+   int x = (this->GetWidth() / 2) - (int(strWidth) / 2);
    this->WriteText(x, y, text, color);
 }
 
@@ -142,7 +141,7 @@ void Screen::WriteButton(int x, int y, int width, std::string text, bool active)
       SDL_RenderFillRect(renderer, &destRect);
    }
 
-   this->WriteText((int)captionLeft, y, text, active ? Color::Inverse(Color::White) : Color::White);
+   this->WriteText(int(captionLeft), y, text, active ? Color::Inverse(Color::White) : Color::White);
 }
 
 void Screen::ClearLine(int y, Color::Color color)
@@ -280,5 +279,5 @@ void Screen::WriteWindow(int x, int y, int width, int height, std::string text)
    }
 
    auto captionLeft = (x + (width / 2)) - (text.size() / 2);
-   this->WriteText((int)captionLeft, y, text.c_str(), Color::White);
+   this->WriteText(int(captionLeft), y, text.c_str(), Color::White);
 }

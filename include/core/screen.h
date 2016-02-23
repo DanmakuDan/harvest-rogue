@@ -15,9 +15,7 @@
 #ifndef HARVEST_ROGUE_SCREEN_H
 #define HARVEST_ROGUE_SCREEN_H
 
-#include <memory>
 #include <string>
-#include "tiles.h"
 #include "colors.h"
 
 class Screen {
@@ -26,7 +24,7 @@ private:
 
    Screen(Screen const &) { };
 
-   Screen &operator=(Screen const &) { };
+   Screen &operator=(Screen const &) = delete;
 public:
    ~Screen();
 
@@ -35,9 +33,9 @@ public:
       return screen;
    }
 
-   int GetWidth();
+   int GetWidth() const;
 
-   int GetHeight();
+   int GetHeight() const;
 
    void WriteText(int x, int y, std::string text, Color::Color color = Color::White);
 

@@ -16,6 +16,8 @@
 #include "gamestate.h"
 #include "player.h"
 
+IItemInterface* TillingTool::Clone() const { return new TillingTool(*this); }
+
 TillingTool::TillingTool()
 {
 }

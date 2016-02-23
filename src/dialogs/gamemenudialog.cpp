@@ -32,17 +32,17 @@ void GameMenuDialog::OnKeyPress(int key) {
 
    if (Action::Requested(action, Action::MenuDown)) {
       if (this->SelectedOption >= GameMenuDialogOption::_MAX - 1) {
-         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) 0;
+         this->SelectedOption = GameMenuDialogOption::GameMenuDialogOption(0);
       } else {
-         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) ((int) this->SelectedOption + 1);
+         this->SelectedOption = GameMenuDialogOption::GameMenuDialogOption(this->SelectedOption + 1);
       }
    }
 
    if (Action::Requested(action, Action::MenuUp)) {
-      if (this->SelectedOption <= (GameMenuDialogOption::GameMenuDialogOption) 0) {
-         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) ((int) GameMenuDialogOption::_MAX - 1);
+      if (this->SelectedOption <= GameMenuDialogOption::GameMenuDialogOption(0)) {
+         this->SelectedOption = GameMenuDialogOption::GameMenuDialogOption(GameMenuDialogOption::_MAX - 1);
       } else {
-         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) ((int) this->SelectedOption - 1);
+         this->SelectedOption = GameMenuDialogOption::GameMenuDialogOption(this->SelectedOption - 1);
       }
    }
 

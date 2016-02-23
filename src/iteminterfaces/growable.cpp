@@ -15,6 +15,8 @@
 #include "growable.h"
 #include "gamestate.h"
 
+IItemInterface* Growable::Clone() const { return new Growable(*this); }
+
 Growable::Growable()
 {
 }

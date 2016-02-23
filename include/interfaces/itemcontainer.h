@@ -15,8 +15,6 @@
 #ifndef HARVEST_ROGUE_ITEMCONTAINER_H
 #define HARVEST_ROGUE_ITEMCONTAINER_H
 
-#include <vector>
-#include <memory>
 #include "item.h"
 #include "nameable.h"
 

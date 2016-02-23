@@ -25,6 +25,8 @@ Container::~Container()
 {
 }
 
+Container* Container::Clone() const { return new Container(*this); }
+
 std::shared_ptr<Container> Container::Deserialize(picojson::value serializedValue)
 {
    auto result = std::shared_ptr<Container>(new Container());

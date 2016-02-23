@@ -123,7 +123,7 @@ void ItemLoader::ParseItemTopLevelAttribute(ItemPtr item, std::pair<const std::s
 
       auto gfxTileCode = source.second.get<double>();
 
-      item->SetGfxTileCode((int)gfxTileCode);
+      item->SetGfxTileCode(int(gfxTileCode));
       return;
    }
 

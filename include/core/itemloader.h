@@ -18,7 +18,6 @@
 
 #include <item.h>
 #include <map>
-#include <string>
 #include "picojson.h"
 
 class ItemLoader {

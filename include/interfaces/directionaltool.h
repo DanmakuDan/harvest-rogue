@@ -19,6 +19,8 @@
 
 class IDirectionalTool {
 public:
+   virtual ~IDirectionalTool() {}
+
    virtual void Use(Direction::Direction direction) = 0;
 };
 

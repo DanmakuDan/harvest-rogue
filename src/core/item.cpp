@@ -19,10 +19,12 @@
 #include "obtainable.h"
 #include "player.h"
 #include "interactable.h"
+#include "useable.h"
+#include "equippable.h"
 
 ItemPtr Item::Clone(ItemPtr source)
 {
-   auto result = ItemPtr(new Item());
+   auto result = std::make_shared<Item>();
 
    result->Name = source->Name;
    result->Description = source->Description;
@@ -45,12 +47,16 @@ ItemPtr Item::Clone(ItemPtr source)
    return result;
 }
 
-Item::Item()
+Item::Item(): 
+   ColorCode(Color::White), 
+   CharacterCode(0), 
+   GfxTileCode(0), 
+   SurfaceAttributes(0), 
+   Count(1)
 {
-   this->Count = 1;
 }
 
-std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> Item::GetInterfaces()
+std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> Item::GetInterfaces() const
 {
    return this->ItemInterfaces;
 }
@@ -79,7 +85,7 @@ void Item::SetName(std::string name)
    this->Name = name;
 }
 
-std::string Item::GetDescription()
+std::string Item::GetDescription() const
 {
    return this->Description;
 }
@@ -141,7 +147,7 @@ bool Item::IsEquippable()
    return true;
 }
 
-bool Item::IsInteractable()
+bool Item::IsInteractable() const
 {
    for (auto i : this->GetInterfaces()) {
       if (std::dynamic_pointer_cast<IInteractable>(i.second) != nullptr) {
@@ -267,7 +273,7 @@ void Item::SetDescription(std::string description)
    this->Description = description;
 }
 
-SurfaceAttribute::SurfaceAttribute Item::GetSurfaceAttributes()
+SurfaceAttribute::SurfaceAttribute Item::GetSurfaceAttributes() const
 {
    return this->SurfaceAttributes;
 }
@@ -282,7 +288,7 @@ void Item::SetColorCode(Color::Color colorCode)
    this->ColorCode = colorCode;
 }
 
-Color::Color Item::GetColorCode()
+Color::Color Item::GetColorCode() const
 {
    return this->ColorCode;
 }
@@ -292,7 +298,7 @@ void Item::SetCharacterCode(char characterCode)
    this->CharacterCode = characterCode;
 }
 
-char Item::GetCharacterCode()
+char Item::GetCharacterCode() const
 {
    return this->CharacterCode;
 }
@@ -302,12 +308,12 @@ void Item::SetGfxTileCode(int gfxTileCode)
    this->GfxTileCode = gfxTileCode;
 }
 
-int Item::GetGfxTileCode()
+int Item::GetGfxTileCode() const
 {
    return this->GfxTileCode;
 }
 
-std::list<ItemCategory::ItemCategory> Item::GetItemCategories()
+std::list<ItemCategory::ItemCategory> Item::GetItemCategories() const
 {
    return this->ItemCategories;
 }
@@ -317,7 +323,7 @@ void Item::SetItemCategories(std::list<ItemCategory::ItemCategory> itemCategorie
    this->ItemCategories = itemCategories;
 }
 
-int Item::GetCount()
+int Item::GetCount() const
 {
    return this->Count;
 }

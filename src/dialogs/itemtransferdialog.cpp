@@ -73,7 +73,7 @@ void ItemTransferDialog::DrawDialogHeader(int x, int y, int width, int height)
    std::string dialogTitle = "Inventory Transfer";
 
    Screen::Get().WriteWindow(x, y, width, height);
-   auto textLeft = x + (width / 2) - ((int)dialogTitle.size() / 2);
+   auto textLeft = x + (width / 2) - (int(dialogTitle.size()) / 2);
    Screen::Get().WriteText(textLeft, y + 1, dialogTitle);
 }
 
@@ -87,7 +87,7 @@ void ItemTransferDialog::DrawItemDialog(int x, int y, int width, int height, eIt
 
    // Draw the caption bar above the item window
    Screen::Get().WriteWindow(x, y - 3, width, 3);
-   auto containerNameLength = (int)container->GetName().size();
+   auto containerNameLength = int(container->GetName().size());
    Screen::Get().WriteText(x + (width / 2) - (containerNameLength / 2), 8, container->GetName());
 
    // Draw the item window frame
@@ -103,7 +103,7 @@ void ItemTransferDialog::DrawItemDialog(int x, int y, int width, int height, eIt
    }
 
    if (*viewOffset + maxItemsToShow > containerItems.size() + 1) {
-      *viewOffset = ((int)containerItems.size() + 1) - maxItemsToShow;
+      *viewOffset = (int(containerItems.size()) + 1) - maxItemsToShow;
    }
 
    if (*viewOffset < 0) {

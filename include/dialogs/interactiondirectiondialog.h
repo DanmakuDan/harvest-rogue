@@ -26,8 +26,9 @@ public:
    static std::shared_ptr<InteractionDirectionDialog> Construct() {
       return std::shared_ptr<InteractionDirectionDialog>(new InteractionDirectionDialog());
    }
-   virtual void OnKeyPress(int key);
-   virtual void Render();
+
+   void OnKeyPress(int key) override;
+   void Render() override;
 private:
    InteractionDirectionDialog();
 };

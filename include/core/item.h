@@ -36,7 +36,7 @@ class Item :
 public:
    static ItemPtr Clone(const ItemPtr source);
    Item();
-   std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> GetInterfaces();
+   std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> GetInterfaces() const;
    bool HasInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType);
    void AddInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType, std::shared_ptr<IItemInterface> itemInterface);
    void SetName(std::string name);
@@ -45,22 +45,22 @@ public:
    void SetColorCode(Color::Color colorCode);
    void SetCharacterCode(char characterCode);
    void SetGfxTileCode(int gfxTileCode);
-   std::list<ItemCategory::ItemCategory> GetItemCategories();
+   std::list<ItemCategory::ItemCategory> GetItemCategories() const;
    void SetItemCategories(std::list<ItemCategory::ItemCategory> itemCategories);
-   int GetCount();
+   int GetCount() const;
    void SetCount(int count);
 
-   std::string GetDescription();
-   SurfaceAttribute::SurfaceAttribute GetSurfaceAttributes();
-   char GetCharacterCode();
-   int GetGfxTileCode();
-   Color::Color GetColorCode();
+   std::string GetDescription() const;
+   SurfaceAttribute::SurfaceAttribute GetSurfaceAttributes() const;
+   char GetCharacterCode() const;
+   int GetGfxTileCode() const;
+   Color::Color GetColorCode() const;
    bool IsTakeable();
    bool IsUsable();
    void Use();
    void Use(Direction::Direction direction);
    bool IsEquippable();
-   bool IsInteractable();
+   bool IsInteractable() const;
    void Interact();
    void Destruct(bool dropLoot);
    void RemoveOne();
@@ -73,7 +73,7 @@ public:
    }
 
    // INameable
-   std::string GetName();
+   std::string GetName() override;
 
 private:
    std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> ItemInterfaces;

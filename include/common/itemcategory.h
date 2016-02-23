@@ -37,14 +37,15 @@ namespace ItemCategory {
       return Unknown;
    }
 
-   static std::string ToString(ItemCategory itemCategory) {
+   static std::string GetDescription(ItemCategory itemCategory) {
       switch(itemCategory) {
          case Unknown: return "Unknown";
          case Container: return "Container";
          case Crop: return "Crop";
          case Seed: return "Seed";
          case Tool: return "Tool";
-         case CraftingMaterial: return "CraftingMaterial";
+         case CraftingMaterial: return "Crafting Material";
+         default: return "[Unknown]";
       }
    }
 }

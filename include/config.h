@@ -34,19 +34,19 @@ public:
       return config;
    }
 
-   int GetScreenWidth();
+   int GetScreenWidth() const;
    void SetScreenWidth(int width);
 
-   int GetScreenHeight();
+   int GetScreenHeight() const;
    void SetScreenHeight(int height);
 
-   int GetScreenX();
+   int GetScreenX() const;
    void SetScreenX(int x);
 
-   int GetScreenY();
+   int GetScreenY() const;
    void SetScreenY(int y);
 
-   Keybinding GetKeybinding();
+   Keybinding GetKeybinding() const;
    void SetKeybinding(Keybinding binding);
 
 private:
@@ -76,8 +76,8 @@ private:
    void Deserialize(picojson::value serializedValue);
    int ScreenWidth = 1280;
    int ScreenHeight = 720;
-   int ScreenX = 0;
-   int ScreenY = 0;
+   int ScreenX = 30;
+   int ScreenY = 50;
 
    Keybinding keybinding = Keybinding();
 };

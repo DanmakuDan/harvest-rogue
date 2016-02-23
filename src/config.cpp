@@ -15,7 +15,7 @@
 #include "config.h"
 
 
-int Config::GetScreenWidth() {
+int Config::GetScreenWidth() const {
    return this->ScreenWidth;
 }
 
@@ -23,7 +23,7 @@ void Config::SetScreenWidth(int width) {
    this->ScreenWidth = width;
 }
 
-int Config::GetScreenHeight() {
+int Config::GetScreenHeight() const {
    return this->ScreenHeight;
 }
 
@@ -31,7 +31,7 @@ void Config::SetScreenHeight(int height) {
    this->ScreenHeight = height;
 }
 
-Keybinding Config::GetKeybinding() {
+Keybinding Config::GetKeybinding() const {
    return this->keybinding;
 }
 
@@ -42,10 +42,10 @@ void Config::SetKeybinding(Keybinding binding) {
 picojson::value Config::Serialize() {
    picojson::object result;
 
-   result["screenWidth"] = picojson::value((double)this->GetScreenWidth());
-   result["screenHeight"] = picojson::value((double)this->GetScreenHeight());
-   result["screenX"] = picojson::value((double)this->GetScreenX());
-   result["screenY"] = picojson::value((double)this->GetScreenY());
+   result["screenWidth"] = picojson::value(double(this->GetScreenWidth()));
+   result["screenHeight"] = picojson::value(double(this->GetScreenHeight()));
+   result["screenX"] = picojson::value(double(this->GetScreenX()));
+   result["screenY"] = picojson::value(double(this->GetScreenY()));
    // TODO: Include keybindings?
 
    return picojson::value(result);
@@ -67,7 +67,7 @@ void Config::Deserialize(picojson::value serializedValue) {
          if (value == 0) {
             continue;
          }
-         this->SetScreenWidth((int)value);
+         this->SetScreenWidth(int(value));
          continue;
       }
 
@@ -80,7 +80,7 @@ void Config::Deserialize(picojson::value serializedValue) {
          if (value == 0) {
             continue;
          }
-         this->SetScreenHeight((int)value);
+         this->SetScreenHeight(int(value));
          continue;
       }
 
@@ -93,7 +93,7 @@ void Config::Deserialize(picojson::value serializedValue) {
          if (value == 0) {
             continue;
          }
-         this->SetScreenX((int)value);
+         this->SetScreenX(int(value));
          continue;
       }
 
@@ -106,7 +106,7 @@ void Config::Deserialize(picojson::value serializedValue) {
          if (value == 0) {
             continue;
          }
-         this->SetScreenY((int)value);
+         this->SetScreenY(int(value));
          continue;
       }
 
@@ -119,7 +119,7 @@ void Config::Deserialize(picojson::value serializedValue) {
    }
 }
 
-int Config::GetScreenX() {
+int Config::GetScreenX() const {
    return this->ScreenX;
 }
 
@@ -127,7 +127,7 @@ void Config::SetScreenX(int x) {
    this->ScreenX = x;
 }
 
-int Config::GetScreenY() {
+int Config::GetScreenY() const {
    return this->ScreenY;
 }
 
