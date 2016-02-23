@@ -25,18 +25,20 @@
 #include "direction.h"
 #include "nameable.h"
 
+
 // The base class for all items in the system.
 // This object specifically tracks all item interfaces for this item, as well as the number of items.
+class Item;
+typedef std::shared_ptr<Item> ItemPtr;
 class Item : 
    public INameable,
    public std::enable_shared_from_this<Item> {
 public:
-   static Item Clone(const Item& source);
+   static ItemPtr Clone(const ItemPtr source);
    Item();
    std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> GetInterfaces();
    bool HasInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType);
    void AddInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType, std::shared_ptr<IItemInterface> itemInterface);
-   void RemoveInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType);
    void SetName(std::string name);
    void SetDescription(std::string description);
    void SetSurfaceAttributes(SurfaceAttribute::SurfaceAttribute surfaceAttributes);
@@ -85,7 +87,6 @@ private:
    int Count;
 };
 
-typedef std::shared_ptr<Item> ItemPtr;
 typedef std::vector<ItemPtr> ItemListPtr;
 
 #endif //HARVEST_ROGUE_ITEM_H

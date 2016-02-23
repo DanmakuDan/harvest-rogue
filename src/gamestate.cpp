@@ -238,14 +238,14 @@ void GameState::SleepUntilNextMorning(int hour, int minute, int second) {
    Player::Get().SetIsSleeping(false);
 }
 
-std::map<std::string, Item> GameState::GetItemDatabase()
+std::map<std::string, ItemPtr> GameState::GetItemDatabase()
 {
    return this->ItemDatabase;
 }
 
 ItemPtr GameState::GetItemFromItemDatabase(std::string itemName)
 {
-   return std::make_shared<Item>(Item::Clone(this->ItemDatabase[itemName]));
+   return Item::Clone(this->ItemDatabase[itemName]);
 }
 
 void GameState::ProcessDailyTick() {

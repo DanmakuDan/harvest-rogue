@@ -158,8 +158,7 @@ void Game::RenderMap() {
 
    mapOffsetX = mapOffsetX < 0 ? 0 : mapOffsetX;
    mapOffsetY = mapOffsetY < 0 ? 0 : mapOffsetY;
-
-   Screen::Get().WriteWindow(startX - 1, startY - 1, drawWidth + 1, drawHeight, "");
+   
    // Draw loop
    for (auto mapY = 0; mapY < drawHeight - startY && mapY <= (int)totalMapHeight - startY; mapY++) {
       for (auto mapX = 0; mapX < drawWidth - startX && mapX <= (int)totalMapWidth - startX; mapX++) {

@@ -20,21 +20,32 @@
 namespace ItemCategory {
    enum ItemCategory {
       Unknown,
-      Tool,
       Container,
-      CraftingMaterial,
+      Crop,
       Seed,
-      Crop
+      Tool,
+      CraftingMaterial
    };
 
    static ItemCategory FromString(std::string itemCategory) {
-      if (itemCategory == "seed") return Seed;
-      if (itemCategory == "crop") return Crop;
-      if (itemCategory == "tool") return Tool;
       if (itemCategory == "container") return Container;
+      if (itemCategory == "crop") return Crop;
+      if (itemCategory == "seed") return Seed;
+      if (itemCategory == "tool") return Tool;
       if (itemCategory == "craftingMaterial") return CraftingMaterial;
 
       return Unknown;
+   }
+
+   static std::string ToString(ItemCategory itemCategory) {
+      switch(itemCategory) {
+         case Unknown: return "Unknown";
+         case Container: return "Container";
+         case Crop: return "Crop";
+         case Seed: return "Seed";
+         case Tool: return "Tool";
+         case CraftingMaterial: return "CraftingMaterial";
+      }
    }
 }
 

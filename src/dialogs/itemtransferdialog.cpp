@@ -73,7 +73,7 @@ void ItemTransferDialog::DrawDialogHeader(int x, int y, int width, int height)
    std::string dialogTitle = "Inventory Transfer";
 
    Screen::Get().WriteWindow(x, y, width, height);
-   auto textLeft = x + (width / 2) - (dialogTitle.size() / 2);
+   auto textLeft = x + (width / 2) - ((int)dialogTitle.size() / 2);
    Screen::Get().WriteText(textLeft, y + 1, dialogTitle);
 }
 
@@ -190,7 +190,7 @@ void ItemTransferDialog::MoveSelectorInWindow(int adjustment)
    *selectorIndex += adjustment;
 
    if (*selectorIndex < 0) {
-      *selectorIndex = itemContainer->GetAllItems().size();
+      *selectorIndex = (int)itemContainer->GetAllItems().size();
    }
 
    if (*selectorIndex > itemContainer->GetAllItems().size()) {
@@ -235,7 +235,7 @@ void ItemTransferDialog::HandleActionButtonPressed()
 
    if (*selectorIndex >= itemContainer->GetAllItems().size()) {
       // They are either moving the item to the end of a stack, or swapping to the other stack
-      auto itemToMove = std::make_shared<Item>(Item::Clone(*this->SelectedItem));
+      auto itemToMove = Item::Clone(this->SelectedItem);
       this->RemoveItemFromEitherContainer(this->SelectedItem);
       this->SelectedItem = nullptr;
       this->AddItemToEndOfCurrentContainer(itemToMove);
@@ -286,8 +286,8 @@ void ItemTransferDialog::AddItemToEndOfCurrentContainer(ItemPtr item)
 
 void ItemTransferDialog::SwapItems(ItemPtr itemA, ItemPtr itemB)
 {
-   auto itemToMoveA = std::make_shared<Item>(Item::Clone(*itemA));
-   auto itemToMoveB = std::make_shared<Item>(Item::Clone(*itemB));
+   auto itemToMoveA = Item::Clone(itemA);
+   auto itemToMoveB = Item::Clone(itemB);
 
    this->FirstContainer->SwapItem(itemA, itemToMoveB);
    this->SecondContainer->SwapItem(itemA, itemToMoveB);

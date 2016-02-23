@@ -20,7 +20,7 @@ along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 #include <sstream>
 
 static int TileSize = 16;
-static int Zoom = 2;
+static int Zoom = 1;
 
 static SDL_Window *window;
 static SDL_Renderer *renderer;

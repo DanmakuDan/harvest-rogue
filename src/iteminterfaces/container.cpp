@@ -58,7 +58,7 @@ void Container::AddItem(ItemPtr item, int count, bool dontStack)
       throw; // This is not implemented yet.
    }
 
-   auto newItem = std::make_shared<Item>(Item::Clone(*item));
+   auto newItem = Item::Clone(item);
    this->Contents.push_back(newItem);
 }
 
@@ -95,7 +95,7 @@ void Container::SplitItem(ItemPtr item)
       return;
    }
 
-   auto newItem = std::make_shared<Item>(Item::Clone(*item));
+   auto newItem = Item::Clone(item);
    auto splitSize = item->GetCount() / 2;
    auto difference = (item->GetCount() - splitSize); // We don't want rounding issues
    item->SetCount(splitSize);

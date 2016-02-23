@@ -60,11 +60,11 @@ void GameMenuDialog::Render() {
    auto dialogHeight = GameMenuDialogOption::_MAX + 1;
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (GAMEMENU_DIALOG_WIDTH / 2);
    auto dialogTop = (Screen::Get().GetHeight() / 2) - (dialogHeight / 2);
-   Screen::Get().WriteWindow(dialogLeft, dialogTop, GAMEMENU_DIALOG_WIDTH, dialogHeight, "Game Menu");
+   Screen::Get().WriteWindow(dialogLeft, dialogTop, GAMEMENU_DIALOG_WIDTH, dialogHeight+2, "Game Menu");
 
    auto btnLeft = dialogLeft + 1;
    auto btnWidth = GAMEMENU_DIALOG_WIDTH - 2;
-   auto btnTop = dialogTop;
+   auto btnTop = dialogTop + 1;
 
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Status",
                              this->SelectedOption == GameMenuDialogOption::Status);

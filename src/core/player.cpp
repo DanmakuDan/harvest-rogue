@@ -121,7 +121,7 @@ void Player::AddItem(ItemPtr item, int count, bool dontStack)
       return;
    }
 
-   auto newItem = std::make_shared<Item>(Item::Clone(*item));
+   auto newItem = Item::Clone(item);
    this->Inventory.push_back(newItem);
 }
 
@@ -154,7 +154,7 @@ void Player::SplitItem(ItemPtr item)
       return;
    }
 
-   auto newItem = std::make_shared<Item>(Item::Clone(*item));
+   auto newItem = Item::Clone(item);
    auto splitSize = item->GetCount() / 2;
    auto difference = (item->GetCount() - splitSize); // We don't want rounding issues
    item->SetCount(splitSize);
@@ -214,7 +214,7 @@ void Player::TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer) {
    if (!obtainableInterface->GetIsStackable()) {
 
       // The item is not stackable, so we know we need to create it in the inventory.
-      auto destItem = std::make_shared<Item>(Item::Clone(*sourceItem));
+      auto destItem = Item::Clone(sourceItem);
 
       // Do a sanity check to make sure there's at most 1 item present.
       if (sourceItem->GetCount() > 1) {
@@ -281,7 +281,7 @@ void Player::TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer) {
    // We haven't found an item stack for this item yet, so let's simply move the item into
    // the inventory
 
-   auto newItem = std::make_shared<Item>(Item::Clone(*sourceItem.get()));
+   auto newItem = Item::Clone(sourceItem);
    newItem->SetCount(sourceItem->GetCount());
    this->Inventory.push_back(newItem);
    sourceItem->Destruct(false);
@@ -342,7 +342,7 @@ void Player::DropInventoryItemOnGround(ItemPtr prop) {
 ItemPtr Player::RemoveFromInventory(ItemPtr sourceItem, int amountToMove) {
    auto i = 0;
 
-   auto result = std::make_shared<Item>(Item::Clone(*sourceItem.get()));
+   auto result = Item::Clone(sourceItem);
    
    // Loop through the inventory until we find our item
    for (auto invProp : this->Inventory) {

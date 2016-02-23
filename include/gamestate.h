@@ -103,7 +103,7 @@ public:
 
    void SleepUntilNextMorning(int hour = 6, int minute = 0, int second = 0);
 
-   std::map<std::string, Item> GetItemDatabase();
+   std::map<std::string, ItemPtr> GetItemDatabase();
    ItemPtr GetItemFromItemDatabase(std::string itemName);
 
 private:
@@ -113,7 +113,7 @@ private:
    std::vector<std::string> Log;
    std::vector<std::shared_ptr<Landmark>> Landmarks;
    std::list<std::shared_ptr<IDialog>> DialogStack;
-   std::map<std::string, Item> ItemDatabase;
+   std::map<std::string, ItemPtr> ItemDatabase;
    int CurrentLandmarkIndex;
    eGameStateSeason CurrentSeason;
    int CurrentDay, CurrentYear, CurrentHour, CurrentMinute, CurrentSecond;

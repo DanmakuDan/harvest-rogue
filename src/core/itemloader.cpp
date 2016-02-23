@@ -13,12 +13,11 @@
     along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "itemloader.h"
-#include "iteminterface.h"
 #include <fstream>
 
-std::map<std::string, Item> ItemLoader::LoadItemDatabase(std::string fileName)
+std::map<std::string, ItemPtr> ItemLoader::LoadItemDatabase(std::string fileName)
 {
-   std::map<std::string, Item> result;
+   std::map<std::string, ItemPtr> result;
 
    std::ifstream fileListStream(fileName);
    picojson::value fileListValue;
@@ -50,7 +49,7 @@ std::map<std::string, Item> ItemLoader::LoadItemDatabase(std::string fileName)
             auto entries = i.second.get<picojson::object>();
             for (auto entry : entries) {
                auto item = ItemLoader::ParseItemTopLevel(entry);
-               result[item.GetName()] = item;
+               result[item->GetName()] = item;
             }
 
             break;
@@ -60,24 +59,24 @@ std::map<std::string, Item> ItemLoader::LoadItemDatabase(std::string fileName)
    return result;
 }
 
-Item ItemLoader::ParseItemTopLevel(std::pair<const std::string, picojson::value> item)
+ItemPtr ItemLoader::ParseItemTopLevel(std::pair<const std::string, picojson::value> item)
 {
    if (!item.second.is<picojson::object>()) {
       throw;
    }
 
-   Item result;
-   result.SetName(item.first);
+   ItemPtr result = ItemPtr(new Item());
+   result->SetName(item.first);
 
    auto entries = item.second.get<picojson::object>();
    for (auto entry : entries) {
-      ItemLoader::ParseItemTopLevelAttribute(&result, entry);
+      ItemLoader::ParseItemTopLevelAttribute(result, entry);
    }
 
-   return result;
+   return std::shared_ptr<Item>(result);
 }
 
-void ItemLoader::ParseItemTopLevelAttribute(Item * item, std::pair<const std::string, picojson::value> source)
+void ItemLoader::ParseItemTopLevelAttribute(ItemPtr item, std::pair<const std::string, picojson::value> source)
 {
    auto attributeName = source.first;
 
@@ -172,7 +171,7 @@ void ItemLoader::ParseItemTopLevelAttribute(Item * item, std::pair<const std::st
    throw;
 }
 
-void ItemLoader::ParseItemInterfaces(Item * item, picojson::value source)
+void ItemLoader::ParseItemInterfaces(ItemPtr item, picojson::value source)
 {
    for (auto iface : source.get<picojson::object>()) {
       auto interfaceType = ItemInterfaceType::FromString(iface.first);
@@ -184,7 +183,7 @@ void ItemLoader::ParseItemInterfaces(Item * item, picojson::value source)
    }
 }
 
-void ItemLoader::ParseSurfaceAttributes(Item * item, picojson::array surfaceAttributes)
+void ItemLoader::ParseSurfaceAttributes(ItemPtr item, picojson::array surfaceAttributes)
 {
    SurfaceAttribute::SurfaceAttribute result = 0;
 

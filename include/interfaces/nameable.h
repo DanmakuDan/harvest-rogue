@@ -25,4 +25,4 @@ public:
 };
 
 
-#endif HARVEST_ROGUE_NAMEABLE_H
+#endif

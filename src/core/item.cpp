@@ -20,16 +20,26 @@
 #include "player.h"
 #include "interactable.h"
 
-Item Item::Clone(const Item & source)
+ItemPtr Item::Clone(ItemPtr source)
 {
-   Item result = source;
+   auto result = ItemPtr(new Item());
 
-   for (auto i : source.ItemInterfaces) {
+   result->Name = source->Name;
+   result->Description = source->Description;
+   result->Count = source->Count;
+   result->ColorCode = source->ColorCode;
+   result->CharacterCode = source->CharacterCode;
+   result->GfxTileCode = source->GfxTileCode;
+   result->SurfaceAttributes = source->SurfaceAttributes;
+   result->ItemCategories = source->ItemCategories;
+
+
+   for (auto i : source->ItemInterfaces) {
       if (i.second == nullptr) {
-         result.ItemInterfaces[i.first] = nullptr;
+         result->ItemInterfaces[i.first] = nullptr;
          continue;
       }
-      result.ItemInterfaces[i.first] = std::shared_ptr<IItemInterface>(i.second->Clone());
+      result->ItemInterfaces[i.first] = std::shared_ptr<IItemInterface>(i.second->Clone());
    }
 
    return result;
@@ -57,11 +67,6 @@ void Item::AddInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType, 
    }
 
    this->ItemInterfaces[itemInterfaceType] = std::shared_ptr<IItemInterface>(itemInterface);
-}
-
-void Item::RemoveInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType)
-{
-   this->ItemInterfaces.erase(itemInterfaceType);
 }
 
 std::string Item::GetName()
