@@ -53,13 +53,11 @@ Action::Action Keybinding::GetAction(int key) {
 }
 
 picojson::value Keybinding::Serialize(Keybinding binding) {
-   picojson::object result;
-
-   return picojson::value(result);
+   // TODO
+   throw std::runtime_error("Not implemented");
 }
 
 Keybinding Keybinding::Deserialize(picojson::value serializedValue) {
-   Keybinding result;
-
-   return result;
+   // TODO
+   throw std::runtime_error("Not implemented");
 }
