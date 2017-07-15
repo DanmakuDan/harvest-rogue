@@ -17,7 +17,7 @@
 #include <curses.h>
 
 Input::Input() {
-   this->keybinding = Config::provider->GetConfig().GetKeybinding();
+   this->keybinding = Config::Get().GetKeybinding();
 
    this->InputTimeout = -1;
    notimeout(stdscr, TRUE);
