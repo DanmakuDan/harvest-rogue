@@ -168,12 +168,12 @@ void GameState::AddLogMessageFmt(const std::string format, ...) {
       auto n = vsnprintf(const_cast<char *>(str.data()), size, format.c_str(), ap);
       va_end(ap);
       if (n > -1 && n < int(size)) {  // Everything worked
-         str.resize(unsigned long(n));
+         str.resize(((unsigned long)n));
          this->AddLogMessage(str);
          return;
       }
       if (n > -1)  // Needed size returned
-         size = unsigned long(n) + 1;   // For null char
+         size = ((unsigned long)n) + 1;   // For null char
       else
          size *= 2;      // Guess at a larger size (OS specific)
    }
