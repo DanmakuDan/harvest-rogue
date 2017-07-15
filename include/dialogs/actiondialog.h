@@ -35,8 +35,9 @@ public:
    static std::shared_ptr<ActionDialog> Construct() {
       return std::shared_ptr<ActionDialog>(new ActionDialog());
    }
-   virtual void OnKeyPress(int key);
-   virtual void Render();
+
+   void OnKeyPress(int key) override;
+   void Render() override;
 private:
    ActionDialog();
    ActionDialogOption::ActionDialogOption SelectedOption;

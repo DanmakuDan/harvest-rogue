@@ -17,9 +17,7 @@
 #include "player.h"
 #include "gamestate.h"
 #include "interactiondirectiondialog.h"
-#include "interactable.h"
 #include "obtainable.h"
-#include "useable.h"
 
 Player::Player() {
    Reset();
@@ -37,11 +35,13 @@ void Player::Reset()
    this->CurrentlyEquippedItem = nullptr;
 }
 
-int Player::GetPositionX() {
+int Player::GetPositionX() const
+{
    return this->PositionX;
 }
 
-int Player::GetPositionY() {
+int Player::GetPositionY() const
+{
    return this->PositionY;
 }
 
@@ -54,48 +54,48 @@ void Player::WalkPlayer(Direction::Direction direction) {
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
    auto newX = 0, newY = 0;
    switch (direction) {
-      case Direction::Up:
-         if (this->PositionX == 0)
-            return;
-         newX = this->GetPositionX();
-         newY = this->GetPositionY() - 1;
-         break;
+   case Direction::Up:
+      if (this->PositionX == 0)
+         return;
+      newX = this->GetPositionX();
+      newY = this->GetPositionY() - 1;
+      break;
 
-      case Direction::Down:
-         if (this->PositionY == (currentLandmark->GetHeight() - 1))
-            return;
-         newX = this->GetPositionX();
-         newY = this->GetPositionY() + 1;
-         break;
+   case Direction::Down:
+      if (this->PositionY == (currentLandmark->GetHeight() - 1))
+         return;
+      newX = this->GetPositionX();
+      newY = this->GetPositionY() + 1;
+      break;
 
-      case Direction::Left:
-         if (this->PositionX == 0)
-            return;
-         newX = this->GetPositionX() - 1;
-         newY = this->GetPositionY();
-         break;
+   case Direction::Left:
+      if (this->PositionX == 0)
+         return;
+      newX = this->GetPositionX() - 1;
+      newY = this->GetPositionY();
+      break;
 
-      case Direction::Right:
-         if (this->PositionX == (currentLandmark->GetWidth() - 1))
-            return;
-         newX = this->GetPositionX() + 1;
-         newY = this->GetPositionY();
-         break;
+   case Direction::Right:
+      if (this->PositionX == (currentLandmark->GetWidth() - 1))
+         return;
+      newX = this->GetPositionX() + 1;
+      newY = this->GetPositionY();
+      break;
    }
 
-   if (!this->IsPassable(newX, newY)) {
+   if (!IsPassable(newX, newY)) {
 
       auto prop = currentLandmark->GetItem(newX, newY);
       if (prop != nullptr && !SurfaceAttribute::HasAttribute(prop->GetSurfaceAttributes(), SurfaceAttribute::Walkable)) {
 
-         bool startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
+         auto startsWithVowel = prop->GetName().find_first_of("aAeEiIoOuU") == 0;
          GameState::Get().AddLogMessageFmt("You are blocked by %s %s.", (startsWithVowel ? "an" : "a"),
-                                           prop->GetName().c_str());
+            prop->GetName().c_str());
          return;
       }
 
       auto tile = currentLandmark->GetTile(newX, newY);
-      bool startsWithVowel = tile.Name.find_first_of("aAeEiIoOuU") == 0;
+      auto startsWithVowel = tile.Name.find_first_of("aAeEiIoOuU") == 0;
       GameState::Get().AddLogMessageFmt("You are blocked by %s %s.", (startsWithVowel ? "an" : "a"), tile.Name.c_str());
       return;
    }
@@ -103,7 +103,8 @@ void Player::WalkPlayer(Direction::Direction direction) {
    this->WarpPlayer(newX, newY);
 }
 
-ItemPtr Player::GetCurrentlyEquippedItem() {
+ItemPtr Player::GetCurrentlyEquippedItem() const
+{
    return ItemPtr(this->CurrentlyEquippedItem);
 }
 
@@ -123,7 +124,7 @@ void Player::AddItem(ItemPtr item, int count, bool dontStack)
       return;
    }
 
-   auto newItem = std::make_shared<Item>(Item::Clone(*item));
+   auto newItem = Item::Clone(item);
    this->Inventory.push_back(newItem);
 }
 
@@ -156,7 +157,7 @@ void Player::SplitItem(ItemPtr item)
       return;
    }
 
-   auto newItem = std::make_shared<Item>(Item::Clone(*item));
+   auto newItem = Item::Clone(item);
    auto splitSize = item->GetCount() / 2;
    auto difference = (item->GetCount() - splitSize); // We don't want rounding issues
    item->SetCount(splitSize);
@@ -189,7 +190,7 @@ void Player::CombineItems(ItemPtr source, ItemPtr dest)
 }
 
 void Player::TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer) {
-   
+
    // The player cannot obtain items that aren't obtainable
    if (!sourceItem->HasInterface(ItemInterfaceType::Obtainable)) {
       throw;
@@ -216,7 +217,7 @@ void Player::TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer) {
    if (!obtainableInterface->GetIsStackable()) {
 
       // The item is not stackable, so we know we need to create it in the inventory.
-      auto destItem = std::make_shared<Item>(Item::Clone(*sourceItem));
+      auto destItem = Item::Clone(sourceItem);
 
       // Do a sanity check to make sure there's at most 1 item present.
       if (sourceItem->GetCount() > 1) {
@@ -268,11 +269,11 @@ void Player::TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer) {
          // Loop back to the next inventory item, maybe there's more items of the same type in the stack
          continue;
       }
-      
+
       // We've found an inventory item with enough capacity to take the rest of the items, so transfer
       // the stack to the inventory item
       destItem->SetCount(destItem->GetCount() + sourceItem->GetCount());
-      
+
       // And destroy the original item
       sourceItem->Destruct(false);
 
@@ -283,7 +284,7 @@ void Player::TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer) {
    // We haven't found an item stack for this item yet, so let's simply move the item into
    // the inventory
 
-   auto newItem = std::make_shared<Item>(Item::Clone(*sourceItem.get()));
+   auto newItem = Item::Clone(sourceItem);
    newItem->SetCount(sourceItem->GetCount());
    this->Inventory.push_back(newItem);
    sourceItem->Destruct(false);
@@ -344,8 +345,8 @@ void Player::DropInventoryItemOnGround(ItemPtr prop) {
 ItemPtr Player::RemoveFromInventory(ItemPtr sourceItem, int amountToMove) {
    auto i = 0;
 
-   auto result = std::make_shared<Item>(Item::Clone(*sourceItem.get()));
-   
+   auto result = Item::Clone(sourceItem);
+
    // Loop through the inventory until we find our item
    for (auto invProp : this->Inventory) {
 
@@ -371,21 +372,22 @@ ItemPtr Player::RemoveFromInventory(ItemPtr sourceItem, int amountToMove) {
          return result;
       }
 
-      
+
       // Otherwise, we're going to remove ~some~ of the items
       result->SetCount(amountToMove);
       invProp->SetCount(invProp->GetCount() - amountToMove);
 
 
       GameState::Get().AddLogMessageFmt("%i %s has been removed from your inventory.", amountToMove, invProp->GetName().c_str());
-      
+
       return result;
    }
 
    return nullptr;
 }
 
-void Player::UseEquippedItem() {
+void Player::UseEquippedItem() const
+{
    if (this->CurrentlyEquippedItem == nullptr) {
       GameState::Get().AddLogMessage("You do not currently have an item equipped!");
       return;
@@ -410,7 +412,7 @@ void Player::UnequipCurrentEquippedItem() {
    this->CurrentlyEquippedItem = nullptr;
 
    this->TransferIntoInventory(currentItem);
-   this->CurrentlyEquippedItem->NotifyItemUnequiupped();
+   this->CurrentlyEquippedItem->NotifyItemUnequipped();
 }
 
 bool Player::IsPassable(int x, int y) {
@@ -427,7 +429,7 @@ bool Player::IsPassable(int x, int y) {
    return SurfaceAttribute::HasAttribute(prop->GetSurfaceAttributes(), SurfaceAttribute::Walkable);
 }
 
-int Player::GetEnergy() {
+int Player::GetEnergy() const {
    return this->Energy;
 }
 
@@ -447,23 +449,23 @@ void Player::InteractWith() {
    GameState::Get().PushDialog(InteractionDirectionDialog::Construct());
 }
 
-void Player::InteractWith(Direction::Direction direction) {
+void Player::InteractWith(Direction::Direction direction) const {
    auto newX = this->PositionX;
    auto newY = this->PositionY;
 
-   switch(direction) {
-      case Direction::Up:
-         newY--;
-         break;
-      case Direction::Down:
-         newY++;
-         break;
-      case Direction::Left:
-         newX--;
-         break;
-      case Direction::Right:
-         newX++;
-         break;
+   switch (direction) {
+   case Direction::Up:
+      newY--;
+      break;
+   case Direction::Down:
+      newY++;
+      break;
+   case Direction::Left:
+      newX--;
+      break;
+   case Direction::Right:
+      newX++;
+      break;
    }
 
    if (newX < 0 || newY < 0) {
@@ -490,8 +492,20 @@ void Player::SetIsSleeping(bool sleeping) {
    this->IsSleeping = sleeping;
 }
 
-bool Player::GetIsSleeping() {
+bool Player::GetIsSleeping() const {
    return this->IsSleeping;
+}
+
+int Player::GetAmountOfThisItemHeld(std::string ItemName) {
+   auto result = 0;
+   for(auto item : this->Inventory) {
+      if (item->GetName() != ItemName) {
+         continue;
+      }
+      result += item->GetCount();
+   }
+
+   return result;
 }
 
 std::string Player::GetName()

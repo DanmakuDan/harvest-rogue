@@ -14,6 +14,7 @@ along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 
 #include "screen.h"
 #include "config.h"
+#include "tiles.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -60,22 +61,28 @@ Screen::Screen() {
    IMG_Init(IMG_INIT_PNG);
    Mix_Init(MIX_INIT_OGG);
 
-   int windowWidth = Config::provider->GetConfig().GetScreenWidth();
-   int windowHeight = Config::provider->GetConfig().GetScreenHeight();
+   int windowWidth = Config::Get().GetScreenWidth();
+   int windowHeight = Config::Get().GetScreenHeight();
 
-   SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WindowFlags::SDL_WINDOW_RESIZABLE, &window, &renderer);
+   SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WindowFlags::SDL_WINDOW_RESIZABLE | SDL_WindowFlags::SDL_WINDOW_HIDDEN,
+                               &window, &renderer);
+
    SDL_SetWindowTitle(window, "Harvest-Rogue - Graphical Mode");
 
    int w, h;
    fontTexture = IMG_LoadTexture(renderer, "media/font16.png");
-   SDL_QueryTexture(fontTexture, NULL, NULL, &w, &h);
+   SDL_QueryTexture(fontTexture, nullptr, nullptr, &w, &h);
    TextTilesPerRow = w / TileSize;
 
    tileTexture = IMG_LoadTexture(renderer, "media/tileset16.png");
-   SDL_QueryTexture(tileTexture, NULL, NULL, &w, &h);
+   SDL_QueryTexture(tileTexture, nullptr, nullptr, &w, &h);
    GfxTilesPerRow = w / TileSize;
 
    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+   SDL_SetWindowPosition(window, Config::Get().GetScreenX(), Config::Get().GetScreenY());
+   SDL_SetWindowSize(window, Config::Get().GetScreenWidth(), Config::Get().GetScreenHeight());
+   SDL_ShowWindow(window);
 }
 
 Screen::~Screen()
@@ -87,15 +94,13 @@ Screen::~Screen()
    SDL_Quit();
 }
 
-int Screen::GetWidth()
-{
+int Screen::GetWidth() const {
    int width, height;
    SDL_GetWindowSize(window, &width, &height);
    return width / ActualTileSize;
 }
 
-int Screen::GetHeight()
-{
+int Screen::GetHeight() const {
    int width, height;
    SDL_GetWindowSize(window, &width, &height);
    return height / ActualTileSize;
@@ -118,7 +123,7 @@ void Screen::WriteText(int x, int y, std::string text, Color::Color color)
 void Screen::WriteCenterText(int y, std::string text, Color::Color color)
 {
    auto strWidth = text.find('\n');
-   int x = (this->GetWidth() / 2) - ((int)strWidth / 2);
+   int x = (this->GetWidth() / 2) - (int(strWidth) / 2);
    this->WriteText(x, y, text, color);
 }
 
@@ -126,7 +131,7 @@ void Screen::WriteButton(int x, int y, int width, std::string text, bool active)
 {
    auto captionLeft = x + (width / 2) - (text.length() / 2);
 
-   if (true == active) {
+   if (active) {
       SDL_Rect destRect;
       destRect.x = x * TileSize * Zoom;
       destRect.y = y * TileSize * Zoom;
@@ -136,7 +141,7 @@ void Screen::WriteButton(int x, int y, int width, std::string text, bool active)
       SDL_RenderFillRect(renderer, &destRect);
    }
 
-   this->WriteText((int)captionLeft, y, text, active ? Color::Inverse(Color::White) : Color::White);
+   this->WriteText(int(captionLeft), y, text, active ? Color::Inverse(Color::White) : Color::White);
 }
 
 void Screen::ClearLine(int y, Color::Color color)
@@ -196,7 +201,7 @@ void Screen::WriteCharacter(int x, int y, const char character, Color::Color col
    SDL_RenderCopy(renderer, fontTexture, &srcRect, &destRect);
 }
 
-void Screen::WriteTile(int x, int y, int tileIndex, char character, Color::Color color)
+void Screen::WriteTile(int x, int y, int tileIndex, char, Color::Color)
 {
    SDL_Rect srcRect;
    SDL_Rect destRect;
@@ -274,5 +279,5 @@ void Screen::WriteWindow(int x, int y, int width, int height, std::string text)
    }
 
    auto captionLeft = (x + (width / 2)) - (text.size() / 2);
-   this->WriteText((int)captionLeft, y, text.c_str(), Color::White);
+   this->WriteText(int(captionLeft), y, text.c_str(), Color::White);
 }

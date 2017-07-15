@@ -17,8 +17,8 @@ addons:
     sources:
       - r-packages-precise
   packages:
-    - gcc-4.8
-    - g++-4.8
+    - gcc-5
+    - g++-5
     - clang
 notifications:
   webhooks:

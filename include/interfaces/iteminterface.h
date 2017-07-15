@@ -21,6 +21,8 @@
 
 class IItemInterface {
 public:
+   virtual ~IItemInterface() {}
+
    static std::shared_ptr<IItemInterface> Deserialize(ItemInterfaceType::ItemInterfaceType interfaceType, picojson::value serializedValue);
    virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType() = 0;
    virtual IItemInterface* Clone() const = 0;

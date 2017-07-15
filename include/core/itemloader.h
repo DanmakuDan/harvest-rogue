@@ -18,17 +18,16 @@
 
 #include <item.h>
 #include <map>
-#include <string>
 #include "picojson.h"
 
 class ItemLoader {
 public:
-   static std::map<std::string, Item> LoadItemDatabase(std::string fileName);
+   static std::map<std::string, ItemPtr> LoadItemDatabase(std::string fileName);
 private:
-   static Item ParseItemTopLevel(std::pair<const std::string, picojson::value> item);
-   static void ParseItemTopLevelAttribute(Item* item, std::pair<const std::string, picojson::value> source);
-   static void ParseItemInterfaces(Item* item, picojson::value source);
-   static void ParseSurfaceAttributes(Item* item, picojson::array surfaceAttributes);
+   static ItemPtr ParseItemTopLevel(std::pair<const std::string, picojson::value> item);
+   static void ParseItemTopLevelAttribute(ItemPtr item, std::pair<const std::string, picojson::value> source);
+   static void ParseItemInterfaces(ItemPtr item, picojson::value source);
+   static void ParseSurfaceAttributes(ItemPtr item, picojson::array surfaceAttributes);
 
 };
 

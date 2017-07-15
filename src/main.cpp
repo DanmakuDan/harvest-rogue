@@ -15,10 +15,7 @@
 #include "input.h"
 #include "gamestate.h"
 #include "mainmenu.h"
-#include "config.h"
-#include "game_location_configprovider.h"
 
-IConfigProvider* Config::provider = new GameLocationConfigProvider();
 
 int main() {
    GameState::Get().SetCurrentScene(MainMenu::Construct());
@@ -31,6 +28,8 @@ int main() {
 
       auto ch = Input::Get().WaitForAndGetKeyPress();
       switch (ch) {
+         case 0:
+            continue;
          case RESIZE_KEY:
             GameState::Get().GetCurrentScene()->InitializeScreen();
             continue;
@@ -41,8 +40,6 @@ int main() {
             GameState::Get().GetCurrentScene()->OnKeyPress(ch);
       }
    }
-
-   Config::provider->SaveConfig();
 
    return 0;
 }

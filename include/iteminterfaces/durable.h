@@ -20,7 +20,7 @@
 
 class Durable : public IItemInterface {
 public:
-   IItemInterface* Clone() const { return new Durable(*this); }
+   IItemInterface* Clone() const override;
 private:
    Durable();
 
@@ -29,7 +29,7 @@ private:
       this->Durability = src.Durability;
    };
 
-   Durable &operator=(Durable const &) { };
+   Durable &operator=(Durable const &) = delete;
 public:
    ~Durable();
    static std::shared_ptr<Durable> Deserialize(picojson::value serializedValue);
@@ -41,7 +41,7 @@ public:
    bool GetRepairable();
 
    // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
 private:
    int Durability;
    bool Repairable;

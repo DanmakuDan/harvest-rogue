@@ -16,7 +16,6 @@
 #define HARVEST_ROGUE_TEXTGENERATOR_H
 
 #include <string>
-#include <chrono>
 
 class TextGenerator {
 public:

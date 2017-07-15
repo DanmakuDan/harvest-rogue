@@ -17,7 +17,6 @@
 
 
 #include "iteminterface.h"
-#include "crops.h"
 #include "tickevents.h"
 #include "interactable.h"
 #include <memory>
@@ -25,20 +24,19 @@
 
 class Restable : public IItemInterface, public IInteractable {
 public:
-   IItemInterface* Clone() const { return new Restable(*this); }
+   IItemInterface* Clone() const override;
 private:
    Restable();
-
-   Restable(Restable const &src) { };
+   Restable &operator=(Restable const &) = delete;
 public:
    ~Restable();
    static std::shared_ptr<Restable> Deserialize(picojson::value serializedValue);
 
    // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
 
    // IInteractable
-   void Interact(ItemPtr sourceItem);
+   void Interact(ItemPtr sourceItem) override;
 };
 
 #endif //HARVEST_ROGUE_RESTABLE_H

@@ -17,7 +17,6 @@
 
 
 #include "iteminterface.h"
-#include "crops.h"
 #include "tickevents.h"
 #include "interactable.h"
 #include "itemcontainer.h"
@@ -28,33 +27,31 @@ class Container :
    public IItemInterface, 
    public IInteractable,
    public IItemContainer {
-public:
-   Container* Clone() const { return new Container(*this); }
-private:
-   Container();
 
-   Container(Container const &src) { };
+   Container();
+   Container(Container const &) {};
 public:
    ~Container();
-   static std::shared_ptr<Container> Deserialize(picojson::value serializedValue);
 
    // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   Container* Clone() const override;
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
+   static std::shared_ptr<Container> Deserialize(picojson::value serializedValue);
 
    // IInteractable
-   virtual void Interact(ItemPtr sourceItem);
+   void Interact(ItemPtr sourceItem) override;
 
    // IItemContainer
-   virtual ItemListPtr GetAllItems();
-   virtual ItemContainerPtr AsItemContainer();
-   virtual void AddItem(ItemPtr item, int count, bool dontStack);
-   virtual void RemoveItem(ItemPtr item, int count = -1);
-   virtual void SwapItem(ItemPtr itemA, ItemPtr itemB);
-   virtual void SplitItem(ItemPtr item);
-   virtual void CombineItems(ItemPtr source, ItemPtr dest);
+   ItemListPtr GetAllItems() override;
+   ItemContainerPtr AsItemContainer() override;
+   void AddItem(ItemPtr item, int count, bool dontStack) override;
+   void RemoveItem(ItemPtr item, int count = -1) override;
+   void SwapItem(ItemPtr itemA, ItemPtr itemB) override;
+   void SplitItem(ItemPtr item) override;
+   void CombineItems(ItemPtr source, ItemPtr dest) override;
 
    // INameable
-   virtual std::string GetName();
+   std::string GetName() override;
 
 private:
    ItemListPtr Contents;

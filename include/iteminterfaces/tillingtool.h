@@ -23,7 +23,7 @@
 
 class TillingTool : public IItemInterface, public IUseable, public IEquippable {
 public:
-   IItemInterface* Clone() const { return new TillingTool(*this); }
+   IItemInterface* Clone() const override;
 private:
    TillingTool();
 
@@ -32,7 +32,7 @@ private:
       this->Fatigue = src.Fatigue;
    };
 
-   TillingTool &operator=(TillingTool const &) { };
+   TillingTool &operator=(TillingTool const &) = delete;
 public:
    ~TillingTool();
    static std::shared_ptr<TillingTool> Deserialize(picojson::value serializedValue);
@@ -45,14 +45,14 @@ public:
    void Till(ItemPtr sourceItem);
 
    // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
 
    // IUseable
-   virtual void Use(ItemPtr sourceItem);
+   void Use(ItemPtr sourceItem) override;
 
    // IEquippable
-   virtual void OnItemEquipped(ItemPtr sourceItem);
-   virtual void OnItemUnequipped(ItemPtr sourceItem);
+   void OnItemEquipped(ItemPtr sourceItem) override;
+   void OnItemUnequipped(ItemPtr sourceItem) override;
 private:
    int Strength;
    int Fatigue;

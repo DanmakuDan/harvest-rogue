@@ -30,18 +30,17 @@ void ToolActionDialog::OnKeyPress(int key) {
 
    if (Action::Requested(action, Action::MenuDown)) {
       if (this->SelectedOption >= ToolActionDialogOption::_MAX - 1) {
-         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption) 0;
+         this->SelectedOption = ToolActionDialogOption::ToolActionDialogOption(0);
       } else {
-         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption) ((int) this->SelectedOption + 1);
+         this->SelectedOption = ToolActionDialogOption::ToolActionDialogOption(this->SelectedOption + 1);
       }
    }
 
    if (Action::Requested(action, Action::MenuUp)) {
-      if (this->SelectedOption <= (ToolActionDialogOption::ToolActionDialogOption) 0) {
-         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption)
-               ((int) ToolActionDialogOption::_MAX - 1);
+      if (this->SelectedOption <= ToolActionDialogOption::ToolActionDialogOption(0)) {
+         this->SelectedOption = ToolActionDialogOption::ToolActionDialogOption(ToolActionDialogOption::_MAX - 1);
       } else {
-         this->SelectedOption = (ToolActionDialogOption::ToolActionDialogOption) ((int) this->SelectedOption - 1);
+         this->SelectedOption = ToolActionDialogOption::ToolActionDialogOption(this->SelectedOption - 1);
       }
    }
 
@@ -59,9 +58,8 @@ void ToolActionDialog::Render() {
    auto dialogHeight = ToolActionDialogOption::_MAX + 2;
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (TOOLACTIN_DIALOG_WIDTH / 2);
    auto dialogTop = (Screen::Get().GetHeight() / 2) - (dialogHeight / 2);
-   auto prop = dynamic_cast<Item*>(this->Tool.get());
 
-   Screen::Get().WriteWindow(dialogLeft, dialogTop, TOOLACTIN_DIALOG_WIDTH, dialogHeight, prop->GetName());
+   Screen::Get().WriteWindow(dialogLeft, dialogTop, TOOLACTIN_DIALOG_WIDTH, dialogHeight, this->Tool->GetName());
 
    auto btnLeft = dialogLeft + 1;
    auto btnWidth = TOOLACTIN_DIALOG_WIDTH - 2;
@@ -83,6 +81,8 @@ void ToolActionDialog::ExecuteSelectedAction() {
       case ToolActionDialogOption::DropTool:
          Player::Get().DropInventoryItemOnGround(this->Tool);
          GameState::Get().ClearAllDialogs();
+         break;
+      default: 
          break;
    }
 }

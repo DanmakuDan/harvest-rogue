@@ -16,7 +16,6 @@
 #include "gamestate.h"
 #include "textgenerator.h"
 #include <random>
-#include "choppable.h"
 
 
 static std::random_device randomDevice;
@@ -44,7 +43,7 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
          //   result->SetTile(x, y, TileType::Weed);
          } else if (n <= (permille_chance += 10)) {
             result->SetTile(x, y, TileType::Grass);
-            result->AddItem(x, y, GameState::Get().GetItemFromItemDatabase("Birch Log"));
+            result->AddItem(x, y, GameState::Get().GetItemFromItemDatabase("Birch Twig"));
          //} else if (n <= (permille_chance += 10)) {
          //   result->SetTile(x, y, TileStone);
          //} else if (n <= (permille_chance += 10)) {

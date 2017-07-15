@@ -15,8 +15,10 @@
 #include "choppable.h"
 #include "gamestate.h"
 
-Choppable::Choppable()
-{
+IItemInterface* Choppable::Clone() const { return new Choppable(*this); }
+
+Choppable::Choppable(): 
+   ChopPoints(0) {
 }
 
 Choppable::~Choppable()
@@ -40,9 +42,6 @@ std::shared_ptr<Choppable> Choppable::Deserialize(picojson::value serializedValu
          }
 
          auto value = item.second.get<double>();
-         if (value != (unsigned int)value) {
-            throw;
-         }
          result->SetChopPoints((int)value);
          continue;
       }

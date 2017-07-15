@@ -47,11 +47,11 @@ Screen::~Screen() {
    endwin();
 }
 
-int Screen::GetWidth() {
+int Screen::GetWidth() const {
    return getmaxx(stdscr);
 }
 
-int Screen::GetHeight() {
+int Screen::GetHeight() const {
    return getmaxy(stdscr);
 }
 

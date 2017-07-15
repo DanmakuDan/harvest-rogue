@@ -22,7 +22,7 @@
 
 class Harvestable : public IItemInterface, public IInteractable {
 public:
-   IItemInterface* Clone() const { return new Harvestable(*this); }
+   IItemInterface* Clone() const override;
 private:
    Harvestable();
 
@@ -43,10 +43,10 @@ public:
    void SetYieldMaximum(int yieldMaximum);
 
    // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
 
    // IInteractable
-   virtual void Interact(ItemPtr sourceItem);
+   void Interact(ItemPtr sourceItem) override;
 private:
    std::string YieldItem;
    int YieldMinimum;

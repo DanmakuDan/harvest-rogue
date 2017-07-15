@@ -15,6 +15,8 @@
 #include "growable.h"
 #include "gamestate.h"
 
+IItemInterface* Growable::Clone() const { return new Growable(*this); }
+
 Growable::Growable()
 {
 }
@@ -41,10 +43,6 @@ std::shared_ptr<Growable> Growable::Deserialize(picojson::value serializedValue)
          }
 
          auto value = item.second.get<double>();
-         if (value != (unsigned long)value) {
-            throw;
-         }
-
          result->SetHoursToGrow((int)value);
          continue;
       }
@@ -55,10 +53,6 @@ std::shared_ptr<Growable> Growable::Deserialize(picojson::value serializedValue)
          }
 
          auto value = item.second.get<double>();
-         if (value != (unsigned long)value) {
-            throw;
-         }
-
          result->SetHoursToWilt((int)value);
          continue;
       }
@@ -222,7 +216,7 @@ void Growable::ApplyGrowableTileCode(ItemPtr sourceItem, GrowableTileCode growab
 
 GrowableTileCode Growable::ParseGrowableTileCode(picojson::value serializedValue)
 {
-   GrowableTileCode result;
+   GrowableTileCode result = {};
 
    if (!serializedValue.is<picojson::object>()) {
       throw;

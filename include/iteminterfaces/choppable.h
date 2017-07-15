@@ -22,7 +22,7 @@
 
 class Choppable : public IItemInterface {
 public:
-   IItemInterface* Clone() const { return new Choppable(*this); }
+   IItemInterface* Clone() const override;
 private:
    Choppable();
 

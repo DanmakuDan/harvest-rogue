@@ -20,6 +20,7 @@
 #include "actiondialog.h"
 #include "player.h"
 #include "inventorydialog.h"
+#include "craftingdialog.h"
 
 GameMenuDialog::GameMenuDialog() {
    this->SelectedOption = GameMenuDialogOption::Status;
@@ -31,17 +32,17 @@ void GameMenuDialog::OnKeyPress(int key) {
 
    if (Action::Requested(action, Action::MenuDown)) {
       if (this->SelectedOption >= GameMenuDialogOption::_MAX - 1) {
-         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) 0;
+         this->SelectedOption = GameMenuDialogOption::GameMenuDialogOption(0);
       } else {
-         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) ((int) this->SelectedOption + 1);
+         this->SelectedOption = GameMenuDialogOption::GameMenuDialogOption(this->SelectedOption + 1);
       }
    }
 
    if (Action::Requested(action, Action::MenuUp)) {
-      if (this->SelectedOption <= (GameMenuDialogOption::GameMenuDialogOption) 0) {
-         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) ((int) GameMenuDialogOption::_MAX - 1);
+      if (this->SelectedOption <= GameMenuDialogOption::GameMenuDialogOption(0)) {
+         this->SelectedOption = GameMenuDialogOption::GameMenuDialogOption(GameMenuDialogOption::_MAX - 1);
       } else {
-         this->SelectedOption = (GameMenuDialogOption::GameMenuDialogOption) ((int) this->SelectedOption - 1);
+         this->SelectedOption = GameMenuDialogOption::GameMenuDialogOption(this->SelectedOption - 1);
       }
    }
 
@@ -56,13 +57,14 @@ void GameMenuDialog::OnKeyPress(int key) {
 }
 
 void GameMenuDialog::Render() {
+   auto dialogHeight = GameMenuDialogOption::_MAX + 1;
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (GAMEMENU_DIALOG_WIDTH / 2);
-   auto dialogTop = (Screen::Get().GetHeight() / 2) - (GAMEMENU_DIALOG_HEIGHT / 2);
-   Screen::Get().WriteWindow(dialogLeft, dialogTop, GAMEMENU_DIALOG_WIDTH, GAMEMENU_DIALOG_HEIGHT, "Game Menu");
+   auto dialogTop = (Screen::Get().GetHeight() / 2) - (dialogHeight / 2);
+   Screen::Get().WriteWindow(dialogLeft, dialogTop, GAMEMENU_DIALOG_WIDTH, dialogHeight+2, "Game Menu");
 
    auto btnLeft = dialogLeft + 1;
    auto btnWidth = GAMEMENU_DIALOG_WIDTH - 2;
-   auto btnTop = dialogTop;
+   auto btnTop = dialogTop + 1;
 
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Status",
                              this->SelectedOption == GameMenuDialogOption::Status);
@@ -73,6 +75,9 @@ void GameMenuDialog::Render() {
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Actions",
                              this->SelectedOption == GameMenuDialogOption::Actions);
 
+   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Craft",
+                             this->SelectedOption == GameMenuDialogOption::Craft);
+
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Save Game",
                              this->SelectedOption == GameMenuDialogOption::SaveGame);
 
@@ -82,13 +87,16 @@ void GameMenuDialog::Render() {
 
 void GameMenuDialog::ExecuteSelectedAction() {
    switch (this->SelectedOption) {
+      case GameMenuDialogOption::Inventory:
+         GameState::Get().PushDialog(InventoryDialog::Construct(Player::Get().AsItemContainer()));
+         break;
 
       case GameMenuDialogOption::Actions:
          GameState::Get().PushDialog(ActionDialog::Construct());
          break;
 
-      case GameMenuDialogOption::Inventory:
-         GameState::Get().PushDialog(InventoryDialog::Construct(Player::Get().AsItemContainer()));
+      case GameMenuDialogOption::Craft:
+         GameState::Get().PushDialog(CraftingDialog::Construct());
          break;
 
       case GameMenuDialogOption::Quit:

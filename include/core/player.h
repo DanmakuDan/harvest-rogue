@@ -30,10 +30,9 @@
 
 class Player : 
    public IItemContainer {
-private:
    Player();
-   Player(Player const &) { };
-   Player &operator=(Player const &) { };
+   Player(Player const &) = delete;
+   Player &operator=(Player const &) = delete;
 public:
    ~Player();
    static Player &Get() {
@@ -42,35 +41,36 @@ public:
    }
 
    void Reset();
-   int GetPositionX();
-   int GetPositionY();
+   int GetPositionX() const;
+   int GetPositionY() const;
    void WarpPlayer(int x, int y);
    void WalkPlayer(Direction::Direction direction);
-   ItemPtr GetCurrentlyEquippedItem();
+   ItemPtr GetCurrentlyEquippedItem() const;
    void PickUpItemFromGround();
    void EquipFromInventory(ItemPtr tool);
    void DropInventoryItemOnGround(ItemPtr prop);
-   void UseEquippedItem();
+   void UseEquippedItem() const;
    void UnequipCurrentEquippedItem();
-   int GetEnergy();
+   int GetEnergy() const;
    void SetEnergy(int energy);
    void AdjustEnergy(int energyAdjustment);
-   void InteractWith();
-   void InteractWith(Direction::Direction direction);
+   static void InteractWith();
+   void InteractWith(Direction::Direction direction) const;
    void SetIsSleeping(bool sleeping);
-   bool GetIsSleeping();
+   bool GetIsSleeping() const;
+   int GetAmountOfThisItemHeld(std::string ItemName);
 
    // INameable
-   std::string GetName();
+   std::string GetName() override;
 
    // IItemContainer
-   virtual ItemListPtr GetAllItems();
-   virtual ItemContainerPtr AsItemContainer();
-   virtual void AddItem(ItemPtr item, int count, bool dontStack);
-   virtual void RemoveItem(ItemPtr item, int count);
-   virtual void SwapItem(ItemPtr itemA, ItemPtr itemB);
-   virtual void SplitItem(ItemPtr item);
-   virtual void CombineItems(ItemPtr source, ItemPtr dest);
+   ItemListPtr GetAllItems() override;
+   ItemContainerPtr AsItemContainer() override;
+   void AddItem(ItemPtr item, int count, bool dontStack) override;
+   void RemoveItem(ItemPtr item, int count) override;
+   void SwapItem(ItemPtr itemA, ItemPtr itemB) override;
+   void SplitItem(ItemPtr item) override;
+   void CombineItems(ItemPtr source, ItemPtr dest) override;
 
 private:
    void TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer = MOVE_AMOUNT_EVERYTHING);
@@ -81,7 +81,7 @@ private:
    int PositionY;
    ItemPtr CurrentlyEquippedItem;
    ItemListPtr Inventory;
-   bool IsPassable(int x, int y);
+   static bool IsPassable(int x, int y);
    bool IsSleeping;
    int Energy;
 };

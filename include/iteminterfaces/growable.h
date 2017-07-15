@@ -30,11 +30,13 @@ struct GrowableTileCode {
 
 class Growable : public IItemInterface, public IHourlyTickEvent {
 public:
-   IItemInterface* Clone() const { return new Growable(*this); }
+   IItemInterface* Clone() const override;
 private:
    Growable();
 
-   Growable(Growable const &src) {
+   Growable(Growable const &src)
+   {
+      this->CropGrowthType = src.CropGrowthType;
       this->HoursToGrow = src.HoursToGrow;
       this->HoursToWilt = src.HoursToWilt;
       this->Seedling = src.Seedling;

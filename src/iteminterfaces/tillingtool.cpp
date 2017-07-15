@@ -16,6 +16,8 @@
 #include "gamestate.h"
 #include "player.h"
 
+IItemInterface* TillingTool::Clone() const { return new TillingTool(*this); }
+
 TillingTool::TillingTool()
 {
 }
@@ -41,9 +43,6 @@ std::shared_ptr<TillingTool> TillingTool::Deserialize(picojson::value serialized
          }
 
          auto value = item.second.get<double>();
-         if (value != (unsigned int)value) {
-            throw;
-         }
 
          result->SetStrength((int)value);
          continue;
@@ -55,11 +54,6 @@ std::shared_ptr<TillingTool> TillingTool::Deserialize(picojson::value serialized
          }
 
          auto value = item.second.get<double>();
-
-         if (value != (unsigned int)value) {
-            throw;
-         }
-
          result->SetFatigue((int)value);
          continue;
       }

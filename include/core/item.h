@@ -25,45 +25,47 @@
 #include "direction.h"
 #include "nameable.h"
 
+
 // The base class for all items in the system.
 // This object specifically tracks all item interfaces for this item, as well as the number of items.
+class Item;
+typedef std::shared_ptr<Item> ItemPtr;
 class Item : 
    public INameable,
    public std::enable_shared_from_this<Item> {
 public:
-   static Item Clone(const Item& source);
+   static ItemPtr Clone(const ItemPtr source);
    Item();
-   std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> GetInterfaces();
+   std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> GetInterfaces() const;
    bool HasInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType);
    void AddInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType, std::shared_ptr<IItemInterface> itemInterface);
-   void RemoveInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType);
    void SetName(std::string name);
    void SetDescription(std::string description);
    void SetSurfaceAttributes(SurfaceAttribute::SurfaceAttribute surfaceAttributes);
    void SetColorCode(Color::Color colorCode);
    void SetCharacterCode(char characterCode);
    void SetGfxTileCode(int gfxTileCode);
-   std::list<ItemCategory::ItemCategory> GetItemCategories();
+   std::list<ItemCategory::ItemCategory> GetItemCategories() const;
    void SetItemCategories(std::list<ItemCategory::ItemCategory> itemCategories);
-   int GetCount();
+   int GetCount() const;
    void SetCount(int count);
 
-   std::string GetDescription();
-   SurfaceAttribute::SurfaceAttribute GetSurfaceAttributes();
-   char GetCharacterCode();
-   int GetGfxTileCode();
-   Color::Color GetColorCode();
+   std::string GetDescription() const;
+   SurfaceAttribute::SurfaceAttribute GetSurfaceAttributes() const;
+   char GetCharacterCode() const;
+   int GetGfxTileCode() const;
+   Color::Color GetColorCode() const;
    bool IsTakeable();
    bool IsUsable();
    void Use();
    void Use(Direction::Direction direction);
    bool IsEquippable();
-   bool IsInteractable();
+   bool IsInteractable() const;
    void Interact();
    void Destruct(bool dropLoot);
    void RemoveOne();
    void NotifyItemEquipped();
-   void NotifyItemUnequiupped();
+   void NotifyItemUnequipped();
 
    template<class T>
    inline std::shared_ptr<T> GetInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType) {
@@ -71,7 +73,7 @@ public:
    }
 
    // INameable
-   std::string GetName();
+   std::string GetName() override;
 
 private:
    std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> ItemInterfaces;
@@ -85,7 +87,6 @@ private:
    int Count;
 };
 
-typedef std::shared_ptr<Item> ItemPtr;
 typedef std::vector<ItemPtr> ItemListPtr;
 
 #endif //HARVEST_ROGUE_ITEM_H

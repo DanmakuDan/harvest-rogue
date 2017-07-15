@@ -27,10 +27,11 @@ public:
    static std::shared_ptr<InventoryDialog> Construct(ItemContainerPtr itemContainer) {
       return std::shared_ptr<InventoryDialog>(new InventoryDialog(itemContainer));
    }
-   virtual void OnKeyPress(int key);
-   virtual void Render();
+
+   void OnKeyPress(int key) override;
+   void Render() override;
 private:
-   InventoryDialog(ItemContainerPtr itemContainer);
+   explicit InventoryDialog(ItemContainerPtr itemContainer);
    int InventoryOffset;
    int SelectedInventoryItem;
    void ExecuteSelectedAction();

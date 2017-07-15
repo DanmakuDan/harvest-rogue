@@ -20,14 +20,9 @@
 #include "dialog.h"
 #include "item.h"
 #include <memory>
-#include <string>
-#include <sstream>
-#include <iostream>
 #include <vector>
 #include <list>
 #include <map>
-#include <stdarg.h>
-#include <string.h>
 
 #define MAP_SIZE_WIDTH 200
 #define MAP_SIZE_HEIGHT 200
@@ -45,9 +40,8 @@ class GameState {
 private:
    GameState();
 
-   GameState(GameState const &) { };
-
-   GameState &operator=(GameState const &) { };
+   GameState(GameState const &) = delete;
+   GameState &operator=(GameState const &) = delete;
 
 public:
    ~GameState();
@@ -57,11 +51,11 @@ public:
       return gameState;
    }
 
-   std::shared_ptr<IScene> GetCurrentScene();
+   std::shared_ptr<IScene> GetCurrentScene() const;
 
    void SetCurrentScene(std::shared_ptr<IScene> newScene);
 
-   bool IsActive();
+   bool IsActive() const;
 
    void Terminate();
 
@@ -71,27 +65,27 @@ public:
 
    void StepSimulation();
 
-   int GetCurrentDay();
+   int GetCurrentDay() const;
 
-   eGameStateSeason GetCurrentSeason();
+   eGameStateSeason GetCurrentSeason() const;
 
-   int GetCurrentYear();
+   int GetCurrentYear() const;
 
-   int GetCurrentHour();
+   int GetCurrentHour() const;
 
-   int GetCurrentMinute();
+   int GetCurrentMinute() const;
 
-   int GetCurrentSecond();
+   int GetCurrentSecond() const;
 
    void AddLogMessage(std::string Message);
 
    void AddLogMessageFmt(const std::string format, ...);
 
-   std::vector<std::string> GetLogMessages();
+   std::vector<std::string> GetLogMessages() const;
 
    std::shared_ptr<Landmark> GetCurrentLandmark();
 
-   std::vector<std::shared_ptr<Landmark>> GetAllLandmarks();
+   std::vector<std::shared_ptr<Landmark>> GetAllLandmarks() const;
 
    std::shared_ptr<IDialog> GetCurrentDialog();
 
@@ -103,7 +97,7 @@ public:
 
    void SleepUntilNextMorning(int hour = 6, int minute = 0, int second = 0);
 
-   std::map<std::string, Item> GetItemDatabase();
+   std::map<std::string, ItemPtr> GetItemDatabase() const;
    ItemPtr GetItemFromItemDatabase(std::string itemName);
 
 private:
@@ -113,7 +107,7 @@ private:
    std::vector<std::string> Log;
    std::vector<std::shared_ptr<Landmark>> Landmarks;
    std::list<std::shared_ptr<IDialog>> DialogStack;
-   std::map<std::string, Item> ItemDatabase;
+   std::map<std::string, ItemPtr> ItemDatabase;
    int CurrentLandmarkIndex;
    eGameStateSeason CurrentSeason;
    int CurrentDay, CurrentYear, CurrentHour, CurrentMinute, CurrentSecond;

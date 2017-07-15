@@ -16,34 +16,47 @@
 #include "gamestate.h"
 #include "durable.h"
 #include "dropsloot.h"
-#include "plantable.h"
 #include "obtainable.h"
 #include "player.h"
+#include "interactable.h"
 #include "useable.h"
 #include "equippable.h"
-#include "interactable.h"
 
-Item Item::Clone(const Item & source)
+ItemPtr Item::Clone(ItemPtr source)
 {
-   Item result = source;
+   auto result = std::make_shared<Item>();
 
-   for (auto i : source.ItemInterfaces) {
+   result->Name = source->Name;
+   result->Description = source->Description;
+   result->Count = source->Count;
+   result->ColorCode = source->ColorCode;
+   result->CharacterCode = source->CharacterCode;
+   result->GfxTileCode = source->GfxTileCode;
+   result->SurfaceAttributes = source->SurfaceAttributes;
+   result->ItemCategories = source->ItemCategories;
+
+
+   for (auto i : source->ItemInterfaces) {
       if (i.second == nullptr) {
-         result.ItemInterfaces[i.first] = nullptr;
+         result->ItemInterfaces[i.first] = nullptr;
          continue;
       }
-      result.ItemInterfaces[i.first] = std::shared_ptr<IItemInterface>(i.second->Clone());
+      result->ItemInterfaces[i.first] = std::shared_ptr<IItemInterface>(i.second->Clone());
    }
 
    return result;
 }
 
-Item::Item()
+Item::Item(): 
+   ColorCode(Color::White), 
+   CharacterCode(0), 
+   GfxTileCode(0), 
+   SurfaceAttributes(0), 
+   Count(1)
 {
-   this->Count = 1;
 }
 
-std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> Item::GetInterfaces()
+std::map<ItemInterfaceType::ItemInterfaceType, std::shared_ptr<IItemInterface>> Item::GetInterfaces() const
 {
    return this->ItemInterfaces;
 }
@@ -62,11 +75,6 @@ void Item::AddInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType, 
    this->ItemInterfaces[itemInterfaceType] = std::shared_ptr<IItemInterface>(itemInterface);
 }
 
-void Item::RemoveInterface(ItemInterfaceType::ItemInterfaceType itemInterfaceType)
-{
-   this->ItemInterfaces.erase(itemInterfaceType);
-}
-
 std::string Item::GetName()
 {
    return this->Name;
@@ -77,7 +85,7 @@ void Item::SetName(std::string name)
    this->Name = name;
 }
 
-std::string Item::GetDescription()
+std::string Item::GetDescription() const
 {
    return this->Description;
 }
@@ -139,7 +147,7 @@ bool Item::IsEquippable()
    return true;
 }
 
-bool Item::IsInteractable()
+bool Item::IsInteractable() const
 {
    for (auto i : this->GetInterfaces()) {
       if (std::dynamic_pointer_cast<IInteractable>(i.second) != nullptr) {
@@ -206,7 +214,7 @@ void Item::Use(Direction::Direction direction)
 
 void Item::Destruct(bool dropLoot)
 {
-   int x, y;
+   int x = 0, y = 0;
    bool itemFoundOnGround = false;
 
    this->SetCount(0);
@@ -256,7 +264,7 @@ void Item::NotifyItemEquipped()
 {
 }
 
-void Item::NotifyItemUnequiupped()
+void Item::NotifyItemUnequipped()
 {
 }
 
@@ -265,7 +273,7 @@ void Item::SetDescription(std::string description)
    this->Description = description;
 }
 
-SurfaceAttribute::SurfaceAttribute Item::GetSurfaceAttributes()
+SurfaceAttribute::SurfaceAttribute Item::GetSurfaceAttributes() const
 {
    return this->SurfaceAttributes;
 }
@@ -280,7 +288,7 @@ void Item::SetColorCode(Color::Color colorCode)
    this->ColorCode = colorCode;
 }
 
-Color::Color Item::GetColorCode()
+Color::Color Item::GetColorCode() const
 {
    return this->ColorCode;
 }
@@ -290,7 +298,7 @@ void Item::SetCharacterCode(char characterCode)
    this->CharacterCode = characterCode;
 }
 
-char Item::GetCharacterCode()
+char Item::GetCharacterCode() const
 {
    return this->CharacterCode;
 }
@@ -300,12 +308,12 @@ void Item::SetGfxTileCode(int gfxTileCode)
    this->GfxTileCode = gfxTileCode;
 }
 
-int Item::GetGfxTileCode()
+int Item::GetGfxTileCode() const
 {
    return this->GfxTileCode;
 }
 
-std::list<ItemCategory::ItemCategory> Item::GetItemCategories()
+std::list<ItemCategory::ItemCategory> Item::GetItemCategories() const
 {
    return this->ItemCategories;
 }
@@ -315,7 +323,7 @@ void Item::SetItemCategories(std::list<ItemCategory::ItemCategory> itemCategorie
    this->ItemCategories = itemCategories;
 }
 
-int Item::GetCount()
+int Item::GetCount() const
 {
    return this->Count;
 }

@@ -16,7 +16,6 @@ along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 #define HARVEST_ROGUE_WINDOWSSHIM_H
 #ifdef WIN32
 
-#include <cstdarg>
 int vasprintf(char **strp, const char *fmt, va_list ap);
 int asprintf(char **strp, const char *fmt, ...);
 

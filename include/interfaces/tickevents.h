@@ -19,6 +19,8 @@
 
 class IHourlyTickEvent {
 public:
+   virtual ~IHourlyTickEvent() {}
+
    virtual void OnHourlyTick(ItemPtr sourceItem) = 0;
 };
 

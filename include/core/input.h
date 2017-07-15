@@ -15,7 +15,6 @@
 #ifndef HARVEST_ROGUE_INPUT_H
 #define HARVEST_ROGUE_INPUT_H
 
-#include <memory>
 #include "keybinding.h"
 
 #ifdef WIN32
@@ -29,9 +28,9 @@ class Input {
 private:
    Input();
 
-   Input(Input const &) { };
+   Input(Input const &) = delete;
 
-   Input &operator=(Input const &) { };
+   Input &operator=(Input const &) = delete;
 public:
    ~Input();
 

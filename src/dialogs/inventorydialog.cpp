@@ -31,7 +31,7 @@ void InventoryDialog::OnKeyPress(int key) {
 
    auto action = Input::Get().GetActionForKeyPress(key);
 
-   auto totalInventoryCount = (int)this->ItemContainer->GetAllItems().size();
+   auto totalInventoryCount = int(this->ItemContainer->GetAllItems().size());
 
    if (Action::Requested(action, Action::MenuCancel)) {
       GameState::Get().PopDialog();
@@ -78,7 +78,7 @@ void InventoryDialog::OnKeyPress(int key) {
 }
 
 void InventoryDialog::Render() {
-   auto inventoryCount = (int)this->ItemContainer->GetAllItems().size();
+   auto inventoryCount = int(this->ItemContainer->GetAllItems().size());
 
    if (inventoryCount == 0) {
       this->SelectedInventoryItem = -1;

@@ -14,8 +14,11 @@
 
 #include "obtainable.h"
 
-Obtainable::Obtainable()
-{
+IItemInterface* Obtainable::Clone() const { return new Obtainable(*this); }
+
+Obtainable::Obtainable(): 
+   Stackable(false), 
+   MaxStackSize(0) {
 }
 
 Obtainable::~Obtainable()

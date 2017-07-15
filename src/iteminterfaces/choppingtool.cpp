@@ -18,6 +18,8 @@
 #include "player.h"
 #include "choppable.h"
 
+IItemInterface* ChoppingTool::Clone() const { return new ChoppingTool(*this); }
+
 ChoppingTool::ChoppingTool()
 {
 }
@@ -43,9 +45,6 @@ std::shared_ptr<ChoppingTool> ChoppingTool::Deserialize(picojson::value serializ
          }
 
          auto value = item.second.get<double>();
-         if (value != (unsigned int)value) {
-            throw;
-         }
 
          result->SetStrength((int)value);
          continue;
@@ -57,10 +56,6 @@ std::shared_ptr<ChoppingTool> ChoppingTool::Deserialize(picojson::value serializ
          }
 
          auto value = item.second.get<double>();
-
-         if (value != (unsigned int)value) {
-            throw;
-         }
 
          result->SetFatigue((int)value);
          continue;
@@ -101,7 +96,7 @@ void ChoppingTool::Chop(ItemPtr sourceItem, Direction::Direction direction)
 {
    auto landmark = GameState::Get().GetCurrentLandmark();
 
-   int targetX, targetY;
+   int targetX = 0, targetY = 0;
    switch (direction) {
    case Direction::Up:
       targetX = Player::Get().GetPositionX();

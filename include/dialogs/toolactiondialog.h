@@ -34,10 +34,11 @@ public:
    static std::shared_ptr<ToolActionDialog> Construct(ItemPtr tool) {
       return std::shared_ptr<ToolActionDialog>(new ToolActionDialog(tool));
    }
-   virtual void OnKeyPress(int key);
-   virtual void Render();
+
+   void OnKeyPress(int key) override;
+   void Render() override;
 private:
-   ToolActionDialog(ItemPtr tool);
+   explicit ToolActionDialog(ItemPtr tool);
    ItemPtr Tool;
    ToolActionDialogOption::ToolActionDialogOption SelectedOption;
 

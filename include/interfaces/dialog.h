@@ -15,8 +15,6 @@
 #ifndef HARVEST_ROGUE_DIALOG_H
 #define HARVEST_ROGUE_DIALOG_H
 
-#include <vector>
-
 class IDialog {
 public:
    virtual ~IDialog() { }

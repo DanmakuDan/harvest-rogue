@@ -24,7 +24,7 @@
 
 class ChoppingTool : public IItemInterface, public IUseable, public IDirectionallyUsable, public IEquippable, public std::enable_shared_from_this<ChoppingTool> {
 public:
-   IItemInterface* Clone() const { return new ChoppingTool(*this); }
+   IItemInterface* Clone() const override;
 private:
    ChoppingTool();
 
@@ -33,7 +33,7 @@ private:
       this->Fatigue = src.Fatigue;
    };
 
-   ChoppingTool &operator=(ChoppingTool const &) { };
+   ChoppingTool& operator=(ChoppingTool const &) = delete;
 public:
    ~ChoppingTool();
    static std::shared_ptr<ChoppingTool> Deserialize(picojson::value serializedValue);
@@ -47,17 +47,17 @@ public:
    void Chop(ItemPtr sourceItem, Direction::Direction direction);
 
    // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
 
    // IUseable
-   virtual void Use(ItemPtr sourceItem);
+   void Use(ItemPtr sourceItem) override;
 
    // IDirectionallyUseable
-   virtual void Use(ItemPtr sourceItem, Direction::Direction direction);
+   void Use(ItemPtr sourceItem, Direction::Direction direction) override;
 
    // IEquippable
-   virtual void OnItemEquipped(ItemPtr sourceItem);
-   virtual void OnItemUnequipped(ItemPtr sourceItem);
+   void OnItemEquipped(ItemPtr sourceItem) override;
+   void OnItemUnequipped(ItemPtr sourceItem) override;
 private:
    int Strength;
    int Fatigue;

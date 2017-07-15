@@ -14,23 +14,24 @@
 
 #include "config.h"
 
-int Config::GetScreenWidth() {
-   return this->screenWidth;
+
+int Config::GetScreenWidth() const {
+   return this->ScreenWidth;
 }
 
 void Config::SetScreenWidth(int width) {
-   this->screenWidth = width;
+   this->ScreenWidth = width;
 }
 
-int Config::GetScreenHeight() {
-   return this->screenHeight;
+int Config::GetScreenHeight() const {
+   return this->ScreenHeight;
 }
 
 void Config::SetScreenHeight(int height) {
-   this->screenHeight = height;
+   this->ScreenHeight = height;
 }
 
-Keybinding Config::GetKeybinding() {
+Keybinding Config::GetKeybinding() const {
    return this->keybinding;
 }
 
@@ -38,20 +39,19 @@ void Config::SetKeybinding(Keybinding binding) {
    this->keybinding = binding;
 }
 
-picojson::value Config::Serialize(Config config) {
+picojson::value Config::Serialize() {
    picojson::object result;
 
-   result["screenWidth"] = picojson::value((double)config.GetScreenWidth());
-   result["screenHeight"] = picojson::value((double)config.GetScreenHeight());
-
+   result["screenWidth"] = picojson::value(double(this->GetScreenWidth()));
+   result["screenHeight"] = picojson::value(double(this->GetScreenHeight()));
+   result["screenX"] = picojson::value(double(this->GetScreenX()));
+   result["screenY"] = picojson::value(double(this->GetScreenY()));
    // TODO: Include keybindings?
 
    return picojson::value(result);
 }
 
-Config Config::Deserialize(picojson::value serializedValue) {
-   auto result = Config();
-
+void Config::Deserialize(picojson::value serializedValue) {
    if (!serializedValue.is<picojson::object>()) {
       throw;
    }
@@ -64,7 +64,10 @@ Config Config::Deserialize(picojson::value serializedValue) {
          }
 
          auto value = item.second.get<double>();
-         result.SetScreenWidth(value);
+         if (value == 0) {
+            continue;
+         }
+         this->SetScreenWidth(int(value));
          continue;
       }
 
@@ -74,17 +77,60 @@ Config Config::Deserialize(picojson::value serializedValue) {
          }
 
          auto value = item.second.get<double>();
-         result.SetScreenHeight(value);
+         if (value == 0) {
+            continue;
+         }
+         this->SetScreenHeight(int(value));
+         continue;
+      }
+
+      if (item.first == "screenX") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         auto value = item.second.get<double>();
+         if (value == 0) {
+            continue;
+         }
+         this->SetScreenX(int(value));
+         continue;
+      }
+
+      if (item.first == "screenY") {
+         if (!item.second.is<double>()) {
+            throw;
+         }
+
+         auto value = item.second.get<double>();
+         if (value == 0) {
+            continue;
+         }
+         this->SetScreenY(int(value));
          continue;
       }
 
       if (item.first == "keybindings") {
-         result.SetKeybinding(Keybinding::Deserialize(item.second));
+         this->SetKeybinding(Keybinding::Deserialize(item.second));
          continue;
       }
 
       throw;
    }
+}
 
-   return result;
+int Config::GetScreenX() const {
+   return this->ScreenX;
+}
+
+void Config::SetScreenX(int x) {
+   this->ScreenX = x;
+}
+
+int Config::GetScreenY() const {
+   return this->ScreenY;
+}
+
+void Config::SetScreenY(int y) {
+   this->ScreenY = y;
 }

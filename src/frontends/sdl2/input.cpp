@@ -18,7 +18,7 @@ along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 #include <SDL2/SDL.h>
 
 Input::Input() {
-   this->keybinding = Config::provider->GetConfig().GetKeybinding();
+   this->keybinding = Config::Get().GetKeybinding();
 
    this->InputTimeout = -1;
 }
@@ -27,35 +27,50 @@ Input::~Input()
 {
 }
 
-int Input::WaitForAndGetKeyPress()
-{
+int Input::WaitForAndGetKeyPress() {
    SDL_Event evt;
    while (true) {
       SDL_WaitEvent(&evt);
       switch (evt.type) {
-      case SDL_QUIT:
-         GameState::Get().Terminate();
-         return 0;
-      case SDL_KEYDOWN:
-         switch (evt.key.keysym.sym) {
-         case SDLK_DOWN: return IK_DOWN_ARROW;
-         case SDLK_UP: return IK_UP_ARROW;
-         case SDLK_LEFT: return IK_LEFT_ARROW;
-         case SDLK_RIGHT: return IK_RIGHT_ARROW;
-         case SDLK_SPACE: return IK_SPACEBAR;
-         case SDLK_RETURN:
-         case SDLK_RETURN2:
-            return IK_RETURN_KEY;
-         case SDLK_ESCAPE: return IK_ESCAPE;
-         default:
-            return evt.key.keysym.sym;
-         }
+         case SDL_QUIT:
+            GameState::Get().Terminate();
+            return 0;
+         case SDL_KEYDOWN:
+            switch (evt.key.keysym.sym) {
+               case SDLK_DOWN:
+                  return IK_DOWN_ARROW;
+               case SDLK_UP:
+                  return IK_UP_ARROW;
+               case SDLK_LEFT:
+                  return IK_LEFT_ARROW;
+               case SDLK_RIGHT:
+                  return IK_RIGHT_ARROW;
+               case SDLK_SPACE:
+                  return IK_SPACEBAR;
+               case SDLK_RETURN:
+               case SDLK_RETURN2:
+                  return IK_RETURN_KEY;
+               case SDLK_ESCAPE:
+                  return IK_ESCAPE;
+               default:
+                  return evt.key.keysym.sym;
+            }
          case SDL_WINDOWEVENT:
-            switch(evt.window.event) {
+            switch (evt.window.event) {
                case SDL_WINDOWEVENT_RESIZED:
                case SDL_WINDOWEVENT_MAXIMIZED:
-               return RESIZE_KEY;
+                  Config::Get().SetScreenWidth(evt.window.data1);
+                  Config::Get().SetScreenHeight(evt.window.data2);
+                  return RESIZE_KEY;
+               case SDL_WINDOWEVENT_MOVED:
+                  Config::Get().SetScreenX(evt.window.data1);
+                  Config::Get().SetScreenY(evt.window.data2);
+                  return 0;
+               default:
+                  return 0;
             }
+         default:
+            return 0;
       }
    }
 }
