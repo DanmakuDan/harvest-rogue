@@ -19,7 +19,7 @@
 #include "screen.h"
 
 MainMenu::MainMenu() {
-   this->SelectedButton = 0;
+   this->SelectedOption = MainMenuDialogOption::NewGame;
    Input::Get().DisableInputTimeout();
 }
 
@@ -30,34 +30,42 @@ void MainMenu::InitializeScreen() {
 void MainMenu::OnKeyPress(int key) {
 
    auto action = Input::Get().GetActionForKeyPress(key);
-
    if (Action::Requested(action, Action::MenuDown)) {
-      if (2 < ++this->SelectedButton) {
-         this->SelectedButton = 0;
+      if (this->SelectedOption >= MainMenuDialogOption::_MAX - 1) {
+         this->SelectedOption = MainMenuDialogOption::MainMenuDialogOption(0);
+      }
+      else {
+         this->SelectedOption = MainMenuDialogOption::MainMenuDialogOption(this->SelectedOption + 1);
       }
    }
 
    if (Action::Requested(action, Action::MenuUp)) {
-      if (0 > --this->SelectedButton) {
-         this->SelectedButton = 2;
+      if (this->SelectedOption <= MainMenuDialogOption::MainMenuDialogOption(0)) {
+         this->SelectedOption = MainMenuDialogOption::MainMenuDialogOption(MainMenuDialogOption::_MAX - 1);
+      }
+      else {
+         this->SelectedOption = MainMenuDialogOption::MainMenuDialogOption(this->SelectedOption - 1);
       }
    }
 
    if (Action::Requested(action, Action::MenuAccept)) {
-      switch (this->SelectedButton) {
-         case 0: // New Game
-            GameState::Get().InitializeNewGame();
-            GameState::Get().SetCurrentScene(Game::Construct());
-            break;
-         case 2: // Quit
-            GameState::Get().Terminate();
-            return;
-      }
+      ExecuteSelectedAction();
    }
-
+   
    this->Render();
 }
 
+void MainMenu::ExecuteSelectedAction() {
+   switch (this->SelectedOption) {
+      case MainMenuDialogOption::NewGame:
+         GameState::Get().InitializeNewGame();
+         GameState::Get().SetCurrentScene(Game::Construct());
+         break;
+      case MainMenuDialogOption::Quit: 
+         GameState::Get().Terminate();
+         return;
+   }
+}
 
 void MainMenu::Render() {
    Screen::Get().BeginScreenUpdate();
@@ -85,10 +93,24 @@ void MainMenu::Render() {
 }
 
 void MainMenu::DrawMenu() {
+   /*
    auto top = (Screen::Get().GetHeight() / 2) + 4;
    auto buttonLeft = (Screen::Get().GetWidth() / 2) - 15;
    Screen::Get().WriteButton(buttonLeft, top++, 30, "New Game", 0 == this->SelectedButton);
    Screen::Get().WriteButton(buttonLeft, top++, 30, "Continue", 1 == this->SelectedButton);
    Screen::Get().WriteButton(buttonLeft, top++, 30, "Quit", 2 == this->SelectedButton);
+   */
+   auto dialogHeight = MainMenuDialogOption::_MAX;
+   auto dialogLeft = (Screen::Get().GetWidth() / 2) - (MAINMENU_DIALOG_WIDTH / 2);
+   auto dialogTop = (Screen::Get().GetHeight() - (dialogHeight + 3));
+   Screen::Get().WriteWindow(dialogLeft, dialogTop, MAINMENU_DIALOG_WIDTH, dialogHeight + 2, "Main Menu");
+
+   auto btnLeft = dialogLeft + 1;
+   auto btnWidth = MAINMENU_DIALOG_WIDTH - 2;
+   auto btnTop = dialogTop;
+
+   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "New Game", this->SelectedOption == MainMenuDialogOption::NewGame);
+   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Continue", this->SelectedOption == MainMenuDialogOption::Continue);
+   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Quit", this->SelectedOption == MainMenuDialogOption::Quit);
 }
 

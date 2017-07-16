@@ -56,7 +56,7 @@
             "craftable": {
                "secondsToCraft": 60,
                "materialsRequired": {
-                  "Birch Log": {
+                  "Birch Twig": {
                      "amount": 5
                   }
                }
