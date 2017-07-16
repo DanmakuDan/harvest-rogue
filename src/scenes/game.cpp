@@ -49,41 +49,35 @@ void Game::OnKeyPress(int key) {
    if (Action::Requested(action, Action::GameMenu)) {
       GameState::Get().PushDialog(GameMenuDialog::Construct());
    }
-
-   if (Action::Requested(action, Action::PickUpItemFromGround)) {
+   else if (Action::Requested(action, Action::PickUpItemFromGround)) {
       Player::Get().PickUpItemFromGround();
    }
-
-   if (Action::Requested(action, Action::MoveUp)) {
+   else if (Action::Requested(action, Action::MoveUp)) {
       Player::Get().WalkPlayer(Direction::Up);
    }
-
-   if (Action::Requested(action, Action::MoveDown)) {
+   else if (Action::Requested(action, Action::MoveDown)) {
       Player::Get().WalkPlayer(Direction::Down);
    }
-
-   if (Action::Requested(action, Action::MoveLeft)) {
+   else if (Action::Requested(action, Action::MoveLeft)) {
       Player::Get().WalkPlayer(Direction::Left);
    }
-
-   if (Action::Requested(action, Action::MoveRight)) {
+   else if (Action::Requested(action, Action::MoveRight)) {
       Player::Get().WalkPlayer(Direction::Right);
    }
-
-   if (Action::Requested(action, Action::UseTool)) {
+   else if (Action::Requested(action, Action::UseTool)) {
       Player::Get().UseEquippedItem();
    }
-
-   if (Action::Requested(action, Action::OpenActionList)) {
+   else if (Action::Requested(action, Action::OpenActionList)) {
       GameState::Get().PushDialog(ActionDialog::Construct());
    }
-
-   if (Action::Requested(action, Action::OpenInventory)) {
+   else if (Action::Requested(action, Action::OpenInventory)) {
       GameState::Get().PushDialog(InventoryDialog::Construct(Player::Get().AsItemContainer()));
    }
-
-   if (Action::Requested(action, Action::InteractWithObject)) {
+   else if (Action::Requested(action, Action::InteractWithObject)) {
       Player::Get().InteractWith();
+   }
+   else if (Action::Requested(action, Action::Craft)) {
+      Player::Get().Craft();
    }
 
    GameState::Get().StepSimulation();

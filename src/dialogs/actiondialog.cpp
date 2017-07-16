@@ -60,14 +60,9 @@ void ActionDialog::Render() {
    auto btnWidth = ACTION_DIALOG_WIDTH - 2;
    auto btnTop = dialogTop;
 
-   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Pick up",
-                             this->SelectedOption == ActionDialogOption::PickUp);
-
-   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Unequip Tool",
-                             this->SelectedOption == ActionDialogOption::Unequip);
-
-   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Interact With...",
-                             this->SelectedOption == ActionDialogOption::InteractWith);
+   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Pick up", this->SelectedOption == ActionDialogOption::PickUp);
+   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Unequip Tool", this->SelectedOption == ActionDialogOption::Unequip);
+   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Interact With...", this->SelectedOption == ActionDialogOption::InteractWith);
 
 }
 

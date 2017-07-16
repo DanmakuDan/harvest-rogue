@@ -52,7 +52,7 @@ void InteractionDirectionDialog::OnKeyPress(int key) {
    }
 
    if (Action::Requested(action, Action::MenuCancel)) {
-      GameState::Get().ClearAllDialogs();
+      GameState::Get().PopDialog();
       return;
    }
 

@@ -16,6 +16,7 @@
 #include "input.h"
 #include "screen.h"
 #include "craftingdialog.h"
+#include "craftingconfirmdialog.h"
 #include "craftable.h"
 #include "player.h"
 #include <sstream>
@@ -99,23 +100,24 @@ void CraftingDialog::AddItemToCategory(std::string category, ItemPtr item) {
 void CraftingDialog::OnKeyPress(int key) {
    auto action = Input::Get().GetActionForKeyPress(key);
 
-   if (Action::Requested(action, Action::MenuCancel)) {
+   if (Action::Requested(action, Action::MenuAccept)) {
+      if (this->CurrentItem != nullptr) {
+         GameState::Get().PushDialog(CraftingConfirmDialog::Construct(this->CurrentItem));
+      }
+   }
+   else if (Action::Requested(action, Action::MenuCancel)) {
       GameState::Get().PopDialog();
    }
-
-   if (Action::Requested(action, Action::MenuLeft)) {
+   else if (Action::Requested(action, Action::MenuLeft)) {
       this->SelectPreviousCategory();
    }
-
-   if (Action::Requested(action, Action::MenuRight)) {
+   else if (Action::Requested(action, Action::MenuRight)) {
       this->SelectNextCategory();
    }
-
-   if (Action::Requested(action, Action::MenuUp)) {
+   else if (Action::Requested(action, Action::MenuUp)) {
       this->SelectPreviousItem();
    }
-
-   if (Action::Requested(action, Action::MenuDown)) {
+   else if (Action::Requested(action, Action::MenuDown)) {
       this->SelectNextItem();
    }
 }

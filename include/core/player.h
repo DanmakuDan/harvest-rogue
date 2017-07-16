@@ -59,6 +59,7 @@ public:
    void SetIsSleeping(bool sleeping);
    bool GetIsSleeping() const;
    int GetAmountOfThisItemHeld(std::string ItemName);
+   void Craft();
 
    // INameable
    std::string GetName() override;

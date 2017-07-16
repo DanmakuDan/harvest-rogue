@@ -8,7 +8,7 @@ We need help with the website, game code, art, sound/music, testing, and porting
 
 [HarvestRogue subreddit](https://www.reddit.com/r/harvestrogue/)
 
-![Graphics](http://www.harvestrogue.com/images/screenshots/alpha1.png)
+![Graphics](http://i.imgur.com/PFyrLiC.png)
 
 Welcome to the project page for Harvest-Rogue, a Harvest Moon-inspired roguelike! This project is very early in development, so check back often for updates!
 
