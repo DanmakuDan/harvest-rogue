@@ -233,12 +233,18 @@ void Screen::EndScreenUpdate()
 
 void Screen::WriteWindow(int x, int y, int width, int height, std::string text)
 {
+   auto hasCaption = text.length() > 0;
+   auto captionLeft = (x + (width / 2)) - (text.size() / 2);
+   auto captionRight = captionLeft + text.size();
    for (auto posY = y; posY < y + height; posY++) {
       for (auto posX = x; posX < x + width; posX++) {
 
          if (posY == y) {
             // Top row
-            if (posX == x) {
+            if (hasCaption && (posX >= captionLeft - 1) && (posX <= captionRight)) {
+               this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowCenter).GfxTileCode, 0, Color::Default);
+            }
+            else if (posX == x) {
                this->WriteTile(posX, posY, Tile::FromTileType(TileType::WindowTopLeft).GfxTileCode, 0, Color::Default);
             }
             else if (posX == (x + width - 1)) {
@@ -278,6 +284,5 @@ void Screen::WriteWindow(int x, int y, int width, int height, std::string text)
       }
    }
 
-   auto captionLeft = (x + (width / 2)) - (text.size() / 2);
    this->WriteText(int(captionLeft), y, text.c_str(), Color::White);
 }

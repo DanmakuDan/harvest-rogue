@@ -18,6 +18,17 @@
 #include "scene.h"
 #include <memory>
 
+#define MAINMENU_DIALOG_WIDTH  30
+
+namespace MainMenuDialogOption {
+   enum MainMenuDialogOption {
+      NewGame = 0,
+      Continue,
+      Quit,
+      _MAX
+   };
+}
+
 class MainMenu : public IScene {
 public:
    void InitializeScreen() override;
@@ -31,10 +42,9 @@ public:
 
 private:
    MainMenu();
-
-   int SelectedButton;
-
+   MainMenuDialogOption::MainMenuDialogOption SelectedOption;
    void DrawMenu();
+   void ExecuteSelectedAction();
 };
 
 
