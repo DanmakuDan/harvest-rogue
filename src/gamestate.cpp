@@ -162,7 +162,7 @@ void GameState::AddLogMessageFmt(const std::string format, ...) {
    unsigned long size = 4096;
    std::string str;
    va_list ap;
-   while (1) {     // Maximum two passes on a POSIX system...
+   while (true) {     // Maximum two passes on a POSIX system...
       str.resize(size);
       va_start(ap, format);
       auto n = vsnprintf(const_cast<char *>(str.data()), size, format.c_str(), ap);

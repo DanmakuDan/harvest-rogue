@@ -30,12 +30,16 @@ namespace ActionDialogOption {
    };
 }
 
+/*
+ * Test
+ */
 class ActionDialog : public IDialog {
 public:
    static std::shared_ptr<ActionDialog> Construct() {
       return std::shared_ptr<ActionDialog>(new ActionDialog());
    }
 
+   // IDialog
    void OnKeyPress(int key) override;
    void Render() override;
 private:

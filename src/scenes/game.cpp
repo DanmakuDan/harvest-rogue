@@ -208,7 +208,7 @@ void Game::RenderSideBar() {
 
    Screen::Get().WriteText(sideBarLeft, 3, "Feeling ", Color::Silver);
    auto playerEnergy = Player::Get().GetEnergy();
-   if (playerEnergy <= ENERGY_EXAUSTED) {
+   if (playerEnergy <= ENERGY_EXHAUSTED) {
       Screen::Get().WriteText(sideBarLeft + 8, 3, "EXHAUSTED", Color::BrightRed);
    } else if (playerEnergy <= ENERGY_TIRED) {
       Screen::Get().WriteText(sideBarLeft + 8, 3, "tired", Color::BrightYellow);

@@ -51,7 +51,7 @@ private:
    CraftingConfirmDialogOption::CraftingConfirmDialogOption SelectedOption;
    std::string DialogTitle;
    CraftingConfirmDialog(ItemPtr itemToConstruct);
-   void Craft();
+   void Craft() const;
 };
 
 #endif // HARVEST_ROGUE_CRAFTINGCONFIRMDIALOG_H

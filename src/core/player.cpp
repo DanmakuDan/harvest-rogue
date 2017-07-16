@@ -445,6 +445,11 @@ void Player::SetEnergy(int energy) {
       this->Energy = 0;
       return;
    }
+   if (energy > ENERGY_MAX)
+   {
+      this->Energy = ENERGY_MAX;
+      return;
+   }
    this->Energy = energy;
 }
 

@@ -20,6 +20,8 @@ IItemInterface* TillingTool::Clone() const { return new TillingTool(*this); }
 
 TillingTool::TillingTool()
 {
+   this->Strength = 0;
+   this->Fatigue = 0;
 }
 
 TillingTool::~TillingTool()
