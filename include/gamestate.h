@@ -26,7 +26,7 @@
 
 #define MAP_SIZE_WIDTH 200
 #define MAP_SIZE_HEIGHT 200
-
+#define GAMESTATE_SIMULATION_STEP_SECONDS 20
 enum eGameStateSeason {
    SeasonSpring,
    SeasonSummer,

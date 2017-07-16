@@ -18,6 +18,8 @@ Keybinding::Keybinding() {
    // Default keybindings
    this->keybindings['a'] = Action::OpenActionList;
    this->keybindings['A'] = Action::OpenActionList;
+   this->keybindings['c'] = Action::Craft;
+   this->keybindings['C'] = Action::Craft;
    this->keybindings['i'] = Action::OpenInventory;
    this->keybindings['I'] = Action::OpenInventory;
    this->keybindings[','] = Action::PickUpItemFromGround;

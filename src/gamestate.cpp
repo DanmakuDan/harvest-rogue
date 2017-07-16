@@ -97,7 +97,7 @@ void GameState::InitializeNewGame() {
 }
 
 void GameState::StepSimulation() {
-   CurrentSecond += 20;
+   CurrentSecond += GAMESTATE_SIMULATION_STEP_SECONDS;
 
    CurrentMinute += CurrentSecond / 60;
    CurrentSecond %= 60;

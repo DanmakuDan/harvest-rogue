@@ -96,7 +96,7 @@ void GameMenuDialog::ExecuteSelectedAction() {
          break;
 
       case GameMenuDialogOption::Craft:
-         GameState::Get().PushDialog(CraftingDialog::Construct());
+         Player::Get().Craft();
          break;
 
       case GameMenuDialogOption::Quit:

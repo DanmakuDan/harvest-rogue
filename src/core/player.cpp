@@ -17,6 +17,7 @@
 #include "player.h"
 #include "gamestate.h"
 #include "interactiondirectiondialog.h"
+#include "craftingdialog.h"
 #include "obtainable.h"
 
 Player::Player() {
@@ -124,8 +125,10 @@ void Player::AddItem(ItemPtr item, int count, bool dontStack)
       return;
    }
 
-   auto newItem = Item::Clone(item);
-   this->Inventory.push_back(newItem);
+   for (auto i = 0; i < count; i++) {
+      auto newItem = Item::Clone(item);
+      this->Inventory.push_back(newItem);
+   }
 }
 
 void Player::RemoveItem(ItemPtr item, int count)
@@ -210,7 +213,7 @@ void Player::TransferIntoInventory(ItemPtr sourceItem, int amountToTransfer) {
 
    // Do a sanity check and make sure we are not trying to transfer more items than exists in the stack
    if (sourceItem->GetCount() < amountToTransfer) {
-      throw;
+      throw std::invalid_argument("Tried to transfor more items into the inventory than exists for the source object!");
    }
 
    // First determine if the item is stackable. 
@@ -358,6 +361,10 @@ ItemPtr Player::RemoveFromInventory(ItemPtr sourceItem, int amountToMove) {
          continue;
       }
 
+      if (invProp->GetCount() < amountToMove) {
+         throw std::invalid_argument("Tried to remove more items than in the stack!");
+      }
+
       // Are we moving the entire stack?
       if (amountToMove == MOVE_AMOUNT_EVERYTHING || amountToMove == invProp->GetCount()) {
 
@@ -447,6 +454,10 @@ void Player::AdjustEnergy(int energyAdjustment) {
 
 void Player::InteractWith() {
    GameState::Get().PushDialog(InteractionDirectionDialog::Construct());
+}
+
+void Player::Craft() {
+   GameState::Get().PushDialog(CraftingDialog::Construct());
 }
 
 void Player::InteractWith(Direction::Direction direction) const {
