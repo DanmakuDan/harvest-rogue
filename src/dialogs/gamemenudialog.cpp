@@ -60,7 +60,7 @@ void GameMenuDialog::Render() {
    auto dialogHeight = GameMenuDialogOption::_MAX;
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (GAMEMENU_DIALOG_WIDTH / 2);
    auto dialogTop = (Screen::Get().GetHeight() / 2) - (dialogHeight / 2);
-   Screen::Get().WriteWindow(dialogLeft, dialogTop, GAMEMENU_DIALOG_WIDTH, dialogHeight+2, "Game Menu");
+   Screen::Get().WriteWindow(dialogLeft, dialogTop, GAMEMENU_DIALOG_WIDTH, dialogHeight + 2, "Game Menu");
 
    auto btnLeft = dialogLeft + 1;
    auto btnWidth = GAMEMENU_DIALOG_WIDTH - 2;
