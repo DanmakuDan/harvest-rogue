@@ -22,6 +22,8 @@ IItemInterface* ChoppingTool::Clone() const { return new ChoppingTool(*this); }
 
 ChoppingTool::ChoppingTool()
 {
+   this->Strength = 0;
+   this->Fatigue = 0;
 }
 
 ChoppingTool::~ChoppingTool()

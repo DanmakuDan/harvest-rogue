@@ -23,7 +23,6 @@ ActionDialog::ActionDialog() {
 }
 
 void ActionDialog::OnKeyPress(int key) {
-
    auto action = Input::Get().GetActionForKeyPress(key);
 
    if (Action::Requested(action, Action::MenuDown)) {

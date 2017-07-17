@@ -102,6 +102,10 @@ void Player::WalkPlayer(Direction::Direction direction) {
    }
 
    this->WarpPlayer(newX, newY);
+   if (currentLandmark->GetTile(newX, newY).TileType != TileType::DirtPath) {
+      Player::Get().AdjustEnergy(-1);
+   }
+   
 }
 
 ItemPtr Player::GetCurrentlyEquippedItem() const
@@ -443,6 +447,11 @@ int Player::GetEnergy() const {
 void Player::SetEnergy(int energy) {
    if (energy < 0) {
       this->Energy = 0;
+      return;
+   }
+   if (energy > ENERGY_MAX)
+   {
+      this->Energy = ENERGY_MAX;
       return;
    }
    this->Energy = energy;

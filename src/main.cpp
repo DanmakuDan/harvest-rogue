@@ -46,11 +46,7 @@ int main() {
 
 #ifdef WIN32
 #include <Windows.h>
-int WINAPI WinMain(HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine,
-	int nCmdShow)
-{
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	main();
 }
 #endif

@@ -90,9 +90,9 @@ void GameState::InitializeNewGame() {
    this->CurrentLandmarkIndex = int(this->Landmarks.size()) - 1;
 
    // Temporary debug stuff
-   this->AddLogMessage("Welcome to Harvest-Rogue, Alpha 1!");
+   this->AddLogMessage("Welcome to Harvest-Rogue, Alpha 2!");
    this->AddLogMessage("This is a pre-alpha release. Got feedback? Open an issue on github!");
-   this->AddLogMessage("https://github.com/essial/harvest-rogue");
+   this->AddLogMessage("https://github.com/harvest-rogue/harvest-rogue");
 
 }
 
@@ -162,7 +162,7 @@ void GameState::AddLogMessageFmt(const std::string format, ...) {
    unsigned long size = 4096;
    std::string str;
    va_list ap;
-   while (1) {     // Maximum two passes on a POSIX system...
+   while (true) {     // Maximum two passes on a POSIX system...
       str.resize(size);
       va_start(ap, format);
       auto n = vsnprintf(const_cast<char *>(str.data()), size, format.c_str(), ap);

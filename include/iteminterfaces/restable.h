@@ -17,7 +17,6 @@
 
 
 #include "iteminterface.h"
-#include "tickevents.h"
 #include "interactable.h"
 #include <memory>
 

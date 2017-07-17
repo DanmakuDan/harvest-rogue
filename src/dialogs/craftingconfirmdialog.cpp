@@ -19,7 +19,6 @@ along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 #include "screen.h"
 #include "craftable.h"
 #include "player.h"
-#include "obtainable.h"
 #include <sstream>
 #include <iomanip>
 
@@ -89,9 +88,9 @@ this->AmountToCraft = 1;
 
 void CraftingConfirmDialog::Render() {
    auto item = this->ItemToConstruct->GetInterface<Craftable>(ItemInterfaceType::Craftable);
-   auto dialogHeight = (int)item->GetRequiredMaterials().size() + 9;
-   auto dialogLeft = (int)(Screen::Get().GetWidth() / 2) - (int)(CRAFTINGCONFIRM_DIALOG_WIDTH / 2);
-   auto dialogTop = (int)(Screen::Get().GetHeight() / 2) - (int)(dialogHeight / 2);
+   auto dialogHeight = static_cast<int>(item->GetRequiredMaterials().size()) + 9;
+   auto dialogLeft = static_cast<int>(Screen::Get().GetWidth() / 2) - static_cast<int>(CRAFTINGCONFIRM_DIALOG_WIDTH / 2);
+   auto dialogTop = static_cast<int>(Screen::Get().GetHeight() / 2) - static_cast<int>(dialogHeight / 2);
    Screen::Get().WriteWindow(dialogLeft, dialogTop, CRAFTINGCONFIRM_DIALOG_WIDTH, dialogHeight, this->DialogTitle);
 
    Screen::Get().WriteText(dialogLeft + 2, dialogTop + 2, "Crafting Time:", Color::White);
@@ -151,7 +150,7 @@ void CraftingConfirmDialog::Render() {
    Screen::Get().WriteButton(dialogLeft + 40, y + 2, 6, "+100", this->SelectedOption == CraftingConfirmDialogOption::AddOneHundred);
 }
 
-void CraftingConfirmDialog::Craft() {
+void CraftingConfirmDialog::Craft() const {
    if (!this->HasMaterialToCraft) {
       if (this->AmountToCraft > 1) {
          GameState::Get().AddLogMessageFmt("You lack the materials to craft %i copies of %s...", this->AmountToCraft, this->ItemToConstruct->GetName().c_str());
