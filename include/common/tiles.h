@@ -49,6 +49,7 @@ namespace TileType {
 
       Tilled,
 
+      DirtPath,
       Grass,
       GrassTuft,
       //Weed,
@@ -93,12 +94,13 @@ namespace Tile {
 
 
    static Tile Tiles[] = {
-         {TileType::Nothing,               "Nothing",             SurfaceAttribute::None,              Color::Red,     'X', -1},
-         {TileType::Player,                "You",                 SurfaceAttribute::None,              Color::White,   '@',  1},
-         {TileType::Tilled,                "Tilled Land",         SurfaceAttribute::Walkable,          Color::Yellow,  '=',  2},
-         {TileType::Grass,                 "Grass",               SurfaceAttribute::Walkable,          Color::Green,   '.',  3},
+         {TileType::Nothing,               "Nothing",             SurfaceAttribute::None,              Color::Red,         'X', -1},
+         {TileType::Player,                "You",                 SurfaceAttribute::None,              Color::White,       '@',  1},
+         {TileType::Tilled,                "Tilled Land",         SurfaceAttribute::Walkable,          Color::Yellow,      '=',  2},
+         {TileType::DirtPath,              "Dirt Path",           SurfaceAttribute::Walkable,          Color::White,       '_', 41},
+         {TileType::Grass,                 "Grass",               SurfaceAttribute::Walkable,          Color::Green,       '.',  3},
          {TileType::GrassTuft,             "Grass Tuft",          SurfaceAttribute::Walkable,          Color::BrightGreen, ',',  5},
-         {TileType::Stone,                 "Stone",               SurfaceAttribute::Walkable,          Color::Gray,    'o', 12},
+         {TileType::Stone,                 "Stone",               SurfaceAttribute::Walkable,          Color::Gray,        'o', 12},
          {TileType::Water,                 "Water",               SurfaceAttribute::Swimmable,         Color::BrightBlue,  '~', 10},
          {TileType::BrickWall,             "Brick Wall",          SurfaceAttribute::VisualObstruction, Color::BrightRed,   '|', 11},
          {TileType::Door,                  "Wooden Door",         SurfaceAttribute::VisualObstruction |                

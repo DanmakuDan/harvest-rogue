@@ -15,6 +15,7 @@
 #include "landmarkgenerator.h"
 #include "gamestate.h"
 #include "textgenerator.h"
+#include "perlinnoise.h"
 #include <random>
 
 
@@ -22,10 +23,15 @@ static std::random_device randomDevice;
 static std::default_random_engine randomGenerator(randomDevice());
 
 std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, int &playerY) {
-   std::uniform_int_distribution<int> grassTuftDistrobution(0, 10000);
+   std::uniform_int_distribution<int> twigDistrobution(0, 1000);
 
    auto farmName = TextGenerator::GenerateFarmName();
    auto result = Landmark::Construct(farmName, MAP_SIZE_WIDTH, MAP_SIZE_HEIGHT);
+
+   siv::PerlinNoise perlinA;
+   siv::PerlinNoise perlinB;
+   siv::PerlinNoise perlinC;
+
 
    // Generate some random stuff on the ground
    for (auto y = 0; y < MAP_SIZE_WIDTH; y++) {
@@ -35,28 +41,30 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
             continue;
          }
 
-         int n = grassTuftDistrobution(randomGenerator);
-         int permille_chance;
-         if (n <= (permille_chance = 2500)) {
-            result->SetTile(x, y, TileType::GrassTuft);
-         //} else if (n <= (permille_chance += 100)) {
-         //   result->SetTile(x, y, TileType::Weed);
-         } else if (n <= (permille_chance += 10)) {
+         auto pa = perlinA.noise0_1(static_cast<double>(x) * 0.1, static_cast<double>(y) * 0.1);
+         auto pb = perlinA.noise0_1(static_cast<double>(x+1000) * 0.05, static_cast<double>(y+1000) * 0.05);
+         auto pc = perlinA.noise0_1(static_cast<double>(x+90) * 0.002, static_cast<double>(y) * 0.002);
+         auto n = twigDistrobution(randomGenerator);
+
+         if (pa > 0.50) {
+            if (pb > 0.55) {
+               result->SetTile(x, y, TileType::Grass);
+               result->AddItem(x, y, GameState::Get().GetItemFromItemDatabase("Birch Tree"));
+            } else {
+               result->SetTile(x, y, TileType::GrassTuft);
+            }
+            
+         } else if (n < 2) {
             result->SetTile(x, y, TileType::Grass);
             result->AddItem(x, y, GameState::Get().GetItemFromItemDatabase("Birch Twig"));
-         //} else if (n <= (permille_chance += 10)) {
-         //   result->SetTile(x, y, TileStone);
-         //} else if (n <= (permille_chance += 10)) {
-         //   result->SetTile(x, y, TileType::Boulder);
-         //} else if (n <= (permille_chance += 5)) {
-         //   result->SetTile(x, y, TileType::Stump);
-         } else if (n <= (permille_chance += 45)) {
-            result->SetTile(x, y, TileType::Grass);
-            result->AddItem(x, y, GameState::Get().GetItemFromItemDatabase("Birch Tree"));
-         } else {
-            result->SetTile(x, y, TileType::Grass);
          }
-
+         else {
+            if (pc > 0.75) {
+               result->SetTile(x, y, TileType::Water);
+            } else {
+               result->SetTile(x, y, TileType::Grass);
+            }            
+         }
       }
    }
 
@@ -78,6 +86,32 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
          auto prop = result->GetItem(cottageX + x, cottageY + y);
          if (prop != nullptr) {
             result->RemoveItem(cottageX + x, cottageY + y);
+         }
+      }
+
+      // Generate the paths
+      auto pathLeft = cottageX - 30;
+      if (pathLeft < 5) {
+         pathLeft = 5;
+      }
+      auto pathRight = cottageX + LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH + 30;
+      if (pathRight > MAP_SIZE_WIDTH - 5) {
+         pathRight = MAP_SIZE_WIDTH - 5;
+      }
+
+      result->SetTile(cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2), cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT, TileType::DirtPath);
+      {
+         auto prop = result->GetItem(cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2), cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT);
+         if (prop != nullptr) {
+            result->RemoveItem(cottageX + (LANDMARKGENERATOR_DEFAULT_COTTAGE_WIDTH / 2), cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT);
+         }
+      }
+
+      for (auto x = pathLeft; x < pathRight; x++) {
+         result->SetTile(x, cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT + 1, TileType::DirtPath);
+         auto prop = result->GetItem(x, cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT + 1);
+         if (prop != nullptr) {
+            result->RemoveItem(x, cottageY + LANDMARKGENERATOR_DEFAULT_COTTAGE_HEIGHT + 1);
          }
       }
    }

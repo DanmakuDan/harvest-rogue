@@ -90,9 +90,9 @@ void GameState::InitializeNewGame() {
    this->CurrentLandmarkIndex = int(this->Landmarks.size()) - 1;
 
    // Temporary debug stuff
-   this->AddLogMessage("Welcome to Harvest-Rogue, Alpha 1!");
+   this->AddLogMessage("Welcome to Harvest-Rogue, Alpha 2!");
    this->AddLogMessage("This is a pre-alpha release. Got feedback? Open an issue on github!");
-   this->AddLogMessage("https://github.com/essial/harvest-rogue");
+   this->AddLogMessage("https://github.com/harvest-rogue/harvest-rogue");
 
 }
 

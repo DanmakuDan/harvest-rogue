@@ -23,19 +23,19 @@
 #include <vector>
 
 /// @brief The maximum amount of energy the player can have.
-#define ENERGY_MAX         100 
+#define ENERGY_MAX         1000 
 
 /// @brief The amount of energy the player can have to be well rested.
-#define ENERGY_WELL_RESTED  80
+#define ENERGY_WELL_RESTED  800
 
 /// @brief The amount of energy the player can have to be 'good' on energy.
-#define ENERGY_GOOD         50
+#define ENERGY_GOOD         500
 
 /// @brief The amount of energy the player can have to be tired.
-#define ENERGY_TIRED        30
+#define ENERGY_TIRED        300
 
 /// @brief The amount of energy the player can have to be exhausted.
-#define ENERGY_EXHAUSTED    15
+#define ENERGY_EXHAUSTED    150
 
 
 /*! Represents the player */

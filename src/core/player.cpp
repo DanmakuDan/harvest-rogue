@@ -102,6 +102,10 @@ void Player::WalkPlayer(Direction::Direction direction) {
    }
 
    this->WarpPlayer(newX, newY);
+   if (currentLandmark->GetTile(newX, newY).TileType != TileType::DirtPath) {
+      Player::Get().AdjustEnergy(-1);
+   }
+   
 }
 
 ItemPtr Player::GetCurrentlyEquippedItem() const
