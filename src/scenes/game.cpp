@@ -88,14 +88,15 @@ Game::Game() {
 
 }
 
-void Game::RenderUI() {
+void Game::RenderUI()
+{
    Screen::Get().BeginScreenUpdate();
 
-   this->RenderTopBar();
-   this->RenderMap();
-   this->RenderLog();
-   this->RenderStatusBar();
-   this->RenderSideBar();
+   RenderTopBar();
+   RenderMap();
+   RenderLog();
+   RenderStatusBar();
+   RenderSideBar();
 
    auto currentDialog = GameState::Get().GetCurrentDialog();
    if (currentDialog != nullptr) {
@@ -120,8 +121,8 @@ void Game::RenderTopBar() {
             hour > 11 ? "pm" : "am"
             );
 
-   Screen::Get().ClearLine(0, Color::Inverse(Color::White));
-   Screen::Get().WriteText(0, 0, topStatusBar, Color::Inverse(Color::White));
+   Screen::Get().ClearLine(0, Inverse(Color::White));
+   Screen::Get().WriteText(0, 0, topStatusBar, Inverse(Color::White));
 
    free(topStatusBar);
 }
@@ -145,17 +146,17 @@ void Game::RenderMap() {
    auto mapOffsetY = playerY - (drawHeight / 2);
 
    // Don't go beyond map boundaries
-   if (mapOffsetX + drawWidth > (int)totalMapWidth)
-      mapOffsetX = (int)totalMapWidth - (drawWidth - 1);
-   if (mapOffsetY + drawHeight > (int)totalMapHeight)
-      mapOffsetY = (int)totalMapHeight - (drawHeight - 1);
+   if (mapOffsetX + drawWidth > static_cast<int>(totalMapWidth))
+      mapOffsetX = static_cast<int>(totalMapWidth) - (drawWidth - 1);
+   if (mapOffsetY + drawHeight > static_cast<int>(totalMapHeight))
+      mapOffsetY = static_cast<int>(totalMapHeight) - (drawHeight - 1);
 
    mapOffsetX = mapOffsetX < 0 ? 0 : mapOffsetX;
    mapOffsetY = mapOffsetY < 0 ? 0 : mapOffsetY;
    
    // Draw loop
-   for (auto mapY = 0; mapY < drawHeight - startY && mapY <= (int)totalMapHeight - startY; mapY++) {
-      for (auto mapX = 0; mapX < drawWidth - startX && mapX <= (int)totalMapWidth - startX; mapX++) {
+   for (auto mapY = 0; mapY < drawHeight - startY && mapY <= static_cast<int>(totalMapHeight) - startY; mapY++) {
+      for (auto mapX = 0; mapX < drawWidth - startX && mapX <= static_cast<int>(totalMapWidth) - startX; mapX++) {
 
 
          auto groundTile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);
@@ -198,8 +199,8 @@ void Game::RenderStatusBar() {
       statusBarText << currentLandmark->GetName();
    }
 
-   Screen::Get().ClearLine(statusBarLine, Color::Inverse(Color::White));
-   Screen::Get().WriteText(1, statusBarLine, statusBarText.str(), Color::Inverse(Color::Blue));
+   Screen::Get().ClearLine(statusBarLine, Inverse(Color::White));
+   Screen::Get().WriteText(1, statusBarLine, statusBarText.str(), Inverse(Color::Blue));
 }
 
 void Game::RenderSideBar() {

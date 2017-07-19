@@ -16,17 +16,13 @@
 
 IItemInterface* Obtainable::Clone() const { return new Obtainable(*this); }
 
-Obtainable::Obtainable(): 
-   Stackable(false), 
-   MaxStackSize(0) {
-}
+Obtainable::Obtainable() :
+   Stackable(false),
+   MaxStackSize(0) {}
 
-Obtainable::~Obtainable()
-{
-}
+Obtainable::~Obtainable() {}
 
-std::shared_ptr<Obtainable> Obtainable::Deserialize(picojson::value serializedValue)
-{
+std::shared_ptr<Obtainable> Obtainable::Deserialize(picojson::value serializedValue) {
    auto result = std::shared_ptr<Obtainable>(new Obtainable());
 
    if (!serializedValue.is<picojson::object>()) {
@@ -40,7 +36,7 @@ std::shared_ptr<Obtainable> Obtainable::Deserialize(picojson::value serializedVa
          if (!item.second.is<bool>()) {
             throw;
          }
-         
+
          auto value = item.second.get<bool>();
          result->SetIsStackable(value);
          continue;
@@ -53,11 +49,11 @@ std::shared_ptr<Obtainable> Obtainable::Deserialize(picojson::value serializedVa
 
          auto value = item.second.get<double>();
 
-         if (value != (unsigned int)value) {
+         if (value != static_cast<unsigned int>(value)) {
             throw;
          }
 
-         result->SetMaxStackSize((int)value);
+         result->SetMaxStackSize(static_cast<int>(value));
          continue;
       }
 
@@ -67,27 +63,22 @@ std::shared_ptr<Obtainable> Obtainable::Deserialize(picojson::value serializedVa
    return result;
 }
 
-bool Obtainable::GetIsStackable()
-{
+bool Obtainable::GetIsStackable() const {
    return this->Stackable;
 }
 
-void Obtainable::SetIsStackable(bool stackable)
-{
+void Obtainable::SetIsStackable(bool stackable) {
    this->Stackable = stackable;
 }
 
-int Obtainable::GetMaxStackSize()
-{
+int Obtainable::GetMaxStackSize() const {
    return this->MaxStackSize;
 }
 
-void Obtainable::SetMaxStackSize(int maxStackSize)
-{
+void Obtainable::SetMaxStackSize(int maxStackSize) {
    this->MaxStackSize = maxStackSize;
 }
 
-ItemInterfaceType::ItemInterfaceType Obtainable::GetInterfaceType()
-{
+ItemInterfaceType::ItemInterfaceType Obtainable::GetInterfaceType() {
    return ItemInterfaceType::Obtainable;
 }

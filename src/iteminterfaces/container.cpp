@@ -66,7 +66,7 @@ void Container::AddItem(ItemPtr item, int count, bool dontStack)
 
 void Container::RemoveItem(ItemPtr item, int count)
 {
-   auto itemLocation = std::find(this->Contents.begin(), this->Contents.end(), item);
+   auto itemLocation = find(this->Contents.begin(), this->Contents.end(), item);
    if (itemLocation == this->Contents.end()) {
       return;
    }
@@ -75,24 +75,24 @@ void Container::RemoveItem(ItemPtr item, int count)
 
 void Container::SwapItem(ItemPtr itemA, ItemPtr itemB)
 {
-   auto firstItemLocation = std::find(this->Contents.begin(), this->Contents.end(), itemA);
+   auto firstItemLocation = find(this->Contents.begin(), this->Contents.end(), itemA);
    if (firstItemLocation == this->Contents.end()) {
       return;
    }
 
-   auto secondItemLocation = std::find(this->Contents.begin(), this->Contents.end(), itemB);
+   auto secondItemLocation = find(this->Contents.begin(), this->Contents.end(), itemB);
    if (secondItemLocation == this->Contents.end()) {
       // We're actually swapping in an item that we don't already have
       firstItemLocation->swap(itemB);
       return;
    }
    // We're swapping between two items we have
-   std::iter_swap(firstItemLocation, secondItemLocation);
+   iter_swap(firstItemLocation, secondItemLocation);
 }
 
 void Container::SplitItem(ItemPtr item)
 {
-   auto itemLocation = std::find(this->Contents.begin(), this->Contents.end(), item);
+   auto itemLocation = find(this->Contents.begin(), this->Contents.end(), item);
    if (itemLocation == this->Contents.end()) {
       return;
    }
@@ -107,8 +107,8 @@ void Container::SplitItem(ItemPtr item)
 
 void Container::CombineItems(ItemPtr source, ItemPtr dest)
 {
-   auto destItemLocation = std::find(this->Contents.begin(), this->Contents.end(), dest);
-   auto sourceItemLocation = std::find(this->Contents.begin(), this->Contents.end(), source);
+   auto destItemLocation = find(this->Contents.begin(), this->Contents.end(), dest);
+   auto sourceItemLocation = find(this->Contents.begin(), this->Contents.end(), source);
 
    auto movingFromHere = sourceItemLocation != this->Contents.end();
    auto movingToHere = destItemLocation != this->Contents.end();

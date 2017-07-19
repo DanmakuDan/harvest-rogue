@@ -39,7 +39,8 @@ void Config::SetKeybinding(Keybinding binding) {
    this->keybinding = binding;
 }
 
-picojson::value Config::Serialize() {
+picojson::value Config::Serialize() const
+{
    picojson::object result;
 
    result["screenWidth"] = picojson::value(double(this->GetScreenWidth()));

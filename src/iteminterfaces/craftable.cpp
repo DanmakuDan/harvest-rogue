@@ -14,9 +14,8 @@
 
 #include "craftable.h"
 
-Craftable::Craftable() {
-
-}
+Craftable::Craftable() :
+   SecondsToCraft(0) {}
 
 Craftable::~Craftable() {
 
@@ -38,7 +37,7 @@ std::shared_ptr<Craftable> Craftable::Deserialize(picojson::value serializedValu
    auto data = serializedValue.get<picojson::object>();
    for (auto item : data) {
       if (item.first == "materialsRequired") {
-         Craftable::DeserializeMaterialsRequired(item.second, result);
+         DeserializeMaterialsRequired(item.second, result);
          continue;
       }
 

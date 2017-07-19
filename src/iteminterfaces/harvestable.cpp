@@ -21,16 +21,13 @@ std::default_random_engine harvestableGenerator;
 
 IItemInterface* Harvestable::Clone() const { return new Harvestable(*this); }
 
-Harvestable::Harvestable()
-{
-}
+Harvestable::Harvestable() :
+   YieldMinimum(0),
+   YieldMaximum(0) {}
 
-Harvestable::~Harvestable()
-{
-}
+Harvestable::~Harvestable() {}
 
-std::shared_ptr<Harvestable> Harvestable::Deserialize(picojson::value serializedValue)
-{
+std::shared_ptr<Harvestable> Harvestable::Deserialize(picojson::value serializedValue) {
    auto result = std::shared_ptr<Harvestable>(new Harvestable());
 
    if (!serializedValue.is<picojson::object>()) {
@@ -82,43 +79,35 @@ std::shared_ptr<Harvestable> Harvestable::Deserialize(picojson::value serialized
    return result;
 }
 
-std::string Harvestable::GetYieldItem()
-{
+std::string Harvestable::GetYieldItem() {
    return this->YieldItem;
 }
 
-void Harvestable::SetYieldItem(std::string yieldItem)
-{
+void Harvestable::SetYieldItem(std::string yieldItem) {
    this->YieldItem = yieldItem;
 }
 
-int Harvestable::GetYieldMinimum()
-{
+int Harvestable::GetYieldMinimum() {
    return this->YieldMinimum;
 }
 
-void Harvestable::SetYieldMinimum(int yieldMinimum)
-{
+void Harvestable::SetYieldMinimum(int yieldMinimum) {
    this->YieldMinimum = yieldMinimum;
 }
 
-int Harvestable::GetYieldMaximum()
-{
+int Harvestable::GetYieldMaximum() {
    return this->YieldMaximum;
 }
 
-void Harvestable::SetYieldMaximum(int yieldMaximum)
-{
+void Harvestable::SetYieldMaximum(int yieldMaximum) {
    this->YieldMaximum = yieldMaximum;
 }
 
-ItemInterfaceType::ItemInterfaceType Harvestable::GetInterfaceType()
-{
+ItemInterfaceType::ItemInterfaceType Harvestable::GetInterfaceType() {
    return ItemInterfaceType::Harvestable;
 }
 
-void Harvestable::Interact(ItemPtr sourceItem)
-{
+void Harvestable::Interact(ItemPtr sourceItem) {
    auto growableInterface = sourceItem->GetInterface<Growable>(ItemInterfaceType::Growable);
    if (growableInterface != nullptr) {
       if (!growableInterface->IsFullyGrown()) {
@@ -131,7 +120,7 @@ void Harvestable::Interact(ItemPtr sourceItem)
    auto amount = distribution(harvestableGenerator);
    auto harvest = GameState::Get().GetItemFromItemDatabase(this->GetYieldItem());
    harvest->SetCount(amount);
-   
+
    int x, y;
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
    currentLandmark->LocateItem(sourceItem, x, y);

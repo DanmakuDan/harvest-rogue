@@ -67,40 +67,40 @@ void GameMenuDialog::Render() {
    auto btnTop = dialogTop;
 
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Status",
-                             this->SelectedOption == GameMenuDialogOption::Status);
+      this->SelectedOption == GameMenuDialogOption::Status);
 
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Inventory",
-                             this->SelectedOption == GameMenuDialogOption::Inventory);
+      this->SelectedOption == GameMenuDialogOption::Inventory);
 
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Actions",
-                             this->SelectedOption == GameMenuDialogOption::Actions);
+      this->SelectedOption == GameMenuDialogOption::Actions);
 
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Craft",
-                             this->SelectedOption == GameMenuDialogOption::Craft);
+      this->SelectedOption == GameMenuDialogOption::Craft);
 
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Save Game",
-                             this->SelectedOption == GameMenuDialogOption::SaveGame);
+      this->SelectedOption == GameMenuDialogOption::SaveGame);
 
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Quit to Main Menu",
-                             this->SelectedOption == GameMenuDialogOption::Quit);
+      this->SelectedOption == GameMenuDialogOption::Quit);
 }
 
-void GameMenuDialog::ExecuteSelectedAction() {
+void GameMenuDialog::ExecuteSelectedAction() const {
    switch (this->SelectedOption) {
-      case GameMenuDialogOption::Inventory:
-         GameState::Get().PushDialog(InventoryDialog::Construct(Player::Get().AsItemContainer()));
-         break;
+   case GameMenuDialogOption::Inventory:
+      GameState::Get().PushDialog(InventoryDialog::Construct(Player::Get().AsItemContainer()));
+      break;
 
-      case GameMenuDialogOption::Actions:
-         GameState::Get().PushDialog(ActionDialog::Construct());
-         break;
+   case GameMenuDialogOption::Actions:
+      GameState::Get().PushDialog(ActionDialog::Construct());
+      break;
 
-      case GameMenuDialogOption::Craft:
-         Player::Get().Craft();
-         break;
+   case GameMenuDialogOption::Craft:
+      Player::Get().Craft();
+      break;
 
-      case GameMenuDialogOption::Quit:
-         GameState::Get().SetCurrentScene(MainMenu::Construct());
-         break;
+   case GameMenuDialogOption::Quit:
+      GameState::Get().SetCurrentScene(MainMenu::Construct());
+      break;
    }
 }

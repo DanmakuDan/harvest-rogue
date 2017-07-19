@@ -34,17 +34,17 @@ public:
 private:
    Game();
 
-   void RenderUI();
+   static void RenderUI();
 
-   void RenderTopBar();
+   static void RenderTopBar();
 
-   void RenderMap();
+   static void RenderMap();
 
-   void RenderLog();
+   static void RenderLog();
 
-   void RenderStatusBar();
+   static void RenderStatusBar();
 
-   void RenderSideBar();
+   static void RenderSideBar();
 };
 
 

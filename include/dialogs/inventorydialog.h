@@ -34,7 +34,7 @@ private:
    explicit InventoryDialog(ItemContainerPtr itemContainer);
    int InventoryOffset;
    int SelectedInventoryItem;
-   void ExecuteSelectedAction();
+   void ExecuteSelectedAction() const;
 
    ItemContainerPtr ItemContainer;
 };

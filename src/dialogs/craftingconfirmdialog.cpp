@@ -22,11 +22,11 @@ along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 #include <sstream>
 #include <iomanip>
 
-CraftingConfirmDialog::CraftingConfirmDialog(ItemPtr itemToConstruct) {
-   this->ItemToConstruct = itemToConstruct;
-   this->AmountToCraft = 1;
-   this->HasMaterialToCraft = false;
-   this->SelectedOption = CraftingConfirmDialogOption::Craft;
+CraftingConfirmDialog::CraftingConfirmDialog(ItemPtr itemToConstruct) :
+   ItemToConstruct(itemToConstruct),
+   AmountToCraft(1),
+   HasMaterialToCraft(false),
+   SelectedOption(CraftingConfirmDialogOption::Craft) {
    DialogTitle.append(ItemToConstruct->GetName());
    DialogTitle.append("'s Bill of Materials");
 }
@@ -36,24 +36,19 @@ void CraftingConfirmDialog::OnKeyPress(int key) {
 
    if (Action::Requested(action, Action::MenuCancel)) {
       GameState::Get().PopDialog();
-   }
-   else if (Action::Requested(action, Action::MenuRight)) {
+   } else if (Action::Requested(action, Action::MenuRight)) {
       if (this->SelectedOption >= CraftingConfirmDialogOption::_MAX - 1) {
          this->SelectedOption = CraftingConfirmDialogOption::CraftingConfirmDialogOption(0);
-      }
-      else {
+      } else {
          this->SelectedOption = CraftingConfirmDialogOption::CraftingConfirmDialogOption(this->SelectedOption + 1);
       }
-   }
-   else if (Action::Requested(action, Action::MenuLeft)) {
+   } else if (Action::Requested(action, Action::MenuLeft)) {
       if (this->SelectedOption <= CraftingConfirmDialogOption::CraftingConfirmDialogOption(0)) {
          this->SelectedOption = CraftingConfirmDialogOption::CraftingConfirmDialogOption(CraftingConfirmDialogOption::_MAX - 1);
-      }
-      else {
+      } else {
          this->SelectedOption = CraftingConfirmDialogOption::CraftingConfirmDialogOption(this->SelectedOption - 1);
       }
-   }
-   else if (Action::Requested(action, Action::MenuAccept)) {
+   } else if (Action::Requested(action, Action::MenuAccept)) {
       switch (this->SelectedOption) {
       case CraftingConfirmDialogOption::AddOne:
          this->AmountToCraft += 1;
@@ -78,9 +73,8 @@ void CraftingConfirmDialog::OnKeyPress(int key) {
          break;
       }
       if (this->AmountToCraft < 1) {
-this->AmountToCraft = 1;
-      }
-      else if (this->AmountToCraft > CRAFTINGCONFIRM_DIALOG_MAX_CRAFT) {
+         this->AmountToCraft = 1;
+      } else if (this->AmountToCraft > CRAFTINGCONFIRM_DIALOG_MAX_CRAFT) {
          this->AmountToCraft = CRAFTINGCONFIRM_DIALOG_MAX_CRAFT;
       }
    }
@@ -154,8 +148,7 @@ void CraftingConfirmDialog::Craft() const {
    if (!this->HasMaterialToCraft) {
       if (this->AmountToCraft > 1) {
          GameState::Get().AddLogMessageFmt("You lack the materials to craft %i copies of %s...", this->AmountToCraft, this->ItemToConstruct->GetName().c_str());
-      }
-      else {
+      } else {
          GameState::Get().AddLogMessageFmt("You lack the materials to craft the %s...", this->ItemToConstruct->GetName().c_str());
       }
       GameState::Get().ClearAllDialogs();
@@ -190,7 +183,7 @@ void CraftingConfirmDialog::Craft() const {
       GameState::Get().StepSimulation();
       secondsRemaining -= GAMESTATE_SIMULATION_STEP_SECONDS;
    }
-   
+
    for (auto i = 0; i < this->AmountToCraft; i++) {
       auto itemToGive = Item::Clone(this->ItemToConstruct);
       Player::Get().AddItem(itemToGive, 1, false);

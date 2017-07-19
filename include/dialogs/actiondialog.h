@@ -45,7 +45,7 @@ public:
 private:
    ActionDialog();
    ActionDialogOption::ActionDialogOption SelectedOption;
-   void ExecuteSelectedAction();
+   void ExecuteSelectedAction() const;
 };
 
 

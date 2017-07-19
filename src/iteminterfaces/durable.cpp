@@ -16,16 +16,13 @@
 
 IItemInterface* Durable::Clone() const { return new Durable(*this); }
 
-Durable::Durable()
-{
-}
+Durable::Durable() :
+   Durability(0),
+   Repairable(false) {}
 
-Durable::~Durable()
-{
-}
+Durable::~Durable() {}
 
-std::shared_ptr<Durable> Durable::Deserialize(picojson::value serializedValue)
-{
+std::shared_ptr<Durable> Durable::Deserialize(picojson::value serializedValue) {
    auto result = std::shared_ptr<Durable>(new Durable());
 
    if (!serializedValue.is<picojson::object>()) {
@@ -63,27 +60,22 @@ std::shared_ptr<Durable> Durable::Deserialize(picojson::value serializedValue)
    return result;
 }
 
-void Durable::SetDurability(int durability)
-{
+void Durable::SetDurability(int durability) {
    this->Durability = durability;
 }
 
-int Durable::GetDurability()
-{
+int Durable::GetDurability() {
    return this->Durability;
 }
 
-void Durable::SetRepairable(bool repairable)
-{
+void Durable::SetRepairable(bool repairable) {
    this->Repairable = repairable;
 }
 
-bool Durable::GetRepairable()
-{
+bool Durable::GetRepairable() {
    return this->Repairable;
 }
 
-ItemInterfaceType::ItemInterfaceType Durable::GetInterfaceType()
-{
+ItemInterfaceType::ItemInterfaceType Durable::GetInterfaceType() {
    return ItemInterfaceType::Durable;
 }

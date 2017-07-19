@@ -28,16 +28,16 @@ int main() {
 
       auto ch = Input::Get().WaitForAndGetKeyPress();
       switch (ch) {
-         case 0:
-            continue;
-         case RESIZE_KEY:
-            GameState::Get().GetCurrentScene()->InitializeScreen();
-            continue;
-         case KILL_KEY:
-            GameState::Get().Terminate();
-            continue;
-         default:
-            GameState::Get().GetCurrentScene()->OnKeyPress(ch);
+      case 0:
+         continue;
+      case RESIZE_KEY:
+         GameState::Get().GetCurrentScene()->InitializeScreen();
+         continue;
+      case KILL_KEY:
+         GameState::Get().Terminate();
+         continue;
+      default:
+         GameState::Get().GetCurrentScene()->OnKeyPress(ch);
       }
    }
 
@@ -47,6 +47,6 @@ int main() {
 #ifdef WIN32
 #include <Windows.h>
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-	main();
+   main();
 }
 #endif

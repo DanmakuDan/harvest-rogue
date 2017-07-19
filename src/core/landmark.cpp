@@ -16,8 +16,8 @@
 
 Landmark::Landmark(std::string name, int width, int height) {
    this->Name = name;
-   this->Width = (unsigned int)width;
-   this->Height = (unsigned int)height;
+   this->Width = static_cast<unsigned int>(width);
+   this->Height = static_cast<unsigned int>(height);
    
    for (auto i = 0; i < width * height; i++) {
       this->Tiles.push_back(Tile::FromTileType(TileType::Nothing));
@@ -28,11 +28,11 @@ std::string Landmark::GetName() {
    return this->Name;
 }
 
-unsigned int Landmark::GetWidth() {
+unsigned int Landmark::GetWidth() const {
    return this->Width;
 }
 
-unsigned int Landmark::GetHeight() {
+unsigned int Landmark::GetHeight() const {
    return this->Height;
 }
 
@@ -98,6 +98,6 @@ bool Landmark::LocateItem(ItemPtr item, int &x, int &y) {
    return false;
 }
 
-std::map<int, std::shared_ptr<LandmarkItem>> Landmark::GetAllLandmarkItems() {
+std::map<int, std::shared_ptr<LandmarkItem>> Landmark::GetAllLandmarkItems() const {
    return this->Items;
 }

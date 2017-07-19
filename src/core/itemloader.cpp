@@ -15,8 +15,7 @@
 #include "itemloader.h"
 #include <fstream>
 
-std::map<std::string, ItemPtr> ItemLoader::LoadItemDatabase(std::string fileName)
-{
+std::map<std::string, ItemPtr> ItemLoader::LoadItemDatabase(std::string fileName) {
    std::map<std::string, ItemPtr> result;
 
    std::ifstream fileListStream(fileName);
@@ -48,7 +47,7 @@ std::map<std::string, ItemPtr> ItemLoader::LoadItemDatabase(std::string fileName
 
             auto entries = i.second.get<picojson::object>();
             for (auto entry : entries) {
-               auto item = ItemLoader::ParseItemTopLevel(entry);
+               auto item = ParseItemTopLevel(entry);
                result[item->GetName()] = item;
             }
 
@@ -59,25 +58,23 @@ std::map<std::string, ItemPtr> ItemLoader::LoadItemDatabase(std::string fileName
    return result;
 }
 
-ItemPtr ItemLoader::ParseItemTopLevel(std::pair<const std::string, picojson::value> item)
-{
+ItemPtr ItemLoader::ParseItemTopLevel(std::pair<const std::string, picojson::value> item) {
    if (!item.second.is<picojson::object>()) {
       throw;
    }
 
-   ItemPtr result = ItemPtr(new Item());
+   auto result = std::make_shared<Item>();
    result->SetName(item.first);
 
    auto entries = item.second.get<picojson::object>();
    for (auto entry : entries) {
-      ItemLoader::ParseItemTopLevelAttribute(result, entry);
+      ParseItemTopLevelAttribute(result, entry);
    }
 
    return std::shared_ptr<Item>(result);
 }
 
-void ItemLoader::ParseItemTopLevelAttribute(ItemPtr item, std::pair<const std::string, picojson::value> source)
-{
+void ItemLoader::ParseItemTopLevelAttribute(ItemPtr item, std::pair<const std::string, picojson::value> source) {
    auto attributeName = source.first;
 
    if (attributeName == "description") {
@@ -95,7 +92,7 @@ void ItemLoader::ParseItemTopLevelAttribute(ItemPtr item, std::pair<const std::s
       }
       auto colorStr = source.second.get<std::string>();
       auto color = Color::FromString(colorStr);
-      if (color == Color::Unknown || color != Color::Pure(color)) {
+      if (color == Color::Unknown || color != Pure(color)) {
          throw;
       }
       item->SetColorCode(color);
@@ -131,7 +128,7 @@ void ItemLoader::ParseItemTopLevelAttribute(ItemPtr item, std::pair<const std::s
       if (!source.second.is<picojson::array>()) {
          throw;
       }
-      ItemLoader::ParseSurfaceAttributes(item, source.second.get<picojson::array>());
+      ParseSurfaceAttributes(item, source.second.get<picojson::array>());
       return;
    }
 
@@ -164,15 +161,14 @@ void ItemLoader::ParseItemTopLevelAttribute(ItemPtr item, std::pair<const std::s
          throw;
       }
 
-      ItemLoader::ParseItemInterfaces(item, source.second);
+      ParseItemInterfaces(item, source.second);
       return;
    }
 
    throw;
 }
 
-void ItemLoader::ParseItemInterfaces(ItemPtr item, picojson::value source)
-{
+void ItemLoader::ParseItemInterfaces(ItemPtr item, picojson::value source) {
    for (auto iface : source.get<picojson::object>()) {
       auto interfaceType = ItemInterfaceType::FromString(iface.first);
       if (interfaceType == ItemInterfaceType::Unknown) {
@@ -183,8 +179,7 @@ void ItemLoader::ParseItemInterfaces(ItemPtr item, picojson::value source)
    }
 }
 
-void ItemLoader::ParseSurfaceAttributes(ItemPtr item, picojson::array surfaceAttributes)
-{
+void ItemLoader::ParseSurfaceAttributes(ItemPtr item, picojson::array surfaceAttributes) {
    SurfaceAttribute::SurfaceAttribute result = 0;
 
    for (auto attr : surfaceAttributes) {

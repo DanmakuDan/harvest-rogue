@@ -43,15 +43,15 @@ public:
 
    void WriteButton(int x, int y, int width, std::string text, bool active);
 
-   void ClearLine(int y, Color::Color color = Color::White);
+   void ClearLine(int y, Color::Color color = Color::White) const;
 
-   void WriteCharacter(int x, int y, const char character, Color::Color color = Color::White);
+   static void WriteCharacter(int x, int y, const char character, Color::Color color = Color::White);
 
-   void WriteTile(int x, int y, int tileIndex, char character, Color::Color color);
+   static void WriteTile(int x, int y, int tileIndex, char character, Color::Color color);
 
-   void BeginScreenUpdate();
+   static void BeginScreenUpdate();
 
-   void EndScreenUpdate();
+   static void EndScreenUpdate();
 
    void WriteWindow(int x, int y, int width, int height, std::string text = "");
 };

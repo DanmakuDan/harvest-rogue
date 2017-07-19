@@ -65,7 +65,7 @@ void ActionDialog::Render() {
 
 }
 
-void ActionDialog::ExecuteSelectedAction() {
+void ActionDialog::ExecuteSelectedAction() const {
    switch (this->SelectedOption) {
 
       case ActionDialogOption::PickUp:

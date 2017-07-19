@@ -18,18 +18,13 @@
 
 IItemInterface* TillingTool::Clone() const { return new TillingTool(*this); }
 
-TillingTool::TillingTool()
-{
-   this->Strength = 0;
-   this->Fatigue = 0;
-}
+TillingTool::TillingTool() :
+   Strength(0),
+   Fatigue(0) {}
 
-TillingTool::~TillingTool()
-{
-}
+TillingTool::~TillingTool() {}
 
-std::shared_ptr<TillingTool> TillingTool::Deserialize(picojson::value serializedValue)
-{
+std::shared_ptr<TillingTool> TillingTool::Deserialize(picojson::value serializedValue) {
    auto result = std::shared_ptr<TillingTool>(new TillingTool());
 
    if (!serializedValue.is<picojson::object>()) {
@@ -66,62 +61,51 @@ std::shared_ptr<TillingTool> TillingTool::Deserialize(picojson::value serialized
    return result;
 }
 
-int TillingTool::GetStrength()
-{
+int TillingTool::GetStrength() const {
    return this->Strength;
 }
 
-void TillingTool::SetStrength(int strength)
-{
+void TillingTool::SetStrength(int strength) {
    this->Strength = strength;
 }
 
-int TillingTool::GetFatigue()
-{
+int TillingTool::GetFatigue() const {
    return this->Fatigue;
 }
 
-void TillingTool::SetFatigue(int fatigue)
-{
+void TillingTool::SetFatigue(int fatigue) {
    this->Fatigue = fatigue;
 }
 
-void TillingTool::Till(ItemPtr sourceItem)
-{
+void TillingTool::Till(ItemPtr sourceItem) const {
    auto landmark = GameState::Get().GetCurrentLandmark();
    if (landmark == nullptr) {
       return;
    }
-   
+
    auto playerX = Player::Get().GetPositionX();
    auto playerY = Player::Get().GetPositionY();
    auto currentTile = landmark->GetTile(playerX, playerY);
-   switch(currentTile.TileType) {
-      case TileType::GrassTuft:
-         landmark->SetTile(playerX, playerY, TileType::Grass);
-         Player::Get().AdjustEnergy(this->GetFatigue());
-         break;
-      case TileType::Grass:
-         landmark->SetTile(playerX, playerY, TileType::Tilled);
-         Player::Get().AdjustEnergy(this->GetFatigue());
-         break;
+   switch (currentTile.TileType) {
+   case TileType::GrassTuft:
+      landmark->SetTile(playerX, playerY, TileType::Grass);
+      Player::Get().AdjustEnergy(this->GetFatigue());
+      break;
+   case TileType::Grass:
+      landmark->SetTile(playerX, playerY, TileType::Tilled);
+      Player::Get().AdjustEnergy(this->GetFatigue());
+      break;
    }
 }
 
-ItemInterfaceType::ItemInterfaceType TillingTool::GetInterfaceType()
-{
+ItemInterfaceType::ItemInterfaceType TillingTool::GetInterfaceType() {
    return ItemInterfaceType::TillingTool;
 }
 
-void TillingTool::Use(ItemPtr sourceItem)
-{
+void TillingTool::Use(ItemPtr sourceItem) {
    this->Till(sourceItem);
 }
 
-void TillingTool::OnItemEquipped(ItemPtr sourceItem)
-{
-}
+void TillingTool::OnItemEquipped(ItemPtr sourceItem) {}
 
-void TillingTool::OnItemUnequipped(ItemPtr sourceItem)
-{
-}
+void TillingTool::OnItemUnequipped(ItemPtr sourceItem) {}

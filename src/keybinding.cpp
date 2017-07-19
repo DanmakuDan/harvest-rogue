@@ -25,10 +25,10 @@ Keybinding::Keybinding() {
    this->keybindings[','] = Action::PickUpItemFromGround;
 
    this->keybindings[IK_UP_ARROW] = Action::MoveUp | Action::MenuUp;
-   this->keybindings[IK_DOWN_ARROW] = Action::MoveDown | Action::MenuDown ;
-   this->keybindings[IK_LEFT_ARROW] = Action::MoveLeft | Action::MenuLeft ;
-   this->keybindings[IK_RIGHT_ARROW] = Action::MoveRight | Action::MenuRight ;
-   this->keybindings[IK_RETURN_KEY] = Action::GameMenu | Action::MenuAccept ;
+   this->keybindings[IK_DOWN_ARROW] = Action::MoveDown | Action::MenuDown;
+   this->keybindings[IK_LEFT_ARROW] = Action::MoveLeft | Action::MenuLeft;
+   this->keybindings[IK_RIGHT_ARROW] = Action::MoveRight | Action::MenuRight;
+   this->keybindings[IK_RETURN_KEY] = Action::GameMenu | Action::MenuAccept;
    this->keybindings[IK_SPACEBAR] = Action::UseTool;
    this->keybindings[IK_ESCAPE] = Action::MenuCancel;
 
@@ -41,14 +41,13 @@ Keybinding::Keybinding() {
    this->keybindings['h'] = Action::MoveLeft | Action::MenuLeft;
 }
 
-Keybinding::~Keybinding() {
-}
+Keybinding::~Keybinding() {}
 
 Action::Action Keybinding::GetAction(int key) {
    auto it = this->keybindings.find(key);
 
    if (it == this->keybindings.end()) {
-      return Action::Unassigned ;
+      return Action::Unassigned;
    } else {
       return it->second;
    }

@@ -62,6 +62,6 @@ void InteractionDirectionDialog::Render() {
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (INTERACTION_DIRECTION_DIALOG_WIDTH / 2);
    auto dialogTop = (Screen::Get().GetHeight() / 2) - (INTERACTION_DIRECTION_DIALOG_HEIGHT / 2);
    Screen::Get().WriteWindow(dialogLeft, dialogTop, INTERACTION_DIRECTION_DIALOG_WIDTH,
-                             INTERACTION_DIRECTION_DIALOG_HEIGHT, "Interaction Direction");
+      INTERACTION_DIRECTION_DIALOG_HEIGHT, "Interaction Direction");
    Screen::Get().WriteText(dialogLeft + 1, dialogTop + 1, "Press a movement direction.");
 }

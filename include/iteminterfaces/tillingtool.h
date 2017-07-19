@@ -37,12 +37,12 @@ public:
    ~TillingTool();
    static std::shared_ptr<TillingTool> Deserialize(picojson::value serializedValue);
 
-   int GetStrength();
+   int GetStrength() const;
    void SetStrength(int strength);
-   int GetFatigue();
+   int GetFatigue() const;
    void SetFatigue(int fatigue);
 
-   void Till(ItemPtr sourceItem);
+   void Till(ItemPtr sourceItem) const;
 
    // IItemInterface
    ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;

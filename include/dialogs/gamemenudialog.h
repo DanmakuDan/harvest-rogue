@@ -46,7 +46,7 @@ public:
 private:
    GameMenuDialog();
    GameMenuDialogOption::GameMenuDialogOption SelectedOption;
-   void ExecuteSelectedAction();
+   void ExecuteSelectedAction() const;
 };
 
 
