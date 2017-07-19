@@ -51,7 +51,7 @@ void ActionDialog::OnKeyPress(int key) {
 }
 
 void ActionDialog::Render() {
-   const int dialogHeight = ActionDialogOption::_MAX + 2;
+   const auto dialogHeight = ActionDialogOption::_MAX + 2;
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (ACTION_DIALOG_WIDTH / 2);
    auto dialogTop = (Screen::Get().GetHeight() / 2) - (dialogHeight / 2);
    Screen::Get().WriteWindow(dialogLeft, dialogTop, ACTION_DIALOG_WIDTH, dialogHeight, "Actions");

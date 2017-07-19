@@ -21,12 +21,19 @@
 #include "tiles.h"
 #include "item.h"
 #include "nameable.h"
+#include "npc.h"
 
 typedef struct landmark_item_s {
    int x;
    int y;
    ItemPtr ItemTarget;
 } LandmarkItem;
+
+typedef struct landmark_npc_s {
+   int x;
+   int y;
+   NPCPtr NPCTarget;
+} LandmarkNPC;
 
 class Landmark 
    : public INameable{
@@ -39,11 +46,20 @@ public:
    unsigned int GetHeight() const;
    void SetTile(int x, int y, TileType::TileType tile);
    Tile::Tile GetTile(int x, int y);
+
+   // Items
    void AddItem(int x, int y, ItemPtr item);
    ItemPtr GetItem(int x, int y);
    void RemoveItem(int x, int y);
    bool LocateItem(ItemPtr item, int& x, int& y);
    std::map<int, std::shared_ptr<LandmarkItem>> GetAllLandmarkItems() const;
+
+   // NPCs
+   void AddNPC(int x, int y, NPCPtr npc);
+   NPCPtr GetNPC(int x, int y);
+   void RemoveNPC(int x, int y);
+   bool LocateNPC(NPCPtr npc, int& x, int& y);
+   std::map<int, std::shared_ptr<LandmarkNPC>> GetAllLandmarkNPCs() const;
 
    // INameable
    std::string GetName() override;
@@ -55,6 +71,7 @@ private:
    std::string Name;
    unsigned int Width, Height;
    std::map<int, std::shared_ptr<LandmarkItem>> Items;
+   std::map<int, std::shared_ptr<LandmarkNPC>> NPCs;
 };
 
 
