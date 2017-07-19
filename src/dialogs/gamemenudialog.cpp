@@ -20,7 +20,6 @@
 #include "actiondialog.h"
 #include "player.h"
 #include "inventorydialog.h"
-#include "craftingdialog.h"
 
 GameMenuDialog::GameMenuDialog() {
    this->SelectedOption = GameMenuDialogOption::Status;
@@ -75,9 +74,6 @@ void GameMenuDialog::Render() {
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Actions",
       this->SelectedOption == GameMenuDialogOption::Actions);
 
-   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Craft",
-      this->SelectedOption == GameMenuDialogOption::Craft);
-
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Save Game",
       this->SelectedOption == GameMenuDialogOption::SaveGame);
 
@@ -93,10 +89,6 @@ void GameMenuDialog::ExecuteSelectedAction() const {
 
    case GameMenuDialogOption::Actions:
       GameState::Get().PushDialog(ActionDialog::Construct());
-      break;
-
-   case GameMenuDialogOption::Craft:
-      Player::Get().Craft();
       break;
 
    case GameMenuDialogOption::Quit:

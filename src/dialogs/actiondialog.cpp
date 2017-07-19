@@ -51,9 +51,10 @@ void ActionDialog::OnKeyPress(int key) {
 }
 
 void ActionDialog::Render() {
+   const auto dialogHeight = ActionDialogOption::_MAX + 2;
    auto dialogLeft = (Screen::Get().GetWidth() / 2) - (ACTION_DIALOG_WIDTH / 2);
-   auto dialogTop = (Screen::Get().GetHeight() / 2) - (ACTION_DIALOG_HEIGHT / 2);
-   Screen::Get().WriteWindow(dialogLeft, dialogTop, ACTION_DIALOG_WIDTH, ACTION_DIALOG_HEIGHT, "Actions");
+   auto dialogTop = (Screen::Get().GetHeight() / 2) - (dialogHeight / 2);
+   Screen::Get().WriteWindow(dialogLeft, dialogTop, ACTION_DIALOG_WIDTH, dialogHeight, "Actions");
 
    auto btnLeft = dialogLeft + 1;
    auto btnWidth = ACTION_DIALOG_WIDTH - 2;
@@ -62,6 +63,7 @@ void ActionDialog::Render() {
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Pick up", this->SelectedOption == ActionDialogOption::PickUp);
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Unequip Tool", this->SelectedOption == ActionDialogOption::Unequip);
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Interact With...", this->SelectedOption == ActionDialogOption::InteractWith);
+   Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Craft...", this->SelectedOption == ActionDialogOption::Craft);
 
 }
 
@@ -80,6 +82,10 @@ void ActionDialog::ExecuteSelectedAction() const {
 
       case ActionDialogOption::InteractWith:
          Player::Get().InteractWith();
+         break;
+
+      case ActionDialogOption::Craft:
+         Player::Get().Craft();
          break;
 
       default:

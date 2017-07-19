@@ -18,7 +18,7 @@ Landmark::Landmark(std::string name, int width, int height) {
    this->Name = name;
    this->Width = static_cast<unsigned int>(width);
    this->Height = static_cast<unsigned int>(height);
-   
+
    for (auto i = 0; i < width * height; i++) {
       this->Tiles.push_back(Tile::FromTileType(TileType::Nothing));
    }
@@ -81,7 +81,7 @@ bool Landmark::LocateItem(ItemPtr item, int &x, int &y) {
       return false;
    }
 
-   for(auto i: this->Items) {
+   for (auto i : this->Items) {
       auto mapItem = i.second;
       if (mapItem == nullptr) {
          continue;
@@ -100,4 +100,54 @@ bool Landmark::LocateItem(ItemPtr item, int &x, int &y) {
 
 std::map<int, std::shared_ptr<LandmarkItem>> Landmark::GetAllLandmarkItems() const {
    return this->Items;
+}
+
+void Landmark::AddNPC(int x, int y, NPCPtr npc) {
+   if (this->GetNPC(x, y) != nullptr) {
+      throw;
+   }
+
+   LandmarkNPC landmarkNpc = { x, y, NPCPtr(npc) };
+   this->NPCs[x + (y * Width)] = std::make_shared<LandmarkNPC>(landmarkNpc);
+}
+
+NPCPtr Landmark::GetNPC(int x, int y) {
+   auto result = this->NPCs[x + (y * Width)];
+   if (result == nullptr) {
+      return nullptr;
+   }
+   return result->NPCTarget;
+}
+
+void Landmark::RemoveNPC(int x, int y) {
+   this->NPCs.erase(x + (y * Width));
+}
+
+bool Landmark::LocateNPC(NPCPtr npc, int& x, int& y) {
+   x = 0;
+   y = 0;
+
+   if (npc == nullptr) {
+      return false;
+   }
+
+   for (auto i : this->NPCs) {
+      auto mapNpc = i.second;
+      if (mapNpc == nullptr) {
+         continue;
+      }
+      if (mapNpc->NPCTarget != npc) {
+         continue;
+      }
+
+      x = mapNpc->x;
+      y = mapNpc->y;
+      return true;
+   }
+
+   return false;
+}
+
+std::map<int, std::shared_ptr<LandmarkNPC>> Landmark::GetAllLandmarkNPCs() const {
+   return this->NPCs;
 }

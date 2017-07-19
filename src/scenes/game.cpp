@@ -161,13 +161,20 @@ void Game::RenderMap() {
 
          auto groundTile = currentLandmark->GetTile(mapX + mapOffsetX, mapY + mapOffsetY);
          Screen::Get().WriteTile(mapX + startX, mapY + startY, groundTile.GfxTileCode, groundTile.CharacterCode, groundTile.ColorCode);
-
-
-         auto mapProp = currentLandmark->GetItem(mapX + mapOffsetX, mapY + mapOffsetY);
-         if (mapProp != nullptr) {
-            Screen::Get().WriteTile(mapX + startX, mapY + startY, mapProp->GetGfxTileCode(), mapProp->GetCharacterCode(), mapProp->GetColorCode());
+         
+         // Item drawing
+         auto mapItem = currentLandmark->GetItem(mapX + mapOffsetX, mapY + mapOffsetY);
+         if (mapItem != nullptr) {
+            Screen::Get().WriteTile(mapX + startX, mapY + startY, mapItem->GetGfxTileCode(), mapItem->GetCharacterCode(), mapItem->GetColorCode());
          }
 
+         // NPC drawing
+         auto mapNPC = currentLandmark->GetNPC(mapX + mapOffsetX, mapY + mapOffsetY);
+         if (mapNPC != nullptr) {
+            Screen::Get().WriteTile(mapX + startX, mapY + startY, mapNPC->GetGfxTileCode(), mapNPC->GetCharacterCode(), mapNPC->GetColorCode());
+         }
+
+         // Player drawing
          if ((mapX + mapOffsetX == playerX) && (mapY + mapOffsetY == playerY)) {
             // Draw the player
             auto playerTile = Tile::FromTileType(TileType::Player);

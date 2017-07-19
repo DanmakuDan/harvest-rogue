@@ -19,13 +19,13 @@
 #include "dialog.h"
 
 #define ACTION_DIALOG_WIDTH  25
-#define ACTION_DIALOG_HEIGHT 5
 
 namespace ActionDialogOption {
    enum ActionDialogOption {
       PickUp = 0,
       Unequip,
       InteractWith,
+      Craft,
       _MAX
    };
 }
