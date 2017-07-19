@@ -92,7 +92,7 @@ void Screen::WriteButton(int x, int y, int width, std::string text, bool active)
    wattroff(stdscr, COLOR_PAIR(1 + Color::White));
 }
 
-void Screen::ClearLine(int y, Color::Color color) {
+void Screen::ClearLine(int y, Color::Color color) const {
    wmove(stdscr, y, 0);
    wattron(stdscr, COLOR_PAIR(color + 1));
    for (auto i = 0; i < this->GetWidth(); i++) {

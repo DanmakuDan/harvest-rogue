@@ -40,7 +40,7 @@ void Input::SetInputTimeout(int timeout) {
    this->InputTimeout = timeout;
 }
 
-int Input::GetInputTimeout() {
+int Input::GetInputTimeout() const {
    return this->InputTimeout;
 }
 

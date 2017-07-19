@@ -33,9 +33,9 @@ public:
       return screen;
    }
 
-   static int GetWidth();
+   int GetWidth() const;
 
-   static int GetHeight();
+   int GetHeight() const;
 
    void WriteText(int x, int y, std::string text, Color::Color color = Color::White);
 

@@ -94,13 +94,13 @@ Screen::~Screen()
    SDL_Quit();
 }
 
-int Screen::GetWidth() {
+int Screen::GetWidth() const {
    int width, height;
    SDL_GetWindowSize(window, &width, &height);
    return width / ActualTileSize;
 }
 
-int Screen::GetHeight() {
+int Screen::GetHeight() const {
    int width, height;
    SDL_GetWindowSize(window, &width, &height);
    return height / ActualTileSize;
