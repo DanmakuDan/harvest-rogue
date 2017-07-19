@@ -25,7 +25,6 @@ namespace GameMenuDialogOption {
       Status = 0,
       Inventory,
       Actions,
-      Craft,
       SaveGame,
       Quit,
       _MAX
