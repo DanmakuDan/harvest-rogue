@@ -50,7 +50,7 @@ private:
    bool HasMaterialToCraft;
    CraftingConfirmDialogOption::CraftingConfirmDialogOption SelectedOption;
    std::string DialogTitle;
-   CraftingConfirmDialog(ItemPtr itemToConstruct);
+   explicit CraftingConfirmDialog(ItemPtr itemToConstruct);
    void Craft() const;
 };
 

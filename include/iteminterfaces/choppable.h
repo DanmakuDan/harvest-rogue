@@ -38,7 +38,7 @@ public:
    void Chop(ItemPtr sourceItem, ChoppingTool* choppingTool);
 
    // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
 private:
    int ChopPoints;
 };

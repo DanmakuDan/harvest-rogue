@@ -35,10 +35,10 @@ public:
    ~Plantable();
    static std::shared_ptr<Plantable> Deserialize(picojson::value serializedValue);
 
-   std::string GetCrop();
+   std::string GetCrop() const;
    void SetCrop(std::string crop);
 
-   void Plant(ItemPtr sourceItem);
+   void Plant(ItemPtr sourceItem) const;
 
    // IItemInterface
    ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;

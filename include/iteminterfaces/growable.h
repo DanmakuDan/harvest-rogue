@@ -34,8 +34,7 @@ public:
 private:
    Growable();
 
-   Growable(Growable const &src)
-   {
+   Growable(Growable const &src) {
       this->CropGrowthType = src.CropGrowthType;
       this->HoursToGrow = src.HoursToGrow;
       this->HoursToWilt = src.HoursToWilt;
@@ -47,7 +46,7 @@ private:
 public:
    ~Growable();
    static std::shared_ptr<Growable> Deserialize(picojson::value serializedValue);
-   
+
    void SetHoursToGrow(int hoursToGrow);
    int GetHoursToGrow();
    void SetHoursToWilt(int hoursToWilt);
@@ -62,16 +61,16 @@ public:
    GrowableTileCode GetWiltedGrowableTileCode();
    void SetCropGrowthType(CropGrowthType::CropGrowthType cropGrowthType);
    CropGrowthType::CropGrowthType GetCropGrowthType();
-   
+
 
    void StartGrowing(ItemPtr sourceItem);
    bool IsFullyGrown();
 
    // IItemInterface
-   virtual ItemInterfaceType::ItemInterfaceType GetInterfaceType();
+   ItemInterfaceType::ItemInterfaceType GetInterfaceType() override;
 
    // IHourlyTickEvent
-   virtual void OnHourlyTick(ItemPtr sourceItem);
+   void OnHourlyTick(ItemPtr sourceItem) override;
 private:
    int HoursToGrow;
    int HoursToWilt;

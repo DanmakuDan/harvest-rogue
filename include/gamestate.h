@@ -34,7 +34,7 @@ enum eGameStateSeason {
    SeasonWinter
 };
 
-const std::string eGameStateSeasonDescs[] = {"Spring", "Summer", "Fall", "Winter"};
+const std::string eGameStateSeasonDescs[] = { "Spring", "Summer", "Fall", "Winter" };
 
 class GameState {
 private:

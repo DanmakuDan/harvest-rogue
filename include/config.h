@@ -19,6 +19,7 @@
 #include "picojson.h"
 #include <memory>
 #include <fstream>
+#include <string>
 
 class IConfigProvider;
 class Config;

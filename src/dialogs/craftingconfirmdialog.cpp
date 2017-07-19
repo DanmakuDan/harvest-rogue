@@ -22,11 +22,11 @@ along with harvest-rogue.  If not, see <http://www.gnu.org/licenses/>.     */
 #include <sstream>
 #include <iomanip>
 
-CraftingConfirmDialog::CraftingConfirmDialog(ItemPtr itemToConstruct) {
-   this->ItemToConstruct = itemToConstruct;
-   this->AmountToCraft = 1;
-   this->HasMaterialToCraft = false;
-   this->SelectedOption = CraftingConfirmDialogOption::Craft;
+CraftingConfirmDialog::CraftingConfirmDialog(ItemPtr itemToConstruct) :
+   ItemToConstruct(itemToConstruct),
+   AmountToCraft(1),
+   HasMaterialToCraft(false),
+   SelectedOption(CraftingConfirmDialogOption::Craft) {
    DialogTitle.append(ItemToConstruct->GetName());
    DialogTitle.append("'s Bill of Materials");
 }

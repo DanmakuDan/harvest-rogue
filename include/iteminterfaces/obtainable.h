@@ -34,9 +34,9 @@ public:
    ~Obtainable();
    static std::shared_ptr<Obtainable> Deserialize(picojson::value serializedValue);
 
-   bool GetIsStackable();
+   bool GetIsStackable() const;
    void SetIsStackable(bool stackable);
-   int GetMaxStackSize();
+   int GetMaxStackSize() const;
    void SetMaxStackSize(int maxStackSize);
 
    // IItemInterface
