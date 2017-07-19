@@ -33,9 +33,9 @@ public:
       return screen;
    }
 
-   int GetWidth() const;
+   static int GetWidth();
 
-   int GetHeight() const;
+   static int GetHeight();
 
    void WriteText(int x, int y, std::string text, Color::Color color = Color::White);
 
@@ -43,15 +43,15 @@ public:
 
    void WriteButton(int x, int y, int width, std::string text, bool active);
 
-   void ClearLine(int y, Color::Color color = Color::White);
+   void ClearLine(int y, Color::Color color = Color::White) const;
 
-   void WriteCharacter(int x, int y, const char character, Color::Color color = Color::White);
+   static void WriteCharacter(int x, int y, const char character, Color::Color color = Color::White);
 
-   void WriteTile(int x, int y, int tileIndex, char character, Color::Color color);
+   static void WriteTile(int x, int y, int tileIndex, char character, Color::Color color);
 
-   void BeginScreenUpdate();
+   static void BeginScreenUpdate();
 
-   void EndScreenUpdate();
+   static void EndScreenUpdate();
 
    void WriteWindow(int x, int y, int width, int height, std::string text = "");
 };

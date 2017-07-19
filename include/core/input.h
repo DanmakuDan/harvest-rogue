@@ -39,9 +39,9 @@ public:
       return input;
    }
 
-   int WaitForAndGetKeyPress();
+   static int WaitForAndGetKeyPress();
 
-   int GetInputTimeout();
+   int GetInputTimeout() const;
 
    void SetInputTimeout(int timeout);
 

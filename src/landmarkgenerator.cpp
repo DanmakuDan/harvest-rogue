@@ -22,6 +22,7 @@
 static std::random_device randomDevice;
 static std::default_random_engine randomGenerator(randomDevice());
 
+// TODO: Cyclomatic complexity is too high!
 std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, int &playerY) {
    std::uniform_int_distribution<int> twigDistrobution(0, 1000);
 
@@ -29,9 +30,6 @@ std::shared_ptr<Landmark> LandmarkGenerator::GeneratePlayerFarm(int &playerX, in
    auto result = Landmark::Construct(farmName, MAP_SIZE_WIDTH, MAP_SIZE_HEIGHT);
 
    siv::PerlinNoise perlinA;
-   siv::PerlinNoise perlinB;
-   siv::PerlinNoise perlinC;
-
 
    // Generate some random stuff on the ground
    for (auto y = 0; y < MAP_SIZE_WIDTH; y++) {

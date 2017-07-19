@@ -33,7 +33,7 @@ public:
    ~Choppable();
    static std::shared_ptr<Choppable> Deserialize(picojson::value serializedValue);
 
-   int GetChopPoints();
+   int GetChopPoints() const;
    void SetChopPoints(int chopPoints);
    void Chop(ItemPtr sourceItem, ChoppingTool* choppingTool);
 

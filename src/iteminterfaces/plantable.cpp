@@ -19,16 +19,11 @@
 
 IItemInterface* Plantable::Clone() const { return new Plantable(*this); }
 
-Plantable::Plantable()
-{
-}
+Plantable::Plantable() {}
 
-Plantable::~Plantable()
-{
-}
+Plantable::~Plantable() {}
 
-std::shared_ptr<Plantable> Plantable::Deserialize(picojson::value serializedValue)
-{
+std::shared_ptr<Plantable> Plantable::Deserialize(picojson::value serializedValue) {
    auto result = std::shared_ptr<Plantable>(new Plantable());
 
    if (!serializedValue.is<picojson::object>()) {
@@ -54,18 +49,15 @@ std::shared_ptr<Plantable> Plantable::Deserialize(picojson::value serializedValu
    return result;
 }
 
-std::string Plantable::GetCrop()
-{
+std::string Plantable::GetCrop() const {
    return this->Crop;
 }
 
-void Plantable::SetCrop(std::string crop)
-{
+void Plantable::SetCrop(std::string crop) {
    this->Crop = crop;
 }
 
-void Plantable::Plant(ItemPtr sourceItem)
-{
+void Plantable::Plant(ItemPtr sourceItem) const {
    auto x = Player::Get().GetPositionX();
    auto y = Player::Get().GetPositionY();
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
@@ -95,21 +87,15 @@ void Plantable::Plant(ItemPtr sourceItem)
 
 }
 
-ItemInterfaceType::ItemInterfaceType Plantable::GetInterfaceType()
-{
+ItemInterfaceType::ItemInterfaceType Plantable::GetInterfaceType() {
    return ItemInterfaceType::Plantable;
 }
 
-void Plantable::Use(ItemPtr sourceItem)
-{
+void Plantable::Use(ItemPtr sourceItem) {
    this->Plant(sourceItem);
 }
 
-void Plantable::OnItemEquipped(ItemPtr sourceItem)
-{
-}
+void Plantable::OnItemEquipped(ItemPtr sourceItem) {}
 
-void Plantable::OnItemUnequipped(ItemPtr sourceItem)
-{
-}
+void Plantable::OnItemUnequipped(ItemPtr sourceItem) {}
 

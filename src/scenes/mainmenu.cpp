@@ -55,7 +55,7 @@ void MainMenu::OnKeyPress(int key) {
    this->Render();
 }
 
-void MainMenu::ExecuteSelectedAction() {
+void MainMenu::ExecuteSelectedAction() const {
    switch (this->SelectedOption) {
       case MainMenuDialogOption::NewGame:
          GameState::Get().InitializeNewGame();
@@ -63,7 +63,9 @@ void MainMenu::ExecuteSelectedAction() {
          break;
       case MainMenuDialogOption::Quit: 
          GameState::Get().Terminate();
-         return;
+         break;
+      default: 
+         break;
    }
 }
 
@@ -92,7 +94,7 @@ void MainMenu::Render() {
    Screen::Get().EndScreenUpdate();
 }
 
-void MainMenu::DrawMenu() {
+void MainMenu::DrawMenu() const {
    /*
    auto top = (Screen::Get().GetHeight() / 2) + 4;
    auto buttonLeft = (Screen::Get().GetWidth() / 2) - 15;

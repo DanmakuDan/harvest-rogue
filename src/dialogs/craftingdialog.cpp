@@ -35,7 +35,7 @@ CraftingDialog::CraftingDialog() {
       auto itemCategories = item->GetItemCategories();
       for (auto itemCategory : itemCategories) {
          this->AddItemToCategory("All", item);
-         this->AddItemToCategory(ItemCategory::GetDescription(itemCategory), item);
+         this->AddItemToCategory(GetDescription(itemCategory), item);
       }
    }
 
@@ -47,8 +47,7 @@ void CraftingDialog::SelectPreviousCategory() {
    this->CurrentItem = nullptr;
    if (currentPos == this->ItemCategories.begin()) {
       this->CurrentCategory = (--this->ItemCategories.end())->first;
-   }
-   else {
+   } else {
       this->CurrentCategory = (--currentPos)->first;
    }
    this->CurrentItem = this->ItemCategories[this->CurrentCategory].front();
@@ -59,8 +58,7 @@ void CraftingDialog::SelectNextCategory() {
    this->CurrentItem = nullptr;
    if (++currentPos == this->ItemCategories.end()) {
       this->CurrentCategory = this->ItemCategories.begin()->first;
-   }
-   else {
+   } else {
       this->CurrentCategory = currentPos->first;
    }
 
@@ -69,18 +67,18 @@ void CraftingDialog::SelectNextCategory() {
 
 void CraftingDialog::SelectNextItem() {
    auto category = this->ItemCategories[this->CurrentCategory];
-   auto index = std::find(category.begin(), category.end(), this->CurrentItem);
-   if (index == category.end()-1) {
+   auto index = find(category.begin(), category.end(), this->CurrentItem);
+   if (index == category.end() - 1) {
       this->CurrentItem = category.front();
       return;
    }
-   
+
    this->CurrentItem = *(++index);
 }
 
 void CraftingDialog::SelectPreviousItem() {
    auto category = this->ItemCategories[this->CurrentCategory];
-   auto index = std::find(category.begin(), category.end(), this->CurrentItem);
+   auto index = find(category.begin(), category.end(), this->CurrentItem);
    if (index == category.begin()) {
       this->CurrentItem = category.back();
       return;
@@ -104,20 +102,15 @@ void CraftingDialog::OnKeyPress(int key) {
       if (this->CurrentItem != nullptr) {
          GameState::Get().PushDialog(CraftingConfirmDialog::Construct(this->CurrentItem));
       }
-   }
-   else if (Action::Requested(action, Action::MenuCancel)) {
+   } else if (Action::Requested(action, Action::MenuCancel)) {
       GameState::Get().PopDialog();
-   }
-   else if (Action::Requested(action, Action::MenuLeft)) {
+   } else if (Action::Requested(action, Action::MenuLeft)) {
       this->SelectPreviousCategory();
-   }
-   else if (Action::Requested(action, Action::MenuRight)) {
+   } else if (Action::Requested(action, Action::MenuRight)) {
       this->SelectNextCategory();
-   }
-   else if (Action::Requested(action, Action::MenuUp)) {
+   } else if (Action::Requested(action, Action::MenuUp)) {
       this->SelectPreviousItem();
-   }
-   else if (Action::Requested(action, Action::MenuDown)) {
+   } else if (Action::Requested(action, Action::MenuDown)) {
       this->SelectNextItem();
    }
 }
@@ -153,14 +146,14 @@ void CraftingDialog::DrawNavigationDialog() {
    for (auto item : items) {
       if (this->CurrentItem == item) {
          Screen::Get().WriteButton(dialogLeft + 1, ++yPos, dialogWidth - 2, "", true);
-         Screen::Get().WriteText(dialogLeft + 2, yPos, item->GetName(), Color::Inverse(Color::White));
+         Screen::Get().WriteText(dialogLeft + 2, yPos, item->GetName(), Inverse(Color::White));
          continue;
       }
       Screen::Get().WriteText(dialogLeft + 2, ++yPos, item->GetName());
    }
 }
 
-void CraftingDialog::DrawDetailsDialog() {
+void CraftingDialog::DrawDetailsDialog() const {
    auto item = this->CurrentItem->GetInterface<Craftable>(ItemInterfaceType::Craftable);
    auto dialogLeft = (Screen::Get().GetWidth() / 2);
    auto dialogTop = 9;
@@ -186,7 +179,7 @@ void CraftingDialog::DrawDetailsDialog() {
    Screen::Get().WriteText(dialogLeft + dialogWidth - 6, dialogTop + 8, "Have", Color::White);
 
    auto y = dialogTop + 8;
-   for(auto materialRecord : item->GetRequiredMaterials()) {
+   for (auto materialRecord : item->GetRequiredMaterials()) {
       y++;
       auto materialName = materialRecord.first;
       auto materialCount = materialRecord.second;

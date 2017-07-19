@@ -21,16 +21,11 @@ std::default_random_engine generator;
 
 IItemInterface* DropsLoot::Clone() const { return new DropsLoot(*this); }
 
-DropsLoot::DropsLoot()
-{
-}
+DropsLoot::DropsLoot() {}
 
-DropsLoot::~DropsLoot()
-{
-}
+DropsLoot::~DropsLoot() {}
 
-std::shared_ptr<DropsLoot> DropsLoot::Deserialize(picojson::value serializedValue)
-{
+std::shared_ptr<DropsLoot> DropsLoot::Deserialize(picojson::value serializedValue) {
    auto result = std::shared_ptr<DropsLoot>(new DropsLoot());
 
    if (!serializedValue.is<picojson::object>()) {
@@ -71,7 +66,7 @@ std::shared_ptr<DropsLoot> DropsLoot::Deserialize(picojson::value serializedValu
                      throw;
                   }
                   auto amount = amountItem.second.get<double>();
-                  lootItem.AmountMin = (int)amount;
+                  lootItem.AmountMin = static_cast<int>(amount);
                   continue;
                }
 
@@ -80,7 +75,7 @@ std::shared_ptr<DropsLoot> DropsLoot::Deserialize(picojson::value serializedValu
                      throw;
                   }
                   auto amount = amountItem.second.get<double>();
-                  lootItem.AmountMax = (int)amount;
+                  lootItem.AmountMax = static_cast<int>(amount);
                   continue;
                }
 
@@ -98,8 +93,7 @@ std::shared_ptr<DropsLoot> DropsLoot::Deserialize(picojson::value serializedValu
    return result;
 }
 
-void DropsLoot::DropLoot(int x, int y)
-{
+void DropsLoot::DropLoot(int x, int y) {
    if (this->Loot.size() > 1) {
       GameState::Get().AddLogMessage("Multi-item loot drops are not currently implemented.");
       return;
@@ -129,7 +123,6 @@ void DropsLoot::DropLoot(int x, int y)
 
 }
 
-ItemInterfaceType::ItemInterfaceType DropsLoot::GetInterfaceType()
-{
+ItemInterfaceType::ItemInterfaceType DropsLoot::GetInterfaceType() {
    return ItemInterfaceType::DropsLoot;
 }

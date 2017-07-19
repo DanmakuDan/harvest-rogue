@@ -26,8 +26,7 @@
 #include "container.h"
 #include "craftable.h"
 
-std::shared_ptr<IItemInterface> IItemInterface::Deserialize(ItemInterfaceType::ItemInterfaceType interfaceType, picojson::value serializedValue)
-{
+std::shared_ptr<IItemInterface> IItemInterface::Deserialize(ItemInterfaceType::ItemInterfaceType interfaceType, picojson::value serializedValue) {
    switch (interfaceType) {
 
    case ItemInterfaceType::Choppable:        return Choppable::Deserialize(serializedValue);

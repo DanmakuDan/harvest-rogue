@@ -64,7 +64,7 @@ Screen::Screen() {
    int windowWidth = Config::Get().GetScreenWidth();
    int windowHeight = Config::Get().GetScreenHeight();
 
-   SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WindowFlags::SDL_WINDOW_RESIZABLE | SDL_WindowFlags::SDL_WINDOW_HIDDEN,
+   SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN,
                                &window, &renderer);
 
    SDL_SetWindowTitle(window, "Harvest-Rogue - Graphical Mode");
@@ -94,13 +94,13 @@ Screen::~Screen()
    SDL_Quit();
 }
 
-int Screen::GetWidth() const {
+int Screen::GetWidth() {
    int width, height;
    SDL_GetWindowSize(window, &width, &height);
    return width / ActualTileSize;
 }
 
-int Screen::GetHeight() const {
+int Screen::GetHeight() {
    int width, height;
    SDL_GetWindowSize(window, &width, &height);
    return height / ActualTileSize;
@@ -110,7 +110,7 @@ void Screen::WriteText(int x, int y, std::string text, Color::Color color)
 {
    int startX = x;
    std::istringstream iss(text);
-   for (std::string line; std::getline(iss, line);) {
+   for (std::string line; getline(iss, line);) {
       for (auto ch : line) {
          this->WriteCharacter(x, y, ch, color);
          x++;
@@ -141,11 +141,10 @@ void Screen::WriteButton(int x, int y, int width, std::string text, bool active)
       SDL_RenderFillRect(renderer, &destRect);
    }
 
-   this->WriteText(int(captionLeft), y, text, active ? Color::Inverse(Color::White) : Color::White);
+   this->WriteText(int(captionLeft), y, text, active ? Inverse(Color::White) : Color::White);
 }
 
-void Screen::ClearLine(int y, Color::Color color)
-{
+void Screen::ClearLine(int y, Color::Color color) const {
    if (color == Color::Default) {
       color = Color::Black;
    }
@@ -164,8 +163,7 @@ void Screen::ClearLine(int y, Color::Color color)
    SDL_RenderFillRect(renderer, &destRect);
 }
 
-void Screen::WriteCharacter(int x, int y, const char character, Color::Color color)
-{
+void Screen::WriteCharacter(int x, int y, const char character, Color::Color color) {
    if (color == Color::Default -1) {
       color = Color::Black;
    }
@@ -201,12 +199,11 @@ void Screen::WriteCharacter(int x, int y, const char character, Color::Color col
    SDL_RenderCopy(renderer, fontTexture, &srcRect, &destRect);
 }
 
-void Screen::WriteTile(int x, int y, int tileIndex, char, Color::Color)
-{
+void Screen::WriteTile(int x, int y, int tileIndex, char, Color::Color) {
    SDL_Rect srcRect;
    SDL_Rect destRect;
-   int tileY = tileIndex / GfxTilesPerRow;
-   int tileX = tileIndex % GfxTilesPerRow;
+   auto tileY = tileIndex / GfxTilesPerRow;
+   auto tileX = tileIndex % GfxTilesPerRow;
    srcRect.x = tileX * TileSize;
    srcRect.y = tileY * TileSize;
    srcRect.w = srcRect.h = TileSize;

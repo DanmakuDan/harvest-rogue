@@ -544,7 +544,7 @@ namespace picojson {
   
   inline std::string value::_serialize(int indent) const {
     std::string s;
-    _serialize(std::back_inserter(s), indent);
+    _serialize(back_inserter(s), indent);
     return s;
   }
   
@@ -1019,7 +1019,7 @@ namespace std {
 inline std::istream& operator>>(std::istream& is, picojson::value& x)
 {
   picojson::set_last_error(std::string());
-  std::string err = picojson::parse(x, is);
+  std::string err = parse(x, is);
   if (! err.empty()) {
     picojson::set_last_error(err);
     is.setstate(std::ios::failbit);

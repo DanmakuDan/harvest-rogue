@@ -66,23 +66,23 @@ void ToolActionDialog::Render() {
    auto btnTop = dialogTop;
 
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Equip",
-                             this->SelectedOption == ToolActionDialogOption::EquipTool);
+      this->SelectedOption == ToolActionDialogOption::EquipTool);
 
    Screen::Get().WriteButton(btnLeft, ++btnTop, btnWidth, "Drop on ground",
-                             this->SelectedOption == ToolActionDialogOption::DropTool);
+      this->SelectedOption == ToolActionDialogOption::DropTool);
 }
 
-void ToolActionDialog::ExecuteSelectedAction() {
-   switch(this->SelectedOption) {
-      case ToolActionDialogOption::EquipTool:
-         Player::Get().EquipFromInventory(this->Tool);
-         GameState::Get().ClearAllDialogs();
-         break;
-      case ToolActionDialogOption::DropTool:
-         Player::Get().DropInventoryItemOnGround(this->Tool);
-         GameState::Get().ClearAllDialogs();
-         break;
-      default: 
-         break;
+void ToolActionDialog::ExecuteSelectedAction() const {
+   switch (this->SelectedOption) {
+   case ToolActionDialogOption::EquipTool:
+      Player::Get().EquipFromInventory(this->Tool);
+      GameState::Get().ClearAllDialogs();
+      break;
+   case ToolActionDialogOption::DropTool:
+      Player::Get().DropInventoryItemOnGround(this->Tool);
+      GameState::Get().ClearAllDialogs();
+      break;
+   default:
+      break;
    }
 }

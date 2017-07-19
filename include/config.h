@@ -72,7 +72,7 @@ private:
       configFile << json.serialize(true);
       configFile.close();
    }
-   picojson::value Serialize();
+   picojson::value Serialize() const;
    void Deserialize(picojson::value serializedValue);
    int ScreenWidth = 1280;
    int ScreenHeight = 720;

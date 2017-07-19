@@ -42,7 +42,7 @@ private:
    ItemPtr Tool;
    ToolActionDialogOption::ToolActionDialogOption SelectedOption;
 
-   void ExecuteSelectedAction();
+   void ExecuteSelectedAction() const;
 };
 
 

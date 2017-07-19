@@ -41,11 +41,11 @@ private:
    void SwitchSelectedWindow();
    void HandleActionButtonPressed();
 
-   void RemoveItemFromEitherContainer(ItemPtr item);
+   void RemoveItemFromEitherContainer(ItemPtr item) const;
    void AddItemToEndOfCurrentContainer(ItemPtr item);
-   void SwapItems(ItemPtr itemA, ItemPtr itemB);
+   void SwapItems(ItemPtr itemA, ItemPtr itemB) const;
    void SplitItem(ItemPtr item);
-   void CombineItems(ItemPtr source, ItemPtr dest);
+   void CombineItems(ItemPtr source, ItemPtr dest) const;
 
    ItemContainerPtr FirstContainer;
    ItemContainerPtr SecondContainer;

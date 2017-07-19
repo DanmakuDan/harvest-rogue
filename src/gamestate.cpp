@@ -168,12 +168,12 @@ void GameState::AddLogMessageFmt(const std::string format, ...) {
       auto n = vsnprintf(const_cast<char *>(str.data()), size, format.c_str(), ap);
       va_end(ap);
       if (n > -1 && n < int(size)) {  // Everything worked
-         str.resize(((unsigned long)n));
+         str.resize(static_cast<unsigned long>(n));
          this->AddLogMessage(str);
          return;
       }
       if (n > -1)  // Needed size returned
-         size = ((unsigned long)n) + 1;   // For null char
+         size = static_cast<unsigned long>(n) + 1;   // For null char
       else
          size *= 2;      // Guess at a larger size (OS specific)
    }
@@ -238,11 +238,11 @@ void GameState::SleepUntilNextMorning(int hour, int minute, int second) {
 
       // If the player wakes up, stop running the sleep simulation.
       if (!Player::Get().GetIsSleeping()) {
-         GameState::Get().AddLogMessage("Your sleep has been interupted!");
+         Get().AddLogMessage("Your sleep has been interupted!");
          break;
       }
    }
-   GameState::Get().AddLogMessageFmt("You slept for %i hours!", totalHoursSlept);
+   Get().AddLogMessageFmt("You slept for %i hours!", totalHoursSlept);
    Player::Get().SetIsSleeping(false);
 }
 
@@ -265,7 +265,7 @@ void GameState::ProcessHourlyTick() {
       Player::Get().AdjustEnergy(10);
    };
 
-   for (auto landmark : GameState::Landmarks) {
+   for (auto landmark : Landmarks) {
       auto landmarkItems = landmark->GetAllLandmarkItems();
       for (auto landmarkItem : landmarkItems) {
          if (landmarkItem.second == nullptr) {

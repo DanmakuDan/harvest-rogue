@@ -103,7 +103,7 @@ void Player::WalkPlayer(Direction::Direction direction) {
 
    this->WarpPlayer(newX, newY);
    if (currentLandmark->GetTile(newX, newY).TileType != TileType::DirtPath) {
-      Player::Get().AdjustEnergy(-1);
+      Get().AdjustEnergy(-1);
    }
    
 }
@@ -142,24 +142,24 @@ void Player::RemoveItem(ItemPtr item, int count)
 
 void Player::SwapItem(ItemPtr itemA, ItemPtr itemB)
 {
-   auto firstItemLocation = std::find(this->Inventory.begin(), this->Inventory.end(), itemA);
+   auto firstItemLocation = find(this->Inventory.begin(), this->Inventory.end(), itemA);
    if (firstItemLocation == this->Inventory.end()) {
       return;
    }
 
-   auto secondItemLocation = std::find(this->Inventory.begin(), this->Inventory.end(), itemB);
+   auto secondItemLocation = find(this->Inventory.begin(), this->Inventory.end(), itemB);
    if (secondItemLocation == this->Inventory.end()) {
       // We're actually swapping in an item that we don't already have
       firstItemLocation->swap(itemB);
       return;
    }
    // We're swapping between two items we have
-   std::iter_swap(firstItemLocation, secondItemLocation);
+   iter_swap(firstItemLocation, secondItemLocation);
 }
 
 void Player::SplitItem(ItemPtr item)
 {
-   auto itemLocation = std::find(this->Inventory.begin(), this->Inventory.end(), item);
+   auto itemLocation = find(this->Inventory.begin(), this->Inventory.end(), item);
    if (itemLocation == this->Inventory.end()) {
       return;
    }
@@ -174,8 +174,8 @@ void Player::SplitItem(ItemPtr item)
 
 void Player::CombineItems(ItemPtr source, ItemPtr dest)
 {
-   auto destItemLocation = std::find(this->Inventory.begin(), this->Inventory.end(), dest);
-   auto sourceItemLocation = std::find(this->Inventory.begin(), this->Inventory.end(), source);
+   auto destItemLocation = find(this->Inventory.begin(), this->Inventory.end(), dest);
+   auto sourceItemLocation = find(this->Inventory.begin(), this->Inventory.end(), source);
 
    auto movingFromHere = sourceItemLocation != this->Inventory.end();
    auto movingToHere = destItemLocation != this->Inventory.end();
@@ -324,7 +324,7 @@ void Player::EquipFromInventory(ItemPtr item) {
    }
 
    if (this->GetCurrentlyEquippedItem() != nullptr) {
-      Player::Get().UnequipCurrentEquippedItem();
+      Get().UnequipCurrentEquippedItem();
    }
 
    auto newItem = this->RemoveFromInventory(item, MOVE_AMOUNT_EVERYTHING);
@@ -429,7 +429,7 @@ void Player::UnequipCurrentEquippedItem() {
 bool Player::IsPassable(int x, int y) {
    auto currentLandmark = GameState::Get().GetCurrentLandmark();
    auto tile = currentLandmark->GetTile(x, y);
-   if (!Tile::HasSurfaceAttribute(tile, SurfaceAttribute::Walkable)) {
+   if (!HasSurfaceAttribute(tile, SurfaceAttribute::Walkable)) {
       return false;
    }
    auto prop = currentLandmark->GetItem(x, y);

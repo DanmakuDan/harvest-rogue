@@ -75,7 +75,7 @@ int Input::WaitForAndGetKeyPress() {
    }
 }
 
-int Input::GetInputTimeout()
+int Input::GetInputTimeout() const
 {
    return this->InputTimeout;
 }

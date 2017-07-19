@@ -17,16 +17,12 @@
 
 IItemInterface* Choppable::Clone() const { return new Choppable(*this); }
 
-Choppable::Choppable(): 
-   ChopPoints(0) {
-}
+Choppable::Choppable() :
+   ChopPoints(0) {}
 
-Choppable::~Choppable()
-{
-}
+Choppable::~Choppable() {}
 
-std::shared_ptr<Choppable> Choppable::Deserialize(picojson::value serializedValue)
-{
+std::shared_ptr<Choppable> Choppable::Deserialize(picojson::value serializedValue) {
    auto result = std::shared_ptr<Choppable>(new Choppable());
 
    if (!serializedValue.is<picojson::object>()) {
@@ -42,7 +38,7 @@ std::shared_ptr<Choppable> Choppable::Deserialize(picojson::value serializedValu
          }
 
          auto value = item.second.get<double>();
-         result->SetChopPoints((int)value);
+         result->SetChopPoints(static_cast<int>(value));
          continue;
       }
 
@@ -52,18 +48,15 @@ std::shared_ptr<Choppable> Choppable::Deserialize(picojson::value serializedValu
    return result;
 }
 
-int Choppable::GetChopPoints()
-{
+int Choppable::GetChopPoints() const {
    return this->ChopPoints;
 }
 
-void Choppable::SetChopPoints(int chopPoints)
-{
+void Choppable::SetChopPoints(int chopPoints) {
    this->ChopPoints = chopPoints;
 }
 
-void Choppable::Chop(ItemPtr sourceItem, ChoppingTool* choppingTool)
-{
+void Choppable::Chop(ItemPtr sourceItem, ChoppingTool* choppingTool) {
    if (this->GetChopPoints() < choppingTool->GetStrength()) {
       sourceItem->Destruct(true);
       return;
@@ -72,7 +65,6 @@ void Choppable::Chop(ItemPtr sourceItem, ChoppingTool* choppingTool)
    this->SetChopPoints(this->GetChopPoints() - choppingTool->GetStrength());
 }
 
-ItemInterfaceType::ItemInterfaceType Choppable::GetInterfaceType()
-{
+ItemInterfaceType::ItemInterfaceType Choppable::GetInterfaceType() {
    return ItemInterfaceType::Choppable;
 }

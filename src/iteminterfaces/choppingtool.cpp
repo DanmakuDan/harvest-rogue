@@ -20,18 +20,12 @@
 
 IItemInterface* ChoppingTool::Clone() const { return new ChoppingTool(*this); }
 
-ChoppingTool::ChoppingTool()
-{
-   this->Strength = 0;
-   this->Fatigue = 0;
-}
+ChoppingTool::ChoppingTool() :
+   Strength(0), Fatigue(0) {}
 
-ChoppingTool::~ChoppingTool()
-{
-}
+ChoppingTool::~ChoppingTool() {}
 
-std::shared_ptr<ChoppingTool> ChoppingTool::Deserialize(picojson::value serializedValue)
-{
+std::shared_ptr<ChoppingTool> ChoppingTool::Deserialize(picojson::value serializedValue) {
    auto result = std::shared_ptr<ChoppingTool>(new ChoppingTool());
 
    if (!serializedValue.is<picojson::object>()) {
@@ -48,7 +42,7 @@ std::shared_ptr<ChoppingTool> ChoppingTool::Deserialize(picojson::value serializ
 
          auto value = item.second.get<double>();
 
-         result->SetStrength((int)value);
+         result->SetStrength(static_cast<int>(value));
          continue;
       }
 
@@ -59,7 +53,7 @@ std::shared_ptr<ChoppingTool> ChoppingTool::Deserialize(picojson::value serializ
 
          auto value = item.second.get<double>();
 
-         result->SetFatigue((int)value);
+         result->SetFatigue(static_cast<int>(value));
          continue;
       }
 
@@ -69,36 +63,30 @@ std::shared_ptr<ChoppingTool> ChoppingTool::Deserialize(picojson::value serializ
    return result;
 }
 
-int ChoppingTool::GetStrength()
-{
+int ChoppingTool::GetStrength() const {
    return this->Strength;
 }
 
-void ChoppingTool::SetStrength(int strength)
-{
+void ChoppingTool::SetStrength(int strength) {
    this->Strength = strength;
 }
 
-int ChoppingTool::GetFatigue()
-{
+int ChoppingTool::GetFatigue() const {
    return this->Fatigue;
 }
 
-void ChoppingTool::SetFatigue(int fatigue)
-{
+void ChoppingTool::SetFatigue(int fatigue) {
    this->Fatigue = fatigue;
 }
 
-void ChoppingTool::Chop(ItemPtr sourceItem)
-{
+void ChoppingTool::Chop(ItemPtr sourceItem) {
    GameState::Get().PushDialog(ActionDirectionDialog::Construct(sourceItem));
 }
 
-void ChoppingTool::Chop(ItemPtr sourceItem, Direction::Direction direction)
-{
+void ChoppingTool::Chop(Direction::Direction direction) {
    auto landmark = GameState::Get().GetCurrentLandmark();
 
-   int targetX = 0, targetY = 0;
+   auto targetX = 0, targetY = 0;
    switch (direction) {
    case Direction::Up:
       targetX = Player::Get().GetPositionX();
@@ -135,25 +123,18 @@ void ChoppingTool::Chop(ItemPtr sourceItem, Direction::Direction direction)
    choppable->Chop(ItemPtr(item), this);
 }
 
-ItemInterfaceType::ItemInterfaceType ChoppingTool::GetInterfaceType()
-{
+ItemInterfaceType::ItemInterfaceType ChoppingTool::GetInterfaceType() {
    return ItemInterfaceType::ChoppingTool;
 }
 
-void ChoppingTool::Use(ItemPtr sourceItem)
-{
+void ChoppingTool::Use(ItemPtr sourceItem) {
    this->Chop(sourceItem);
 }
 
-void ChoppingTool::Use(ItemPtr sourceItem, Direction::Direction direction)
-{
-   this->Chop(sourceItem, direction);
+void ChoppingTool::Use(ItemPtr sourceItem, Direction::Direction direction) {
+   this->Chop(direction);
 }
 
-void ChoppingTool::OnItemEquipped(ItemPtr sourceItem)
-{
-}
+void ChoppingTool::OnItemEquipped(ItemPtr sourceItem) {}
 
-void ChoppingTool::OnItemUnequipped(ItemPtr sourceItem)
-{
-}
+void ChoppingTool::OnItemUnequipped(ItemPtr sourceItem) {}

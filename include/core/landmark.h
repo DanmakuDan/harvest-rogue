@@ -35,15 +35,15 @@ public:
       return std::shared_ptr<Landmark>(new Landmark(name, width, height));
    }
 
-   unsigned int GetWidth();
-   unsigned int GetHeight();
+   unsigned int GetWidth() const;
+   unsigned int GetHeight() const;
    void SetTile(int x, int y, TileType::TileType tile);
    Tile::Tile GetTile(int x, int y);
    void AddItem(int x, int y, ItemPtr item);
    ItemPtr GetItem(int x, int y);
    void RemoveItem(int x, int y);
    bool LocateItem(ItemPtr item, int& x, int& y);
-   std::map<int, std::shared_ptr<LandmarkItem>> GetAllLandmarkItems();
+   std::map<int, std::shared_ptr<LandmarkItem>> GetAllLandmarkItems() const;
 
    // INameable
    std::string GetName() override;

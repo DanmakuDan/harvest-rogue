@@ -43,8 +43,8 @@ public:
 private:
    MainMenu();
    MainMenuDialogOption::MainMenuDialogOption SelectedOption;
-   void DrawMenu();
-   void ExecuteSelectedAction();
+   void DrawMenu() const;
+   void ExecuteSelectedAction() const;
 };
 
 

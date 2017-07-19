@@ -129,7 +129,7 @@ void InventoryDialog::Render() {
 
 }
 
-void InventoryDialog::ExecuteSelectedAction() {
+void InventoryDialog::ExecuteSelectedAction() const {
    if (this->SelectedInventoryItem == -1) {
       return;
    }

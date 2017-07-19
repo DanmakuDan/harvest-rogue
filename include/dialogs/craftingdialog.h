@@ -34,9 +34,9 @@ private:
    void SelectNextCategory();
    void SelectNextItem();
    void SelectPreviousItem();
-   void DrawDialogHeader(int x, int y, int width, int height);
+   static void DrawDialogHeader(int x, int y, int width, int height);
    void DrawNavigationDialog();
-   void DrawDetailsDialog();
+   void DrawDetailsDialog() const;
    void AddItemToCategory(std::string category, ItemPtr item);
    std::map<std::string, std::vector<ItemPtr>> ItemCategories;
    std::string CurrentCategory;

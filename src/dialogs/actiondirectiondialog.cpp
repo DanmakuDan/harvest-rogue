@@ -19,9 +19,8 @@
 #include "direction.h"
 #include "gamestate.h"
 
-ActionDirectionDialog::ActionDirectionDialog(ItemPtr targetTool) {
-   this->TargetTool = ItemPtr(targetTool);
-}
+ActionDirectionDialog::ActionDirectionDialog(ItemPtr targetTool) :
+   TargetTool(ItemPtr(targetTool)) {}
 
 void ActionDirectionDialog::OnKeyPress(int key) {
 

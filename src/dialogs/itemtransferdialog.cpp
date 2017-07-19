@@ -18,19 +18,17 @@
 #include "screen.h"
 #include "obtainable.h"
 
-ItemTransferDialog::ItemTransferDialog(ItemContainerPtr firstContainer, ItemContainerPtr secondContainer)
-{
+ItemTransferDialog::ItemTransferDialog(ItemContainerPtr firstContainer, ItemContainerPtr secondContainer) {
    this->FirstContainer = firstContainer;
    this->SecondContainer = secondContainer;
-   this->ItemSelectorSide = eItemDialogSide::LeftSide;
+   this->ItemSelectorSide = LeftSide;
    this->FirstItemSelectorIndex = 0;
    this->FirstItemViewOffset = 0;
    this->SecondItemSelectorIndex = 0;
    this->SecondItemViewOffset = 0;
 }
 
-void ItemTransferDialog::OnKeyPress(int key)
-{
+void ItemTransferDialog::OnKeyPress(int key) {
    auto action = Input::Get().GetActionForKeyPress(key);
 
    if (Action::Requested(action, Action::MenuCancel)) {
@@ -58,18 +56,16 @@ void ItemTransferDialog::OnKeyPress(int key)
    }
 }
 
-void ItemTransferDialog::Render()
-{
+void ItemTransferDialog::Render() {
    auto screenCenter = Screen::Get().GetWidth() / 2;
 
    this->DrawDialogHeader(3, 3, Screen::Get().GetWidth() - 6, 3);
-   this->DrawItemDialog(3, 10, screenCenter - 3, Screen::Get().GetHeight() - 15, eItemDialogSide::LeftSide);
-   this->DrawItemDialog(screenCenter, 10, screenCenter - 3, Screen::Get().GetHeight() - 15, eItemDialogSide::RightSide);
+   this->DrawItemDialog(3, 10, screenCenter - 3, Screen::Get().GetHeight() - 15, LeftSide);
+   this->DrawItemDialog(screenCenter, 10, screenCenter - 3, Screen::Get().GetHeight() - 15, RightSide);
    this->DrawSelectedItemDescription();
 }
 
-void ItemTransferDialog::DrawDialogHeader(int x, int y, int width, int height)
-{
+void ItemTransferDialog::DrawDialogHeader(int x, int y, int width, int height) {
    std::string dialogTitle = "Inventory Transfer";
 
    Screen::Get().WriteWindow(x, y, width, height);
@@ -77,13 +73,12 @@ void ItemTransferDialog::DrawDialogHeader(int x, int y, int width, int height)
    Screen::Get().WriteText(textLeft, y + 1, dialogTitle);
 }
 
-void ItemTransferDialog::DrawItemDialog(int x, int y, int width, int height, eItemDialogSide side)
-{
-   auto leftSide = (side == eItemDialogSide::LeftSide);
+void ItemTransferDialog::DrawItemDialog(int x, int y, int width, int height, eItemDialogSide side) {
+   auto leftSide = (side == LeftSide);
 
-   auto container         = leftSide ? this->FirstContainer         : this->SecondContainer;
+   auto container = leftSide ? this->FirstContainer : this->SecondContainer;
    auto itemSelectorIndex = leftSide ? this->FirstItemSelectorIndex : this->SecondItemSelectorIndex;
-   auto viewOffset        = leftSide ? &this->FirstItemViewOffset   : &this->SecondItemViewOffset;
+   auto viewOffset = leftSide ? &this->FirstItemViewOffset : &this->SecondItemViewOffset;
 
    // Draw the caption bar above the item window
    Screen::Get().WriteWindow(x, y - 3, width, 3);
@@ -127,7 +122,7 @@ void ItemTransferDialog::DrawItemDialog(int x, int y, int width, int height, eIt
       auto lineTextColor = Color::White;
 
       if ((this->ItemSelectorSide == side) && (itemSelectorIndex == itemIndexOffset + *viewOffset)) {
-         lineTextColor = Color::Inverse(Color::White);
+         lineTextColor = Inverse(Color::White);
 
          // TODO: We need a way to draw a "selector" without rendering an actual button...
          Screen::Get().WriteButton(x + 2, y, width - 3, "", true);
@@ -147,16 +142,14 @@ void ItemTransferDialog::DrawItemDialog(int x, int y, int width, int height, eIt
    }
 }
 
-void ItemTransferDialog::DrawSelectedItemDescription()
-{
+void ItemTransferDialog::DrawSelectedItemDescription() {
    int* selectorIndex;
    ItemContainerPtr itemContainer;
 
-   if (this->ItemSelectorSide == eItemDialogSide::LeftSide) {
+   if (this->ItemSelectorSide == LeftSide) {
       selectorIndex = &this->FirstItemSelectorIndex;
       itemContainer = this->FirstContainer;
-   }
-   else {
+   } else {
       selectorIndex = &this->SecondItemSelectorIndex;
       itemContainer = this->SecondContainer;
    }
@@ -169,16 +162,14 @@ void ItemTransferDialog::DrawSelectedItemDescription()
    Screen::Get().WriteText(4, Screen::Get().GetHeight() - 4, itemContainer->GetAllItems()[*selectorIndex]->GetDescription());
 }
 
-void ItemTransferDialog::MoveSelectorInWindow(int adjustment)
-{
+void ItemTransferDialog::MoveSelectorInWindow(int adjustment) {
    int* selectorIndex;
    ItemContainerPtr itemContainer;
 
-   if (this->ItemSelectorSide == eItemDialogSide::LeftSide) {
+   if (this->ItemSelectorSide == LeftSide) {
       selectorIndex = &this->FirstItemSelectorIndex;
       itemContainer = this->FirstContainer;
-   }
-   else {
+   } else {
       selectorIndex = &this->SecondItemSelectorIndex;
       itemContainer = this->SecondContainer;
    }
@@ -190,7 +181,7 @@ void ItemTransferDialog::MoveSelectorInWindow(int adjustment)
    *selectorIndex += adjustment;
 
    if (*selectorIndex < 0) {
-      *selectorIndex = (int)itemContainer->GetAllItems().size();
+      *selectorIndex = static_cast<int>(itemContainer->GetAllItems().size());
    }
 
    if (*selectorIndex > itemContainer->GetAllItems().size()) {
@@ -198,23 +189,20 @@ void ItemTransferDialog::MoveSelectorInWindow(int adjustment)
    }
 }
 
-void ItemTransferDialog::SwitchSelectedWindow()
-{
-   this->ItemSelectorSide = (this->ItemSelectorSide == eItemDialogSide::LeftSide)
-      ? eItemDialogSide::RightSide
-      : eItemDialogSide::LeftSide;
+void ItemTransferDialog::SwitchSelectedWindow() {
+   this->ItemSelectorSide = (this->ItemSelectorSide == LeftSide)
+      ? RightSide
+      : LeftSide;
 }
 
-void ItemTransferDialog::HandleActionButtonPressed()
-{
+void ItemTransferDialog::HandleActionButtonPressed() {
    int* selectorIndex;
    ItemContainerPtr itemContainer;
 
-   if (this->ItemSelectorSide == eItemDialogSide::LeftSide) {
+   if (this->ItemSelectorSide == LeftSide) {
       selectorIndex = &this->FirstItemSelectorIndex;
       itemContainer = this->FirstContainer;
-   }
-   else {
+   } else {
       selectorIndex = &this->SecondItemSelectorIndex;
       itemContainer = this->SecondContainer;
    }
@@ -266,26 +254,23 @@ void ItemTransferDialog::HandleActionButtonPressed()
    // They are combining an item
    this->CombineItems(this->SelectedItem, itemToSelect);
    this->SelectedItem = nullptr;
-   
+
 }
 
-void ItemTransferDialog::RemoveItemFromEitherContainer(ItemPtr item)
-{
+void ItemTransferDialog::RemoveItemFromEitherContainer(ItemPtr item) const {
    this->FirstContainer->RemoveItem(item);
    this->SecondContainer->RemoveItem(item);
 }
 
-void ItemTransferDialog::AddItemToEndOfCurrentContainer(ItemPtr item)
-{
-   auto container = (this->ItemSelectorSide == eItemDialogSide::LeftSide)
+void ItemTransferDialog::AddItemToEndOfCurrentContainer(ItemPtr item) {
+   auto container = (this->ItemSelectorSide == LeftSide)
       ? this->FirstContainer
       : this->SecondContainer;
 
    container->AddItem(item, MOVE_AMOUNT_EVERYTHING, true);
 }
 
-void ItemTransferDialog::SwapItems(ItemPtr itemA, ItemPtr itemB)
-{
+void ItemTransferDialog::SwapItems(ItemPtr itemA, ItemPtr itemB) const {
    auto itemToMoveA = Item::Clone(itemA);
    auto itemToMoveB = Item::Clone(itemB);
 
@@ -295,17 +280,15 @@ void ItemTransferDialog::SwapItems(ItemPtr itemA, ItemPtr itemB)
    this->SecondContainer->SwapItem(itemB, itemToMoveA);
 }
 
-void ItemTransferDialog::SplitItem(ItemPtr item)
-{
-   auto container = (this->ItemSelectorSide == eItemDialogSide::LeftSide)
+void ItemTransferDialog::SplitItem(ItemPtr item) {
+   auto container = (this->ItemSelectorSide == LeftSide)
       ? this->FirstContainer
       : this->SecondContainer;
 
    container->SplitItem(item);
 }
 
-void ItemTransferDialog::CombineItems(ItemPtr source, ItemPtr dest)
-{
+void ItemTransferDialog::CombineItems(ItemPtr source, ItemPtr dest) const {
    this->FirstContainer->CombineItems(source, dest);
    this->SecondContainer->CombineItems(source, dest);
 }

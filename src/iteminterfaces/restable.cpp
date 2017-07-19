@@ -17,28 +17,21 @@
 
 IItemInterface* Restable::Clone() const { return new Restable(*this); }
 
-Restable::Restable()
-{
-}
+Restable::Restable() {}
 
-Restable::~Restable()
-{
-}
+Restable::~Restable() {}
 
-std::shared_ptr<Restable> Restable::Deserialize(picojson::value serializedValue)
-{
+std::shared_ptr<Restable> Restable::Deserialize(picojson::value serializedValue) {
    auto result = std::shared_ptr<Restable>(new Restable());
 
    return result;
 }
 
-ItemInterfaceType::ItemInterfaceType Restable::GetInterfaceType()
-{
+ItemInterfaceType::ItemInterfaceType Restable::GetInterfaceType() {
    return ItemInterfaceType::Restable;
 }
 
-void Restable::Interact(ItemPtr sourceItem)
-{
+void Restable::Interact(ItemPtr sourceItem) {
    GameState::Get().AddLogMessage("You lay in the bed and go to sleep...");
    GameState::Get().SleepUntilNextMorning();
 }
